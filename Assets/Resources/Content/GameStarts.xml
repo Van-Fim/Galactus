@@ -1,0 +1,16 @@
+<templates>
+	<start name="Start01">
+		<space galaxy="0" system="84">
+			<ship playerShip="1" template="Ship01" pilotTemplate="Pilot01">
+				<loadouts name="Ship01" />
+				<position x="0" y="5000" z="0" />
+				<rotation x="0" y="0" z="0" />
+			</ship>
+			<player template="Pilot01">
+				<loadouts name="Pilot01" />
+				<position x="0" y="4500" z="0" />
+				<rotation x="0" y="0" z="0" />
+			</player>
+		</space>
+	</start>
+</templates>

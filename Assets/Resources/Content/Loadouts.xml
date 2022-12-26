@@ -1,0 +1,20 @@
+<templates>
+	<loadouts name="Station01">
+		<loadout id="1" type="station" template="Station03"/>
+		<loadout id="2" type="station" template="Station03" />
+		<loadout id="3" type="station" template="Station03" />
+	</loadouts>
+	<loadouts name="Station02">
+		<loadout id="1" type="station" template="Station03"/>
+	</loadouts>
+	<loadouts name="Ship01">
+		<loadout id="1" type="weapon" template="blasto_mk1" />
+		<loadout id="2" type="weapon" template="blasto_mk1" />
+		<loadout id="3" type="weapon" template="blasto_mk1" />
+		<loadout id="4" type="weapon" template="blasto_mk1" />
+		<loadout id="1" type="engine" template="engineus_mk1" />
+		<loadout id="1" type="thruster" template="thrustur_inf_mk1000" />
+		<loadout id="1" type="power_generator" template="powerus_mk1" />
+		<loadout id="1" type="shield" template="shieldus_mk1" />
+	</loadouts>
+</templates>

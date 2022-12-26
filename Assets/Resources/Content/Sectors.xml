@@ -1,0 +1,8 @@
+<templates>
+	<sector name="Sector00">
+		<scale min="100" max="100" />
+	</sector>
+	<sector name="Sector01">
+		<scale min="100" max="100" />
+	</sector>
+</templates>

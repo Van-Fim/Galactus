@@ -1,0 +1,60 @@
+<templates>
+	<hardpoints name="Ship01">
+		<hardpoint id="1" type="weapon" maxlevel="2">
+			<position x="-6.1" y="1.22" z="13.9" />
+			<rotation x="0" y="0" z="0" />
+		</hardpoint>
+		<hardpoint id="2" type="weapon" maxlevel="2">
+			<position x="6.1" y="1.22" z="13.9" />
+			<rotation x="0" y="0" z="0" />
+		</hardpoint>
+		<hardpoint id="3" type="weapon" maxlevel="2">
+			<position x="-12.88" y="-2.96" z="0.17" />
+			<rotation x="0" y="0" z="15.962" />
+		</hardpoint>
+		<hardpoint id="4" type="weapon" maxlevel="2">
+			<position x="12.88" y="-2.96" z="0.17" />
+			<rotation x="0" y="0" z="-15.962" />
+		</hardpoint>
+		<hardpoint id="1" type="engine" maxlevel="2">
+			<position x="0" y="0" z="0" />
+			<rotation x="0" y="0" z="0" />
+		</hardpoint>
+		<hardpoint id="1" type="thruster" maxlevel="2">
+			<position x="0" y="0" z="0" />
+			<rotation x="0" y="0" z="0" />
+		</hardpoint>
+		<hardpoint id="1" type="power_generator" maxlevel="2">
+			<position x="0" y="0" z="0" />
+			<rotation x="0" y="0" z="0" />
+		</hardpoint>
+		<hardpoint id="1" type="shield" maxlevel="2">
+			<position x="0" y="0" z="0" />
+			<rotation x="0" y="0" z="0" />
+		</hardpoint>
+		<hardpoint id="1" type="camera_hardpoint">
+			<position x="0" y="15.7" z="-50" />
+			<rotation x="0" y="0" z="0" />
+		</hardpoint>
+	</hardpoints>
+	<hardpoints name="Station01">
+		<hardpoint id="1" type="station">
+			<position x="0" y="0" z="0" />
+			<rotation x="0" y="0" z="0" />
+		</hardpoint>
+		<hardpoint id="2" type="station">
+			<position x="2661" y="0" z="0" />
+			<rotation x="0" y="0" z="0" />
+		</hardpoint>
+		<hardpoint id="3" type="station">
+			<position x="-2661" y="0" z="0" />
+			<rotation x="0" y="0" z="0" />
+		</hardpoint>
+	</hardpoints>
+	<hardpoints name="Station02">
+		<hardpoint id="1" type="station">
+			<position x="0" y="0" z="0" />
+			<rotation x="0" y="0" z="0" />
+		</hardpoint>
+	</hardpoints>
+</templates>
