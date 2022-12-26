@@ -12,7 +12,7 @@ public class NetManager : NetworkManager
         GameContentManager.LoadPrefabs();
         CameraManager.Init();
         CanvasManager.Init();
-
+        
         CameraManager.SwitchByCode(0);
     }
     public override void OnClientSceneChanged()
@@ -27,10 +27,8 @@ public class NetManager : NetworkManager
 
     IEnumerator InitStartContent()
     {
-        SpaceManager.spaceManager = Instantiate(GameContentManager.spaceManagerPrefab);
-        NetworkServer.Spawn(SpaceManager.spaceManager.gameObject);
-
-        
+        SpaceManager.singleton = Instantiate(GameContentManager.spaceManagerPrefab);
+        NetworkServer.Spawn(SpaceManager.singleton.gameObject);
         yield return 1;
     }
 }

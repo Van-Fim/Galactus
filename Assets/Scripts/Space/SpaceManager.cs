@@ -16,14 +16,33 @@ public class SpaceManager : NetworkBehaviour
     public static List<Sector> sectors = new List<Sector>();
     public static List<Zone> zones = new List<Zone>();
 
-    public static SpaceManager spaceManager;
-
     public static List<string> names = new List<string>();
     public static SpaceManager singleton;
 
     public override void OnStartServer()
     {
-        
+
+    }
+
+    public static void RenderGalaxies()
+    {
+        for (int i = 0; i < galaxies.Count; i++)
+        {
+            Galaxy galaxy = galaxies[i];
+            galaxy.Render();
+        }
+    }
+    public static void RenderSystems(int galaxyId)
+    {
+        for (int i = 0; i < starSystems.Count; i++)
+        {
+            StarSystem system = starSystems[i];
+            if (system.galaxyId != galaxyId)
+            {
+                continue;
+            }
+            system.Render();
+        }
     }
 
     public override void OnStartClient()
@@ -36,9 +55,14 @@ public class SpaceManager : NetworkBehaviour
             for (int i = 0; i < galaxies.Count; i++)
             {
                 Galaxy galaxy = galaxies[i];
-                
+
                 LoadSystems(galaxy);
             }
+
+            MinimapPanel.Init();
+            SpaceManager.RenderGalaxies();
+            SpaceManager.RenderSystems(Player.galaxyId);
+            UiManager.Init();
         }
     }
 
@@ -358,7 +382,7 @@ public class SpaceManager : NetworkBehaviour
             for (int i1 = 0; i1 < starSystems.Count; i1++)
             {
                 StarSystem system1 = starSystems[i1];
-                
+
                 if (system1 == system || system1.galaxyId != galaxy.id)
                 {
                     continue;
@@ -367,7 +391,9 @@ public class SpaceManager : NetworkBehaviour
                 float dst = Vector2.Distance(pos1, position);
                 if (dst < 100)
                 {
-                    position = UnityEngine.Random.insideUnitCircle * galMaxRange;
+                    position2D = UnityEngine.Random.insideUnitCircle * galMaxRange;
+                    yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
+                    position = new Vector3(position2D.x, yPos, position2D.y);
                     br = true;
                     break;
                 }
@@ -384,6 +410,7 @@ public class SpaceManager : NetworkBehaviour
             else
             {
                 system.SetPosition(position);
+                starSystems.Add(system);
                 break;
             }
         }

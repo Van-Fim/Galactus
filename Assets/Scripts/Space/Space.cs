@@ -7,7 +7,7 @@ using System;
 [Serializable]
 public class Space
 {
-    public int id;
+    public int id = -1;
     public string templateName;
     public string name;
 
@@ -59,6 +59,19 @@ public class Space
             ret = "zone";
         }
         return ret;
+    }
+
+    public void Render(){
+        if (GetType() == typeof(Galaxy))
+        {
+            spaceController = GameObject.Instantiate(GameContentManager.galaxyPrefab, MinimapPanel.galaxiesContainer.transform);
+        }
+        else if (GetType() == typeof(StarSystem))
+        {
+            spaceController = GameObject.Instantiate(GameContentManager.systemPrefab, MinimapPanel.systemsContainer.transform);
+        }
+        spaceController.transform.localPosition = GetPosition();
+        spaceController.transform.localEulerAngles = GetRotation();
     }
 
     public virtual void SetColor(Color32 color)

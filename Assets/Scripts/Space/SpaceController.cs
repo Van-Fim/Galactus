@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class SpaceController : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public MeshRenderer meshRenderer;
+    public byte layer = 0;
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         

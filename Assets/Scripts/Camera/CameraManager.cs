@@ -15,6 +15,7 @@ public class CameraManager
         CameraManager.minimapCamera = GameObject.Instantiate(GameContentManager.minimapCameraPrefab);
 
         GameObject.DontDestroyOnLoad(CameraManager.mainCamera);
+        GameObject.DontDestroyOnLoad(CameraManager.minimapCamera);
     }
 
     public static void SwitchByCode(byte code){

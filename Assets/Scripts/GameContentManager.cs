@@ -12,11 +12,13 @@ public class GameContentManager
     public static CameraController minimapCameraPrefab;
 
     public static MainPlayerPanel mainPlayerPanelPrefab;
+    public static MinimapPanel minimapPanelPrefab;
 
     public static SpaceManager spaceManagerPrefab;
     public static CanvasController canvasPrefab;
 
-    public static Galaxy galaxyPrefab;
+    public static SpaceController galaxyPrefab;
+    public static SpaceController systemPrefab;
 
     public static void InitContent()
     {
@@ -47,5 +49,9 @@ public class GameContentManager
         minimapCameraPrefab = Resources.Load<CameraController>("Prefabs/MinimapCameraPrefab");
 
         mainPlayerPanelPrefab = Resources.Load<MainPlayerPanel>("Prefabs/MainPlayerPanelPrefab");
+        minimapPanelPrefab = Resources.Load<MinimapPanel>("Prefabs/MinimapPanelPrefab");
+
+        galaxyPrefab = Resources.Load<SpaceController>("Prefabs/GalaxyPrefab");
+        systemPrefab = Resources.Load<SpaceController>("Prefabs/SystemPrefab");
     }
 }
