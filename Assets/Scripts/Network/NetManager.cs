@@ -14,6 +14,7 @@ public class NetManager : NetworkManager
         CanvasManager.Init();
         
         CameraManager.SwitchByCode(0);
+        
     }
     public override void OnClientSceneChanged()
     {

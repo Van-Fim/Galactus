@@ -24,6 +24,18 @@ public class SpaceManager : NetworkBehaviour
 
     }
 
+    public static Galaxy GetGalaxyByID(int id)
+    {
+        Galaxy galaxy = SpaceManager.galaxies.Find(f => f.id == id);
+        return galaxy;
+    }
+
+    public static StarSystem GetSystemByID(int galaxyId, int id)
+    {
+        StarSystem system = SpaceManager.starSystems.Find(f => f.galaxyId == galaxyId && f.id == id);
+        return system;
+    }
+
     public static void RenderGalaxies()
     {
         for (int i = 0; i < galaxies.Count; i++)
@@ -42,6 +54,12 @@ public class SpaceManager : NetworkBehaviour
                 continue;
             }
             system.Render();
+
+            RandomAreaSpawner sp = Instantiate(GameContentManager.asteroidSpawnerPrefab);
+            sp.galaxyId = system.galaxyId;
+            sp.systemId = system.id;
+            sp.Init();
+            GameObject.Destroy(sp.gameObject);
         }
     }
 
@@ -49,6 +67,10 @@ public class SpaceManager : NetworkBehaviour
     {
         singleton = this;
         if (isServer)
+        {
+            
+        }
+        if (isClient)
         {
             UnityEngine.Random.InitState(seed.GetHashCode());
             LoadGalaxies("default");
@@ -63,7 +85,23 @@ public class SpaceManager : NetworkBehaviour
             SpaceManager.RenderGalaxies();
             SpaceManager.RenderSystems(Player.galaxyId);
             UiManager.Init();
+            Warp(Player.galaxyId, Player.systemId);
         }
+    }
+
+    public static void Warp(int galaxyId, int systemId)
+    {
+        Galaxy galaxy = GetGalaxyByID(galaxyId);
+        StarSystem system = GetSystemByID(galaxyId, systemId);
+
+        MinimapPanel.currentGalaxyId = galaxyId;
+        MinimapPanel.currentSystemId = systemId;
+
+        Material mat = Resources.Load<Material>($"Materials/{system.skyboxName}");
+        RenderSettings.skybox = mat;
+
+        Player.galaxyId = galaxyId;
+        Player.systemId = systemId;
     }
 
     public List<Galaxy> GetGalaxiesList()
@@ -368,6 +406,10 @@ public class SpaceManager : NetworkBehaviour
         system.SetPosition(position);
         List<TemplateNode> colorNodes = systemTemplate.GetNodeList("color");
         TemplateNode colorNode = TemplateNode.GetByWeightsList(colorNodes);
+
+        List<TemplateNode> skyboxNodes = systemTemplate.GetNodeList("skybox");
+        TemplateNode skyboxNode = TemplateNode.GetByWeightsList(skyboxNodes);
+
         byte rc = byte.Parse(colorNode.GetValue("r"));
         byte gc = byte.Parse(colorNode.GetValue("g"));
         byte bc = byte.Parse(colorNode.GetValue("b"));
@@ -376,6 +418,7 @@ public class SpaceManager : NetworkBehaviour
         system.color = new byte[] { rc, gc, bc, ac };
         system.name = RandomName();
         system.templateName = systemTemplateName;
+        system.skyboxName = skyboxNode.GetValue("name");
         while (counter > 0)
         {
             bool br = false;
@@ -410,9 +453,15 @@ public class SpaceManager : NetworkBehaviour
             else
             {
                 system.SetPosition(position);
+                system.GenerateId();
                 starSystems.Add(system);
                 break;
             }
         }
+    }
+
+    public void Update()
+    {
+        SPObject.InvokeRender();
     }
 }

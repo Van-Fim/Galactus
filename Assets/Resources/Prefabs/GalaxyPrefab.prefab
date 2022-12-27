@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 4067472855604616709}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 300, y: 300, z: 300}
+  m_LocalScale: {x: 25, y: 25, z: 25}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4917631131056220149}
@@ -45,8 +45,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aa5cfb3d08869e4487fa3266f5aa545, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshRenderer: {fileID: 0}
-  layer: 3
+  meshRenderer: {fileID: 7262993386537806050}
+  space:
+    id: -1
+    templateName: 
+    name: 
+    position:
+    - 0
+    - 0
+    - 0
+    rotation:
+    - 0
+    - 0
+    - 0
+    color: 000000
+    spaceController: {fileID: 0}
+    uiSpaceObject: {fileID: 0}
+  layer: 0
 --- !u!1 &8779445538412612621
 GameObject:
   m_ObjectHideFlags: 0

@@ -29,6 +29,9 @@ public class CameraManager
         {
             mainCamera.GetComponent<Camera>().enabled = false;
             minimapCamera.GetComponent<Camera>().enabled = true;
+
+            MinimapPanel.currentGalaxyId = Player.galaxyId;
+            MinimapPanel.currentSystemId = Player.systemId;
         }
     }
 }

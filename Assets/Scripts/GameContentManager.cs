@@ -13,12 +13,15 @@ public class GameContentManager
 
     public static MainPlayerPanel mainPlayerPanelPrefab;
     public static MinimapPanel minimapPanelPrefab;
+    public static UiSpaceObject uiSpaceObjectPrefab;
 
     public static SpaceManager spaceManagerPrefab;
     public static CanvasController canvasPrefab;
 
     public static SpaceController galaxyPrefab;
     public static SpaceController systemPrefab;
+
+    public static RandomAreaSpawner asteroidSpawnerPrefab;
 
     public static void InitContent()
     {
@@ -50,8 +53,11 @@ public class GameContentManager
 
         mainPlayerPanelPrefab = Resources.Load<MainPlayerPanel>("Prefabs/MainPlayerPanelPrefab");
         minimapPanelPrefab = Resources.Load<MinimapPanel>("Prefabs/MinimapPanelPrefab");
+        uiSpaceObjectPrefab = Resources.Load<UiSpaceObject>("Prefabs/UiSpaceObjectPrefab");
 
         galaxyPrefab = Resources.Load<SpaceController>("Prefabs/GalaxyPrefab");
         systemPrefab = Resources.Load<SpaceController>("Prefabs/SystemPrefab");
+
+        asteroidSpawnerPrefab = Resources.Load<RandomAreaSpawner>("Prefabs/AsteroidSpawner");
     }
 }

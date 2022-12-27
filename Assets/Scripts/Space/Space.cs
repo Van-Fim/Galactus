@@ -18,6 +18,7 @@ public class Space
     public byte[] color = new byte[] { 0, 0, 0 };
 
     public SpaceController spaceController;
+    public UiSpaceObject uiSpaceObject;
 
     public Space() { }
     public Space(string templateName)
@@ -70,8 +71,15 @@ public class Space
         {
             spaceController = GameObject.Instantiate(GameContentManager.systemPrefab, MinimapPanel.systemsContainer.transform);
         }
+        spaceController.space = this;
         spaceController.transform.localPosition = GetPosition();
         spaceController.transform.localEulerAngles = GetRotation();
+        spaceController.meshRenderer.material.SetColor("_TintColor", GetColor());
+        spaceController.meshRenderer.material.SetColor("_Color", GetColor());
+
+        uiSpaceObject = GameObject.Instantiate(GameContentManager.uiSpaceObjectPrefab, CanvasManager.canvas.transform);
+        uiSpaceObject.space = this;
+        uiSpaceObject.Init();
     }
 
     public virtual void SetColor(Color32 color)
