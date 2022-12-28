@@ -43,7 +43,7 @@ public class MinimapPanel : MainPanel
 
         warp.onClick.AddListener(() =>
         {
-            SpaceManager.Warp(MinimapPanel.selectedGalaxyId, MinimapPanel.selectedSystemId);
+            SpaceManager.singleton.Warp(MinimapPanel.selectedGalaxyId, MinimapPanel.selectedSystemId);
             CameraManager.SwitchByCode(0);
             SpaceController.InvokeChangeLayer(1);
             UiManager.minimapPanel.gameObject.SetActive(false);

@@ -36,7 +36,7 @@ public class SpaceManager : NetworkBehaviour
         return system;
     }
 
-    public static void RenderGalaxies()
+    public void RenderGalaxies()
     {
         for (int i = 0; i < galaxies.Count; i++)
         {
@@ -44,7 +44,7 @@ public class SpaceManager : NetworkBehaviour
             galaxy.Render();
         }
     }
-    public static void RenderSystems(int galaxyId)
+    public void RenderSystems(int galaxyId)
     {
         for (int i = 0; i < starSystems.Count; i++)
         {
@@ -54,12 +54,14 @@ public class SpaceManager : NetworkBehaviour
                 continue;
             }
             system.Render();
-
-            RandomAreaSpawner sp = Instantiate(GameContentManager.asteroidSpawnerPrefab);
-            sp.galaxyId = system.galaxyId;
-            sp.systemId = system.id;
-            sp.Init();
-            GameObject.Destroy(sp.gameObject);
+            if (isServer)
+            {
+                RandomAreaSpawner sp = Instantiate(GameContentManager.asteroidSpawnerPrefab);
+                sp.galaxyId = system.galaxyId;
+                sp.systemId = system.id;
+                sp.Init();
+                GameObject.Destroy(sp.gameObject);
+            }
         }
     }
 
@@ -82,14 +84,14 @@ public class SpaceManager : NetworkBehaviour
             }
 
             MinimapPanel.Init();
-            SpaceManager.RenderGalaxies();
-            SpaceManager.RenderSystems(Player.galaxyId);
+            SpaceManager.singleton.RenderGalaxies();
+            SpaceManager.singleton.RenderSystems(NetClient.localClient.galaxyId);
             UiManager.Init();
-            Warp(Player.galaxyId, Player.systemId);
+            Warp(NetClient.localClient.galaxyId, NetClient.localClient.systemId);
         }
     }
 
-    public static void Warp(int galaxyId, int systemId)
+    public void Warp(int galaxyId, int systemId)
     {
         Galaxy galaxy = GetGalaxyByID(galaxyId);
         StarSystem system = GetSystemByID(galaxyId, systemId);
@@ -99,9 +101,12 @@ public class SpaceManager : NetworkBehaviour
 
         Material mat = Resources.Load<Material>($"Materials/{system.skyboxName}");
         RenderSettings.skybox = mat;
+        RenderSettings.skybox.SetColor("_Tint", system.GetColor());
 
-        Player.galaxyId = galaxyId;
-        Player.systemId = systemId;
+        NetClient.localClient.galaxyId = galaxyId;
+        NetClient.localClient.systemId = systemId;
+
+        
     }
 
     public List<Galaxy> GetGalaxiesList()
@@ -144,14 +149,14 @@ public class SpaceManager : NetworkBehaviour
                     s1 = list2;
                     s2 = list1;
                 }
-                int j = UnityEngine.Random.Range(0, s1.Length - 1);
+                int j = UnityEngine.Random.Range(0, s1.Length);
                 char v1 = s1[j];
                 if (i == 0)
                 {
                     v1 = Char.ToUpper(v1);
                 }
                 ret += v1;
-                j = UnityEngine.Random.Range(0, s2.Length - 1);
+                j = UnityEngine.Random.Range(0, s2.Length);
                 v1 = s2[j];
                 ret += v1;
             }
@@ -458,10 +463,5 @@ public class SpaceManager : NetworkBehaviour
                 break;
             }
         }
-    }
-
-    public void Update()
-    {
-        SPObject.InvokeRender();
     }
 }

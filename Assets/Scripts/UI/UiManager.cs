@@ -22,7 +22,7 @@ public class UiManager : MonoBehaviour
         singleton.name = "UiManager";
     }
 
-    void Update()
+    void LateUpdate()
     {
         UiSpaceObject.InvokeUpdatePos();
     }

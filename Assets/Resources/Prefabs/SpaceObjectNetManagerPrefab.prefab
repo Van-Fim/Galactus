@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1487632604110242
+--- !u!1 &5041363545484324512
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4850788696668008}
-  - component: {fileID: 114571875336431680}
+  - component: {fileID: 6418713642649325555}
+  - component: {fileID: 6907542640693732140}
+  - component: {fileID: 2123613861710347268}
   m_Layer: 0
-  m_Name: AsteroidSpawner
+  m_Name: SpaceObjectNetManagerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4850788696668008
+--- !u!4 &6418713642649325555
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1487632604110242}
+  m_GameObject: {fileID: 5041363545484324512}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,27 +33,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114571875336431680
+--- !u!114 &6907542640693732140
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1487632604110242}
+  m_GameObject: {fileID: 5041363545484324512}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b26935f1a42396344ab754e3d8171197, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  galaxyId: 0
-  systemId: 0
-  prefab: {fileID: 1503503097944522441, guid: 8ad4830179cb48940bcf1ea63269c2f5, type: 3}
-  spawnShape: 1
-  shapeModifiers: {x: 1, y: 1, z: 1}
-  asteroidCount: 30
-  range: 100000
-  randomRotation: 1
-  scaleRange: {x: 1000, y: 10000}
-  velocity: 0
-  angularVelocity: 0
-  scaleMass: 1
+  sceneId: 0
+  _assetId: 3388141592
+  serverOnly: 0
+  visible: 0
+  hasSpawned: 0
+--- !u!114 &2123613861710347268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5041363545484324512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f68e3708373309f40b5652dd4f301600, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0.1

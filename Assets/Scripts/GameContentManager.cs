@@ -23,6 +23,9 @@ public class GameContentManager
 
     public static RandomAreaSpawner asteroidSpawnerPrefab;
 
+    public static SpaceObjectNetManager spaceObjectNetManagerPrefab;
+    public static ClientManager clientManagerPrefab;
+
     public static void InitContent()
     {
         list = new List<string>();
@@ -59,5 +62,8 @@ public class GameContentManager
         systemPrefab = Resources.Load<SpaceController>("Prefabs/SystemPrefab");
 
         asteroidSpawnerPrefab = Resources.Load<RandomAreaSpawner>("Prefabs/AsteroidSpawner");
+
+        spaceObjectNetManagerPrefab = Resources.Load<SpaceObjectNetManager>("Prefabs/SpaceObjectNetManagerPrefab");
+        clientManagerPrefab = Resources.Load<ClientManager>("Prefabs/ClientManagerPrefab");
     }
 }

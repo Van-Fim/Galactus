@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Asteroid : SPObject
+public class Ship : SPObject
 {
     void Start()
     {

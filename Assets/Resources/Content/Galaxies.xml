@@ -1,5 +1,5 @@
 	<templates>
-		<galaxy name="Gal1" type="default" numOfArms="2" spin="1.6" armSpread="0.2" starsAtCenterRatio="1.0" systems_min="5" systems_max="5">
+		<galaxy name="Gal1" type="default" numOfArms="2" spin="1.6" armSpread="0.2" starsAtCenterRatio="1.0" systems_min="50" systems_max="50">
 			<systems>
 				<system template="System01" weight="100" minRange="0" maxRange="2500" size="10" Ymin="-200" Ymax="200" ></system>
 				<system template="System02" weight="30" minRange="1200" maxRange="2500" size="10" Ymin="-200" Ymax="200" ></system>

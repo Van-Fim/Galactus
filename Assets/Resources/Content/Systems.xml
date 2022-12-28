@@ -17,10 +17,6 @@
 		</colors>
 		<skyboxes>
 			<skybox name="Skybox0" />
-			<skybox name="Skybox1" />
-			<skybox name="Skybox2" />
-			<skybox name="Skybox3" />
-			<skybox name="Skybox4" />
 		</skyboxes>
 		<music musicList="musicList01" />
 	</system>
@@ -41,10 +37,6 @@
 		</colors>
 		<skyboxes>
 			<skybox name="Skybox0" />
-			<skybox name="Skybox1" />
-			<skybox name="Skybox2" />
-			<skybox name="Skybox3" />
-			<skybox name="Skybox4" />
 		</skyboxes>
 		<music musicList="musicList01" />
 	</system>

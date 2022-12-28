@@ -6,10 +6,11 @@ using UnityEngine.Events;
 
 public class SPObject : NetworkBehaviour
 {
-    public Collider boxCollider;
-    public MeshRenderer meshRenderer;
+    public GameObject main;
 
+    [SyncVar]
     public int galaxyId;
+    [SyncVar]
     public int systemId;
 
     public static UnityAction OnRender;
@@ -26,22 +27,25 @@ public class SPObject : NetworkBehaviour
         
     }
 
-    public override void OnStartClient()
+    public void Init()
     {
         OnRender += Render;
     }
 
+    public override void OnStartClient()
+    {
+        
+    }
+
     public void Render()
     {
-        if (Player.galaxyId == galaxyId && Player.systemId == systemId)
+        if (NetClient.localClient.galaxyId == galaxyId && NetClient.localClient.systemId == systemId)
         {
-            meshRenderer.enabled = true;
-            boxCollider.enabled = true;
+            main.SetActive(true);
         }
         else
         {
-            meshRenderer.enabled = false;
-            boxCollider.enabled = false;
+            main.SetActive(false);
         }
     }
 

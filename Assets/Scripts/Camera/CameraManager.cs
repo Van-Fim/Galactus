@@ -30,8 +30,8 @@ public class CameraManager
             mainCamera.GetComponent<Camera>().enabled = false;
             minimapCamera.GetComponent<Camera>().enabled = true;
 
-            MinimapPanel.currentGalaxyId = Player.galaxyId;
-            MinimapPanel.currentSystemId = Player.systemId;
+            MinimapPanel.currentGalaxyId = NetClient.localClient.galaxyId;
+            MinimapPanel.currentSystemId = NetClient.localClient.systemId;
         }
     }
 }

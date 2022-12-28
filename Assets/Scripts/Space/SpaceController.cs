@@ -33,7 +33,7 @@ public class SpaceController : MonoBehaviour
         {
             if (layer == 0)
             {
-                Galaxy galaxy = SpaceManager.GetGalaxyByID(Player.galaxyId);
+                Galaxy galaxy = SpaceManager.GetGalaxyByID(NetClient.localClient.galaxyId);
                 if(MinimapPanel.selectedGalaxyId >= 0)
                 {
                     galaxy = SpaceManager.GetGalaxyByID(MinimapPanel.selectedGalaxyId);
@@ -48,7 +48,7 @@ public class SpaceController : MonoBehaviour
             }
             else if (layer == 1)
             {
-                StarSystem system = SpaceManager.GetSystemByID(Player.galaxyId, Player.systemId);
+                StarSystem system = SpaceManager.GetSystemByID(NetClient.localClient.galaxyId, NetClient.localClient.systemId);
                 if (MinimapPanel.selectedSystemId >= 0)
                 {
                     //system = SpaceManager.GetSystemByID(MinimapPanel.selectedGalaxyId, MinimapPanel.selectedSystemId);
