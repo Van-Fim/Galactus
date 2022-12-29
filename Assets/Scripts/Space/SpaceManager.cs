@@ -6,6 +6,7 @@ using System;
 using Unity.VisualScripting;
 using System.IO;
 using System.Text.RegularExpressions;
+using UnityEngine.Device;
 
 public class SpaceManager : NetworkBehaviour
 {
@@ -18,6 +19,13 @@ public class SpaceManager : NetworkBehaviour
 
     public static List<string> names = new List<string>();
     public static SpaceManager singleton;
+
+    public static GameObject spaceContainer;
+
+    public void Start()
+    {
+
+    }
 
     public override void OnStartServer()
     {
@@ -34,6 +42,18 @@ public class SpaceManager : NetworkBehaviour
     {
         StarSystem system = SpaceManager.starSystems.Find(f => f.galaxyId == galaxyId && f.id == id);
         return system;
+    }
+
+    public static Sector GetSectorByID(int galaxyId, int systemId, int id)
+    {
+        Sector sector = SpaceManager.sectors.Find(f => f.galaxyId == galaxyId && f.systemId == systemId && f.id == id);
+        return sector;
+    }
+
+    public static Zone GetZoneByID(int galaxyId, int systemId, int sectorId, int id)
+    {
+        Zone zone = SpaceManager.zones.Find(f => f.galaxyId == galaxyId && f.systemId == systemId && f.sectorId == sectorId && f.id == id);
+        return zone;
     }
 
     public void RenderGalaxies()
@@ -65,6 +85,32 @@ public class SpaceManager : NetworkBehaviour
         }
     }
 
+    public void RenderSectors(int galaxyId, int systemId)
+    {
+        for (int i = 0; i < sectors.Count; i++)
+        {
+            Sector sector = sectors[i];
+            if (sector.galaxyId != galaxyId || sector.systemId != systemId)
+            {
+                continue;
+            }
+            sector.Render();
+        }
+    }
+
+    public void RenderZones(int galaxyId, int systemId, int sectorId)
+    {
+        for (int i = 0; i < zones.Count; i++)
+        {
+            Zone zone = zones[i];
+            if (zone.galaxyId != galaxyId || zone.systemId != systemId || zone.sectorId != sectorId)
+            {
+                continue;
+            }
+            zone.Render();
+        }
+    }
+
     public override void OnStartClient()
     {
         singleton = this;
@@ -74,8 +120,14 @@ public class SpaceManager : NetworkBehaviour
         }
         if (isClient)
         {
+            spaceContainer = new GameObject();
+            spaceContainer.name = "SpaceContainer";
+            spaceContainer.transform.position = Vector3.zero;
+            spaceContainer.transform.rotation = Quaternion.identity;
+
             UnityEngine.Random.InitState(seed.GetHashCode());
             LoadGalaxies("default");
+            
             for (int i = 0; i < galaxies.Count; i++)
             {
                 Galaxy galaxy = galaxies[i];
@@ -83,30 +135,56 @@ public class SpaceManager : NetworkBehaviour
                 LoadSystems(galaxy);
             }
 
+            for (int i = 0; i < starSystems.Count; i++)
+            {
+                StarSystem system = starSystems[i];
+
+                LoadSectors(system);
+            }
+
+            for (int i = 0; i < sectors.Count; i++)
+            {
+                Sector sector = sectors[i];
+
+                LoadZones(sector);
+            }
+
             MinimapPanel.Init();
             SpaceManager.singleton.RenderGalaxies();
             SpaceManager.singleton.RenderSystems(NetClient.localClient.galaxyId);
+            SpaceManager.singleton.RenderSectors(NetClient.localClient.galaxyId, NetClient.localClient.systemId);
+            SpaceManager.singleton.RenderZones(NetClient.localClient.galaxyId, NetClient.localClient.systemId, NetClient.localClient.sectorId);
             UiManager.Init();
-            Warp(NetClient.localClient.galaxyId, NetClient.localClient.systemId);
+            
+            Warp(NetClient.localClient.galaxyId, NetClient.localClient.systemId, NetClient.localClient.sectorId, NetClient.localClient.zoneId);
         }
     }
 
-    public void Warp(int galaxyId, int systemId)
+    public void Warp(int galaxyId, int systemId, int sectorId, int zoneId)
     {
         Galaxy galaxy = GetGalaxyByID(galaxyId);
         StarSystem system = GetSystemByID(galaxyId, systemId);
-
+        Sector sector = GetSectorByID(galaxyId, systemId, sectorId);
+        Zone zone = GetZoneByID(galaxyId, systemId, sectorId, zoneId);
+        
         MinimapPanel.currentGalaxyId = galaxyId;
         MinimapPanel.currentSystemId = systemId;
+        MinimapPanel.currentSectorId = sectorId;
+        MinimapPanel.currentZoneId = zoneId;
 
         Material mat = Resources.Load<Material>($"Materials/{system.skyboxName}");
         RenderSettings.skybox = mat;
-        RenderSettings.skybox.SetColor("_Tint", system.GetColor());
+        Color32 color = system.GetColor();
+        float cdiv = 2f;
+        color = new Color32((byte)(color.r/cdiv), (byte)(color.g /cdiv), (byte)(color.b /cdiv), color.a);
+        RenderSettings.skybox.SetColor("_Tint", color);
 
         NetClient.localClient.galaxyId = galaxyId;
         NetClient.localClient.systemId = systemId;
+        NetClient.localClient.sectorId = sectorId;
+        NetClient.localClient.zoneId = zoneId;
 
-        
+        SPObject.InvokeRender();
     }
 
     public List<Galaxy> GetGalaxiesList()
@@ -200,6 +278,7 @@ public class SpaceManager : NetworkBehaviour
             int Ymax = int.Parse(node.GetValue("Ymax"));
             int Ymin = int.Parse(node.GetValue("Ymin"));
 
+            int size = int.Parse(node.GetValue("size"));
             int count = UnityEngine.Random.Range(minCount, maxCount + 1);
             string galaxyTemplateName = node.GetValue("template");
             Template galaxyTemplate = TemplateManager.FindTemplate(galaxyTemplateName, "galaxy");
@@ -238,9 +317,9 @@ public class SpaceManager : NetworkBehaviour
                         {
                             continue;
                         }
-                        Vector2 pos1 = galaxy1.GetPosition();
-                        float dst = Vector2.Distance(pos1, position);
-                        if (dst < 20)
+                        Vector3 pos1 = galaxy1.GetPosition();
+                        float dst = Vector3.Distance(pos1, position);
+                        if (dst < size)
                         {
                             position2D = UnityEngine.Random.insideUnitCircle * range;
                             yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
@@ -272,6 +351,217 @@ public class SpaceManager : NetworkBehaviour
         names.Clear();
     }
 
+    public void LoadSectors(StarSystem system)
+    {
+        string systemTemplateName = system.templateName;
+        Template currentSystemTemplate = TemplateManager.FindTemplate(systemTemplateName, "system");
+        if (currentSystemTemplate == null)
+        {
+            Debug.LogError("System template " + systemTemplateName + " is not found");
+            return;
+        }
+        List<TemplateNode> nodes = currentSystemTemplate.GetNodeList("sector");
+        TemplateNode nd = currentSystemTemplate.GetNode("sectors");
+        int maxRangeMin = int.Parse(nd.GetValue("maxRangeMin"));
+        int maxRangeMax = int.Parse(nd.GetValue("maxRangeMax"));
+        int range = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
+
+        for (int j = 0; j < nodes.Count; j++)
+        {
+            TemplateNode node = nodes[j];
+
+            int maxCount = int.Parse(node.GetValue("max"));
+            int minCount = int.Parse(node.GetValue("min"));
+
+            int Ymax = int.Parse(node.GetValue("Ymax"));
+            int Ymin = int.Parse(node.GetValue("Ymin"));
+
+            int size = int.Parse(node.GetValue("size"));
+            int count = UnityEngine.Random.Range(minCount, maxCount + 1);
+            string sectorTemplateName = node.GetValue("template");
+            Template sectorTemplate = TemplateManager.FindTemplate(sectorTemplateName, "sector");
+            if (sectorTemplate == null)
+            {
+                Debug.LogError("Sector template " + sectorTemplateName + " is not found");
+                return;
+            }
+            List<TemplateNode> colorNodes = sectorTemplate.GetNodeList("color");
+
+            for (int i = 0; i < count; i++)
+            {
+                Sector sector = new Sector(sectorTemplateName);
+                if (colorNodes.Count > 0)
+                {
+                    TemplateNode colorNode = TemplateNode.GetByWeightsList(colorNodes);
+                    byte r = byte.Parse(colorNode.GetValue("r"));
+                    byte g = byte.Parse(colorNode.GetValue("g"));
+                    byte b = byte.Parse(colorNode.GetValue("b"));
+                    byte a = byte.Parse(colorNode.GetValue("a"));
+
+                    sector.color = new byte[] { r, g, b, a };
+                }
+                int counter = 10;
+                Vector2 position2D = UnityEngine.Random.insideUnitCircle * range;
+                int yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
+                Vector3 position = new Vector3(position2D.x, yPos, position2D.y);
+                if (i == 0)
+                {
+                    position = Vector3.zero;
+                }
+                while (counter > 0)
+                {
+                    bool br = false;
+                    for (int i1 = 0; i1 < sectors.Count; i1++)
+                    {
+                        Sector sector1 = sectors[i1];
+
+                        if (sector1 == sector)
+                        {
+                            continue;
+                        }
+                        Vector3 pos1 = sector1.GetPosition();
+                        float dst = Vector3.Distance(pos1, position);
+                        if (dst < size)
+                        {
+                            position2D = UnityEngine.Random.insideUnitCircle * range;
+                            yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
+                            position = new Vector3(position2D.x, yPos, position2D.y);
+                            br = true;
+                            break;
+                        }
+                    }
+                    if (br)
+                    {
+                        counter--;
+                        if (counter == 0)
+                        {
+                            sectors.Remove(sector);
+                        }
+                        continue;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                sector.SetPosition(position);
+                sector.size = size;
+                sector.systemId = system.id;
+                sector.name = RandomName();
+                sector.GenerateId();
+                sectors.Add(sector);
+            }
+        }
+        names.Clear();
+    }
+
+    public void LoadZones(Sector sector)
+    {
+        string sectorTemplateName = sector.templateName;
+        Template currentSectorTemplate = TemplateManager.FindTemplate(sectorTemplateName, "sector");
+        if (currentSectorTemplate == null)
+        {
+            Debug.LogError("Sector template " + sectorTemplateName + " is not found");
+            return;
+        }
+        List<TemplateNode> nodes = currentSectorTemplate.GetNodeList("zone");
+        TemplateNode nd = currentSectorTemplate.GetNode("zones");
+        int maxRangeMin = int.Parse(nd.GetValue("maxZoneRangeMin"));
+        int maxRangeMax = int.Parse(nd.GetValue("maxZoneRangeMax"));
+        
+        for (int j = 0; j < nodes.Count; j++)
+        {
+            TemplateNode node = nodes[j];
+
+            int maxCount = int.Parse(node.GetValue("max"));
+            int minCount = int.Parse(node.GetValue("min"));
+
+            int Ymax = int.Parse(node.GetValue("Ymax"));
+            int Ymin = int.Parse(node.GetValue("Ymin"));
+
+            int size = int.Parse(node.GetValue("size"));
+            int count = UnityEngine.Random.Range(minCount, maxCount + 1);
+            string zoneTemplateName = node.GetValue("template");
+            Template zoneTemplate = TemplateManager.FindTemplate(zoneTemplateName, "zone");
+            if (zoneTemplate == null)
+            {
+                Debug.LogError("Zone template " + zoneTemplateName + " is not found");
+                return;
+            }
+            List<TemplateNode> colorNodes = zoneTemplate.GetNodeList("color");
+
+            for (int i = 0; i < count; i++)
+            {
+                Zone zone = new Zone(zoneTemplateName);
+                if (colorNodes.Count > 0)
+                {
+                    TemplateNode colorNode = TemplateNode.GetByWeightsList(colorNodes);
+                    byte r = byte.Parse(colorNode.GetValue("r"));
+                    byte g = byte.Parse(colorNode.GetValue("g"));
+                    byte b = byte.Parse(colorNode.GetValue("b"));
+                    byte a = byte.Parse(colorNode.GetValue("a"));
+
+                    zone.color = new byte[] { r, g, b, a };
+                }
+                int counter = 10;
+                int xPos = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
+                int yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
+                int zPos = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
+                if (i == 0)
+                {
+                    xPos = yPos = zPos = 0;
+                }
+                Vector3 indexes = new Vector3(xPos, yPos, zPos);
+                while (counter > 0)
+                {
+                    bool br = false;
+                    for (int i1 = 0; i1 < zones.Count; i1++)
+                    {
+                        Zone zone1 = zones[i1];
+
+                        if (zone1 == zone)
+                        {
+                            continue;
+                        }
+                        Vector3 ind1 = zone1.GetIndexes();
+                        if (ind1 == indexes)
+                        {
+                            xPos = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
+                            yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
+                            zPos = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
+
+                            indexes = new Vector3(xPos, yPos, zPos);
+                            br = true;
+                            break;
+                        }
+                    }
+                    if (br)
+                    {
+                        counter--;
+                        if (counter == 0)
+                        {
+                            zones.Remove(zone);
+                        }
+                        continue;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                zone.SetIndexes(indexes);
+                zone.size = size;
+                zone.SetPosition(indexes * size);
+                zone.systemId = sector.systemId;
+                zone.sectorId = sector.id;
+                zone.name = RandomName();
+                zone.GenerateId();
+                zones.Add(zone);
+            }
+        }
+        names.Clear();
+    }
+
     public static double Pow3Constrained(double x)
     {
         double value = Math.Pow(x - 0.5, 3) * 4 + 0.5d;
@@ -293,7 +583,7 @@ public class SpaceManager : NetworkBehaviour
         int numOfArms = int.Parse(currentGalaxytemplate.GetValue("galaxy", "numOfArms"));
         float spin = XMLF.FloatVal(currentGalaxytemplate.GetValue("galaxy", "spin"));
         float armSpread = XMLF.FloatVal(currentGalaxytemplate.GetValue("galaxy", "armSpread"));
-        float starsAtCenterRatio = XMLF.FloatVal(currentGalaxytemplate.GetValue("galaxy", "starsAtCenterRatio"));
+        float starsAtCenterRatio = XMLF.FloatVal(currentGalaxytemplate.GetValue("sector", "starsAtCenterRatio"));
 
         int minCount = int.Parse(currentGalaxytemplate.GetValue("galaxy", "systems_min"));
         int maxCount = int.Parse(currentGalaxytemplate.GetValue("galaxy", "systems_max"));
@@ -316,7 +606,7 @@ public class SpaceManager : NetworkBehaviour
         int count = UnityEngine.Random.Range(minCount, maxCount + 1);
         UnityEngine.Random.InitState(galaxySeed.GetHashCode());
 
-        if (galaxyType == "galaxy")
+        if (galaxyType == "sector")
         {
             for (int i = 0; i < numOfArms; i++)
             {

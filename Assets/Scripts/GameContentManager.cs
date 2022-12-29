@@ -20,6 +20,8 @@ public class GameContentManager
 
     public static SpaceController galaxyPrefab;
     public static SpaceController systemPrefab;
+    public static SpaceController sectorPrefab;
+    public static SpaceController zonePrefab;
 
     public static RandomAreaSpawner asteroidSpawnerPrefab;
 
@@ -35,6 +37,7 @@ public class GameContentManager
         {
             TemplateManager.LoadTemplates("planet", list[i] + "/Planets");
             TemplateManager.LoadTemplates("sun", list[i] + "/Suns");
+            TemplateManager.LoadTemplates("zone", list[i] + "/Zones");
             TemplateManager.LoadTemplates("sector", list[i] + "/Sectors");
             TemplateManager.LoadTemplates("system", list[i] + "/Systems");
             TemplateManager.LoadTemplates("galaxy", list[i] + "/Galaxies");
@@ -60,6 +63,8 @@ public class GameContentManager
 
         galaxyPrefab = Resources.Load<SpaceController>("Prefabs/GalaxyPrefab");
         systemPrefab = Resources.Load<SpaceController>("Prefabs/SystemPrefab");
+        sectorPrefab = Resources.Load<SpaceController>("Prefabs/SectorPrefab");
+        zonePrefab = Resources.Load<SpaceController>("Prefabs/ZonePrefab");
 
         asteroidSpawnerPrefab = Resources.Load<RandomAreaSpawner>("Prefabs/AsteroidSpawner");
 

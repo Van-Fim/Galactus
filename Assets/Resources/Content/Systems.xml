@@ -4,8 +4,8 @@
 			<planet weight="50" template="Planet01" minRange="0" maxRange="30000" />
 			<planet weight="50" template="Planet02" minRange="0" maxRange="30000" />
 		</planets>
-		<sectors min="11" max="11">
-			<sector template="Sector01" on_orbit_chanse="100" minRange="0" maxRange="30000" />
+		<sectors maxRangeMin="700000" maxRangeMax="700000">
+			<sector min="4" max="4" template="Sector01" size="100000" Ymin="0" Ymax="0"  />
 		</sectors>
 		<suns min="1" max="1" >
 			<sun template="Sun01" minRange="0" maxRange="0" />

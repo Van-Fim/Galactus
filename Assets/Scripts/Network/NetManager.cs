@@ -21,7 +21,7 @@ public class NetManager : NetworkManager
 
         NetClient cl = new NetClient();
         cl.password = NetClient.StrToMD5("password");
-        cl.serverIdentity = cl.GenerateServerIdentity();
+        cl.serverIdentity = cl.GenerateServerIdentity(false);
         NetClient.localClient = cl;
     }
     public override void OnClientSceneChanged()
@@ -51,7 +51,6 @@ public class NetManager : NetworkManager
         player.transform.SetParent(null);
         yield return new WaitForEndOfFrame();
         NetworkServer.AddPlayerForConnection(conn, player);
-        Debug.Log($"{conn.connectionId} {conn.identity}");
     }
 
     IEnumerator InitStartContent()

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Sector : Space
 {
+    public int galaxyId;
+    public int systemId;
+
+    public static int minimapDivFactor = 2000;
     public Sector() : base() { }
     public Sector(string templateName) : base(templateName)
     {

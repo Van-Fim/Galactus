@@ -8,6 +8,7 @@ using System;
 public class Space
 {
     public int id = -1;
+    public int size = 10;
     public string templateName;
     public string name;
 
@@ -15,7 +16,7 @@ public class Space
 
     public float[] rotation = new float[] { 0, 0, 0 };
 
-    public byte[] color = new byte[] { 0, 0, 0 };
+    public byte[] color = new byte[] { 255, 255, 255, 255 };
 
     public SpaceController spaceController;
     public UiSpaceObject uiSpaceObject;
@@ -63,6 +64,8 @@ public class Space
     }
 
     public void Render(){
+        Vector3 pos = GetPosition();
+        Vector3 rot = GetRotation();
         if (GetType() == typeof(Galaxy))
         {
             spaceController = GameObject.Instantiate(GameContentManager.galaxyPrefab, MinimapPanel.galaxiesContainer.transform);
@@ -71,9 +74,21 @@ public class Space
         {
             spaceController = GameObject.Instantiate(GameContentManager.systemPrefab, MinimapPanel.systemsContainer.transform);
         }
+        else if (GetType() == typeof(Sector))
+        {
+            pos /= Sector.minimapDivFactor;
+            spaceController = GameObject.Instantiate(GameContentManager.sectorPrefab, MinimapPanel.sectorsContainer.transform);
+            spaceController.transform.localScale = new Vector3(this.size/Sector.minimapDivFactor, this.size/Sector.minimapDivFactor, this.size/Sector.minimapDivFactor);
+        }
+        else if (GetType() == typeof(Zone))
+        {
+            pos /= Zone.minimapDivFactor;
+            spaceController = GameObject.Instantiate(GameContentManager.zonePrefab, MinimapPanel.zonesContainer.transform);
+            spaceController.transform.localScale = new Vector3(this.size / Zone.minimapDivFactor, this.size / Zone.minimapDivFactor, this.size / Zone.minimapDivFactor);
+        }
         spaceController.space = this;
-        spaceController.transform.localPosition = GetPosition();
-        spaceController.transform.localEulerAngles = GetRotation();
+        spaceController.transform.localPosition = pos;
+        spaceController.transform.localEulerAngles = rot;
         spaceController.meshRenderer.material.SetColor("_TintColor", GetColor());
         spaceController.meshRenderer.material.SetColor("_Color", GetColor());
 

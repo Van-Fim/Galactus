@@ -15,10 +15,12 @@ public class SPObject : NetworkBehaviour
 
     public static UnityAction OnRender;
 
+    public bool isInitialized = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -30,15 +32,25 @@ public class SPObject : NetworkBehaviour
     public void Init()
     {
         OnRender += Render;
+        isInitialized = true;
     }
 
     public override void OnStartClient()
     {
-        
+        if (!isInitialized)
+        {
+            Init();
+            InvokeRender();
+        }
     }
 
     public void Render()
     {
+        if (transform.parent == null)
+        {
+            transform.SetParent(SpaceManager.spaceContainer.transform);
+        }
+        
         if (NetClient.localClient.galaxyId == galaxyId && NetClient.localClient.systemId == systemId)
         {
             main.SetActive(true);

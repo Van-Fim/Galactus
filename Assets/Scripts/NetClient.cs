@@ -30,6 +30,7 @@ public class NetClient
         public string accountlogin;
         public string serverIdentity;
 
+        public bool isServer;
         public int cash;
     }
 
@@ -49,7 +50,7 @@ public class NetClient
         return strBuilder.ToString();
     }
 
-    public string GenerateServerIdentity()
+    public string GenerateServerIdentity(bool isServer)
     {
         string ret = "";
         string dir = NetClient.GetDirPatch();
@@ -94,6 +95,7 @@ public class NetClient
         string date = DateTime.Now.ToString("MM.dd.yyyy");
         ret = StrToMD5((GetLocalIPAddress() + accountData.accountlogin + ret + date) + rnd2.ToString());
         accountData.serverIdentity = ret;
+        accountData.isServer = isServer;
 
         bf.Serialize(file, accountData);
         return ret;

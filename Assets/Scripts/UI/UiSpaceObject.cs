@@ -106,6 +106,27 @@ public class UiSpaceObject : MonoBehaviour, IPointerClickHandler
                     image.color = prevColor;
                 }
             }
+            else if (space.GetType() == typeof(Sector))
+            {
+                Sector sp = (Sector)space;
+                if (sp.galaxyId == MinimapPanel.currentGalaxyId && sp.systemId == MinimapPanel.currentSystemId && sp.id == MinimapPanel.currentSectorId)
+                {
+                    image.color = curSysColor;
+                }
+                else
+                {
+                    image.color = defcolor;
+                }
+                Color32 prevColor = image.color;
+                if (sp.galaxyId == MinimapPanel.selectedGalaxyId && sp.systemId == MinimapPanel.selectedSystemId && sp.id == MinimapPanel.selectedSectorId)
+                {
+                    image.color = selcolor;
+                }
+                else
+                {
+                    image.color = prevColor;
+                }
+            }
         }
 
         if (MinimapPanel.layer != space.spaceController.layer)
@@ -125,8 +146,16 @@ public class UiSpaceObject : MonoBehaviour, IPointerClickHandler
         {
             image.enabled = true;
         }
-
-        Vector3 pp = CameraManager.minimapCamera.curCamera.WorldToScreenPoint(space.GetPosition());
+        Vector3 spacePosition = space.GetPosition();
+        if (space.GetType() == typeof(Sector))
+        {
+            spacePosition = spacePosition / Sector.minimapDivFactor;
+        }
+        else if (space.GetType() == typeof(Zone))
+        {
+            spacePosition = spacePosition / Zone.minimapDivFactor;
+        }
+        Vector3 pp = CameraManager.minimapCamera.curCamera.WorldToScreenPoint(spacePosition);
         transform.position = new Vector3(pp.x, pp.y, 0);
         image.rectTransform.sizeDelta = new Vector2(30, 30);
         if (MinimapPanel.layer == 0)
@@ -155,6 +184,21 @@ public class UiSpaceObject : MonoBehaviour, IPointerClickHandler
             StarSystem sys = (StarSystem)space;
             MinimapPanel.selectedGalaxyId = sys.galaxyId;
             MinimapPanel.selectedSystemId = sys.id;
+        }
+        else if (space.GetType() == typeof(Sector))
+        {
+            Sector sp = (Sector)space;
+            MinimapPanel.selectedGalaxyId = sp.galaxyId;
+            MinimapPanel.selectedSystemId = sp.systemId;
+            MinimapPanel.selectedSectorId = sp.id;
+        }
+        else if (space.GetType() == typeof(Zone))
+        {
+            Zone sp = (Zone)space;
+            MinimapPanel.selectedGalaxyId = sp.galaxyId;
+            MinimapPanel.selectedSystemId = sp.systemId;
+            MinimapPanel.selectedSectorId = sp.sectorId;
+            MinimapPanel.selectedZoneId = sp.id;
         }
     }
 }

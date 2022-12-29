@@ -62,7 +62,41 @@ public class SpaceController : MonoBehaviour
                     CameraManager.minimapCamera.gameObject.SetActive(true);
                 }
             }
-            
+            else if (layer == 2)
+            {
+                Sector sp = SpaceManager.GetSectorByID(NetClient.localClient.galaxyId, NetClient.localClient.systemId, NetClient.localClient.sectorId);
+                if (MinimapPanel.selectedSectorId >= 0)
+                {
+                    //system = SpaceManager.GetSystemByID(MinimapPanel.selectedGalaxyId, MinimapPanel.selectedSystemId);
+                }
+
+                if (sp != null)
+                {
+                    CameraManager.minimapCamera.gameObject.SetActive(false);
+                    Debug.Log(layer);
+                    CameraManager.minimapCamera.transform.position = CameraController.startCamPositions[layer];
+                    CameraManager.minimapCamera.transform.localEulerAngles = new Vector3(90, 0, 0);
+                    CameraManager.minimapCamera.gameObject.SetActive(true);
+                }
+            }
+            else if (layer == 3)
+            {
+                Zone sp = SpaceManager.GetZoneByID(NetClient.localClient.galaxyId, NetClient.localClient.systemId, NetClient.localClient.sectorId, NetClient.localClient.zoneId);
+                if (MinimapPanel.selectedZoneId >= 0)
+                {
+                    //system = SpaceManager.GetSystemByID(MinimapPanel.selectedGalaxyId, MinimapPanel.selectedSystemId);
+                }
+
+                if (sp != null)
+                {
+                    CameraManager.minimapCamera.gameObject.SetActive(false);
+                    Debug.Log(layer);
+                    CameraManager.minimapCamera.transform.position = CameraController.startCamPositions[layer];
+                    CameraManager.minimapCamera.transform.localEulerAngles = new Vector3(90, 0, 0);
+                    CameraManager.minimapCamera.gameObject.SetActive(true);
+                }
+            }
+
             this.meshRenderer.enabled = true;
             MinimapPanel.layer = layer;
         }

@@ -1,8 +1,12 @@
 <templates>
 	<sector name="Sector00">
-		<scale min="100" max="100" />
+		<zones maxZoneRangeMin="10" maxZoneRangeMax="10">
+			<zone min="5" max="5" template="Zone01" size="100000" Ymin="0" Ymax="0"  />
+		</zones>
 	</sector>
 	<sector name="Sector01">
-		<scale min="100" max="100" />
+		<zones maxZoneRangeMin="10" maxZoneRangeMax="10">
+			<zone min="5" max="5" template="Zone01" size="100000" Ymin="0" Ymax="0"  />
+		</zones>
 	</sector>
 </templates>

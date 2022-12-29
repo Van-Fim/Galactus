@@ -102,6 +102,7 @@ public class RandomAreaSpawner : MonoBehaviour
             r.AddRelativeForce(Random.insideUnitSphere * velocity, ForceMode.VelocityChange);
             r.AddRelativeTorque(Random.insideUnitSphere * angularVelocity * Mathf.Deg2Rad, ForceMode.VelocityChange);
         }
+        
         t.Init();
         NetworkServer.Spawn(t.gameObject);
     }
