@@ -9,6 +9,7 @@ public class GameContentManager
     public static List<string> list;
 
     public static CameraController mainCameraPrefab;
+    public static CameraController skyboxCameraPrefab;
     public static CameraController minimapCameraPrefab;
 
     public static MainPlayerPanel mainPlayerPanelPrefab;
@@ -53,6 +54,7 @@ public class GameContentManager
     public static void LoadPrefabs()
     {
         mainCameraPrefab = Resources.Load<CameraController>("Prefabs/MainCameraPrefab");
+        skyboxCameraPrefab = Resources.Load<CameraController>("Prefabs/SkyboxCameraPrefab");
         spaceManagerPrefab = Resources.Load<SpaceManager>("Prefabs/SpaceManagerPrefab");
         canvasPrefab = Resources.Load<CanvasController>("Prefabs/canvasPrefab");
         minimapCameraPrefab = Resources.Load<CameraController>("Prefabs/MinimapCameraPrefab");

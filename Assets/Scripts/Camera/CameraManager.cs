@@ -6,12 +6,14 @@ public class CameraManager
 {
     public static CameraController mainCamera;
     public static CameraController minimapCamera;
+    public static CameraController skyboxCamera;
 
     public static byte currentCameraCode = 0;
 
     public static void Init()
     {
         CameraManager.mainCamera = GameObject.Instantiate(GameContentManager.mainCameraPrefab);
+        CameraManager.skyboxCamera = GameObject.Instantiate(GameContentManager.skyboxCameraPrefab, CameraManager.mainCamera.transform);
         CameraManager.minimapCamera = GameObject.Instantiate(GameContentManager.minimapCameraPrefab);
 
         GameObject.DontDestroyOnLoad(CameraManager.mainCamera);

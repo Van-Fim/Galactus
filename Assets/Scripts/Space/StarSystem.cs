@@ -18,12 +18,12 @@ public class StarSystem : Space
     public override int GenerateId()
     {
         int curId = 0;
-        Space fnd = SpaceManager.starSystems.Find(f => f.id == curId);
+        Space fnd = SpaceManager.starSystems.Find(f => f.galaxyId == galaxyId && f.id == curId);
 
         while (fnd != null)
         {
             curId++;
-            fnd = SpaceManager.starSystems.Find(f => f.id == curId);
+            fnd = SpaceManager.starSystems.Find(f => f.galaxyId == galaxyId && f.id == curId);
         }
         id = curId;
         return id;

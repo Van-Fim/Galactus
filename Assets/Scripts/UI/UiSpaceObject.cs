@@ -24,13 +24,22 @@ public class UiSpaceObject : MonoBehaviour, IPointerClickHandler
         image.color = defcolor;
     }
 
+    public void DestroyObj()
+    {
+        OnUpdatePos -= UpdatePos;
+        if (gameObject != null)
+        {
+            DestroyImmediate(gameObject);
+        }
+    }
+
     public void Select(UiSpaceObject target)
     {
         if (target == this)
         {
             selected = true;
             image.color = selcolor;
-
+            
             if (space.GetType() == typeof(Galaxy))
             {
                 MinimapPanel.selectedGalaxyId = 0;
@@ -40,6 +49,27 @@ public class UiSpaceObject : MonoBehaviour, IPointerClickHandler
                 StarSystem sys = (StarSystem)space;
                 MinimapPanel.selectedGalaxyId = sys.galaxyId;
                 MinimapPanel.selectedSystemId = sys.id;
+
+                Debug.Log($"{sys.galaxyId} {sys.id}");
+            }
+            else if (space.GetType() == typeof(Sector))
+            {
+                Sector sp = (Sector)space;
+                MinimapPanel.selectedGalaxyId = sp.galaxyId;
+                MinimapPanel.selectedSystemId = sp.systemId;
+                MinimapPanel.selectedSectorId = sp.id;
+
+                Debug.Log($"{sp.galaxyId} {sp.systemId} {sp.id}");
+            }
+            else if (space.GetType() == typeof(Zone))
+            {
+                Zone sp = (Zone)space;
+                MinimapPanel.selectedGalaxyId = sp.galaxyId;
+                MinimapPanel.selectedSystemId = sp.systemId;
+                MinimapPanel.selectedSectorId = sp.sectorId;
+                MinimapPanel.selectedZoneId = sp.id;
+
+                Debug.Log($"{sp.galaxyId} {sp.systemId} {sp.sectorId}  {sp.id}");
             }
         }
         else

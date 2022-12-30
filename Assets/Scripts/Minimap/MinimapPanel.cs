@@ -24,6 +24,10 @@ public class MinimapPanel : MainPanel
     public TMP_Dropdown selectLayerDropdown;
     public Button warp;
 
+    public static int renderedGalaxyId;
+    public static int renderedSystemId;
+    public static int renderedSectorId;
+
     public static byte layer = 1;
 
     public static void Init(){
@@ -54,6 +58,19 @@ public class MinimapPanel : MainPanel
         selectLayerDropdown.value = layer;
         selectLayerDropdown.onValueChanged.AddListener((int level) =>
         {
+            if (level >= 2 && renderedGalaxyId >= 0 && renderedSystemId >= 0 && renderedSectorId >= 0)
+            {
+                Debug.Log($" {renderedGalaxyId} {renderedSystemId} {renderedSectorId} ||| {NetClient.localClient.galaxyId} {NetClient.localClient.systemId} {NetClient.localClient.sectorId}");
+                if (!(NetClient.localClient.galaxyId == renderedGalaxyId && NetClient.localClient.systemId == renderedSystemId))
+                {
+                    SpaceManager.singleton.DestroyRenderedSectors();
+                    SpaceManager.singleton.RenderSectors(NetClient.localClient.galaxyId, NetClient.localClient.systemId);
+                    SpaceManager.singleton.RenderZones(NetClient.localClient.galaxyId, NetClient.localClient.systemId, NetClient.localClient.sectorId);
+                    renderedGalaxyId = NetClient.localClient.galaxyId;
+                    renderedSystemId = NetClient.localClient.systemId;
+                    renderedSectorId = NetClient.localClient.sectorId;
+                }
+            }
             SpaceController.InvokeChangeLayer((byte)level);
         });
 

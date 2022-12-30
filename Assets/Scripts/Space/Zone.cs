@@ -20,12 +20,12 @@ public class Zone : Space
     public override int GenerateId()
     {
         int curId = 0;
-        Space fnd = SpaceManager.zones.Find(f => f.id == curId);
+        Space fnd = SpaceManager.zones.Find(f => f.galaxyId == galaxyId && f.systemId == systemId && f.sectorId == sectorId && f.id == curId);
 
         while (fnd != null)
         {
             curId++;
-            fnd = SpaceManager.zones.Find(f => f.id == curId);
+            fnd = SpaceManager.zones.Find(f => f.galaxyId == galaxyId && f.systemId == systemId && f.sectorId == sectorId && f.id == curId);
         }
         id = curId;
         return id;

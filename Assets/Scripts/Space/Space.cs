@@ -94,6 +94,7 @@ public class Space
 
         uiSpaceObject = GameObject.Instantiate(GameContentManager.uiSpaceObjectPrefab, CanvasManager.canvas.transform);
         uiSpaceObject.space = this;
+        spaceController.uiSpaceObject = uiSpaceObject;
         uiSpaceObject.Init();
     }
 

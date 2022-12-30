@@ -16,12 +16,12 @@ public class Sector : Space
     public override int GenerateId()
     {
         int curId = 0;
-        Space fnd = SpaceManager.sectors.Find(f => f.id == curId);
+        Space fnd = SpaceManager.sectors.Find(f => f.galaxyId == galaxyId && f.systemId == systemId && f.id == curId);
 
         while (fnd != null)
         {
             curId++;
-            fnd = SpaceManager.sectors.Find(f => f.id == curId);
+            fnd = SpaceManager.sectors.Find(f => f.galaxyId == galaxyId && f.systemId == systemId && f.id == curId);
         }
         id = curId;
         return id;

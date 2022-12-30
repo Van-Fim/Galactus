@@ -8,19 +8,48 @@ using UnityEngine.Rendering.VirtualTexturing;
 public class SpaceController : MonoBehaviour
 {
     public MeshRenderer meshRenderer;
+    public UiSpaceObject uiSpaceObject;
     public Space space;
     public byte layer = 0;
+
+    public bool isInitialized = false;
+    public bool isDestroyed = false;
 
     public static UnityAction<byte> OnChangeLayer;
 
     void Start()
     {
-        OnChangeLayer += ChangeLayer;
+        if (!isInitialized)
+        {
+            Init();
+        }
     }
 
     void Update()
     {
         
+    }
+
+    public void Init()
+    {
+        OnChangeLayer += ChangeLayer;
+        isInitialized = true;
+    }
+
+    public void DestroyObj()
+    {
+        if (!isDestroyed) {
+            OnChangeLayer -= ChangeLayer;
+            if (uiSpaceObject != null)
+            {
+                uiSpaceObject.DestroyObj();
+            }
+            if (gameObject != null)
+            {
+                DestroyImmediate(this.gameObject);
+            }
+            isDestroyed = true;
+        }
     }
 
     public void ChangeLayer(byte layer)
@@ -65,16 +94,11 @@ public class SpaceController : MonoBehaviour
             else if (layer == 2)
             {
                 Sector sp = SpaceManager.GetSectorByID(NetClient.localClient.galaxyId, NetClient.localClient.systemId, NetClient.localClient.sectorId);
-                if (MinimapPanel.selectedSectorId >= 0)
-                {
-                    //system = SpaceManager.GetSystemByID(MinimapPanel.selectedGalaxyId, MinimapPanel.selectedSystemId);
-                }
 
                 if (sp != null)
                 {
                     CameraManager.minimapCamera.gameObject.SetActive(false);
-                    Debug.Log(layer);
-                    CameraManager.minimapCamera.transform.position = CameraController.startCamPositions[layer];
+                    CameraManager.minimapCamera.transform.position = sp.GetPosition() / Sector.minimapDivFactor + CameraController.startCamPositions[layer];
                     CameraManager.minimapCamera.transform.localEulerAngles = new Vector3(90, 0, 0);
                     CameraManager.minimapCamera.gameObject.SetActive(true);
                 }
@@ -82,6 +106,7 @@ public class SpaceController : MonoBehaviour
             else if (layer == 3)
             {
                 Zone sp = SpaceManager.GetZoneByID(NetClient.localClient.galaxyId, NetClient.localClient.systemId, NetClient.localClient.sectorId, NetClient.localClient.zoneId);
+
                 if (MinimapPanel.selectedZoneId >= 0)
                 {
                     //system = SpaceManager.GetSystemByID(MinimapPanel.selectedGalaxyId, MinimapPanel.selectedSystemId);
@@ -90,8 +115,7 @@ public class SpaceController : MonoBehaviour
                 if (sp != null)
                 {
                     CameraManager.minimapCamera.gameObject.SetActive(false);
-                    Debug.Log(layer);
-                    CameraManager.minimapCamera.transform.position = CameraController.startCamPositions[layer];
+                    CameraManager.minimapCamera.transform.position = sp.GetPosition() / Zone.minimapDivFactor + CameraController.startCamPositions[layer];
                     CameraManager.minimapCamera.transform.localEulerAngles = new Vector3(90, 0, 0);
                     CameraManager.minimapCamera.gameObject.SetActive(true);
                 }
