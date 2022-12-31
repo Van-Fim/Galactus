@@ -17,6 +17,8 @@ public class MainPanel : MonoBehaviour
                 SpaceController.InvokeChangeLayer(1);
                 UiManager.minimapPanel.gameObject.SetActive(true);
                 UiManager.mainPlayerPanel.gameObject.SetActive(false);
+
+                UiManager.minimapPanel.selectLayerDropdown.value = 1;
             }
             else if (CameraManager.currentCameraCode == 1)
             {

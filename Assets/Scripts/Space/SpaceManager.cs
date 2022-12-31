@@ -77,6 +77,7 @@ public class SpaceManager : NetworkBehaviour
             {
                 continue;
             }
+
             system.Render();
             if (isServer)
             {
@@ -124,7 +125,7 @@ public class SpaceManager : NetworkBehaviour
         for (int i = 0; i < zones.Count; i++)
         {
             Zone zone = zones[i];
-            if (zone.galaxyId != galaxyId || zone.systemId != systemId || zone.sectorId != sectorId)
+            if (!(zone.galaxyId == galaxyId && zone.systemId == systemId && zone.sectorId == sectorId))
             {
                 continue;
             }
@@ -140,7 +141,7 @@ public class SpaceManager : NetworkBehaviour
         singleton = this;
         if (isServer)
         {
-            
+
         }
         if (isClient)
         {
@@ -151,7 +152,7 @@ public class SpaceManager : NetworkBehaviour
 
             UnityEngine.Random.InitState(seed.GetHashCode());
             LoadGalaxies("default");
-            
+
             for (int i = 0; i < galaxies.Count; i++)
             {
                 Galaxy galaxy = galaxies[i];
@@ -162,8 +163,10 @@ public class SpaceManager : NetworkBehaviour
             for (int i = 0; i < starSystems.Count; i++)
             {
                 StarSystem system = starSystems[i];
-
-                LoadSectors(system);
+                if (system.galaxyId == 0)
+                {
+                    LoadSectors(system);
+                }
             }
 
             for (int i = 0; i < sectors.Count; i++)
@@ -178,7 +181,7 @@ public class SpaceManager : NetworkBehaviour
             SpaceManager.singleton.RenderSystems(NetClient.localClient.galaxyId);
 
             UiManager.Init();
-            
+
             Warp(NetClient.localClient.galaxyId, NetClient.localClient.systemId, NetClient.localClient.sectorId, NetClient.localClient.zoneId);
             SpaceManager.singleton.DestroyRenderedSectors();
             SpaceManager.singleton.RenderSectors(NetClient.localClient.galaxyId, NetClient.localClient.systemId);
@@ -204,7 +207,7 @@ public class SpaceManager : NetworkBehaviour
         StarSystem system = GetSystemByID(galaxyId, systemId);
         Sector sector = GetSectorByID(galaxyId, systemId, sectorId);
         Zone zone = GetZoneByID(galaxyId, systemId, sectorId, zoneId);
-        
+
         MinimapPanel.currentGalaxyId = galaxyId;
         MinimapPanel.currentSystemId = systemId;
         MinimapPanel.currentSectorId = sectorId;
@@ -214,7 +217,7 @@ public class SpaceManager : NetworkBehaviour
         RenderSettings.skybox = mat;
         Color32 color = system.GetColor();
         float cdiv = 2f;
-        color = new Color32((byte)(color.r/cdiv), (byte)(color.g /cdiv), (byte)(color.b /cdiv), color.a);
+        color = new Color32((byte)(color.r / cdiv), (byte)(color.g / cdiv), (byte)(color.b / cdiv), color.a);
         RenderSettings.skybox.SetColor("_Tint", color);
 
         NetClient.localClient.galaxyId = galaxyId;
@@ -222,7 +225,7 @@ public class SpaceManager : NetworkBehaviour
         NetClient.localClient.sectorId = sectorId;
         NetClient.localClient.zoneId = zoneId;
 
-        spaceContainer.transform.localPosition = -sector.GetPosition();
+        spaceContainer.transform.localPosition = -(sector.GetPosition());
 
         SPObject.InvokeRender();
     }
@@ -405,7 +408,6 @@ public class SpaceManager : NetworkBehaviour
         int maxRangeMin = int.Parse(nd.GetValue("maxRangeMin"));
         int maxRangeMax = int.Parse(nd.GetValue("maxRangeMax"));
         int range = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
-
         for (int j = 0; j < nodes.Count; j++)
         {
             TemplateNode node = nodes[j];
@@ -448,12 +450,13 @@ public class SpaceManager : NetworkBehaviour
                 {
                     position = Vector3.zero;
                 }
+                List<Sector> fsps = sectors.FindAll(f => f.galaxyId == system.galaxyId && f.systemId == system.id);
                 while (counter > 0)
                 {
                     bool br = false;
-                    for (int i1 = 0; i1 < sectors.Count; i1++)
+                    for (int i1 = 0; i1 < fsps.Count; i1++)
                     {
-                        Sector sector1 = sectors[i1];
+                        Sector sector1 = fsps[i1];
 
                         if (sector1 == sector)
                         {
@@ -484,6 +487,7 @@ public class SpaceManager : NetworkBehaviour
                         break;
                     }
                 }
+
                 sector.SetPosition(position);
                 sector.size = size;
                 sector.galaxyId = system.galaxyId;
@@ -545,38 +549,28 @@ public class SpaceManager : NetworkBehaviour
                     zone.color = new byte[] { r, g, b, a };
                 }
                 int counter = 10;
-                int xPos = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
+                Vector2 rndPos = UnityEngine.Random.insideUnitCircle * maxRangeMax;
+                int xPos = (int)rndPos.x;
                 int yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
-                int zPos = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
+                int zPos = (int)rndPos.y;
                 if (i == 0)
                 {
-                    xPos = yPos = zPos = 0;
+                    //xPos = yPos = zPos = 0;
                 }
                 Vector3 indexes = new Vector3(xPos, yPos, zPos);
+                List<Zone> fsps = zones.FindAll(f => f.galaxyId == sector.galaxyId && f.systemId == sector.systemId && f.sectorId == sector.id);
                 while (counter > 0)
                 {
                     bool br = false;
-                    for (int i1 = 0; i1 < zones.Count; i1++)
+                    for (int i1 = 0; i1 < fsps.Count; i1++)
                     {
-                        Zone zone1 = zones[i1];
+                        Zone zone1 = fsps[i1];
 
                         if (zone1 == zone)
                         {
                             continue;
                         }
 
-                        if (!(zone1.galaxyId == zone.galaxyId && zone1.systemId == zone.systemId))
-                        {
-                            continue;
-                        }
-                        if (!(zone1.sectorId == zone.sectorId))
-                        {
-                            continue;
-                        }
-                        if (!(zone.galaxyId == sector.galaxyId && zone.sectorId == sector.id))
-                        {
-                            continue;
-                        }
                         Vector3 ind1 = zone1.GetIndexes();
                         if (ind1 == indexes)
                         {
@@ -604,8 +598,8 @@ public class SpaceManager : NetworkBehaviour
                     }
                 }
                 zone.SetIndexes(indexes);
-                zone.size = size;
                 zone.SetPosition(indexes * size);
+                zone.size = size;
                 zone.galaxyId = sector.galaxyId;
                 zone.systemId = sector.systemId;
                 zone.sectorId = sector.id;
@@ -803,7 +797,6 @@ public class SpaceManager : NetworkBehaviour
             else
             {
                 system.SetPosition(position);
-                system.galaxyId = galaxy.id;
                 system.GenerateId();
                 starSystems.Add(system);
                 break;

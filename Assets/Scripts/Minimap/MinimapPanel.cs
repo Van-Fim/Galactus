@@ -60,7 +60,6 @@ public class MinimapPanel : MainPanel
         {
             if (level >= 2 && renderedGalaxyId >= 0 && renderedSystemId >= 0 && renderedSectorId >= 0)
             {
-                Debug.Log($" {renderedGalaxyId} {renderedSystemId} {renderedSectorId} ||| {NetClient.localClient.galaxyId} {NetClient.localClient.systemId} {NetClient.localClient.sectorId}");
                 if (!(NetClient.localClient.galaxyId == renderedGalaxyId && NetClient.localClient.systemId == renderedSystemId))
                 {
                     SpaceManager.singleton.DestroyRenderedSectors();
@@ -81,6 +80,9 @@ public class MinimapPanel : MainPanel
             SpaceController.InvokeChangeLayer(1);
             UiManager.minimapPanel.gameObject.SetActive(false);
             UiManager.mainPlayerPanel.gameObject.SetActive(true);
+
+            MinimapPanel.selectedSectorId = 0;
+            MinimapPanel.selectedZoneId = 0;
         });
     }
 }

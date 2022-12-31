@@ -31,7 +31,7 @@ public class Space
     {
         int curId = 0;
         Space fnd = SpaceManager.galaxies.Find(f => f.id == curId);
-        
+
         while (fnd != null)
         {
             curId++;
@@ -63,7 +63,8 @@ public class Space
         return ret;
     }
 
-    public void Render(){
+    public void Render()
+    {
         Vector3 pos = GetPosition();
         Vector3 rot = GetRotation();
         if (GetType() == typeof(Galaxy))
@@ -78,7 +79,7 @@ public class Space
         {
             pos /= Sector.minimapDivFactor;
             spaceController = GameObject.Instantiate(GameContentManager.sectorPrefab, MinimapPanel.sectorsContainer.transform);
-            spaceController.transform.localScale = new Vector3(this.size/Sector.minimapDivFactor, this.size/Sector.minimapDivFactor, this.size/Sector.minimapDivFactor);
+            spaceController.transform.localScale = new Vector3(this.size / Sector.minimapDivFactor, this.size / Sector.minimapDivFactor, this.size / Sector.minimapDivFactor);
         }
         else if (GetType() == typeof(Zone))
         {

@@ -33,52 +33,6 @@ public class UiSpaceObject : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void Select(UiSpaceObject target)
-    {
-        if (target == this)
-        {
-            selected = true;
-            image.color = selcolor;
-            
-            if (space.GetType() == typeof(Galaxy))
-            {
-                MinimapPanel.selectedGalaxyId = 0;
-            }
-            else if (space.GetType() == typeof(StarSystem))
-            {
-                StarSystem sys = (StarSystem)space;
-                MinimapPanel.selectedGalaxyId = sys.galaxyId;
-                MinimapPanel.selectedSystemId = sys.id;
-
-                Debug.Log($"{sys.galaxyId} {sys.id}");
-            }
-            else if (space.GetType() == typeof(Sector))
-            {
-                Sector sp = (Sector)space;
-                MinimapPanel.selectedGalaxyId = sp.galaxyId;
-                MinimapPanel.selectedSystemId = sp.systemId;
-                MinimapPanel.selectedSectorId = sp.id;
-
-                Debug.Log($"{sp.galaxyId} {sp.systemId} {sp.id}");
-            }
-            else if (space.GetType() == typeof(Zone))
-            {
-                Zone sp = (Zone)space;
-                MinimapPanel.selectedGalaxyId = sp.galaxyId;
-                MinimapPanel.selectedSystemId = sp.systemId;
-                MinimapPanel.selectedSectorId = sp.sectorId;
-                MinimapPanel.selectedZoneId = sp.id;
-
-                Debug.Log($"{sp.galaxyId} {sp.systemId} {sp.sectorId}  {sp.id}");
-            }
-        }
-        else
-        {
-            selected = false;
-            image.color = defcolor;
-        }
-    }
-
     public void UpdatePos()
     {
         Camera cam = CameraManager.minimapCamera.curCamera;
@@ -149,6 +103,27 @@ public class UiSpaceObject : MonoBehaviour, IPointerClickHandler
                 }
                 Color32 prevColor = image.color;
                 if (sp.galaxyId == MinimapPanel.selectedGalaxyId && sp.systemId == MinimapPanel.selectedSystemId && sp.id == MinimapPanel.selectedSectorId)
+                {
+                    image.color = selcolor;
+                }
+                else
+                {
+                    image.color = prevColor;
+                }
+            }
+            else if (space.GetType() == typeof(Zone))
+            {
+                Zone sp = (Zone)space;
+                if (sp.galaxyId == MinimapPanel.currentGalaxyId && sp.systemId == MinimapPanel.currentSystemId && sp.sectorId == MinimapPanel.currentSectorId && sp.id == MinimapPanel.currentZoneId)
+                {
+                    image.color = curSysColor;
+                }
+                else
+                {
+                    image.color = defcolor;
+                }
+                Color32 prevColor = image.color;
+                if (sp.galaxyId == MinimapPanel.selectedGalaxyId && sp.systemId == MinimapPanel.selectedSystemId && sp.sectorId == MinimapPanel.currentSectorId && sp.id == MinimapPanel.currentZoneId)
                 {
                     image.color = selcolor;
                 }
