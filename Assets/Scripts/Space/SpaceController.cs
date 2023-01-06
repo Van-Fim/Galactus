@@ -106,7 +106,6 @@ public class SpaceController : MonoBehaviour
             else if (layer == 3)
             {
                 Zone sp = SpaceManager.GetZoneByID(NetClient.localClient.galaxyId, NetClient.localClient.systemId, NetClient.localClient.sectorId, NetClient.localClient.zoneId);
-
                 if (MinimapPanel.selectedZoneId >= 0)
                 {
                     //system = SpaceManager.GetSystemByID(MinimapPanel.selectedGalaxyId, MinimapPanel.selectedSystemId);

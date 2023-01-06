@@ -6,7 +6,7 @@ public class CameraManager
 {
     public static CameraController mainCamera;
     public static CameraController minimapCamera;
-    public static CameraController skyboxCamera;
+    public static Camera skyboxCamera;
 
     public static byte currentCameraCode = 0;
 

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Mirror;
 
 public enum RandomSpawnerShape
@@ -14,9 +14,6 @@ public class RandomAreaSpawner : MonoBehaviour
     public int systemId;
 
     [Header("General settings:")]
-
-    [Tooltip("Prefab to spawn.")]
-    public Asteroid prefab;
 
     [Tooltip("Shape to spawn the prefabs in.")]
     public RandomSpawnerShape spawnShape = RandomSpawnerShape.Sphere;
@@ -50,17 +47,14 @@ public class RandomAreaSpawner : MonoBehaviour
     // Use this for initialization
     public void Init()
     {
-        if (prefab != null)
-        {
-            for (int i = 0; i < asteroidCount; i++)
-                CreateAsteroid();
-        }
+        for (int i = 0; i < asteroidCount; i++)
+            CreateAsteroid();
     }
 
     private void CreateAsteroid()
     {
         Vector3 spawnPos = Vector3.zero;
-         
+
         // Create random position based on specified shape and range.
         if (spawnShape == RandomSpawnerShape.Box)
         {
@@ -83,7 +77,7 @@ public class RandomAreaSpawner : MonoBehaviour
         Quaternion spawnRot = (randomRotation) ? Random.rotation : Quaternion.identity;
 
         // Create the object and set the parent to this gameobject for scene organization.
-        Asteroid t = Instantiate(prefab, spawnPos, spawnRot);
+        Asteroid t = Instantiate(GameContentManager.asteroidCubePrefab, spawnPos, spawnRot);
         t.galaxyId = galaxyId;
         t.systemId = systemId;
         //t.transform.SetParent(transform);
@@ -102,8 +96,9 @@ public class RandomAreaSpawner : MonoBehaviour
             r.AddRelativeForce(Random.insideUnitSphere * velocity, ForceMode.VelocityChange);
             r.AddRelativeTorque(Random.insideUnitSphere * angularVelocity * Mathf.Deg2Rad, ForceMode.VelocityChange);
         }
-        
+
         t.Init();
+        SpaceObjectNetManager.singleton.asteroids.Add(t);
         NetworkServer.Spawn(t.gameObject);
     }
 

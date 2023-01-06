@@ -1,7 +1,6 @@
 <templates>
 	<ship name="Ship01">
 		<model patch="Models/Ships/FighterMedium" />
-		<image patch="Models/Ships/FighterMedium" />
 		<hardpoints name="Ship01" />
 		<params mass="500" drag="2" angulardrag="2" maxhull="500"  />
 	</ship>

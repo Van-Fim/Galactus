@@ -49,6 +49,8 @@ public class NetManager : NetworkManager
         Transform start = GetStartPosition();
         GameObject player = Instantiate(playerPrefab, start);
         player.transform.SetParent(null);
+        NetClient.playerObject = player.gameObject;
+
         yield return new WaitForEndOfFrame();
         NetworkServer.AddPlayerForConnection(conn, player);
     }
@@ -57,12 +59,13 @@ public class NetManager : NetworkManager
     {
         SpaceManager.singleton = Instantiate(GameContentManager.spaceManagerPrefab);
         NetworkServer.Spawn(SpaceManager.singleton.gameObject);
-
+        
         SpaceObjectNetManager.singleton = Instantiate(GameContentManager.spaceObjectNetManagerPrefab);
         NetworkServer.Spawn(SpaceObjectNetManager.singleton.gameObject);
 
         ClientManager.singleton = Instantiate(GameContentManager.clientManagerPrefab);
         NetworkServer.Spawn(ClientManager.singleton.gameObject);
+        
         onlineSceneLoaded = true;
         yield return 1;
     }

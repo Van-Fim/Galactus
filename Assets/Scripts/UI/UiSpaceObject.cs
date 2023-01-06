@@ -123,7 +123,7 @@ public class UiSpaceObject : MonoBehaviour, IPointerClickHandler
                     image.color = defcolor;
                 }
                 Color32 prevColor = image.color;
-                if (sp.galaxyId == MinimapPanel.selectedGalaxyId && sp.systemId == MinimapPanel.selectedSystemId && sp.sectorId == MinimapPanel.currentSectorId && sp.id == MinimapPanel.currentZoneId)
+                if (sp.galaxyId == MinimapPanel.selectedGalaxyId && sp.systemId == MinimapPanel.selectedSystemId && sp.sectorId == MinimapPanel.selectedSectorId && sp.id == MinimapPanel.selectedZoneId)
                 {
                     image.color = selcolor;
                 }

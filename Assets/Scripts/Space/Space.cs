@@ -67,6 +67,7 @@ public class Space
     {
         Vector3 pos = GetPosition();
         Vector3 rot = GetRotation();
+
         if (GetType() == typeof(Galaxy))
         {
             spaceController = GameObject.Instantiate(GameContentManager.galaxyPrefab, MinimapPanel.galaxiesContainer.transform);
@@ -84,6 +85,7 @@ public class Space
         else if (GetType() == typeof(Zone))
         {
             pos /= Zone.minimapDivFactor;
+            Zone zn = (Zone)this;
             spaceController = GameObject.Instantiate(GameContentManager.zonePrefab, MinimapPanel.zonesContainer.transform);
             spaceController.transform.localScale = new Vector3(this.size / Zone.minimapDivFactor, this.size / Zone.minimapDivFactor, this.size / Zone.minimapDivFactor);
         }

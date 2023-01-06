@@ -27,6 +27,7 @@ public class MinimapPanel : MainPanel
     public static int renderedGalaxyId;
     public static int renderedSystemId;
     public static int renderedSectorId;
+    public static int renderedZoneId;
 
     public static byte layer = 1;
 
@@ -60,7 +61,7 @@ public class MinimapPanel : MainPanel
         {
             if (level >= 2 && renderedGalaxyId >= 0 && renderedSystemId >= 0 && renderedSectorId >= 0)
             {
-                if (!(NetClient.localClient.galaxyId == renderedGalaxyId && NetClient.localClient.systemId == renderedSystemId))
+                if (!(NetClient.localClient.galaxyId == renderedGalaxyId && NetClient.localClient.systemId == renderedSystemId && NetClient.localClient.sectorId != renderedSectorId && NetClient.localClient.zoneId != renderedZoneId))
                 {
                     SpaceManager.singleton.DestroyRenderedSectors();
                     SpaceManager.singleton.RenderSectors(NetClient.localClient.galaxyId, NetClient.localClient.systemId);
@@ -68,8 +69,10 @@ public class MinimapPanel : MainPanel
                     renderedGalaxyId = NetClient.localClient.galaxyId;
                     renderedSystemId = NetClient.localClient.systemId;
                     renderedSectorId = NetClient.localClient.sectorId;
+                    renderedZoneId = NetClient.localClient.zoneId;
                 }
             }
+            
             SpaceController.InvokeChangeLayer((byte)level);
         });
 

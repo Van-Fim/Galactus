@@ -9,7 +9,7 @@ public class GameContentManager
     public static List<string> list;
 
     public static CameraController mainCameraPrefab;
-    public static CameraController skyboxCameraPrefab;
+    public static Camera skyboxCameraPrefab;
     public static CameraController minimapCameraPrefab;
 
     public static MainPlayerPanel mainPlayerPanelPrefab;
@@ -28,6 +28,11 @@ public class GameContentManager
 
     public static SpaceObjectNetManager spaceObjectNetManagerPrefab;
     public static ClientManager clientManagerPrefab;
+
+    public static Ship shipPrefab;
+    public static Pilot pilotPrefab;
+
+    public static Asteroid asteroidCubePrefab;
 
     public static void InitContent()
     {
@@ -48,13 +53,14 @@ public class GameContentManager
             TemplateManager.LoadTemplates("loadouts", list[i] + "/Loadouts");
             TemplateManager.LoadTemplates("hardpoint", list[i] + "/Hardpoints");
             TemplateManager.LoadTemplates("ship", list[i] + "/Ships");
+            TemplateManager.LoadTemplates("pilot", list[i] + "/Pilots");
         }
     }
 
     public static void LoadPrefabs()
     {
         mainCameraPrefab = Resources.Load<CameraController>("Prefabs/MainCameraPrefab");
-        skyboxCameraPrefab = Resources.Load<CameraController>("Prefabs/SkyboxCameraPrefab");
+        skyboxCameraPrefab = Resources.Load<Camera>("Prefabs/SkyboxCameraPrefab");
         spaceManagerPrefab = Resources.Load<SpaceManager>("Prefabs/SpaceManagerPrefab");
         canvasPrefab = Resources.Load<CanvasController>("Prefabs/canvasPrefab");
         minimapCameraPrefab = Resources.Load<CameraController>("Prefabs/MinimapCameraPrefab");
@@ -72,5 +78,9 @@ public class GameContentManager
 
         spaceObjectNetManagerPrefab = Resources.Load<SpaceObjectNetManager>("Prefabs/SpaceObjectNetManagerPrefab");
         clientManagerPrefab = Resources.Load<ClientManager>("Prefabs/ClientManagerPrefab");
+
+        shipPrefab = Resources.Load<Ship>("Prefabs/ShipPrefab");
+        pilotPrefab = Resources.Load<Pilot>("Prefabs/PilotPrefab");
+        asteroidCubePrefab = Resources.Load<Asteroid>("Prefabs/AsteroidCube");
     }
 }

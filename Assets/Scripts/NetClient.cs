@@ -24,6 +24,11 @@ public class NetClient
     public int sectorId;
     public int zoneId;
 
+    public Ship ship;
+    public Pilot pilot;
+
+    public static GameObject playerObject;
+
     [System.Serializable]
     public struct AccountData
     {

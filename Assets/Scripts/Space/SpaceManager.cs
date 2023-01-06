@@ -182,6 +182,12 @@ public class SpaceManager : NetworkBehaviour
 
             UiManager.Init();
 
+            GameStartData gm = new GameStartData();
+            gm.name = "Start01";
+            gm.Init();
+            gm.GetStartType();
+            gm.LoadContent();
+
             Warp(NetClient.localClient.galaxyId, NetClient.localClient.systemId, NetClient.localClient.sectorId, NetClient.localClient.zoneId);
             SpaceManager.singleton.DestroyRenderedSectors();
             SpaceManager.singleton.RenderSectors(NetClient.localClient.galaxyId, NetClient.localClient.systemId);
@@ -225,7 +231,16 @@ public class SpaceManager : NetworkBehaviour
         NetClient.localClient.sectorId = sectorId;
         NetClient.localClient.zoneId = zoneId;
 
-        spaceContainer.transform.localPosition = -(sector.GetPosition());
+        if (NetClient.localClient.pilot != null)
+        {
+            NetClient.localClient.pilot.SetSpace(zone);
+        }
+        if (NetClient.localClient.ship != null)
+        {
+            NetClient.localClient.ship.SetSpace(zone);
+        }
+
+        spaceContainer.transform.localPosition = -(sector.GetPosition() + zone.GetPosition());
 
         SPObject.InvokeRender();
     }
@@ -513,7 +528,7 @@ public class SpaceManager : NetworkBehaviour
         TemplateNode nd = currentSectorTemplate.GetNode("zones");
         int maxRangeMin = int.Parse(nd.GetValue("maxZoneRangeMin"));
         int maxRangeMax = int.Parse(nd.GetValue("maxZoneRangeMax"));
-        
+
         for (int j = 0; j < nodes.Count; j++)
         {
             TemplateNode node = nodes[j];
@@ -555,7 +570,7 @@ public class SpaceManager : NetworkBehaviour
                 int zPos = (int)rndPos.y;
                 if (i == 0)
                 {
-                    //xPos = yPos = zPos = 0;
+                    xPos = yPos = zPos = 0;
                 }
                 Vector3 indexes = new Vector3(xPos, yPos, zPos);
                 List<Zone> fsps = zones.FindAll(f => f.galaxyId == sector.galaxyId && f.systemId == sector.systemId && f.sectorId == sector.id);
