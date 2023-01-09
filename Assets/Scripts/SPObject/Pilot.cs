@@ -20,9 +20,12 @@ public class Pilot : SPObject
         pilot.rigidbodyMain.useGravity = false;
         pilot.rigidbodyMain.angularDrag =2f;
         pilot.rigidbodyMain.drag = 2f;
+        pilot.rigidbodyMain.mass = 10f;
 
         pilot.controller = gameObject.AddComponent<PlayerController>();
         pilot.controller.obj = pilot;
+        //pilot.controller.maxSpeed = 2000;
+        //pilot.controller.velocity = 10000;
 
         SpaceObjectNetManager.singleton.pilots.Add(pilot);
         return pilot;

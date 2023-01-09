@@ -48,7 +48,7 @@ MonoBehaviour:
   systemId: 0
   spawnShape: 1
   shapeModifiers: {x: 1, y: 1, z: 1}
-  asteroidCount: 300
+  asteroidCount: 10
   range: 1000000
   randomRotation: 1
   scaleRange: {x: 1000, y: 5000}

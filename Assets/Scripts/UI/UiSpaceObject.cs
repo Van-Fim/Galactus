@@ -36,6 +36,10 @@ public class UiSpaceObject : MonoBehaviour, IPointerClickHandler
     public void UpdatePos()
     {
         Camera cam = CameraManager.minimapCamera.curCamera;
+        if (!CameraManager.minimapCamera.enabled)
+        {
+            return;
+        }
         //float dist = Vector3.Distance(cam.transform.position, space.GetPosition());
         float thing1 = Vector3.Dot((space.GetPosition() - cam.transform.position).normalized, cam.transform.forward);
 

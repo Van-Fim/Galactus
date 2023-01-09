@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 7190490987974345779}
+  uiSpaceObject: {fileID: 0}
   space:
     id: -1
     size: 10
@@ -63,6 +64,8 @@ MonoBehaviour:
     spaceController: {fileID: 0}
     uiSpaceObject: {fileID: 0}
   layer: 3
+  isInitialized: 0
+  isDestroyed: 0
 --- !u!1 &6997505442839084505
 GameObject:
   m_ObjectHideFlags: 0
@@ -74,7 +77,6 @@ GameObject:
   - component: {fileID: 4480553117905773116}
   - component: {fileID: 6811631762848059139}
   - component: {fileID: 7190490987974345779}
-  - component: {fileID: 759797346502568556}
   m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
@@ -147,16 +149,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &759797346502568556
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6997505442839084505}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}

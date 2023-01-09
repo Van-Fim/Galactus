@@ -22,7 +22,7 @@ public class GameStartData
         template = TemplateManager.FindTemplate(name, "start");
     }
 
-    public void GetStartType()
+    public void GetStartSpace()
     {
         if (template == null)
         {
@@ -46,6 +46,49 @@ public class GameStartData
             sectorId = int.Parse(spaceNode.GetValue("sector"));
             zoneId = int.Parse(spaceNode.GetValue("zone"));
 
+            NetClient.localClient.galaxyId = galaxyId;
+            NetClient.localClient.systemId = starSystemId;
+            NetClient.localClient.sectorId = sectorId;
+            NetClient.localClient.zoneId = zoneId;
+
+            List<TemplateNode> shipNodes = template.GetNodeList("ship");
+            List<TemplateNode> playerNodes = template.GetNodeList("player");
+
+            for (int j = 0; j < shipNodes.Count; j++)
+            {
+                TemplateNode shipNode = shipNodes[j];
+                bool plyShipExist = System.Convert.ToBoolean(int.Parse(shipNode.GetValue("playerShip")));
+
+                if (plyShipExist)
+                {
+                    return;
+                }
+            }
+            if (playerNodes.Count > 0)
+            {
+                return;
+            }
+        }
+    }
+
+    public void GetStartType()
+    {
+        if (template == null)
+        {
+            Debug.LogError("Error template not found");
+            return;
+        }
+
+        if (template == null)
+        {
+            Debug.LogError("Template " + name + " not found");
+            return;
+        }
+
+        List<TemplateNode> spaceNodes = template.GetNodeList("space");
+
+        for (int i = 0; i < spaceNodes.Count; i++)
+        {
             List<TemplateNode> shipNodes = template.GetNodeList("ship");
             List<TemplateNode> playerNodes = template.GetNodeList("player");
 
@@ -136,28 +179,14 @@ public class GameStartData
                 }
                 bool plyShipExist = System.Convert.ToBoolean(int.Parse(shipNode.GetValue("playerShip")));
                 string templateStringName = shipNode.GetValue("template");
-                if (!plyShipExist)
-                {
-                    /*
-                    Ship ship = Ship.CreateShip(templateStringName);
-                    ship.SetSpace(zone);
-                    Vector3 startPos = zone.GetPosition();
-                    position += startPos;
-                    ship.transform.localPosition = position;
-                    */
-                }
+                Ship ship = Ship.CreateShip(templateStringName);
+                ship.SetSpace(zone);
+                Vector3 startPos = zone.GetPosition();
+                position += startPos;
+                ship.transform.localPosition = position;
                 if (type == "ship" && plyShipExist)
                 {
-                    Ship ship = Ship.InitPlayer(NetClient.playerObject, templateStringName);
-                    ship.SetSpace(zone);
-                    Vector3 startPos = zone.GetPosition();
-                    position += startPos;
-                    ship.transform.localPosition = position;
-                    ship.gameObject.name = $"PlayerShip";
-                    ship.gameObject.transform.localPosition = position;
-                    CameraManager.mainCamera.enabled = false;
-                    CameraManager.mainCamera.transform.SetParent(ship.gameObject.transform);
-                    CameraManager.mainCamera.transform.localPosition = new Vector3(0, 75, -200);
+
                 }
             }
             if (type == "pilot")
@@ -171,7 +200,7 @@ public class GameStartData
                     NetClient.localClient.pilot = pilot;
                     CameraManager.mainCamera.enabled = false;
                     CameraManager.mainCamera.transform.SetParent(pilot.transform);
-                    CameraManager.mainCamera.transform.localPosition = new Vector3(0, 0.760f, 0.95f);
+                    CameraManager.mainCamera.transform.localPosition = new Vector3(0, 1.6f, -3f);
                 }
             }
         }

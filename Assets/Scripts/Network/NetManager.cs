@@ -14,7 +14,7 @@ public class NetManager : NetworkManager
         GameContentManager.LoadPrefabs();
         CameraManager.Init();
         CanvasManager.Init();
-        
+
         CameraManager.SwitchByCode(0);
 
         ClientManager.accountLogin = "AccountLogin01";
@@ -26,7 +26,7 @@ public class NetManager : NetworkManager
     }
     public override void OnClientSceneChanged()
     {
-            base.OnClientSceneChanged();
+        base.OnClientSceneChanged();
     }
     public override void OnServerSceneChanged(string sceneName)
     {
@@ -52,6 +52,12 @@ public class NetManager : NetworkManager
         NetClient.playerObject = player.gameObject;
 
         yield return new WaitForEndOfFrame();
+
+        GameStartData gm = new GameStartData();
+        gm.name = "Start01";
+        gm.Init();
+        gm.GetStartSpace();
+        gm.GetStartType();
         NetworkServer.AddPlayerForConnection(conn, player);
     }
 
@@ -59,13 +65,13 @@ public class NetManager : NetworkManager
     {
         SpaceManager.singleton = Instantiate(GameContentManager.spaceManagerPrefab);
         NetworkServer.Spawn(SpaceManager.singleton.gameObject);
-        
+
         SpaceObjectNetManager.singleton = Instantiate(GameContentManager.spaceObjectNetManagerPrefab);
         NetworkServer.Spawn(SpaceObjectNetManager.singleton.gameObject);
 
         ClientManager.singleton = Instantiate(GameContentManager.clientManagerPrefab);
         NetworkServer.Spawn(ClientManager.singleton.gameObject);
-        
+
         onlineSceneLoaded = true;
         yield return 1;
     }

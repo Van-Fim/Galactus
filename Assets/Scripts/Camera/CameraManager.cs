@@ -25,12 +25,16 @@ public class CameraManager
         if (currentCameraCode == 0)
         {
             mainCamera.GetComponent<Camera>().enabled = true;
+            //mainCamera.enabled = true;
             minimapCamera.GetComponent<Camera>().enabled = false;
+            //minimapCamera.enabled = false;
         }
         else if (currentCameraCode == 1)
         {
             mainCamera.GetComponent<Camera>().enabled = false;
+            //mainCamera.enabled = false;
             minimapCamera.GetComponent<Camera>().enabled = true;
+            //minimapCamera.enabled = true;
 
             MinimapPanel.currentGalaxyId = NetClient.localClient.galaxyId;
             MinimapPanel.currentSystemId = NetClient.localClient.systemId;

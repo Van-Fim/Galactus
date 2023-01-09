@@ -126,6 +126,10 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
+        if (!curCamera.enabled)
+        {
+            return;
+        }
         Vector3 translation = Vector3.zero;
 
 #if ENABLE_LEGACY_INPUT_MANAGER

@@ -182,12 +182,6 @@ public class SpaceManager : NetworkBehaviour
 
             UiManager.Init();
 
-            GameStartData gm = new GameStartData();
-            gm.name = "Start01";
-            gm.Init();
-            gm.GetStartType();
-            gm.LoadContent();
-
             Warp(NetClient.localClient.galaxyId, NetClient.localClient.systemId, NetClient.localClient.sectorId, NetClient.localClient.zoneId);
             SpaceManager.singleton.DestroyRenderedSectors();
             SpaceManager.singleton.RenderSectors(NetClient.localClient.galaxyId, NetClient.localClient.systemId);
