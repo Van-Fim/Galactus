@@ -18,26 +18,26 @@ public class CameraManager
 
         GameObject.DontDestroyOnLoad(CameraManager.mainCamera);
         GameObject.DontDestroyOnLoad(CameraManager.minimapCamera);
+        SwitchByCode(0);
     }
 
     public static void SwitchByCode(byte code){
         currentCameraCode = code;
         if (currentCameraCode == 0)
         {
-            mainCamera.GetComponent<Camera>().enabled = true;
-            //mainCamera.enabled = true;
-            minimapCamera.GetComponent<Camera>().enabled = false;
-            //minimapCamera.enabled = false;
+            mainCamera.enabled = true;
+            mainCamera.curCamera.enabled = true;
+
+            minimapCamera.enabled = false;
+            minimapCamera.curCamera.enabled = false;
         }
         else if (currentCameraCode == 1)
         {
-            mainCamera.GetComponent<Camera>().enabled = false;
-            //mainCamera.enabled = false;
-            minimapCamera.GetComponent<Camera>().enabled = true;
-            //minimapCamera.enabled = true;
+            mainCamera.enabled = false;
+            mainCamera.curCamera.enabled = false;
 
-            MinimapPanel.currentGalaxyId = NetClient.localClient.galaxyId;
-            MinimapPanel.currentSystemId = NetClient.localClient.systemId;
+            minimapCamera.enabled = false;
+            minimapCamera.curCamera.enabled = true;
         }
     }
 }

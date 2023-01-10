@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -4584306413555246850}
   - component: {fileID: 5383857113150145970}
   - component: {fileID: 4124582910647186023}
+  - component: {fileID: 3453588827433356538}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -97,12 +98,35 @@ MonoBehaviour:
   main: {fileID: 0}
   isPlayerControll: 0
   networkTransform: {fileID: 5383857113150145970}
-  controller: {fileID: 0}
   galaxyId: 0
   systemId: 0
   sectorId: 0
   zoneId: 0
   modelPatch: 
   templateName: 
-  rigidbodyMain: {fileID: 0}
+  isInitialized: 0
+--- !u!114 &3453588827433356538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3667444412196236990}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f69f4af4892b6ba4a8f30d91158de539, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0.1
+  main: {fileID: 0}
+  isPlayerControll: 0
+  networkTransform: {fileID: 5383857113150145970}
+  galaxyId: 0
+  systemId: 0
+  sectorId: 0
+  zoneId: 0
+  modelPatch: 
+  templateName: 
   isInitialized: 0

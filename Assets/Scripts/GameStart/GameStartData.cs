@@ -17,9 +17,14 @@ public class GameStartData
 
     public Template template;
 
-    public void Init()
+    public static GameStartData Init(string name)
     {
-        template = TemplateManager.FindTemplate(name, "start");
+        GameStartData gameStartData = new GameStartData();
+        gameStartData.template = TemplateManager.FindTemplate(name, "start");
+        gameStartData.GetStartSpace();
+        gameStartData.GetStartType();
+
+        return gameStartData;
     }
 
     public void GetStartSpace()
@@ -45,11 +50,6 @@ public class GameStartData
             starSystemId = int.Parse(spaceNode.GetValue("system"));
             sectorId = int.Parse(spaceNode.GetValue("sector"));
             zoneId = int.Parse(spaceNode.GetValue("zone"));
-
-            NetClient.localClient.galaxyId = galaxyId;
-            NetClient.localClient.systemId = starSystemId;
-            NetClient.localClient.sectorId = sectorId;
-            NetClient.localClient.zoneId = zoneId;
 
             List<TemplateNode> shipNodes = template.GetNodeList("ship");
             List<TemplateNode> playerNodes = template.GetNodeList("player");
@@ -130,23 +130,14 @@ public class GameStartData
         for (int i = 0; i < spaceNodes.Count; i++)
         {
             TemplateNode spaceNode = spaceNodes[i];
-            galaxyId = int.Parse(spaceNode.GetValue("galaxy"));
-            starSystemId = int.Parse(spaceNode.GetValue("system"));
-            sectorId = int.Parse(spaceNode.GetValue("sector"));
-            zoneId = int.Parse(spaceNode.GetValue("zone"));
 
             List<TemplateNode> shipNodes = template.GetNodeList("ship");
-            List<TemplateNode> playerNodes = template.GetNodeList("player");
+            List<TemplateNode> pilotNodes = template.GetNodeList("player");
 
             Galaxy galaxy = SpaceManager.GetGalaxyByID(galaxyId);
             StarSystem system = SpaceManager.GetSystemByID(galaxyId, starSystemId);
             Sector sector = SpaceManager.GetSectorByID(galaxyId, starSystemId, sectorId);
             Zone zone = SpaceManager.GetZoneByID(galaxyId, starSystemId, sectorId, zoneId);
-
-            NetClient.localClient.galaxyId = galaxyId;
-            NetClient.localClient.systemId = starSystemId;
-            NetClient.localClient.sectorId = sectorId;
-            NetClient.localClient.zoneId = zoneId;
 
             for (int j = 0; j < shipNodes.Count; j++)
             {
@@ -179,25 +170,45 @@ public class GameStartData
                 }
                 bool plyShipExist = System.Convert.ToBoolean(int.Parse(shipNode.GetValue("playerShip")));
                 string templateStringName = shipNode.GetValue("template");
-                Ship ship = Ship.CreateShip(templateStringName);
+                Ship ship = Ship.Create(templateStringName);
                 ship.SetSpace(zone);
-                Vector3 startPos = zone.GetPosition();
+                Vector3 startPos = Space.RecalcPos(sector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
                 position += startPos;
+                ship.transform.SetParent(SpaceManager.spaceContainer.transform);
                 ship.transform.localPosition = position;
-                if (type == "ship" && plyShipExist)
-                {
-
-                }
             }
             if (type == "pilot")
             {
-                for (int j = 0; j < playerNodes.Count; j++)
+                Vector3 position = Vector3.zero;
+                Vector3 rotation = Vector3.zero;
+                for (int j = 0; j < pilotNodes.Count; j++)
                 {
-                    TemplateNode playerNode = playerNodes[j];
-                    string templateStringName = playerNode.GetValue("template");
-                    Pilot pilot = Pilot.InitPlayer(NetClient.playerObject, templateStringName);
+                    TemplateNode pilotNode = pilotNodes[j];
+                    TemplateNode positionNode = pilotNode.GetChildNode("position");
+                    if (positionNode != null)
+                    {
+                        int x = int.Parse(positionNode.GetValue("x"));
+                        int y = int.Parse(positionNode.GetValue("y"));
+                        int z = int.Parse(positionNode.GetValue("z"));
+
+                        position = new Vector3(x, y, z);
+                    }
+                    TemplateNode rotationNode = pilotNode.GetChildNode("rotation");
+                    if (rotationNode != null)
+                    {
+                        int x = int.Parse(rotationNode.GetValue("x"));
+                        int y = int.Parse(rotationNode.GetValue("y"));
+                        int z = int.Parse(rotationNode.GetValue("z"));
+
+                        rotation = new Vector3(x, y, z);
+                    }
+                    string templateStringName = pilotNode.GetValue("template");
+                    Pilot pilot = Pilot.Create(templateStringName);
+
                     pilot.SetSpace(zone);
-                    NetClient.localClient.pilot = pilot;
+                    pilot.transform.localPosition = position;
+                    pilot.gameObject.name = Client.localClient.login;
+
                     CameraManager.mainCamera.enabled = false;
                     CameraManager.mainCamera.transform.SetParent(pilot.transform);
                     CameraManager.mainCamera.transform.localPosition = new Vector3(0, 1.6f, -3f);

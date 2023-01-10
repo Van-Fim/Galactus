@@ -10,5 +10,6 @@ public class CanvasManager
     {
         canvas = GameObject.Instantiate(GameContentManager.canvasPrefab);
         GameObject.DontDestroyOnLoad(CanvasManager.canvas);
+        canvas.name = "Canvas";
     }
 }

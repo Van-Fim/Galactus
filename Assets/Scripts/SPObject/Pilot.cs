@@ -1,45 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 
 public class Pilot : SPObject
 {
-    public static Pilot InitPlayer(GameObject gameObject, string templateName)
+    public static Pilot Create(string templateName)
     {
-        Pilot pilot = gameObject.GetComponent<Pilot>();
-        pilot.enabled = true;
-        pilot.isPlayerControll = true;
+        Pilot pilot = Client.localClient.gameObject.AddComponent<Pilot>();
         pilot.templateName = templateName;
         Template template = TemplateManager.FindTemplate(templateName, "pilot");
         TemplateNode modelNode = template.GetNode("model");
         pilot.modelPatch = modelNode.GetValue("patch");
+        pilot.isPlayerControll = true;
         pilot.Init();
 
-        pilot.rigidbodyMain = gameObject.AddComponent<Rigidbody>();
+        pilot.rigidbodyMain = pilot.gameObject.AddComponent<Rigidbody>();
         pilot.rigidbodyMain.useGravity = false;
-        pilot.rigidbodyMain.angularDrag =2f;
+        pilot.rigidbodyMain.angularDrag = 2f;
         pilot.rigidbodyMain.drag = 2f;
         pilot.rigidbodyMain.mass = 10f;
 
-        pilot.controller = gameObject.AddComponent<PlayerController>();
+        pilot.controller = pilot.gameObject.AddComponent<PlayerController>();
         pilot.controller.obj = pilot;
         //pilot.controller.maxSpeed = 2000;
         //pilot.controller.velocity = 10000;
 
-        SpaceObjectNetManager.singleton.pilots.Add(pilot);
+        SPObjectManager.singleton.pilots.Add(pilot);
         return pilot;
-    }
-
-    public override void OnStartClient()
-    {
-        if (isServer)
-        {
-
-        }
-        if (isClient)
-        {
-            
-        }
     }
 }

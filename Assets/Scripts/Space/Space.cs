@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 using System;
 
 [Serializable]
@@ -19,7 +18,6 @@ public class Space
     public byte[] color = new byte[] { 255, 255, 255, 255 };
 
     public SpaceController spaceController;
-    public UiSpaceObject uiSpaceObject;
 
     public Space() { }
     public Space(string templateName)
@@ -67,38 +65,6 @@ public class Space
     {
         Vector3 pos = GetPosition();
         Vector3 rot = GetRotation();
-
-        if (GetType() == typeof(Galaxy))
-        {
-            spaceController = GameObject.Instantiate(GameContentManager.galaxyPrefab, MinimapPanel.galaxiesContainer.transform);
-        }
-        else if (GetType() == typeof(StarSystem))
-        {
-            spaceController = GameObject.Instantiate(GameContentManager.systemPrefab, MinimapPanel.systemsContainer.transform);
-        }
-        else if (GetType() == typeof(Sector))
-        {
-            pos /= Sector.minimapDivFactor;
-            spaceController = GameObject.Instantiate(GameContentManager.sectorPrefab, MinimapPanel.sectorsContainer.transform);
-            spaceController.transform.localScale = new Vector3(this.size / Sector.minimapDivFactor, this.size / Sector.minimapDivFactor, this.size / Sector.minimapDivFactor);
-        }
-        else if (GetType() == typeof(Zone))
-        {
-            pos /= Zone.minimapDivFactor;
-            Zone zn = (Zone)this;
-            spaceController = GameObject.Instantiate(GameContentManager.zonePrefab, MinimapPanel.zonesContainer.transform);
-            spaceController.transform.localScale = new Vector3(this.size / Zone.minimapDivFactor, this.size / Zone.minimapDivFactor, this.size / Zone.minimapDivFactor);
-        }
-        spaceController.space = this;
-        spaceController.transform.localPosition = pos;
-        spaceController.transform.localEulerAngles = rot;
-        spaceController.meshRenderer.material.SetColor("_TintColor", GetColor());
-        spaceController.meshRenderer.material.SetColor("_Color", GetColor());
-
-        uiSpaceObject = GameObject.Instantiate(GameContentManager.uiSpaceObjectPrefab, CanvasManager.canvas.transform);
-        uiSpaceObject.space = this;
-        spaceController.uiSpaceObject = uiSpaceObject;
-        uiSpaceObject.Init();
     }
 
     public virtual void SetColor(Color32 color)
@@ -124,5 +90,25 @@ public class Space
     public virtual Vector3 GetRotation()
     {
         return new Vector3(this.rotation[0], this.rotation[1], this.rotation[2]);
+    }
+    public static Vector3 RecalcPos(Vector3 position, float stepValue)
+    {
+        Vector3 ret = new Vector3();
+        Vector3 c1 = position;
+        position = new Vector3(position.x + stepValue / 2, position.y + stepValue / 2, position.z + stepValue / 2);
+        ret = new Vector3((int)(position.x / stepValue), (int)(position.y / stepValue), (int)(position.z / stepValue));
+        if (c1.x + stepValue / 2 < 0)
+        {
+            ret.x -= 1;
+        }
+        if (c1.y + stepValue / 2 < 0)
+        {
+            ret.y -= 1;
+        }
+        if (c1.z + stepValue / 2 < 0)
+        {
+            ret.z -= 1;
+        }
+        return ret * stepValue;
     }
 }

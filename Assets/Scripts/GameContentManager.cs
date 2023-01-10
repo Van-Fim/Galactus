@@ -1,4 +1,3 @@
-using Mirror.Examples.MultipleMatch;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,27 +11,10 @@ public class GameContentManager
     public static Camera skyboxCameraPrefab;
     public static CameraController minimapCameraPrefab;
 
-    public static MainPlayerPanel mainPlayerPanelPrefab;
-    public static MinimapPanel minimapPanelPrefab;
-    public static UiSpaceObject uiSpaceObjectPrefab;
-
-    public static SpaceManager spaceManagerPrefab;
     public static CanvasController canvasPrefab;
-
-    public static SpaceController galaxyPrefab;
-    public static SpaceController systemPrefab;
-    public static SpaceController sectorPrefab;
-    public static SpaceController zonePrefab;
-
-    public static RandomAreaSpawner asteroidSpawnerPrefab;
-
-    public static SpaceObjectNetManager spaceObjectNetManagerPrefab;
-    public static ClientManager clientManagerPrefab;
 
     public static Ship shipPrefab;
     public static Pilot pilotPrefab;
-
-    public static Asteroid asteroidCubePrefab;
 
     public static void InitContent()
     {
@@ -61,26 +43,9 @@ public class GameContentManager
     {
         mainCameraPrefab = Resources.Load<CameraController>("Prefabs/MainCameraPrefab");
         skyboxCameraPrefab = Resources.Load<Camera>("Prefabs/SkyboxCameraPrefab");
-        spaceManagerPrefab = Resources.Load<SpaceManager>("Prefabs/SpaceManagerPrefab");
         canvasPrefab = Resources.Load<CanvasController>("Prefabs/canvasPrefab");
         minimapCameraPrefab = Resources.Load<CameraController>("Prefabs/MinimapCameraPrefab");
-
-        mainPlayerPanelPrefab = Resources.Load<MainPlayerPanel>("Prefabs/MainPlayerPanelPrefab");
-        minimapPanelPrefab = Resources.Load<MinimapPanel>("Prefabs/MinimapPanelPrefab");
-        uiSpaceObjectPrefab = Resources.Load<UiSpaceObject>("Prefabs/UiSpaceObjectPrefab");
-
-        galaxyPrefab = Resources.Load<SpaceController>("Prefabs/GalaxyPrefab");
-        systemPrefab = Resources.Load<SpaceController>("Prefabs/SystemPrefab");
-        sectorPrefab = Resources.Load<SpaceController>("Prefabs/SectorPrefab");
-        zonePrefab = Resources.Load<SpaceController>("Prefabs/ZonePrefab");
-
-        asteroidSpawnerPrefab = Resources.Load<RandomAreaSpawner>("Prefabs/AsteroidSpawner");
-
-        spaceObjectNetManagerPrefab = Resources.Load<SpaceObjectNetManager>("Prefabs/SpaceObjectNetManagerPrefab");
-        clientManagerPrefab = Resources.Load<ClientManager>("Prefabs/ClientManagerPrefab");
-
         shipPrefab = Resources.Load<Ship>("Prefabs/ShipPrefab");
         pilotPrefab = Resources.Load<Pilot>("Prefabs/PilotPrefab");
-        asteroidCubePrefab = Resources.Load<Asteroid>("Prefabs/AsteroidCube");
     }
 }

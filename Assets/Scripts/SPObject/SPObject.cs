@@ -1,50 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 using UnityEngine.Events;
 
-public class SPObject : NetworkBehaviour
+public class SPObject : MonoBehaviour
 {
     public GameObject main;
 
     public bool isPlayerControll;
-    public NetworkTransform networkTransform;
+    //public Controller controller;
 
-    public Controller controller;
-
-    [SyncVar]
     public int galaxyId;
-    [SyncVar]
     public int systemId;
-    [SyncVar]
     public int sectorId;
-    [SyncVar]
     public int zoneId;
-
-    [SyncVar]
     public string modelPatch;
-
-    [SyncVar]
     public string templateName;
 
     public Rigidbody rigidbodyMain;
 
+    public Controller controller;
+
     public static UnityAction OnRender;
 
     public bool isInitialized = false;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void Init()
     {
@@ -81,7 +60,7 @@ public class SPObject : NetworkBehaviour
         }
     }
 
-    public override void OnStartClient()
+    public void Start()
     {
         if (!isInitialized)
         {
@@ -112,15 +91,13 @@ public class SPObject : NetworkBehaviour
             transform.SetParent(null);
         }
 
-        if (NetClient.localClient.galaxyId == galaxyId && NetClient.localClient.systemId == systemId)
+        if (Client.localClient.galaxyId == galaxyId && Client.localClient.systemId == systemId && Client.localClient.sectorId == sectorId)
         {
             main.SetActive(true);
-            networkTransform.enabled = true;
         }
         else
         {
             main.SetActive(false);
-            networkTransform.enabled = false;
         }
     }
 

@@ -1,18 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 using System;
-using Unity.VisualScripting;
-using System.IO;
-using System.Text.RegularExpressions;
-using UnityEngine.Device;
-using UnityEngine.Rendering.VirtualTexturing;
 
-public class SpaceManager : NetworkBehaviour
+public class SpaceManager : MonoBehaviour
 {
-    [SyncVar]
-    public string seed = "mygameSeed";
     public static List<Galaxy> galaxies = new List<Galaxy>();
     public static List<StarSystem> starSystems = new List<StarSystem>();
     public static List<Sector> sectors = new List<Sector>();
@@ -23,17 +14,44 @@ public class SpaceManager : NetworkBehaviour
 
     public static GameObject spaceContainer;
 
-    public static List<SpaceController> sectorControllers = new List<SpaceController>();
-    public static List<SpaceController> zoneControllers = new List<SpaceController>();
-
-    public void Start()
+    public static void Init()
     {
-
+        singleton = new GameObject().AddComponent<SpaceManager>();
+        singleton.name = "SpaceManager";
     }
 
-    public override void OnStartServer()
+    public void Load()
     {
+        spaceContainer = new GameObject();
+        spaceContainer.name = "SpaceContainer";
+        spaceContainer.transform.position = Vector3.zero;
+        spaceContainer.transform.rotation = Quaternion.identity;
 
+        UnityEngine.Random.InitState(GameController.singleton.seed.GetHashCode());
+        LoadGalaxies("default");
+
+        for (int i = 0; i < galaxies.Count; i++)
+        {
+            Galaxy galaxy = galaxies[i];
+
+            LoadSystems(galaxy);
+        }
+
+        for (int i = 0; i < starSystems.Count; i++)
+        {
+            StarSystem system = starSystems[i];
+            if (system.galaxyId == 0)
+            {
+                LoadSectors(system);
+            }
+        }
+
+        for (int i = 0; i < sectors.Count; i++)
+        {
+            Sector sector = sectors[i];
+
+            LoadZones(sector);
+        }
     }
 
     public static Galaxy GetGalaxyByID(int id)
@@ -60,139 +78,7 @@ public class SpaceManager : NetworkBehaviour
         return zone;
     }
 
-    public void RenderGalaxies()
-    {
-        for (int i = 0; i < galaxies.Count; i++)
-        {
-            Galaxy galaxy = galaxies[i];
-            galaxy.Render();
-        }
-    }
-    public void RenderSystems(int galaxyId)
-    {
-        for (int i = 0; i < starSystems.Count; i++)
-        {
-            StarSystem system = starSystems[i];
-            if (system.galaxyId != galaxyId)
-            {
-                continue;
-            }
-
-            system.Render();
-            if (isServer)
-            {
-                RandomAreaSpawner sp = Instantiate(GameContentManager.asteroidSpawnerPrefab);
-                sp.galaxyId = system.galaxyId;
-                sp.systemId = system.id;
-                sp.Init();
-                GameObject.Destroy(sp.gameObject);
-            }
-        }
-    }
-
-    public void DestroyRenderedSectors()
-    {
-        for (int i = 0; i < sectorControllers.Count; i++)
-        {
-            SpaceController scSp = sectorControllers[i];
-            scSp.DestroyObj();
-        }
-        for (int i = 0; i < zoneControllers.Count; i++)
-        {
-            SpaceController scSp = zoneControllers[i];
-            scSp.DestroyObj();
-        }
-    }
-
-    public void RenderSectors(int galaxyId, int systemId)
-    {
-        for (int i = 0; i < sectors.Count; i++)
-        {
-            Sector sector = sectors[i];
-            if (sector.galaxyId != galaxyId || sector.systemId != systemId)
-            {
-                continue;
-            }
-            sector.Render();
-            sector.spaceController.Init();
-            sector.spaceController.ChangeLayer(2);
-            sectorControllers.Add(sector.spaceController);
-        }
-    }
-
-    public void RenderZones(int galaxyId, int systemId, int sectorId)
-    {
-        for (int i = 0; i < zones.Count; i++)
-        {
-            Zone zone = zones[i];
-            if (!(zone.galaxyId == galaxyId && zone.systemId == systemId && zone.sectorId == sectorId))
-            {
-                continue;
-            }
-            zone.Render();
-            zone.spaceController.Init();
-            zone.spaceController.ChangeLayer(3);
-            sectorControllers.Add(zone.spaceController);
-        }
-    }
-
-    public override void OnStartClient()
-    {
-        singleton = this;
-        if (isServer)
-        {
-
-        }
-        if (isClient)
-        {
-            spaceContainer = new GameObject();
-            spaceContainer.name = "SpaceContainer";
-            spaceContainer.transform.position = Vector3.zero;
-            spaceContainer.transform.rotation = Quaternion.identity;
-
-            UnityEngine.Random.InitState(seed.GetHashCode());
-            LoadGalaxies("default");
-
-            for (int i = 0; i < galaxies.Count; i++)
-            {
-                Galaxy galaxy = galaxies[i];
-
-                LoadSystems(galaxy);
-            }
-
-            for (int i = 0; i < starSystems.Count; i++)
-            {
-                StarSystem system = starSystems[i];
-                if (system.galaxyId == 0)
-                {
-                    LoadSectors(system);
-                }
-            }
-
-            for (int i = 0; i < sectors.Count; i++)
-            {
-                Sector sector = sectors[i];
-
-                LoadZones(sector);
-            }
-
-            MinimapPanel.Init();
-            SpaceManager.singleton.RenderGalaxies();
-            SpaceManager.singleton.RenderSystems(NetClient.localClient.galaxyId);
-
-            UiManager.Init();
-
-            Warp(NetClient.localClient.galaxyId, NetClient.localClient.systemId, NetClient.localClient.sectorId, NetClient.localClient.zoneId);
-            SpaceManager.singleton.DestroyRenderedSectors();
-            SpaceManager.singleton.RenderSectors(NetClient.localClient.galaxyId, NetClient.localClient.systemId);
-            SpaceManager.singleton.RenderZones(NetClient.localClient.galaxyId, NetClient.localClient.systemId, NetClient.localClient.sectorId);
-            MinimapPanel.renderedGalaxyId = NetClient.localClient.galaxyId;
-            MinimapPanel.renderedSystemId = NetClient.localClient.systemId;
-            MinimapPanel.renderedSectorId = NetClient.localClient.sectorId;
-        }
-    }
-
-    public void Warp(int galaxyId, int systemId, int sectorId, int zoneId)
+    public void WarpClient(int galaxyId, int systemId, int sectorId, int zoneId)
     {
         if (sectorId == -1)
         {
@@ -208,11 +94,6 @@ public class SpaceManager : NetworkBehaviour
         Sector sector = GetSectorByID(galaxyId, systemId, sectorId);
         Zone zone = GetZoneByID(galaxyId, systemId, sectorId, zoneId);
 
-        MinimapPanel.currentGalaxyId = galaxyId;
-        MinimapPanel.currentSystemId = systemId;
-        MinimapPanel.currentSectorId = sectorId;
-        MinimapPanel.currentZoneId = zoneId;
-
         Material mat = Resources.Load<Material>($"Materials/{system.skyboxName}");
         RenderSettings.skybox = mat;
         Color32 color = system.GetColor();
@@ -220,21 +101,16 @@ public class SpaceManager : NetworkBehaviour
         color = new Color32((byte)(color.r / cdiv), (byte)(color.g / cdiv), (byte)(color.b / cdiv), color.a);
         RenderSettings.skybox.SetColor("_Tint", color);
 
-        NetClient.localClient.galaxyId = galaxyId;
-        NetClient.localClient.systemId = systemId;
-        NetClient.localClient.sectorId = sectorId;
-        NetClient.localClient.zoneId = zoneId;
+        Client.localClient.galaxyId = galaxyId;
+        Client.localClient.systemId = systemId;
+        Client.localClient.sectorId = sectorId;
+        Client.localClient.zoneId = zoneId;
+        Client.localClient.ReadSpace();
+        
+        Vector3 ralPos = sector.GetPosition() + zone.GetPosition();
+        Vector3 recPos = Space.RecalcPos(sector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
 
-        if (NetClient.localClient.pilot != null)
-        {
-            NetClient.localClient.pilot.SetSpace(zone);
-        }
-        if (NetClient.localClient.ship != null)
-        {
-            NetClient.localClient.ship.SetSpace(zone);
-        }
-
-        spaceContainer.transform.localPosition = -(sector.GetPosition() + zone.GetPosition());
+        spaceContainer.transform.localPosition = -recPos;
 
         SPObject.InvokeRender();
     }
@@ -427,7 +303,7 @@ public class SpaceManager : NetworkBehaviour
             int Ymax = int.Parse(node.GetValue("Ymax"));
             int Ymin = int.Parse(node.GetValue("Ymin"));
 
-            int size = int.Parse(node.GetValue("size"));
+            int size = Sector.sectorStep;
             int count = UnityEngine.Random.Range(minCount, maxCount + 1);
             string sectorTemplateName = node.GetValue("template");
             Template sectorTemplate = TemplateManager.FindTemplate(sectorTemplateName, "sector");
@@ -455,6 +331,7 @@ public class SpaceManager : NetworkBehaviour
                 Vector2 position2D = UnityEngine.Random.insideUnitCircle * range;
                 int yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
                 Vector3 position = new Vector3(position2D.x, yPos, position2D.y);
+                position = Space.RecalcPos(position, Sector.sectorStep);
                 if (i == 0)
                 {
                     position = Vector3.zero;
@@ -478,6 +355,7 @@ public class SpaceManager : NetworkBehaviour
                             position2D = UnityEngine.Random.insideUnitCircle * range;
                             yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
                             position = new Vector3(position2D.x, yPos, position2D.y);
+                            position = Space.RecalcPos(position, Sector.sectorStep);
                             br = true;
                             break;
                         }
@@ -503,6 +381,7 @@ public class SpaceManager : NetworkBehaviour
                 sector.systemId = system.id;
                 sector.name = RandomName();
                 sector.GenerateId();
+                sector.SetIndexes(position/Sector.sectorStep);
                 sectors.Add(sector);
             }
         }
@@ -533,7 +412,7 @@ public class SpaceManager : NetworkBehaviour
             int Ymax = int.Parse(node.GetValue("Ymax"));
             int Ymin = int.Parse(node.GetValue("Ymin"));
 
-            int size = int.Parse(node.GetValue("size"));
+            int size = Zone.zoneStep;
             int count = UnityEngine.Random.Range(minCount, maxCount + 1);
             string zoneTemplateName = node.GetValue("template");
             Template zoneTemplate = TemplateManager.FindTemplate(zoneTemplateName, "zone");
@@ -648,7 +527,7 @@ public class SpaceManager : NetworkBehaviour
 
         int numOfStars = UnityEngine.Random.Range(minCount, maxCount + 1);
 
-        string galaxySeed = (SpaceManager.singleton.seed + "_galaxy_" + galaxy.id.ToString());
+        string galaxySeed = (GameController.singleton.seed + "_galaxy_" + galaxy.id.ToString());
         string galaxyType = currentGalaxytemplate.GetValue("galaxy", "type");
         UnityEngine.Random.InitState(galaxySeed.GetHashCode());
         List<TemplateNode> nodes = currentGalaxytemplate.GetNodeList("system");
@@ -664,7 +543,7 @@ public class SpaceManager : NetworkBehaviour
         int count = UnityEngine.Random.Range(minCount, maxCount + 1);
         UnityEngine.Random.InitState(galaxySeed.GetHashCode());
 
-        if (galaxyType == "sector")
+        if (galaxyType == "galaxy")
         {
             for (int i = 0; i < numOfArms; i++)
             {
@@ -722,14 +601,13 @@ public class SpaceManager : NetworkBehaviour
             string systemTemplateName = node.GetValue("template");
 
             galaxyStarPosition = new Vector3(galaxyStarPosition.x, yPos, galaxyStarPosition.y) - mpos;
-
-            //galaxyStarPosition = galaxyStarPosition.normalized * minRange + (galaxyStarPosition * (maxRange - minRange));
-            //galaxyStarPosition = new Vector3(galaxyStarPosition.x, resultFY, galaxyStarPosition.z);
             StarSystem starSystem = new StarSystem(systemTemplateName, galaxy);
             starSystem.SetPosition(galaxyStarPosition);
             Template systemTemplate = TemplateManager.FindTemplate(systemTemplateName, "system");
             List<TemplateNode> colorNodes = systemTemplate.GetNodeList("color");
             TemplateNode colorNode = TemplateNode.GetByWeightsList(colorNodes);
+            List<TemplateNode> skyboxNodes = systemTemplate.GetNodeList("skybox");
+            TemplateNode skyboxNode = TemplateNode.GetByWeightsList(skyboxNodes);
             byte rc = byte.Parse(colorNode.GetValue("r"));
             byte gc = byte.Parse(colorNode.GetValue("g"));
             byte bc = byte.Parse(colorNode.GetValue("b"));
@@ -738,7 +616,8 @@ public class SpaceManager : NetworkBehaviour
             starSystem.color = new byte[] { rc, gc, bc, ac };
             starSystem.name = RandomName();
             starSystem.templateName = systemTemplateName;
-            starSystem.galaxyId = galaxy.id;
+            starSystem.skyboxName = skyboxNode.GetValue("name");
+            starSystem.GenerateId();
             starSystems.Add(starSystem);
         }
     }
