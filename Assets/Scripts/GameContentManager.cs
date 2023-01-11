@@ -16,7 +16,8 @@ public class GameContentManager
     public static Ship shipPrefab;
     public static Pilot pilotPrefab;
 
-    public static HudClientPanel HudClientPanelPrefab;
+    public static HudClientPanel hudClientPanelPrefab;
+    public static MapClientPanel mapClientPanelPrefab;
 
     public static void InitContent()
     {
@@ -49,6 +50,7 @@ public class GameContentManager
         minimapCameraPrefab = Resources.Load<CameraController>("Prefabs/MinimapCameraPrefab");
         shipPrefab = Resources.Load<Ship>("Prefabs/ShipPrefab");
         pilotPrefab = Resources.Load<Pilot>("Prefabs/PilotPrefab");
-        HudClientPanelPrefab = Resources.Load<HudClientPanel>("Prefabs/HudClientPanelPrefab");
+        hudClientPanelPrefab = Resources.Load<HudClientPanel>("Prefabs/HudClientPanelPrefab");
+        mapClientPanelPrefab = Resources.Load<MapClientPanel>("Prefabs/MapClientPanelPrefab");
     }
 }

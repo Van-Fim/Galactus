@@ -27,7 +27,7 @@ public class SpaceManager : MonoBehaviour
         spaceContainer.transform.position = Vector3.zero;
         spaceContainer.transform.rotation = Quaternion.identity;
 
-        UnityEngine.Random.InitState(GameController.singleton.seed.GetHashCode());
+        UnityEngine.Random.InitState(GameManager.singleton.seed.GetHashCode());
         LoadGalaxies("default");
 
         for (int i = 0; i < galaxies.Count; i++)
@@ -527,7 +527,7 @@ public class SpaceManager : MonoBehaviour
 
         int numOfStars = UnityEngine.Random.Range(minCount, maxCount + 1);
 
-        string galaxySeed = (GameController.singleton.seed + "_galaxy_" + galaxy.id.ToString());
+        string galaxySeed = (GameManager.singleton.seed + "_galaxy_" + galaxy.id.ToString());
         string galaxyType = currentGalaxytemplate.GetValue("galaxy", "type");
         UnityEngine.Random.InitState(galaxySeed.GetHashCode());
         List<TemplateNode> nodes = currentGalaxytemplate.GetNodeList("system");

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 852954180608638213}
   - component: {fileID: 7128058594867143466}
   m_Layer: 5
-  m_Name: MapClientPanel
+  m_Name: MapClientPanelPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84,9 +84,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1347856594757554511}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c1f320ebd251074882a4ac212e640f6, type: 3}
+  m_Script: {fileID: 11500000, guid: 121c009909cd8434b9ac9317dd031903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backButton: {fileID: 264837950015797611}
 --- !u!1 &1578649609242478644
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,7 +101,7 @@ GameObject:
   - component: {fileID: 8880667754859682693}
   - component: {fileID: 264837950015797611}
   m_Layer: 5
-  m_Name: Map
+  m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -275,7 +276,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Map
+  m_text: Back
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

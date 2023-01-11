@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class ClientPanel : MonoBehaviour
 {
+    public virtual void Init(){}
     public virtual void Show()
     {
         gameObject.SetActive(true);

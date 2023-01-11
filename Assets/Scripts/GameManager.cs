@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     public RandomAreaSpawner randomAreaSpawner;
-    public static GameController singleton;
+    public static GameManager singleton;
     public string seed = "mygameSeed";
     void Awake()
     {
@@ -27,7 +27,8 @@ public class GameController : MonoBehaviour
         CameraManager.SwitchByCode(0);
 
         CanvasManager.Init();
-
+        ClientPanelManager.Init();
+        ClientPanelManager.Show<HudClientPanel>();
         Client.Init();
 
         SpaceManager.singleton.Load();
