@@ -554,9 +554,8 @@ GameObject:
   - component: {fileID: 1099675787711333899}
   - component: {fileID: 3075830613966867752}
   - component: {fileID: 519333430951679091}
-  - component: {fileID: 4191596856969232280}
   m_Layer: 5
-  m_Name: MinimapPanelPrefab
+  m_Name: MainClientPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -622,21 +621,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4191596856969232280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1592384669263412420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9356c7a3281d7a4b8ac327dd8341074, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  map: {fileID: 310889480681603122}
-  selectLayerDropdown: {fileID: 50762654531178275}
-  warp: {fileID: 2227283792445323639}
 --- !u!1 &2452276823952402114
 GameObject:
   m_ObjectHideFlags: 0

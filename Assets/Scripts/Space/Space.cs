@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class Space
+public abstract class Space
 {
     public int id = -1;
     public int size = 10;
@@ -61,7 +61,7 @@ public class Space
         return ret;
     }
 
-    public void Render()
+    public virtual void Render()
     {
         Vector3 pos = GetPosition();
         Vector3 rot = GetRotation();

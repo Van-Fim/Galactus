@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class SPObject : MonoBehaviour
+public abstract class SPObject : MonoBehaviour
 {
     public GameObject main;
 
@@ -25,7 +25,7 @@ public class SPObject : MonoBehaviour
 
     public bool isInitialized = false;
 
-    public void Init()
+    public virtual void Init()
     {
         OnRender += Render;
         isInitialized = true;
@@ -69,7 +69,7 @@ public class SPObject : MonoBehaviour
         }
     }
 
-    public void Render()
+    public virtual void Render()
     {
         if (!enabled)
         {
