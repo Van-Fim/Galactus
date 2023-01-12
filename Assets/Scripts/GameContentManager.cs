@@ -19,6 +19,11 @@ public class GameContentManager
     public static HudClientPanel hudClientPanelPrefab;
     public static MapClientPanel mapClientPanelPrefab;
 
+    public static SpaceController galaxyPrefab;
+    public static SpaceController systemPrefab;
+    public static SpaceController sectorPrefab;
+    public static SpaceController zonePrefab;
+
     public static void InitContent()
     {
         list = new List<string>();
@@ -52,5 +57,9 @@ public class GameContentManager
         pilotPrefab = Resources.Load<Pilot>("Prefabs/PilotPrefab");
         hudClientPanelPrefab = Resources.Load<HudClientPanel>("Prefabs/HudClientPanelPrefab");
         mapClientPanelPrefab = Resources.Load<MapClientPanel>("Prefabs/MapClientPanelPrefab");
+        galaxyPrefab = Resources.Load<SpaceController>("Prefabs/GalaxyPrefab");
+        systemPrefab = Resources.Load<SpaceController>("Prefabs/SystemPrefab");
+        sectorPrefab = Resources.Load<SpaceController>("Prefabs/SectorPrefab");
+        zonePrefab = Resources.Load<SpaceController>("Prefabs/ZonePrefab");
     }
 }

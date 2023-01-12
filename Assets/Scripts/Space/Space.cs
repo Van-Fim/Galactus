@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using System;
 
 [Serializable]
@@ -19,10 +20,24 @@ public abstract class Space
 
     public SpaceController spaceController;
 
+    public static UnityAction OnRenderAction;
+
     public Space() { }
     public Space(string templateName)
     {
         this.templateName = templateName;
+    }
+    public virtual void Init()
+    {
+        OnRenderAction += OnRender;
+    }
+
+    public virtual void DestroyController(int layer)
+    {
+        if (spaceController != null && spaceController.layer == layer)
+        {
+            GameObject.DestroyImmediate(spaceController.gameObject);
+        }
     }
 
     public virtual int GenerateId()
@@ -61,10 +76,9 @@ public abstract class Space
         return ret;
     }
 
-    public virtual void Render()
+    public virtual void OnRender()
     {
-        Vector3 pos = GetPosition();
-        Vector3 rot = GetRotation();
+
     }
 
     public virtual void SetColor(Color32 color)
@@ -110,5 +124,9 @@ public abstract class Space
             ret.z -= 1;
         }
         return ret * stepValue;
+    }
+    public static void InvokeRender()
+    {
+        OnRenderAction?.Invoke();
     }
 }

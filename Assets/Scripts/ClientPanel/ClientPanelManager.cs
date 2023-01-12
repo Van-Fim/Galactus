@@ -5,7 +5,7 @@ using UnityEngine;
 public class ClientPanelManager : MonoBehaviour
 {
     public static List<ClientPanel> panels = new List<ClientPanel>();
-    static ClientPanel currentClientPanel;
+    static ClientPanel currentClientBody;
     public static T GetPanel<T>() where T : ClientPanel
     {
         for (int i = 0; i < panels.Count; i++)
@@ -18,15 +18,23 @@ public class ClientPanelManager : MonoBehaviour
         return null;
     }
 
-    public static void Show<T>() where T : ClientPanel
+    public static void Show<T>(bool headerToo = true) where T : ClientPanel
     {
-        if (currentClientPanel != null)
+        if (currentClientBody != null)
         {
-            currentClientPanel.Hide();
+            currentClientBody.Hide();
         }
         T panel = ClientPanelManager.GetPanel<T>();
-        currentClientPanel = panel;
-        currentClientPanel.Show();
+        currentClientBody = panel;
+        currentClientBody.Show();
+    }
+
+    public static void Hide<T>(bool headerToo = true) where T : ClientPanel
+    {
+        if (currentClientBody != null)
+        {
+            currentClientBody.Hide();
+        }
     }
 
     public static void Init()

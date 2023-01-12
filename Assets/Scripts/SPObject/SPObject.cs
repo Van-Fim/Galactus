@@ -21,13 +21,13 @@ public abstract class SPObject : MonoBehaviour
 
     public Controller controller;
 
-    public static UnityAction OnRender;
+    public static UnityAction OnRenderAction;
 
     public bool isInitialized = false;
 
     public virtual void Init()
     {
-        OnRender += Render;
+        OnRenderAction += OnRender;
         isInitialized = true;
     }
 
@@ -69,7 +69,7 @@ public abstract class SPObject : MonoBehaviour
         }
     }
 
-    public virtual void Render()
+    public virtual void OnRender()
     {
         if (!enabled)
         {
@@ -103,6 +103,6 @@ public abstract class SPObject : MonoBehaviour
 
     public static void InvokeRender()
     {
-        OnRender?.Invoke();
+        OnRenderAction?.Invoke();
     }
 }

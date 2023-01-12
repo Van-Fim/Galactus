@@ -31,11 +31,21 @@ public class Zone : Space
         id = curId;
         return id;
     }
-    public virtual void SetIndexes(Vector3 indexes)
+    public override void OnRender()
+    {
+        Vector3 pos = GetPosition();
+        Vector3 rot = GetRotation();
+
+        if (MapClientPanel.selectedGalaxyId == galaxyId && MapClientPanel.selectedSystemId == systemId && MapClientPanel.selectedSectorId == sectorId)
+        {
+            spaceController = GameObject.Instantiate(GameContentManager.zonePrefab);
+        }
+    }
+    public void SetIndexes(Vector3 indexes)
     {
         this.indexes = new int[] { (int)indexes.x, (int)indexes.y, (int)indexes.z };
     }
-    public virtual Vector3 GetIndexes()
+    public Vector3 GetIndexes()
     {
         return new Vector3((int)this.indexes[0], (int)this.indexes[1], (int)this.indexes[2]);
     }

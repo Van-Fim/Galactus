@@ -111,7 +111,7 @@ public class SpaceManager : MonoBehaviour
         Vector3 recPos = Space.RecalcPos(sector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
 
         spaceContainer.transform.localPosition = -recPos;
-
+        Space.InvokeRender();
         SPObject.InvokeRender();
     }
 
@@ -273,6 +273,7 @@ public class SpaceManager : MonoBehaviour
                 galaxy.SetPosition(position);
                 galaxy.name = RandomName();
                 galaxy.GenerateId();
+                galaxy.Init();
                 galaxies.Add(galaxy);
             }
         }
@@ -382,6 +383,7 @@ public class SpaceManager : MonoBehaviour
                 sector.name = RandomName();
                 sector.GenerateId();
                 sector.SetIndexes(position/Sector.sectorStep);
+                sector.Init();
                 sectors.Add(sector);
             }
         }
@@ -493,6 +495,7 @@ public class SpaceManager : MonoBehaviour
                 zone.sectorId = sector.id;
                 zone.name = RandomName();
                 zone.GenerateId();
+                zone.Init();
                 zones.Add(zone);
             }
         }
@@ -618,6 +621,7 @@ public class SpaceManager : MonoBehaviour
             starSystem.templateName = systemTemplateName;
             starSystem.skyboxName = skyboxNode.GetValue("name");
             starSystem.GenerateId();
+            starSystem.Init();
             starSystems.Add(starSystem);
         }
     }
@@ -686,6 +690,7 @@ public class SpaceManager : MonoBehaviour
             {
                 system.SetPosition(position);
                 system.GenerateId();
+                system.Init();
                 starSystems.Add(system);
                 break;
             }

@@ -8,4 +8,11 @@ public class Galaxy : Space
     public Galaxy(string templateName) : base(templateName)
     {
     }
+    public override void OnRender()
+    {
+        Vector3 pos = GetPosition();
+        Vector3 rot = GetRotation();
+
+        spaceController = GameObject.Instantiate(GameContentManager.galaxyPrefab);
+    }
 }

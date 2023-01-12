@@ -14,7 +14,6 @@ public class StarSystem : Space
     {
         this.galaxyId = galaxy.id;
     }
-
     public override int GenerateId()
     {
         int curId = 0;
@@ -27,5 +26,15 @@ public class StarSystem : Space
         }
         id = curId;
         return id;
+    }
+    public override void OnRender()
+    {
+        Vector3 pos = GetPosition();
+        Vector3 rot = GetRotation();
+
+        if (MapClientPanel.selectedGalaxyId == galaxyId)
+        {
+            spaceController = GameObject.Instantiate(GameContentManager.systemPrefab);
+        }
     }
 }
