@@ -38,7 +38,18 @@ public class Zone : Space
 
         if (MapClientPanel.selectedGalaxyId == galaxyId && MapClientPanel.selectedSystemId == systemId && MapClientPanel.selectedSectorId == sectorId)
         {
-            spaceController = GameObject.Instantiate(GameContentManager.zonePrefab);
+            spaceController = GameObject.Instantiate(GameContentManager.zonePrefab, SpaceManager.singleton.transform);
+            spaceController.transform.localPosition = pos / minimapDivFactor;
+            float fs = (float)zoneStep / minimapDivFactor;
+            spaceController.transform.localScale = new Vector3(fs, fs, fs);
+            spaceController.transform.localEulerAngles = rot;
+            spaceController.meshRenderer.material.SetColor("_TintColor", GetColor());
+            spaceController.meshRenderer.material.SetColor("_Color", GetColor());
+            spaceController.Init();
+        }
+        else
+        {
+            DestroyController(3);
         }
     }
     public void SetIndexes(Vector3 indexes)

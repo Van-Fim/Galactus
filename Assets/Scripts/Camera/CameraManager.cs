@@ -18,14 +18,20 @@ public class CameraManager
 
         GameObject.DontDestroyOnLoad(CameraManager.mainCamera);
         GameObject.DontDestroyOnLoad(CameraManager.minimapCamera);
+
+        CameraController.startCamPositions.Add(new Vector3(0, 1000, 0));
+        CameraController.startCamPositions.Add(new Vector3(0, 1200, 0));
+        CameraController.startCamPositions.Add(new Vector3(0, 3000, 0));
+        CameraController.startCamPositions.Add(new Vector3(0, 3000, 0));
         SwitchByCode(0);
     }
 
-    public static void SwitchByCode(byte code){
+    public static void SwitchByCode(byte code)
+    {
         currentCameraCode = code;
         if (currentCameraCode == 0)
         {
-            mainCamera.enabled = true;
+            mainCamera.enabled = false;
             mainCamera.curCamera.enabled = true;
 
             minimapCamera.enabled = false;
@@ -34,9 +40,9 @@ public class CameraManager
         else if (currentCameraCode == 1)
         {
             mainCamera.enabled = false;
-            mainCamera.curCamera.enabled = false;
+            mainCamera.curCamera.enabled = true;
 
-            minimapCamera.enabled = false;
+            minimapCamera.enabled = true;
             minimapCamera.curCamera.enabled = true;
         }
     }

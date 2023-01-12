@@ -603,7 +603,7 @@ public class SpaceManager : MonoBehaviour
             }
             string systemTemplateName = node.GetValue("template");
 
-            galaxyStarPosition = new Vector3(galaxyStarPosition.x, yPos, galaxyStarPosition.y) - mpos;
+            galaxyStarPosition = new Vector3(galaxyStarPosition.x, yPos, galaxyStarPosition.z) - mpos;
             StarSystem starSystem = new StarSystem(systemTemplateName, galaxy);
             starSystem.SetPosition(galaxyStarPosition);
             Template systemTemplate = TemplateManager.FindTemplate(systemTemplateName, "system");

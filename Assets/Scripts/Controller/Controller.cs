@@ -13,9 +13,11 @@ public class Controller : MonoBehaviour
     public int rotationSpeed = 150;
     public int velocity = 10000000;
 
+    public static bool blocked = false;
+
     void FixedUpdate()
     {
-        if (obj.isPlayerControll)
+        if (obj.isPlayerControll && !blocked)
         {
             Turn();
             Move();

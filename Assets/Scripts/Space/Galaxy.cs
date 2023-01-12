@@ -13,6 +13,11 @@ public class Galaxy : Space
         Vector3 pos = GetPosition();
         Vector3 rot = GetRotation();
 
-        spaceController = GameObject.Instantiate(GameContentManager.galaxyPrefab);
+        spaceController = GameObject.Instantiate(GameContentManager.galaxyPrefab, SpaceManager.singleton.transform);
+        spaceController.transform.localPosition = pos;
+        spaceController.transform.localEulerAngles = rot;
+        spaceController.meshRenderer.material.SetColor("_TintColor", GetColor());
+        spaceController.meshRenderer.material.SetColor("_Color", GetColor());
+        spaceController.Init();
     }
 }

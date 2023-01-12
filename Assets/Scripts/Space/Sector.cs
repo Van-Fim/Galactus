@@ -36,7 +36,12 @@ public class Sector : Space
 
         if (MapClientPanel.selectedGalaxyId == galaxyId && MapClientPanel.selectedSystemId == systemId)
         {
-            spaceController = GameObject.Instantiate(GameContentManager.sectorPrefab);
+            spaceController = GameObject.Instantiate(GameContentManager.sectorPrefab, SpaceManager.singleton.transform);
+            spaceController.transform.localPosition = pos/minimapDivFactor;
+            float fs = (float)sectorStep/minimapDivFactor;
+            spaceController.transform.localScale = new Vector3(fs,fs,fs);
+            spaceController.transform.localEulerAngles = rot;
+            spaceController.Init();
         }
         else
         {

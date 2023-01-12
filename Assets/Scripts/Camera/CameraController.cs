@@ -118,10 +118,6 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         curCamera = GetComponent<Camera>();
-        startCamPositions.Add(new Vector3(0, 1000, 0));
-        startCamPositions.Add(new Vector3(0, 1200, 0));
-        startCamPositions.Add(new Vector3(0, 3000, 0));
-        startCamPositions.Add(new Vector3(0, 3000, 0));
     }
 
     void Update()
