@@ -19,8 +19,8 @@ public class CameraManager
         GameObject.DontDestroyOnLoad(CameraManager.mainCamera);
         GameObject.DontDestroyOnLoad(CameraManager.minimapCamera);
 
-        CameraController.startCamPositions.Add(new Vector3(0, 1000, 0));
-        CameraController.startCamPositions.Add(new Vector3(0, 1200, 0));
+        CameraController.startCamPositions.Add(new Vector3(0, 1500, 0));
+        CameraController.startCamPositions.Add(new Vector3(0, 2000, 0));
         CameraController.startCamPositions.Add(new Vector3(0, 3000, 0));
         CameraController.startCamPositions.Add(new Vector3(0, 3000, 0));
         SwitchByCode(0);

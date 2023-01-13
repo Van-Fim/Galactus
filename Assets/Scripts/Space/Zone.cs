@@ -36,7 +36,7 @@ public class Zone : Space
         Vector3 pos = GetPosition();
         Vector3 rot = GetRotation();
 
-        if (MapClientPanel.selectedGalaxyId == galaxyId && MapClientPanel.selectedSystemId == systemId && MapClientPanel.selectedSectorId == sectorId)
+        if (MapClientPanel.currentLayer == GameContentManager.zonePrefab.layer && MapClientPanel.selectedGalaxyId == galaxyId && MapClientPanel.selectedSystemId == systemId && MapClientPanel.selectedSectorId == sectorId)
         {
             spaceController = GameObject.Instantiate(GameContentManager.zonePrefab, SpaceManager.singleton.transform);
             spaceController.transform.localPosition = pos / minimapDivFactor;
@@ -45,6 +45,7 @@ public class Zone : Space
             spaceController.transform.localEulerAngles = rot;
             spaceController.meshRenderer.material.SetColor("_TintColor", GetColor());
             spaceController.meshRenderer.material.SetColor("_Color", GetColor());
+            spaceController.meshRenderer.enabled = true;
             spaceController.Init();
         }
         else

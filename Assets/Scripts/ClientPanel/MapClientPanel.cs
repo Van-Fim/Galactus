@@ -31,12 +31,29 @@ public class MapClientPanel : ClientPanel
         public string name;
     }
 
+    public void ChangeLayer(byte layer)
+    {
+        currentLayer = layer;
+        Vector3 pos = CameraController.startCamPositions[layer];
+        CameraManager.minimapCamera.enabled = false;
+        CameraManager.minimapCamera.transform.localPosition = pos;
+        CameraManager.minimapCamera.transform.localEulerAngles = new Vector3(90, 0, 0);
+        CameraManager.minimapCamera.enabled = true;
+        Space.InvokeRender();
+    }
+
     public override void Show()
     {
         base.Show();
         CameraManager.SwitchByCode(1);
         Controller.blocked = true;
-        SpaceController.InvokeChangeLayer(minLayer);
+
+        selectedGalaxyId = Client.localClient.galaxyId;
+        selectedSystemId = Client.localClient.systemId;
+        selectedSectorId = Client.localClient.sectorId;
+        selectedZoneId = Client.localClient.zoneId;
+
+        ChangeLayer(minLayer);
     }
     public override void Hide()
     {
@@ -60,6 +77,10 @@ public class MapClientPanel : ClientPanel
         list.Add(new MapLayer(1, "Systems"));
         list.Add(new MapLayer(2, "Sectors"));
         list.Add(new MapLayer(3, "Zones"));
+        layerDropdown.onValueChanged.AddListener((int layer) =>
+        {
+            ChangeLayer((byte)layer);
+        });
         for (int i = 0; i < list.Count; i++)
         {
             if (list[i].layer < minLayer)

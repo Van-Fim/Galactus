@@ -97,8 +97,9 @@ public class SpaceManager : MonoBehaviour
         Material mat = Resources.Load<Material>($"Materials/{system.skyboxName}");
         RenderSettings.skybox = mat;
         Color32 color = system.GetColor();
-        float cdiv = 2f;
-        color = new Color32((byte)(color.r / cdiv), (byte)(color.g / cdiv), (byte)(color.b / cdiv), color.a);
+        // float cdiv = 1f;
+        // color = new Color32((byte)(color.r / cdiv), (byte)(color.g / cdiv), (byte)(color.b / cdiv), color.a);
+        color = new Color32((byte)(color.r), (byte)(color.g), (byte)(color.b), color.a);
         RenderSettings.skybox.SetColor("_Tint", color);
 
         Client.localClient.galaxyId = galaxyId;
@@ -106,12 +107,12 @@ public class SpaceManager : MonoBehaviour
         Client.localClient.sectorId = sectorId;
         Client.localClient.zoneId = zoneId;
         Client.localClient.ReadSpace();
-        
+
         Vector3 ralPos = sector.GetPosition() + zone.GetPosition();
         Vector3 recPos = Space.RecalcPos(sector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
 
         spaceContainer.transform.localPosition = -recPos;
-        Space.InvokeRender();
+
         SPObject.InvokeRender();
     }
 
@@ -321,12 +322,7 @@ public class SpaceManager : MonoBehaviour
                 if (colorNodes.Count > 0)
                 {
                     TemplateNode colorNode = TemplateNode.GetByWeightsList(colorNodes);
-                    byte r = byte.Parse(colorNode.GetValue("r"));
-                    byte g = byte.Parse(colorNode.GetValue("g"));
-                    byte b = byte.Parse(colorNode.GetValue("b"));
-                    byte a = byte.Parse(colorNode.GetValue("a"));
-
-                    sector.color = new byte[] { r, g, b, a };
+                    sector.SetColor(colorNode.GetColor());
                 }
                 int counter = 10;
                 Vector2 position2D = UnityEngine.Random.insideUnitCircle * range;
@@ -382,7 +378,7 @@ public class SpaceManager : MonoBehaviour
                 sector.systemId = system.id;
                 sector.name = RandomName();
                 sector.GenerateId();
-                sector.SetIndexes(position/Sector.sectorStep);
+                sector.SetIndexes(position / Sector.sectorStep);
                 sector.Init();
                 sectors.Add(sector);
             }
@@ -431,12 +427,7 @@ public class SpaceManager : MonoBehaviour
                 if (colorNodes.Count > 0)
                 {
                     TemplateNode colorNode = TemplateNode.GetByWeightsList(colorNodes);
-                    byte r = byte.Parse(colorNode.GetValue("r"));
-                    byte g = byte.Parse(colorNode.GetValue("g"));
-                    byte b = byte.Parse(colorNode.GetValue("b"));
-                    byte a = byte.Parse(colorNode.GetValue("a"));
-
-                    zone.color = new byte[] { r, g, b, a };
+                    zone.SetColor(colorNode.GetColor());
                 }
                 int counter = 10;
                 Vector2 rndPos = UnityEngine.Random.insideUnitCircle * maxRangeMax;
@@ -611,16 +602,15 @@ public class SpaceManager : MonoBehaviour
             TemplateNode colorNode = TemplateNode.GetByWeightsList(colorNodes);
             List<TemplateNode> skyboxNodes = systemTemplate.GetNodeList("skybox");
             TemplateNode skyboxNode = TemplateNode.GetByWeightsList(skyboxNodes);
-            byte rc = byte.Parse(colorNode.GetValue("r"));
-            byte gc = byte.Parse(colorNode.GetValue("g"));
-            byte bc = byte.Parse(colorNode.GetValue("b"));
-            byte ac = byte.Parse(colorNode.GetValue("a"));
 
-            starSystem.color = new byte[] { rc, gc, bc, ac };
             starSystem.name = RandomName();
             starSystem.templateName = systemTemplateName;
             starSystem.skyboxName = skyboxNode.GetValue("name");
             starSystem.GenerateId();
+            // int prevSeed = UnityEngine.Random.state.GetHashCode();
+            // UnityEngine.Random.InitState($"system_{starSystem.id}_{galaxySeed}".GetHashCode());
+            starSystem.SetColor(colorNode.GetColor());
+            // UnityEngine.Random.InitState(prevSeed);
             starSystem.Init();
             starSystems.Add(starSystem);
         }
@@ -646,12 +636,6 @@ public class SpaceManager : MonoBehaviour
         List<TemplateNode> skyboxNodes = systemTemplate.GetNodeList("skybox");
         TemplateNode skyboxNode = TemplateNode.GetByWeightsList(skyboxNodes);
 
-        byte rc = byte.Parse(colorNode.GetValue("r"));
-        byte gc = byte.Parse(colorNode.GetValue("g"));
-        byte bc = byte.Parse(colorNode.GetValue("b"));
-        byte ac = byte.Parse(colorNode.GetValue("a"));
-
-        system.color = new byte[] { rc, gc, bc, ac };
         system.name = RandomName();
         system.templateName = systemTemplateName;
         system.skyboxName = skyboxNode.GetValue("name");
@@ -690,6 +674,10 @@ public class SpaceManager : MonoBehaviour
             {
                 system.SetPosition(position);
                 system.GenerateId();
+                // int prevSeed = UnityEngine.Random.state.GetHashCode();
+                // UnityEngine.Random.InitState($"system_{system.id}_{galaxySeed}".GetHashCode());
+                system.SetColor(colorNode.GetColor());
+                // UnityEngine.Random.InitState(prevSeed);
                 system.Init();
                 starSystems.Add(system);
                 break;

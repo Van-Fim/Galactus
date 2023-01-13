@@ -32,13 +32,14 @@ public class StarSystem : Space
         Vector3 pos = GetPosition();
         Vector3 rot = GetRotation();
 
-        if (MapClientPanel.selectedGalaxyId == galaxyId)
+        if (MapClientPanel.currentLayer == GameContentManager.systemPrefab.layer && MapClientPanel.selectedGalaxyId == galaxyId)
         {
             spaceController = GameObject.Instantiate(GameContentManager.systemPrefab, SpaceManager.singleton.transform);
             spaceController.transform.localPosition = pos;
             spaceController.transform.localEulerAngles = rot;
             spaceController.meshRenderer.material.SetColor("_TintColor", GetColor());
             spaceController.meshRenderer.material.SetColor("_Color", GetColor());
+            spaceController.meshRenderer.enabled = true;
             spaceController.Init();
         }
         else

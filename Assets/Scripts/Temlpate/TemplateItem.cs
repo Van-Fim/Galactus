@@ -50,7 +50,47 @@ public class TemplateNode
     public string Node { get => node; set => node = value; }
     public TemplateNode ParentNode { get => parentNode; set => parentNode = value; }
     public string Text { get => text; set => text = value; }
+    public Color32 GetColor()
+    {
+        Color32 ret = new Color32();
+        byte rc = byte.Parse(GetValue("r"));
+        byte gc = byte.Parse(GetValue("g"));
+        byte bc = byte.Parse(GetValue("b"));
+        byte ac = byte.Parse(GetValue("a"));
 
+        byte rmin = byte.Parse(GetValue("rmin"));
+        byte gmin = byte.Parse(GetValue("gmin"));
+        byte bmin = byte.Parse(GetValue("bmin"));
+        byte amin = byte.Parse(GetValue("amin"));
+
+        byte rmax = byte.Parse(GetValue("rmax"));
+        byte gmax = byte.Parse(GetValue("gmax"));
+        byte bmax = byte.Parse(GetValue("bmax"));
+        byte amax = byte.Parse(GetValue("amax"));
+        int rnd = 0;
+        if (rmax > 0)
+        {
+            rnd = Random.Range((int)rmin, (int)rmax+1);
+            rc = (byte)rnd;
+        }
+        if (gmax > 0)
+        {
+            rnd = Random.Range((int)gmin, (int)gmax+1);
+            gc = (byte)rnd;
+        }
+        if (bmax > 0)
+        {
+            rnd = Random.Range((int)bmin, (int)bmax+1);
+            bc = (byte)rnd;
+        }
+        if (amax > 0)
+        {
+            rnd = Random.Range((int)amin, (int)amax+1);
+            ac = (byte)rnd;
+        }
+        ret = new Color32(rc,gc,bc,ac);
+        return ret;
+    }
     public static TemplateNode GetByWeightsList(List<TemplateNode> list)
     {
         TemplateNode ret = null;

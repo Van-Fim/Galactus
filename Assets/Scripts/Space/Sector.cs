@@ -34,13 +34,16 @@ public class Sector : Space
         Vector3 pos = GetPosition();
         Vector3 rot = GetRotation();
 
-        if (MapClientPanel.selectedGalaxyId == galaxyId && MapClientPanel.selectedSystemId == systemId)
+        if (MapClientPanel.currentLayer == GameContentManager.sectorPrefab.layer && MapClientPanel.selectedGalaxyId == galaxyId && MapClientPanel.selectedSystemId == systemId)
         {
             spaceController = GameObject.Instantiate(GameContentManager.sectorPrefab, SpaceManager.singleton.transform);
-            spaceController.transform.localPosition = pos/minimapDivFactor;
-            float fs = (float)sectorStep/minimapDivFactor;
-            spaceController.transform.localScale = new Vector3(fs,fs,fs);
+            spaceController.transform.localPosition = pos / minimapDivFactor;
+            float fs = (float)sectorStep / minimapDivFactor;
+            spaceController.transform.localScale = new Vector3(fs, fs, fs);
             spaceController.transform.localEulerAngles = rot;
+            spaceController.meshRenderer.material.SetColor("_TintColor", GetColor());
+            spaceController.meshRenderer.material.SetColor("_Color", GetColor());
+            spaceController.meshRenderer.enabled = true;
             spaceController.Init();
         }
         else

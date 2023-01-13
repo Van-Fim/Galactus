@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public RandomAreaSpawner randomAreaSpawner;
     public static GameManager singleton;
     public string seed = "mygameSeed";
+    
     void Awake()
     {
         singleton = this;
