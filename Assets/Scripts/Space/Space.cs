@@ -17,10 +17,13 @@ public abstract class Space
     public float[] rotation = new float[] { 0, 0, 0 };
 
     public byte[] color = new byte[] { 255, 255, 255, 255 };
+    public byte[] bgcolor = new byte[] { 255, 255, 255, 255 };
 
     public SpaceController spaceController;
+    public SpaceUiObj uiObj;
 
     public static UnityAction OnRenderAction;
+    public static UnityAction OnDrawUiAction;
 
     public Space() { }
     public Space(string templateName)
@@ -30,6 +33,7 @@ public abstract class Space
     public virtual void Init()
     {
         OnRenderAction += OnRender;
+        OnDrawUiAction += OnDrawUiAction;
     }
 
     public virtual void DestroyController(int layer)
@@ -81,6 +85,17 @@ public abstract class Space
 
     }
 
+    public virtual void OnDrawUi()
+    {
+        if (uiObj == null)
+        {
+            uiObj = GameObject.Instantiate(GameContentManager.spaceUiObjPrefab, CanvasManager.canvas.transform);
+            uiObj.space = this;
+            uiObj.transform.localPosition = Vector3.zero;
+            uiObj.transform.localRotation = Quaternion.identity;
+        }
+    }
+
     public virtual void SetColor(Color32 color)
     {
         this.color = new byte[] { color.r, color.g, color.b, color.a };
@@ -88,6 +103,14 @@ public abstract class Space
     public virtual Color32 GetColor()
     {
         return new Color32(this.color[0], this.color[1], this.color[2], this.color[3]);
+    }
+    public virtual void SetBgColor(Color32 color)
+    {
+        this.bgcolor = new byte[] { color.r, color.g, color.b, color.a };
+    }
+    public virtual Color32 GetBgColor()
+    {
+        return new Color32(this.bgcolor[0], this.bgcolor[1], this.bgcolor[2], this.bgcolor[3]);
     }
     public virtual void SetPosition(Vector3 position)
     {
@@ -128,5 +151,9 @@ public abstract class Space
     public static void InvokeRender()
     {
         OnRenderAction?.Invoke();
+    }
+    public static void InvokeDrawUi()
+    {
+        OnDrawUiAction?.Invoke();
     }
 }

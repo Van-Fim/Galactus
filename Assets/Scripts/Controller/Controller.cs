@@ -90,7 +90,7 @@ public class Controller : MonoBehaviour
             val = -0.25f;
         }
 
-        float speed1 = velocity / maxSpeed;
+        float speed1 = velocity;
 
         if (val2 < val)
         {

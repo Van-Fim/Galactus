@@ -34,12 +34,46 @@ public class MapClientPanel : ClientPanel
     public void ChangeLayer(byte layer)
     {
         currentLayer = layer;
+        Vector3 addPos = Vector3.zero;
+        if (layer == 0)
+        {
+            Galaxy sp = SpaceManager.galaxies.Find(f=>f.id == selectedGalaxyId);
+            if (sp != null)
+            {
+                addPos = sp.GetPosition();
+            }
+        }
+        else if (layer == 1)
+        {
+            StarSystem sys = SpaceManager.starSystems.Find(f=>f.galaxyId == selectedGalaxyId && f.id == selectedSystemId);
+            if (sys != null)
+            {
+                addPos = sys.GetPosition();
+            }
+        }
+        else if (layer == 2)
+        {
+            Sector sp = SpaceManager.sectors.Find(f=>f.galaxyId == selectedGalaxyId && f.systemId == selectedSystemId && f.id == selectedSectorId);
+            if (sp != null)
+            {
+                addPos = sp.GetPosition()/Sector.minimapDivFactor;
+            }
+        }
+        else if (layer == 3)
+        {
+            Zone sp = SpaceManager.zones.Find(f=>f.galaxyId == selectedGalaxyId && f.systemId == selectedSystemId && f.sectorId == selectedSectorId && f.id == selectedZoneId);
+            if (sp != null)
+            {
+                addPos = sp.GetPosition()/Zone.minimapDivFactor;
+            }
+        }
         Vector3 pos = CameraController.startCamPositions[layer];
         CameraManager.minimapCamera.enabled = false;
-        CameraManager.minimapCamera.transform.localPosition = pos;
+        CameraManager.minimapCamera.transform.localPosition = pos + addPos;
         CameraManager.minimapCamera.transform.localEulerAngles = new Vector3(90, 0, 0);
         CameraManager.minimapCamera.enabled = true;
         Space.InvokeRender();
+        Space.InvokeDrawUi();
     }
 
     public override void Show()

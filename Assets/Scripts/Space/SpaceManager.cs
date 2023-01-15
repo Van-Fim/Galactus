@@ -96,7 +96,7 @@ public class SpaceManager : MonoBehaviour
 
         Material mat = Resources.Load<Material>($"Materials/{system.skyboxName}");
         RenderSettings.skybox = mat;
-        Color32 color = system.GetColor();
+        Color32 color = system.GetBgColor();
         // float cdiv = 1f;
         // color = new Color32((byte)(color.r / cdiv), (byte)(color.g / cdiv), (byte)(color.b / cdiv), color.a);
         color = new Color32((byte)(color.r), (byte)(color.g), (byte)(color.b), color.a);
@@ -600,6 +600,8 @@ public class SpaceManager : MonoBehaviour
             Template systemTemplate = TemplateManager.FindTemplate(systemTemplateName, "system");
             List<TemplateNode> colorNodes = systemTemplate.GetNodeList("color");
             TemplateNode colorNode = TemplateNode.GetByWeightsList(colorNodes);
+            List<TemplateNode> colorbgNodes = systemTemplate.GetNodeList("bg_color");
+            TemplateNode colorbgNode = TemplateNode.GetByWeightsList(colorbgNodes);
             List<TemplateNode> skyboxNodes = systemTemplate.GetNodeList("skybox");
             TemplateNode skyboxNode = TemplateNode.GetByWeightsList(skyboxNodes);
 
@@ -610,6 +612,10 @@ public class SpaceManager : MonoBehaviour
             // int prevSeed = UnityEngine.Random.state.GetHashCode();
             // UnityEngine.Random.InitState($"system_{starSystem.id}_{galaxySeed}".GetHashCode());
             starSystem.SetColor(colorNode.GetColor());
+            if (colorbgNode != null)
+            {
+                starSystem.SetBgColor(colorbgNode.GetColor());
+            }
             // UnityEngine.Random.InitState(prevSeed);
             starSystem.Init();
             starSystems.Add(starSystem);
@@ -632,6 +638,9 @@ public class SpaceManager : MonoBehaviour
         system.SetPosition(position);
         List<TemplateNode> colorNodes = systemTemplate.GetNodeList("color");
         TemplateNode colorNode = TemplateNode.GetByWeightsList(colorNodes);
+
+        List<TemplateNode> colorbgNodes = systemTemplate.GetNodeList("bg_color");
+        TemplateNode colorbgNode = TemplateNode.GetByWeightsList(colorbgNodes);
 
         List<TemplateNode> skyboxNodes = systemTemplate.GetNodeList("skybox");
         TemplateNode skyboxNode = TemplateNode.GetByWeightsList(skyboxNodes);
@@ -677,6 +686,10 @@ public class SpaceManager : MonoBehaviour
                 // int prevSeed = UnityEngine.Random.state.GetHashCode();
                 // UnityEngine.Random.InitState($"system_{system.id}_{galaxySeed}".GetHashCode());
                 system.SetColor(colorNode.GetColor());
+                if (colorbgNode != null)
+                {
+                    system.SetBgColor(colorbgNode.GetColor());
+                }
                 // UnityEngine.Random.InitState(prevSeed);
                 system.Init();
                 starSystems.Add(system);

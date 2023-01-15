@@ -14,13 +14,16 @@ public class Galaxy : Space
         Vector3 rot = GetRotation();
         if (MapClientPanel.currentLayer == GameContentManager.galaxyPrefab.layer)
         {
-            spaceController = GameObject.Instantiate(GameContentManager.galaxyPrefab, SpaceManager.singleton.transform);
-            spaceController.transform.localPosition = pos;
-            spaceController.transform.localEulerAngles = rot;
-            spaceController.meshRenderer.material.SetColor("_TintColor", GetColor());
-            spaceController.meshRenderer.material.SetColor("_Color", GetColor());
-            spaceController.meshRenderer.enabled = true;
-            spaceController.Init();
+            if (spaceController == null)
+            {
+                spaceController = GameObject.Instantiate(GameContentManager.galaxyPrefab, SpaceManager.singleton.transform);
+                spaceController.transform.localPosition = pos;
+                spaceController.transform.localEulerAngles = rot;
+                spaceController.meshRenderer.material.SetColor("_TintColor", GetColor());
+                spaceController.meshRenderer.material.SetColor("_Color", GetColor());
+                spaceController.meshRenderer.enabled = true;
+                spaceController.Init();
+            }
         }
         else
         {
