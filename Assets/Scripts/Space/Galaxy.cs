@@ -30,4 +30,9 @@ public class Galaxy : Space
             DestroyController(0);
         }
     }
+
+    public override void OnDrawUi()
+    {
+        base.OnDrawUi();
+    }
 }

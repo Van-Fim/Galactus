@@ -452,6 +452,7 @@ MonoBehaviour:
   backButton: {fileID: 264837950015797611}
   closeButton: {fileID: 7532029567586998653}
   layerDropdown: {fileID: 4179895654842935364}
+  rawImage: {fileID: 1534430408540122776}
 --- !u!1 &1366670181859006828
 GameObject:
   m_ObjectHideFlags: 0

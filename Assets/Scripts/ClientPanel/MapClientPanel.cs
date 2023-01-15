@@ -17,6 +17,7 @@ public class MapClientPanel : ClientPanel
     [SerializeField] private Button closeButton;
 
     [SerializeField] private TMPro.TMP_Dropdown layerDropdown;
+    public RawImage rawImage;
 
     public static List<MapLayer> list = new List<MapLayer>();
 
@@ -37,7 +38,7 @@ public class MapClientPanel : ClientPanel
         Vector3 addPos = Vector3.zero;
         if (layer == 0)
         {
-            Galaxy sp = SpaceManager.galaxies.Find(f=>f.id == selectedGalaxyId);
+            Galaxy sp = SpaceManager.galaxies.Find(f => f.id == selectedGalaxyId);
             if (sp != null)
             {
                 addPos = sp.GetPosition();
@@ -45,7 +46,7 @@ public class MapClientPanel : ClientPanel
         }
         else if (layer == 1)
         {
-            StarSystem sys = SpaceManager.starSystems.Find(f=>f.galaxyId == selectedGalaxyId && f.id == selectedSystemId);
+            StarSystem sys = SpaceManager.starSystems.Find(f => f.galaxyId == selectedGalaxyId && f.id == selectedSystemId);
             if (sys != null)
             {
                 addPos = sys.GetPosition();
@@ -53,18 +54,18 @@ public class MapClientPanel : ClientPanel
         }
         else if (layer == 2)
         {
-            Sector sp = SpaceManager.sectors.Find(f=>f.galaxyId == selectedGalaxyId && f.systemId == selectedSystemId && f.id == selectedSectorId);
+            Sector sp = SpaceManager.sectors.Find(f => f.galaxyId == selectedGalaxyId && f.systemId == selectedSystemId && f.id == selectedSectorId);
             if (sp != null)
             {
-                addPos = sp.GetPosition()/Sector.minimapDivFactor;
+                addPos = sp.GetPosition() / Sector.minimapDivFactor;
             }
         }
         else if (layer == 3)
         {
-            Zone sp = SpaceManager.zones.Find(f=>f.galaxyId == selectedGalaxyId && f.systemId == selectedSystemId && f.sectorId == selectedSectorId && f.id == selectedZoneId);
+            Zone sp = SpaceManager.zones.Find(f => f.galaxyId == selectedGalaxyId && f.systemId == selectedSystemId && f.sectorId == selectedSectorId && f.id == selectedZoneId);
             if (sp != null)
             {
-                addPos = sp.GetPosition()/Zone.minimapDivFactor;
+                addPos = sp.GetPosition() / Zone.minimapDivFactor;
             }
         }
         Vector3 pos = CameraController.startCamPositions[layer];
@@ -106,6 +107,8 @@ public class MapClientPanel : ClientPanel
         {
             ClientPanelManager.Show<HudClientPanel>();
         });
+        rawImage.mainTexture.width = Screen.width;
+        rawImage.mainTexture.height = Screen.height;
         list.Clear();
         list.Add(new MapLayer(0, "Galaxies"));
         list.Add(new MapLayer(1, "Systems"));
@@ -114,6 +117,7 @@ public class MapClientPanel : ClientPanel
         layerDropdown.onValueChanged.AddListener((int layer) =>
         {
             ChangeLayer((byte)layer);
+            CameraManager.minimapCamera.ResetSpeed();
         });
         for (int i = 0; i < list.Count; i++)
         {

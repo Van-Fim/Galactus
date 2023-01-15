@@ -33,7 +33,7 @@ public abstract class Space
     public virtual void Init()
     {
         OnRenderAction += OnRender;
-        OnDrawUiAction += OnDrawUiAction;
+        OnDrawUiAction += OnDrawUi;
     }
 
     public virtual void DestroyController(int layer)
@@ -87,12 +87,13 @@ public abstract class Space
 
     public virtual void OnDrawUi()
     {
-        if (uiObj == null)
+        if (uiObj == null && spaceController != null)
         {
             uiObj = GameObject.Instantiate(GameContentManager.spaceUiObjPrefab, CanvasManager.canvas.transform);
             uiObj.space = this;
             uiObj.transform.localPosition = Vector3.zero;
             uiObj.transform.localRotation = Quaternion.identity;
+            uiObj.Init();
         }
     }
 

@@ -33,23 +33,18 @@ public class SpaceManager : MonoBehaviour
         for (int i = 0; i < galaxies.Count; i++)
         {
             Galaxy galaxy = galaxies[i];
-
             LoadSystems(galaxy);
         }
 
         for (int i = 0; i < starSystems.Count; i++)
         {
             StarSystem system = starSystems[i];
-            if (system.galaxyId == 0)
-            {
-                LoadSectors(system);
-            }
+            LoadSectors(system);
         }
 
         for (int i = 0; i < sectors.Count; i++)
         {
             Sector sector = sectors[i];
-
             LoadZones(sector);
         }
     }
@@ -696,5 +691,9 @@ public class SpaceManager : MonoBehaviour
                 break;
             }
         }
+    }
+    public void LateUpdate()
+    {
+        SpaceUiObj.InvokeRender();
     }
 }

@@ -77,7 +77,10 @@ public class CameraController : MonoBehaviour
     public bool invertY = false;
 
     public bool IsCamEnabled { get => isCamEnabled; set => isCamEnabled = value; }
-
+    public void ResetSpeed()
+    {
+        boost = 3.5f;
+    }
     void OnEnable()
     {
         m_TargetCameraState.SetFromTransform(transform);

@@ -47,4 +47,8 @@ public class StarSystem : Space
             DestroyController(1);
         }
     }
+    public override void OnDrawUi()
+    {
+        base.OnDrawUi();
+    }
 }

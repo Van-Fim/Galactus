@@ -53,6 +53,10 @@ public class Zone : Space
             DestroyController(3);
         }
     }
+    public override void OnDrawUi()
+    {
+        base.OnDrawUi();
+    }
     public void SetIndexes(Vector3 indexes)
     {
         this.indexes = new int[] { (int)indexes.x, (int)indexes.y, (int)indexes.z };
