@@ -19,10 +19,12 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
     public bool selected = false;
 
     public static UnityAction OnRenderAction;
+    public static UnityAction OnDestroyAllAction;
 
     public void Init()
     {
         OnRenderAction += OnRender;
+        OnDestroyAllAction += DestroyAll;
         image.color = defcolor;
 
         mapClientPanel = ClientPanelManager.GetPanel<MapClientPanel>();
@@ -32,10 +34,15 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
     public void Destroy()
     {
         OnRenderAction -= OnRender;
+        OnDestroyAllAction -= DestroyAll;
         image.color = defcolor;
-        DestroyImmediate(this);
+        //DestroyImmediate(this);
+        DestroyImmediate(this.gameObject);
     }
-
+    public void DestroyAll()
+    {
+        Destroy();
+    }
     public void OnRender()
     {
         Camera cam = CameraManager.minimapCamera.curCamera;
@@ -103,6 +110,10 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
             if (space.id == Client.localClient.galaxyId)
             {
                 image.color = curSysColor;
+                if (space.id == MapClientPanel.selectedGalaxyId)
+                {
+                    image.color = selcolor;
+                }
             }
             else if (space.id == MapClientPanel.selectedGalaxyId)
             {
@@ -119,6 +130,10 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
             if (ssp.galaxyId == Client.localClient.galaxyId && ssp.id == Client.localClient.systemId)
             {
                 image.color = curSysColor;
+                if (ssp.galaxyId == MapClientPanel.selectedGalaxyId && ssp.id == MapClientPanel.selectedSystemId)
+                {
+                    image.color = selcolor;
+                }
             }
             else if (ssp.galaxyId == MapClientPanel.selectedGalaxyId && ssp.id == MapClientPanel.selectedSystemId)
             {
@@ -143,6 +158,10 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
             if (ssp.galaxyId == Client.localClient.galaxyId && ssp.systemId == Client.localClient.systemId && ssp.id == Client.localClient.sectorId)
             {
                 image.color = curSysColor;
+                if (ssp.galaxyId == MapClientPanel.selectedGalaxyId && ssp.systemId == MapClientPanel.selectedSystemId && ssp.id == MapClientPanel.selectedSectorId)
+                {
+                    image.color = selcolor;
+                }
             }
             else if (ssp.galaxyId == MapClientPanel.selectedGalaxyId && ssp.systemId == MapClientPanel.selectedSystemId && ssp.id == MapClientPanel.selectedSectorId)
             {
@@ -196,5 +215,9 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
     public static void InvokeRender()
     {
         OnRenderAction?.Invoke();
+    }
+    public static void InvokeDestroyAll()
+    {
+        OnDestroyAllAction?.Invoke();
     }
 }

@@ -16,6 +16,8 @@ public class MapClientPanel : ClientPanel
     [SerializeField] private Button backButton;
     [SerializeField] private Button closeButton;
 
+    [SerializeField] private Button warpButton;
+
     [SerializeField] private TMPro.TMP_Dropdown layerDropdown;
     public RawImage rawImage;
 
@@ -102,10 +104,16 @@ public class MapClientPanel : ClientPanel
         backButton.onClick.AddListener(() =>
         {
             ClientPanelManager.Show<HudClientPanel>();
+            SpaceUiObj.InvokeDestroyAll();
         });
         closeButton.onClick.AddListener(() =>
         {
             ClientPanelManager.Show<HudClientPanel>();
+            SpaceUiObj.InvokeDestroyAll();
+        });
+        warpButton.onClick.AddListener(() =>
+        {
+            SpaceManager.singleton.WarpClient(selectedGalaxyId, selectedSystemId, selectedSectorId, selectedZoneId);
         });
         rawImage.mainTexture.width = Screen.width;
         rawImage.mainTexture.height = Screen.height;

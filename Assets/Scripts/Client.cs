@@ -14,6 +14,8 @@ public class Client : MonoBehaviour
     public int sectorId;
     public int zoneId;
 
+    public Pilot pilot;
+
     public static UnityAction<Zone> OnChangedZone;
 
     Galaxy currGalaxy;

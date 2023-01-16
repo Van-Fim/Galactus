@@ -208,6 +208,7 @@ public class GameStartData
                     pilot.SetSpace(zone);
                     pilot.transform.localPosition = position;
                     pilot.gameObject.name = Client.localClient.login;
+                    Client.localClient.pilot = pilot;
 
                     CameraManager.mainCamera.enabled = false;
                     CameraManager.mainCamera.transform.SetParent(pilot.transform);

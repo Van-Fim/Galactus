@@ -30,7 +30,7 @@ public class SpaceController : MonoBehaviour
 
     void Destroy()
     {
-        DestroyImmediate(this);
+        DestroyImmediate(gameObject);
         OnChangeLayerAction -= OnChangeLayer;
     }
 
