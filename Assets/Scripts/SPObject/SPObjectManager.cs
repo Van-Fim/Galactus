@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
-public class SPObjectManager : MonoBehaviour
+public class SPObjectManager : NetworkBehaviour
 {
     public static SPObjectManager singleton;
-    public List<Ship> ships = new List<Ship>();
-    public List<Pilot> pilots = new List<Pilot>();
+    public List<uint> shipsIds = new List<uint>();
+    public SyncList<uint> pilotsIds = new SyncList<uint>();
 
     public static void Init(){
-        singleton = new GameObject().AddComponent<SPObjectManager>();
+        singleton = Instantiate(GameContentManager.SPObjectManagerPrefab);
         singleton.name = "SPObjectManager";
     }
 }

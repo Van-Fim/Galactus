@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
 public class GameStartData
@@ -111,7 +112,7 @@ public class GameStartData
         }
     }
 
-    public void LoadContent()
+    public void LoadContent(Client client)
     {
         if (template == null)
         {
@@ -203,16 +204,16 @@ public class GameStartData
                         rotation = new Vector3(x, y, z);
                     }
                     string templateStringName = pilotNode.GetValue("template");
+
                     Pilot pilot = Pilot.Create(templateStringName);
 
-                    pilot.SetSpace(zone);
                     pilot.transform.localPosition = position;
-                    pilot.gameObject.name = Client.localClient.login;
-                    Client.localClient.pilot = pilot;
-
-                    CameraManager.mainCamera.enabled = false;
-                    CameraManager.mainCamera.transform.SetParent(pilot.transform);
-                    CameraManager.mainCamera.transform.localPosition = new Vector3(0, 1.6f, -3f);
+                    pilot.isPlayerControll = true;
+                    client.pilotId = pilot.netId;
+                    client.PilotSpawned(client.netId, pilot.netId);
+                    // CameraManager.mainCamera.enabled = false;
+                    // CameraManager.mainCamera.transform.SetParent(pilot.transform);
+                    // CameraManager.mainCamera.transform.localPosition = new Vector3(0, 1.6f, -3f);
                 }
             }
         }

@@ -9,9 +9,9 @@ public class Controller : MonoBehaviour
     float val = 0;
     float val2 = 0;
 
-    public int maxSpeed = 1000000;
+    public int maxSpeed = 10000;
     public int rotationSpeed = 150;
-    public int velocity = 10000000;
+    public int velocity = 100000;
 
     public static bool blocked = false;
 

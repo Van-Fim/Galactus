@@ -1,20 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 using UnityEngine.Events;
 
-public abstract class SPObject : MonoBehaviour
+public abstract class SPObject : NetworkBehaviour
 {
     public GameObject main;
-
+    [SyncVar]
     public bool isPlayerControll;
     //public Controller controller;
-
+    [SyncVar]
     public int galaxyId;
+    [SyncVar]
     public int systemId;
+    [SyncVar]
     public int sectorId;
+    [SyncVar]
     public int zoneId;
+    [SyncVar]
     public string modelPatch;
+    [SyncVar]
     public string templateName;
 
     public Rigidbody rigidbodyMain;
@@ -22,7 +28,7 @@ public abstract class SPObject : MonoBehaviour
     public Controller controller;
 
     public static UnityAction OnRenderAction;
-
+    [SyncVar]
     public bool isInitialized = false;
 
     public virtual void Init()
@@ -62,11 +68,7 @@ public abstract class SPObject : MonoBehaviour
 
     public void Start()
     {
-        if (!isInitialized)
-        {
-            Init();
-            InvokeRender();
-        }
+
     }
 
     public virtual void OnRender()
@@ -75,7 +77,7 @@ public abstract class SPObject : MonoBehaviour
         {
             return;
         }
-        
+
         if (modelPatch.Length > 0 && main == null)
         {
             GameObject minst = Resources.Load<GameObject>($"{modelPatch}/MAIN");

@@ -4,17 +4,29 @@ using System;
 using System.Net.Sockets;
 using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
+using Mirror;
 using UnityEngine.Events;
-public class Client : MonoBehaviour
+public class Client : NetworkBehaviour
 {
+    [SyncVar]
     public string login = "PlayerusChar01";
+    [SyncVar]
     public string accountLogin = "Playerus";
+    [SyncVar]
     public int galaxyId;
+    [SyncVar]
     public int systemId;
+    [SyncVar]
     public int sectorId;
+    [SyncVar]
     public int zoneId;
 
-    public Pilot pilot;
+    [SyncVar]
+    public bool startGameStarted;
+    [SyncVar]
+    public uint pilotId;
+    public Ship ship;
+    public NetworkTransform networkTransform;
 
     public static UnityAction<Zone> OnChangedZone;
 
@@ -46,22 +58,25 @@ public class Client : MonoBehaviour
         public int characterCash;
     }
 
-    public static void Init()
+    public void Init()
     {
-        localClient = new GameObject().AddComponent<Client>();
-        localClient.serverIdentity = localClient.GenerateAccountData();
-        localClient.characterData = localClient.LoadCharacterData();
+        GenerateAccountData();
+        LoadCharacterData();
     }
 
     void Start()
     {
-        OnChangedZone += ZoneChanged;
+
     }
 
     void Update()
     {
+        if (currZone == null)
+        {
+            return;
+        }
         Vector3 znPos = currZone.GetPosition() + transform.localPosition;
-        znPos = Space.RecalcPos(znPos, Zone.zoneStep)/Zone.zoneStep;
+        znPos = Space.RecalcPos(znPos, Zone.zoneStep) / Zone.zoneStep;
 
         if (currZone.GetIndexes() != znPos)
         {
@@ -77,6 +92,65 @@ public class Client : MonoBehaviour
                 fzn.id = -1;
             }
             InvokeOnChangedZone(fzn);
+        }
+    }
+
+    public override void OnStartClient()
+    {
+        if (!isLocalPlayer)
+        {
+
+        }
+        else
+        {
+            localClient = this;
+            OnChangedZone += ZoneChanged;
+            SpaceManager.Init();
+
+            SpaceManager.singleton.Load();
+
+            if (!startGameStarted)
+            {
+                GameStartData gameStartData = GameStartData.Init("Start01");
+                Client.localClient.ReadSpace();
+                PilotSpawn("Start01");
+            }
+        }
+    }
+
+    [Command]
+    public void PilotSpawn(string data)
+    {
+        GameStartData gameStartData = GameStartData.Init(data);
+        galaxyId = gameStartData.galaxyId;
+        systemId = gameStartData.starSystemId;
+        sectorId = gameStartData.sectorId;
+        zoneId = gameStartData.zoneId;
+        startGameStarted = true;
+        gameStartData.LoadContent(this);
+    }
+
+    [ClientRpc]
+    public void PilotSpawned(uint netId, uint pilotId)
+    {
+        if (this.netId == netId)
+        {
+            Pilot pilot = NetworkClient.spawned[pilotId].GetComponent<Pilot>();
+            pilot.rigidbodyMain = pilot.gameObject.AddComponent<Rigidbody>();
+            pilot.rigidbodyMain.useGravity = false;
+            pilot.rigidbodyMain.angularDrag = 2f;
+            pilot.rigidbodyMain.drag = 2f;
+            pilot.rigidbodyMain.mass = 10f;
+            pilot.galaxyId = galaxyId;
+            pilot.systemId = systemId;
+            pilot.sectorId = sectorId;
+            pilot.zoneId = zoneId;
+            pilot.controller = pilot.gameObject.AddComponent<PlayerController>();
+            pilot.controller.obj = pilot;
+            CameraManager.mainCamera.enabled = false;
+            CameraManager.mainCamera.transform.SetParent(pilot.transform);
+            CameraManager.mainCamera.transform.localPosition = new Vector3(0, 1.6f, -3f);
+            SpaceManager.singleton.WarpClient(pilot.galaxyId, pilot.systemId, pilot.sectorId, pilot.zoneId);
         }
     }
 

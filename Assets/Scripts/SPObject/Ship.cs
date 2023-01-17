@@ -12,7 +12,7 @@ public class Ship : SPObject
         TemplateNode modelNode = template.GetNode("model");
         ship.modelPatch = modelNode.GetValue("patch");
         ship.Init();
-        SPObjectManager.singleton.ships.Add(ship);
+
         return ship;
     }
 }

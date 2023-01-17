@@ -20,6 +20,7 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
 
     public static UnityAction OnRenderAction;
     public static UnityAction OnDestroyAllAction;
+    bool destroyed;
 
     public void Init()
     {
@@ -36,8 +37,10 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
         OnRenderAction -= OnRender;
         OnDestroyAllAction -= DestroyAll;
         image.color = defcolor;
+        destroyed = true;
         //DestroyImmediate(this);
         DestroyImmediate(this.gameObject);
+        destroyed = true;
     }
     public void DestroyAll()
     {
@@ -178,6 +181,7 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
             if (!(ssp.galaxyId == MapClientPanel.selectedGalaxyId && ssp.systemId == MapClientPanel.selectedSystemId && ssp.sectorId == MapClientPanel.selectedSectorId))
             {
                 Destroy();
+                return;
             }
             if (ssp.galaxyId == Client.localClient.galaxyId && ssp.systemId == Client.localClient.systemId && ssp.sectorId == Client.localClient.sectorId && ssp.id == Client.localClient.zoneId)
             {

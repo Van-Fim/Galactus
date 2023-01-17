@@ -24,6 +24,8 @@ public class GameContentManager
     public static SpaceController sectorPrefab;
     public static SpaceController zonePrefab;
     public static SpaceUiObj spaceUiObjPrefab;
+    public static SPObjectManager SPObjectManagerPrefab;
+    public static ClientManager ClientManagerPrefab;
 
     public static void InitContent()
     {
@@ -63,5 +65,7 @@ public class GameContentManager
         sectorPrefab = Resources.Load<SpaceController>("Prefabs/SectorPrefab");
         zonePrefab = Resources.Load<SpaceController>("Prefabs/ZonePrefab");
         spaceUiObjPrefab = Resources.Load<SpaceUiObj>("Prefabs/SpaceUiObjPrefab");
+        SPObjectManagerPrefab = Resources.Load<SPObjectManager>("Prefabs/SPObjectManagerPrefab");
+        ClientManagerPrefab = Resources.Load<ClientManager>("Prefabs/ClientManagerPrefab");
     }
 }

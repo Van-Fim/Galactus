@@ -37,8 +37,8 @@ public class StarSystem : Space
             spaceController = GameObject.Instantiate(GameContentManager.systemPrefab, SpaceManager.singleton.transform);
             spaceController.transform.localPosition = pos;
             spaceController.transform.localEulerAngles = rot;
-            spaceController.meshRenderer.material.SetColor("_TintColor", GetColor());
-            spaceController.meshRenderer.material.SetColor("_Color", GetColor());
+            spaceController.meshRenderer.material.SetColor("_TintColor", GetBgColor());
+            spaceController.meshRenderer.material.SetColor("_Color", GetBgColor());
             spaceController.meshRenderer.enabled = true;
             spaceController.Init();
         }

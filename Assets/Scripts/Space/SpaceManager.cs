@@ -126,8 +126,6 @@ public class SpaceManager : MonoBehaviour
         Client.localClient.zoneId = zoneId;
         Client.localClient.ReadSpace();
 
-        Client.localClient.pilot.SetSpace(zone);
-
         Vector3 ralPos = sector.GetPosition() + zone.GetPosition();
         Vector3 recPos = Space.RecalcPos(sector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
 
