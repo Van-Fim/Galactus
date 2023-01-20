@@ -66,9 +66,9 @@ public abstract class SPObject : NetworkBehaviour
         }
     }
 
-    public void Start()
+    public override void OnStartClient()
     {
-
+        Init();
     }
 
     public virtual void OnRender()

@@ -11,7 +11,6 @@ public class Ship : SPObject
         Template template = TemplateManager.FindTemplate(templateName, "ship");
         TemplateNode modelNode = template.GetNode("model");
         ship.modelPatch = modelNode.GetValue("patch");
-        ship.Init();
 
         return ship;
     }

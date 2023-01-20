@@ -16,29 +16,27 @@ public class GameStartData
     public string shipTemplatename;
     public string pilotTemplatename;
 
-    public Template template;
-
     public static GameStartData Init(string name)
     {
         GameStartData gameStartData = new GameStartData();
-        gameStartData.template = TemplateManager.FindTemplate(name, "start");
+        gameStartData.name = name;
         gameStartData.GetStartSpace();
         gameStartData.GetStartType();
-
         return gameStartData;
     }
 
     public void GetStartSpace()
     {
+        Template template = TemplateManager.FindTemplate(name, "start");
         if (template == null)
         {
-            Debug.LogError("Error template not found");
+            Debug.LogError($"Error template {name} not found");
             return;
         }
 
         if (template == null)
         {
-            Debug.LogError("Template " + name + " not found");
+            Debug.LogError($"Template {name} not found");
             return;
         }
 
@@ -74,6 +72,7 @@ public class GameStartData
 
     public void GetStartType()
     {
+        Template template = TemplateManager.FindTemplate(name, "start");
         if (template == null)
         {
             Debug.LogError("Error template not found");
@@ -114,6 +113,7 @@ public class GameStartData
 
     public void LoadContent(Client client)
     {
+        Template template = TemplateManager.FindTemplate(name, "start");
         if (template == null)
         {
             Debug.LogError("Error template not found");
@@ -173,10 +173,10 @@ public class GameStartData
                 string templateStringName = shipNode.GetValue("template");
                 Ship ship = Ship.Create(templateStringName);
                 ship.SetSpace(zone);
-                Vector3 startPos = Space.RecalcPos(sector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
-                position += startPos;
                 ship.transform.SetParent(SpaceManager.spaceContainer.transform);
                 ship.transform.localPosition = position;
+                NetworkServer.Spawn(ship.gameObject);
+                SPObjectManager.singleton.shipsIds.Add(ship.netId);
             }
             if (type == "pilot")
             {
@@ -206,14 +206,11 @@ public class GameStartData
                     string templateStringName = pilotNode.GetValue("template");
 
                     Pilot pilot = Pilot.Create(templateStringName);
-
                     pilot.transform.localPosition = position;
                     pilot.isPlayerControll = true;
+                    NetworkServer.Spawn(pilot.gameObject);
+                    SPObjectManager.singleton.pilotsIds.Add(pilot.netId);
                     client.pilotId = pilot.netId;
-                    client.PilotSpawned(client.netId, pilot.netId);
-                    // CameraManager.mainCamera.enabled = false;
-                    // CameraManager.mainCamera.transform.SetParent(pilot.transform);
-                    // CameraManager.mainCamera.transform.localPosition = new Vector3(0, 1.6f, -3f);
                 }
             }
         }

@@ -24,6 +24,8 @@ public class Client : NetworkBehaviour
     [SyncVar]
     public bool startGameStarted;
     [SyncVar]
+    public GameStartData gameStartData;
+    [SyncVar]
     public uint pilotId;
     public Ship ship;
     public NetworkTransform networkTransform;
@@ -97,29 +99,18 @@ public class Client : NetworkBehaviour
 
     public override void OnStartClient()
     {
-        if (!isLocalPlayer)
+        if (isLocalPlayer)
         {
-
-        }
-        else
-        {
-            localClient = this;
             OnChangedZone += ZoneChanged;
             SpaceManager.Init();
-
             SpaceManager.singleton.Load();
 
-            if (!startGameStarted)
-            {
-                GameStartData gameStartData = GameStartData.Init("Start01");
-                Client.localClient.ReadSpace();
-                PilotSpawn("Start01");
-            }
+            InitGamestart("Start01");
         }
     }
 
     [Command]
-    public void PilotSpawn(string data)
+    public void InitGamestart(string data)
     {
         GameStartData gameStartData = GameStartData.Init(data);
         galaxyId = gameStartData.galaxyId;
@@ -128,29 +119,38 @@ public class Client : NetworkBehaviour
         zoneId = gameStartData.zoneId;
         startGameStarted = true;
         gameStartData.LoadContent(this);
+
+        PilotSpawned();
     }
 
     [ClientRpc]
-    public void PilotSpawned(uint netId, uint pilotId)
+    public void PilotSpawned()
     {
-        if (this.netId == netId)
+        if (isLocalPlayer)
         {
+            localClient = this;
             Pilot pilot = NetworkClient.spawned[pilotId].GetComponent<Pilot>();
             pilot.rigidbodyMain = pilot.gameObject.AddComponent<Rigidbody>();
             pilot.rigidbodyMain.useGravity = false;
             pilot.rigidbodyMain.angularDrag = 2f;
             pilot.rigidbodyMain.drag = 2f;
             pilot.rigidbodyMain.mass = 10f;
+
             pilot.galaxyId = galaxyId;
             pilot.systemId = systemId;
             pilot.sectorId = sectorId;
             pilot.zoneId = zoneId;
+
             pilot.controller = pilot.gameObject.AddComponent<PlayerController>();
             pilot.controller.obj = pilot;
             CameraManager.mainCamera.enabled = false;
             CameraManager.mainCamera.transform.SetParent(pilot.transform);
             CameraManager.mainCamera.transform.localPosition = new Vector3(0, 1.6f, -3f);
             SpaceManager.singleton.WarpClient(pilot.galaxyId, pilot.systemId, pilot.sectorId, pilot.zoneId);
+        }
+        else
+        {
+            SPObject.InvokeRender();
         }
     }
 

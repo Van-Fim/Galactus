@@ -13,12 +13,6 @@ public class Pilot : SPObject
         TemplateNode modelNode = template.GetNode("model");
         pilot.modelPatch = modelNode.GetValue("patch");
         pilot.isPlayerControll = true;
-        pilot.Init();
-
-        NetworkServer.Spawn(pilot.gameObject);
-        SPObjectManager.singleton.pilotsIds.Add(pilot.netId);
-        //pilot.controller.maxSpeed = 2000;
-        //pilot.controller.velocity = 10000;
 
         return pilot;
     }
