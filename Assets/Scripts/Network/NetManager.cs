@@ -54,6 +54,9 @@ public class NetManager : NetworkManager
         NetworkServer.Spawn(ClientManager.singleton.gameObject);
         onlineSceneLoaded = true;
 
+        SpaceManager.Init();
+        SpaceManager.singleton.Load();
+
         yield return 1;
     }
 }

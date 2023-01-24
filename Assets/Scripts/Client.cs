@@ -27,6 +27,8 @@ public class Client : NetworkBehaviour
     public GameStartData gameStartData;
     [SyncVar]
     public uint pilotId;
+    public Pilot pilot;
+
     public Ship ship;
     public NetworkTransform networkTransform;
 
@@ -73,27 +75,53 @@ public class Client : NetworkBehaviour
 
     void Update()
     {
-        if (currZone == null)
+        if (isLocalPlayer)
         {
-            return;
-        }
-        Vector3 znPos = currZone.GetPosition() + transform.localPosition;
-        znPos = Space.RecalcPos(znPos, Zone.zoneStep) / Zone.zoneStep;
-
-        if (currZone.GetIndexes() != znPos)
-        {
-            Zone fzn = SpaceManager.zones.Find(f => f.galaxyId == currGalaxy.id && f.systemId == currSystem.id && f.sectorId == currSector.id && f.GetIndexes() == znPos);
-            if (fzn == null)
+            if (currZone == null)
             {
-                fzn = new Zone("Zone00");
-                fzn.galaxyId = currGalaxy.id;
-                fzn.systemId = currSystem.id;
-                fzn.sectorId = currSector.id;
-                fzn.SetIndexes(znPos);
-                fzn.SetPosition(znPos * Zone.zoneStep);
-                fzn.id = -1;
+                return;
             }
-            InvokeOnChangedZone(fzn);
+            if (pilot == null)
+            {
+                return;
+            }
+            Vector3 znPos = Vector3.zero;
+            if (ship == null)
+            {
+                znPos = currZone.GetPosition() + pilot.transform.localPosition;
+                znPos = Space.RecalcPos(znPos, Zone.zoneStep) / Zone.zoneStep;
+            }
+
+            int curGalaxyId = currZone.galaxyId;
+            int curSystemId = currZone.systemId;
+            int curSectorId = currZone.sectorId;
+            int curZoneId = currZone.id;
+
+            bool checkSpace = currZone.galaxyId == curGalaxyId && currZone.systemId == curSystemId && currZone.sectorId == curSectorId && currZone.id == curZoneId;
+            if (currZone.GetIndexes() != znPos || !checkSpace)
+            {
+                Zone fzn = SpaceManager.zones.Find(f => f.galaxyId == currGalaxy.id && f.systemId == currSystem.id && f.sectorId == currSector.id && f.GetIndexes() == znPos);
+
+                if (fzn == null)
+                {
+                    fzn = SpaceManager.zones.Find(f => f.galaxyId == currGalaxy.id && f.systemId == currSystem.id && f.sectorId == currSector.id && f.id == 0);
+                    fzn.SetIndexes(znPos);
+                    fzn.SetPosition(znPos * Zone.zoneStep);
+                    if (fzn.spaceController != null)
+                    {
+                        fzn.spaceController.transform.localPosition = fzn.GetPosition() / Zone.minimapDivFactor;
+                    }
+                }
+                Client.localClient.galaxyId = curGalaxyId;
+                Client.localClient.systemId = curSystemId;
+                Client.localClient.sectorId = curSectorId;
+                Client.localClient.zoneId = curZoneId;
+                InvokeOnChangedZone(fzn);
+            }
+        }
+        else
+        {
+            Debug.Log(pilot);
         }
     }
 
@@ -101,35 +129,59 @@ public class Client : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
+            localClient = this;
             OnChangedZone += ZoneChanged;
-            SpaceManager.Init();
-            SpaceManager.singleton.Load();
-
+            if (!(isClient && isServer))
+            {
+                SpaceManager.Init();
+                SpaceManager.singleton.Load();
+            }
             InitGamestart("Start01");
+        }
+        else
+        {
+            ReadSpace();
         }
     }
 
     [Command]
     public void InitGamestart(string data)
     {
-        GameStartData gameStartData = GameStartData.Init(data);
+        gameStartData = GameStartData.Init(data);
         galaxyId = gameStartData.galaxyId;
         systemId = gameStartData.starSystemId;
         sectorId = gameStartData.sectorId;
         zoneId = gameStartData.zoneId;
         startGameStarted = true;
         gameStartData.LoadContent(this);
+        PilotSpawned(gameStartData, pilotId);
+    }
 
-        PilotSpawned();
+    public void ContinueInit()
+    {
+        ClientPanelManager.Init();
+        ClientPanelManager.Show<HudClientPanel>();
+
+        WarpClient(galaxyId, systemId, sectorId, zoneId);
     }
 
     [ClientRpc]
-    public void PilotSpawned()
+    public void PilotSpawned(GameStartData gameStartData, uint netId)
     {
         if (isLocalPlayer)
         {
+            this.gameStartData = gameStartData;
+
             localClient = this;
-            Pilot pilot = NetworkClient.spawned[pilotId].GetComponent<Pilot>();
+            localClient.pilotId = netId;
+            galaxyId = gameStartData.galaxyId;
+            systemId = gameStartData.starSystemId;
+            sectorId = gameStartData.sectorId;
+            zoneId = gameStartData.zoneId;
+            this.ReadSpace();
+
+            Pilot pilot = NetworkClient.spawned[netId].GetComponent<Pilot>();
+            pilot.isPlayerControll = true;
             pilot.rigidbodyMain = pilot.gameObject.AddComponent<Rigidbody>();
             pilot.rigidbodyMain.useGravity = false;
             pilot.rigidbodyMain.angularDrag = 2f;
@@ -146,7 +198,8 @@ public class Client : NetworkBehaviour
             CameraManager.mainCamera.enabled = false;
             CameraManager.mainCamera.transform.SetParent(pilot.transform);
             CameraManager.mainCamera.transform.localPosition = new Vector3(0, 1.6f, -3f);
-            SpaceManager.singleton.WarpClient(pilot.galaxyId, pilot.systemId, pilot.sectorId, pilot.zoneId);
+            this.pilot = pilot;
+            ContinueInit();
         }
         else
         {
@@ -154,12 +207,86 @@ public class Client : NetworkBehaviour
         }
     }
 
+    public void WarpClient(int galaxyId, int systemId, int sectorId, int zoneId)
+    {
+        if (sectorId == -1)
+        {
+            sectorId = 0;
+        }
+        if (zoneId == -1)
+        {
+            zoneId = 0;
+        }
+
+        Galaxy galaxy = SpaceManager.GetGalaxyByID(galaxyId);
+        if (galaxy == null)
+        {
+            galaxyId = 0;
+            galaxy = SpaceManager.GetGalaxyByID(galaxyId);
+        }
+        StarSystem system = SpaceManager.GetSystemByID(galaxyId, systemId);
+        if (system == null)
+        {
+            systemId = 0;
+            system = SpaceManager.GetSystemByID(galaxyId, systemId);
+        }
+        Sector sector = SpaceManager.GetSectorByID(galaxyId, systemId, sectorId);
+        if (sector == null)
+        {
+            sectorId = 0;
+            sector = SpaceManager.GetSectorByID(galaxyId, systemId, sectorId);
+        }
+        Zone zone = SpaceManager.GetZoneByID(galaxyId, systemId, sectorId, zoneId);
+        if (sector == null)
+        {
+            zoneId = 0;
+            zone = SpaceManager.GetZoneByID(galaxyId, systemId, sectorId, zoneId);
+        }
+
+        Material mat = Resources.Load<Material>($"Materials/{system.skyboxName}");
+        RenderSettings.skybox = mat;
+
+        Color32 color = system.GetBgColor();
+        // float cdiv = 1f;
+        // color = new Color32((byte)(color.r / cdiv), (byte)(color.g / cdiv), (byte)(color.b / cdiv), color.a);
+        color = new Color32((byte)(color.r), (byte)(color.g), (byte)(color.b), color.a);
+        RenderSettings.skybox.SetColor("_Tint", color);
+        //RenderSettings.skybox.SetColor("_Color", color);
+        RenderSettings.skybox.ComputeCRC();
+
+        Client.localClient.galaxyId = galaxyId;
+        Client.localClient.systemId = systemId;
+        Client.localClient.sectorId = sectorId;
+        Client.localClient.zoneId = zoneId;
+        Client.localClient.ReadSpace();
+
+        if (Client.localClient.pilotId > 0)
+        {
+            Pilot pilot = NetworkClient.spawned[Client.localClient.pilotId].GetComponent<Pilot>();
+            pilot.galaxyId = galaxyId;
+            pilot.systemId = systemId;
+            pilot.sectorId = sectorId;
+            pilot.zoneId = zoneId;
+        }
+
+        Client.localClient.ReadSpace();
+
+        Vector3 ralPos = sector.GetPosition() + zone.GetPosition();
+        Vector3 recPos = Space.RecalcPos(sector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
+
+        SpaceManager.spaceContainer.transform.localPosition = -recPos;
+
+        SPObject.InvokeRender();
+    }
+
     public void ZoneChanged(Zone zone)
     {
-        //Debug.Log($"{zone.id} {zone.GetIndexes()}");
-        transform.localPosition = -(Space.RecalcPos(transform.localPosition, Zone.zoneStep) - transform.localPosition);
-        SpaceManager.spaceContainer.transform.localPosition = -Space.RecalcPos(currSector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
-        currZone = zone;
+        if (pilot != null)
+        {
+            pilot.transform.localPosition = -(Space.RecalcPos(pilot.transform.localPosition, Zone.zoneStep) - pilot.transform.localPosition);
+            SpaceManager.spaceContainer.transform.localPosition = -Space.RecalcPos(currSector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
+            currZone = zone;
+        }
     }
 
     public void ReadSpace()

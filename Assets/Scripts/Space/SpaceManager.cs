@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 using System;
 
 public class SpaceManager : MonoBehaviour
@@ -71,67 +72,6 @@ public class SpaceManager : MonoBehaviour
     {
         Zone zone = SpaceManager.zones.Find(f => f.galaxyId == galaxyId && f.systemId == systemId && f.sectorId == sectorId && f.id == id);
         return zone;
-    }
-
-    public void WarpClient(int galaxyId, int systemId, int sectorId, int zoneId)
-    {
-        if (sectorId == -1)
-        {
-            sectorId = 0;
-        }
-        if (zoneId == -1)
-        {
-            zoneId = 0;
-        }
-
-        Galaxy galaxy = GetGalaxyByID(galaxyId);
-        if (galaxy == null)
-        {
-            galaxyId = 0;
-            galaxy = GetGalaxyByID(galaxyId);
-        }
-        StarSystem system = GetSystemByID(galaxyId, systemId);
-        if (system == null)
-        {
-            systemId = 0;
-            system = GetSystemByID(galaxyId, systemId);
-        }
-        Sector sector = GetSectorByID(galaxyId, systemId, sectorId);
-        if (sector == null)
-        {
-            sectorId = 0;
-            sector = GetSectorByID(galaxyId, systemId, sectorId);
-        }
-        Zone zone = GetZoneByID(galaxyId, systemId, sectorId, zoneId);
-        if (sector == null)
-        {
-            zoneId = 0;
-            zone = GetZoneByID(galaxyId, systemId, sectorId, zoneId);
-        }
-
-        Material mat = Resources.Load<Material>($"Materials/{system.skyboxName}");
-        RenderSettings.skybox = mat;
-        
-        Color32 color = system.GetBgColor();
-        // float cdiv = 1f;
-        // color = new Color32((byte)(color.r / cdiv), (byte)(color.g / cdiv), (byte)(color.b / cdiv), color.a);
-        color = new Color32((byte)(color.r), (byte)(color.g), (byte)(color.b), color.a);
-        RenderSettings.skybox.SetColor("_Tint", color);
-        //RenderSettings.skybox.SetColor("_Color", color);
-        RenderSettings.skybox.ComputeCRC();
-
-        Client.localClient.galaxyId = galaxyId;
-        Client.localClient.systemId = systemId;
-        Client.localClient.sectorId = sectorId;
-        Client.localClient.zoneId = zoneId;
-        Client.localClient.ReadSpace();
-
-        Vector3 ralPos = sector.GetPosition() + zone.GetPosition();
-        Vector3 recPos = Space.RecalcPos(sector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
-
-        spaceContainer.transform.localPosition = -recPos;
-
-        SPObject.InvokeRender();
     }
 
     public List<Galaxy> GetGalaxiesList()
@@ -441,6 +381,10 @@ public class SpaceManager : MonoBehaviour
 
             for (int i = 0; i < count; i++)
             {
+                if (i == 0)
+                {
+                    zoneTemplateName = "Zone00";
+                }
                 Zone zone = new Zone(zoneTemplateName);
                 if (colorNodes.Count > 0)
                 {
@@ -503,7 +447,14 @@ public class SpaceManager : MonoBehaviour
                 zone.systemId = sector.systemId;
                 zone.sectorId = sector.id;
                 zone.name = RandomName();
-                zone.GenerateId();
+                if (i == 0)
+                {
+                    zone.id = 0;
+                }
+                else
+                {
+                    zone.GenerateId();
+                }
                 zone.Init();
                 zones.Add(zone);
             }

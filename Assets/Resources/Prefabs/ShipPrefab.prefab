@@ -74,6 +74,7 @@ MonoBehaviour:
   zoneId: 0
   modelPatch: 
   templateName: 
+  netTranform: {fileID: -5824391400389688126}
   rigidbodyMain: {fileID: 0}
   controller: {fileID: 0}
   isInitialized: 0
@@ -89,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49e407e557451bd4c8c6a164ccba0830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
+  syncDirection: 1
   syncMode: 0
   syncInterval: 0
   target: {fileID: 2564950108980009015}

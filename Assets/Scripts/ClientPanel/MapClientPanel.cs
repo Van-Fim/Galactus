@@ -113,7 +113,7 @@ public class MapClientPanel : ClientPanel
         });
         warpButton.onClick.AddListener(() =>
         {
-            SpaceManager.singleton.WarpClient(selectedGalaxyId, selectedSystemId, selectedSectorId, selectedZoneId);
+            Client.localClient.WarpClient(selectedGalaxyId, selectedSystemId, selectedSectorId, selectedZoneId);
         });
         rawImage.mainTexture.width = Screen.width;
         rawImage.mainTexture.height = Screen.height;

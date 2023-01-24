@@ -173,9 +173,8 @@ public class GameStartData
                 string templateStringName = shipNode.GetValue("template");
                 Ship ship = Ship.Create(templateStringName);
                 ship.SetSpace(zone);
-                ship.transform.SetParent(SpaceManager.spaceContainer.transform);
                 ship.transform.localPosition = position;
-                NetworkServer.Spawn(ship.gameObject);
+                NetworkServer.Spawn(ship.gameObject, client.connectionToClient);
                 SPObjectManager.singleton.shipsIds.Add(ship.netId);
             }
             if (type == "pilot")
@@ -204,11 +203,11 @@ public class GameStartData
                         rotation = new Vector3(x, y, z);
                     }
                     string templateStringName = pilotNode.GetValue("template");
-
                     Pilot pilot = Pilot.Create(templateStringName);
+                    pilot.SetSpace(zone);
                     pilot.transform.localPosition = position;
                     pilot.isPlayerControll = true;
-                    NetworkServer.Spawn(pilot.gameObject);
+                    NetworkServer.Spawn(pilot.gameObject, client.connectionToClient);
                     SPObjectManager.singleton.pilotsIds.Add(pilot.netId);
                     client.pilotId = pilot.netId;
                 }

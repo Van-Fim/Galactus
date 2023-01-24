@@ -353,4 +353,5 @@ MonoBehaviour:
   - {fileID: 5041363545484324512, guid: aa1ef4c7b9c2caf43957699f24ea7136, type: 3}
   - {fileID: 4743334561052854298, guid: cbdd764ead6be7c4e8389741454c0693, type: 3}
   - {fileID: 4453668921273069557, guid: 7e04348fe6f98134caf0fb66c40a416b, type: 3}
+  - {fileID: 2564950108980009019, guid: 8116373341e10344ebc7bd237b28d942, type: 3}
   timeInterpolationGui: 0

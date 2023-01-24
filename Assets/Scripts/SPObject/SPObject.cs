@@ -9,6 +9,8 @@ public abstract class SPObject : NetworkBehaviour
     public GameObject main;
     [SyncVar]
     public bool isPlayerControll;
+    [SyncVar]
+    public bool isCanSyncPos;
     //public Controller controller;
     [SyncVar]
     public int galaxyId;
@@ -22,6 +24,8 @@ public abstract class SPObject : NetworkBehaviour
     public string modelPatch;
     [SyncVar]
     public string templateName;
+
+    public NetTranform netTranform;
 
     public Rigidbody rigidbodyMain;
 
@@ -69,6 +73,10 @@ public abstract class SPObject : NetworkBehaviour
     public override void OnStartClient()
     {
         Init();
+        if (!isLocalPlayer)
+        {
+            isCanSyncPos = true;
+        }
     }
 
     public virtual void OnRender()

@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class Pilot : SPObject
 {
+    [SyncVar]
+    public Vector3 syncPosition;
+    [SyncVar]
+    public Quaternion syncRotation;
     public static Pilot Create(string templateName)
     {
         Pilot pilot = GameObject.Instantiate(GameContentManager.pilotPrefab);
@@ -15,5 +19,16 @@ public class Pilot : SPObject
         pilot.isPlayerControll = true;
 
         return pilot;
+    }
+
+    public void FixedUpdate()
+    {
+
+    }
+    [Command(requiresAuthority = false)]
+    void CmdProvidePositionToServer(Vector3 position, Quaternion rotation)
+    {
+        syncPosition = position;
+        syncRotation = rotation;
     }
 }
