@@ -2,6 +2,6 @@
 	<pilot name="Pilot01">
 		<model patch="Models/Pilots/Pilot01" />
 		<hardpoints name="Pilot01" />
-		<params mass="20" drag="2" angulardrag="2" maxhull="100"  />
+		<params mass="10" drag="2" angulardrag="2" maxhull="100"  />
 	</pilot>
 </templates>

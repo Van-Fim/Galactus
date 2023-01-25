@@ -89,8 +89,9 @@ public class MapClientPanel : ClientPanel
         selectedSystemId = Client.localClient.systemId;
         selectedSectorId = Client.localClient.sectorId;
         selectedZoneId = Client.localClient.zoneId;
-
-        ChangeLayer(minLayer);
+        Space.InvokeClearAllControllers();
+        ChangeLayer(currentLayer);
+        CameraManager.minimapCamera.ResetSpeed();
     }
     public override void Hide()
     {
@@ -115,8 +116,7 @@ public class MapClientPanel : ClientPanel
         {
             Client.localClient.WarpClient(selectedGalaxyId, selectedSystemId, selectedSectorId, selectedZoneId);
         });
-        rawImage.mainTexture.width = Screen.width;
-        rawImage.mainTexture.height = Screen.height;
+
         list.Clear();
         list.Add(new MapLayer(0, "Galaxies"));
         list.Add(new MapLayer(1, "Systems"));
@@ -142,5 +142,6 @@ public class MapClientPanel : ClientPanel
                 layerDropdown.options.Add(new TMPro.TMP_Dropdown.OptionData() { text = list[i].name });
             }
         }
+        currentLayer = minLayer;
     }
 }

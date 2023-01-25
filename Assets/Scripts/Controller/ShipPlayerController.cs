@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : Controller
+public class ShipPlayerController : Controller
 {
     public void Start()
     {
-        maxSpeed = 1000;
+        maxSpeed = 10000000;
         rotationSpeed = 150;
-        velocity = 10000;
+        velocity = 100000000;
     }
 }

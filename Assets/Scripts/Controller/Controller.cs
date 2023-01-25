@@ -17,6 +17,10 @@ public class Controller : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (obj.rigidbodyMain == null)
+        {
+            return;
+        }
         if (obj.isPlayerControll && !blocked)
         {
             Turn();
@@ -78,9 +82,9 @@ public class Controller : MonoBehaviour
     public virtual void Move()
     {
         float changeFactor = Input.GetAxis("ChangeSpeed");
-        
+
         val += changeFactor;
-        
+
         if (val > 1)
         {
             val = 1;
@@ -111,7 +115,7 @@ public class Controller : MonoBehaviour
 
         obj.rigidbodyMain.AddForce(obj.transform.forward * maxSpeed * val2);
         string zn = "";
-        if(val2 < 0)
+        if (val2 < 0)
         {
             zn = "-";
         }

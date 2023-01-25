@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
 public class StarSystem : Space
@@ -14,6 +15,24 @@ public class StarSystem : Space
     {
         this.galaxyId = galaxy.id;
     }
+
+    public void LoadAsteroids(int chance, int countMin, int countMax)
+    {
+        int chr = Random.Range(0, 101);
+        if (chr <= chance)
+        {
+            int count = Random.Range(countMin, countMax + 1);
+            for (int i = 0; i < count; i++)
+            {
+                Asteroid ast = Asteroid.Create("Aster01");
+                ast.SetSpace(this);
+                Vector3 pos = Random.insideUnitSphere * 3000000;
+                ast.transform.localPosition = pos;
+                NetworkServer.Spawn(ast.gameObject);
+            }
+        }
+    }
+
     public override int GenerateId()
     {
         int curId = 0;

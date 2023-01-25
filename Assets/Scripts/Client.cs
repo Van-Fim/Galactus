@@ -26,10 +26,9 @@ public class Client : NetworkBehaviour
     [SyncVar]
     public GameStartData gameStartData;
     [SyncVar]
-    public uint pilotId;
-    public Pilot pilot;
+    public uint targetId;
+    public SPObject controllTarget;
 
-    public Ship ship;
     public NetworkTransform networkTransform;
 
     public static UnityAction<Zone> OnChangedZone;
@@ -81,16 +80,13 @@ public class Client : NetworkBehaviour
             {
                 return;
             }
-            if (pilot == null)
+            if (controllTarget == null)
             {
                 return;
             }
             Vector3 znPos = Vector3.zero;
-            if (ship == null)
-            {
-                znPos = currZone.GetPosition() + pilot.transform.localPosition;
-                znPos = Space.RecalcPos(znPos, Zone.zoneStep) / Zone.zoneStep;
-            }
+            znPos = currZone.GetPosition() + controllTarget.transform.localPosition;
+            znPos = Space.RecalcPos(znPos, Zone.zoneStep) / Zone.zoneStep;
 
             int curGalaxyId = currZone.galaxyId;
             int curSystemId = currZone.systemId;
@@ -121,7 +117,12 @@ public class Client : NetworkBehaviour
         }
         else
         {
-            Debug.Log(pilot);
+            if (controllTarget != null)
+            {
+                Vector3 znPos = Vector3.zero;
+                znPos = currZone.GetPosition() + controllTarget.transform.localPosition;
+                znPos = Space.RecalcPos(znPos, Zone.zoneStep) / Zone.zoneStep;
+            }
         }
     }
 
@@ -154,7 +155,7 @@ public class Client : NetworkBehaviour
         zoneId = gameStartData.zoneId;
         startGameStarted = true;
         gameStartData.LoadContent(this);
-        PilotSpawned(gameStartData, pilotId);
+        ControllTargetSpawned(gameStartData, targetId);
     }
 
     public void ContinueInit()
@@ -166,45 +167,57 @@ public class Client : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void PilotSpawned(GameStartData gameStartData, uint netId)
+    public void ControllTargetSpawned(GameStartData gameStartData, uint netId)
     {
-        if (isLocalPlayer)
+        if (netId > 0)
         {
-            this.gameStartData = gameStartData;
+            controllTarget = NetworkClient.spawned[netId].GetComponent<Ship>();
+            if (controllTarget == null)
+            {
+                controllTarget = NetworkClient.spawned[netId].GetComponent<Pilot>();
+            }
+            if (isLocalPlayer)
+            {
+                this.gameStartData = gameStartData;
 
-            localClient = this;
-            localClient.pilotId = netId;
-            galaxyId = gameStartData.galaxyId;
-            systemId = gameStartData.starSystemId;
-            sectorId = gameStartData.sectorId;
-            zoneId = gameStartData.zoneId;
-            this.ReadSpace();
+                localClient = this;
+                localClient.targetId = netId;
+                galaxyId = gameStartData.galaxyId;
+                systemId = gameStartData.starSystemId;
+                sectorId = gameStartData.sectorId;
+                zoneId = gameStartData.zoneId;
+                this.ReadSpace();
 
-            Pilot pilot = NetworkClient.spawned[netId].GetComponent<Pilot>();
-            pilot.isPlayerControll = true;
-            pilot.rigidbodyMain = pilot.gameObject.AddComponent<Rigidbody>();
-            pilot.rigidbodyMain.useGravity = false;
-            pilot.rigidbodyMain.angularDrag = 2f;
-            pilot.rigidbodyMain.drag = 2f;
-            pilot.rigidbodyMain.mass = 10f;
+                controllTarget.isPlayerControll = true;
 
-            pilot.galaxyId = galaxyId;
-            pilot.systemId = systemId;
-            pilot.sectorId = sectorId;
-            pilot.zoneId = zoneId;
+                controllTarget.galaxyId = galaxyId;
+                controllTarget.systemId = systemId;
+                controllTarget.sectorId = sectorId;
+                controllTarget.zoneId = zoneId;
+                if (controllTarget.rigidbodyMain == null)
+                {
+                    controllTarget.rigidbodyMain = controllTarget.gameObject.GetComponent<Rigidbody>();
+                }
 
-            pilot.controller = pilot.gameObject.AddComponent<PlayerController>();
-            pilot.controller.obj = pilot;
-            CameraManager.mainCamera.enabled = false;
-            CameraManager.mainCamera.transform.SetParent(pilot.transform);
-            CameraManager.mainCamera.transform.localPosition = new Vector3(0, 1.6f, -3f);
-            this.pilot = pilot;
-            ContinueInit();
+                if (controllTarget is Pilot)
+                {
+                    controllTarget.controller = controllTarget.gameObject.AddComponent<PlayerController>();
+                    CameraManager.mainCamera.enabled = false;
+                    CameraManager.mainCamera.transform.SetParent(controllTarget.transform);
+                    CameraManager.mainCamera.transform.localPosition = new Vector3(0, 1.6f, -3f);
+                }
+                else if (controllTarget is Ship)
+                {
+                    controllTarget.controller = controllTarget.gameObject.AddComponent<ShipPlayerController>();
+                    CameraManager.mainCamera.enabled = false;
+                    CameraManager.mainCamera.transform.SetParent(controllTarget.transform);
+                    CameraManager.mainCamera.transform.localPosition = new Vector3(0, 75, -200);
+                }
+                controllTarget.controller.obj = controllTarget;
+                ContinueInit();
+            }
         }
-        else
-        {
-            SPObject.InvokeRender();
-        }
+        SPObject.InvokeRender();
     }
 
     public void WarpClient(int galaxyId, int systemId, int sectorId, int zoneId)
@@ -260,13 +273,17 @@ public class Client : NetworkBehaviour
         Client.localClient.zoneId = zoneId;
         Client.localClient.ReadSpace();
 
-        if (Client.localClient.pilotId > 0)
+        if (Client.localClient.targetId > 0)
         {
-            Pilot pilot = NetworkClient.spawned[Client.localClient.pilotId].GetComponent<Pilot>();
-            pilot.galaxyId = galaxyId;
-            pilot.systemId = systemId;
-            pilot.sectorId = sectorId;
-            pilot.zoneId = zoneId;
+            SPObject target = NetworkClient.spawned[Client.localClient.targetId].GetComponent<Ship>();
+            if (target == null)
+            {
+                target = NetworkClient.spawned[Client.localClient.targetId].GetComponent<Pilot>();
+            }
+            target.galaxyId = galaxyId;
+            target.systemId = systemId;
+            target.sectorId = sectorId;
+            target.zoneId = zoneId;
         }
 
         Client.localClient.ReadSpace();
@@ -281,9 +298,9 @@ public class Client : NetworkBehaviour
 
     public void ZoneChanged(Zone zone)
     {
-        if (pilot != null)
+        if (controllTarget != null)
         {
-            pilot.transform.localPosition = -(Space.RecalcPos(pilot.transform.localPosition, Zone.zoneStep) - pilot.transform.localPosition);
+            controllTarget.transform.localPosition = -(Space.RecalcPos(controllTarget.transform.localPosition, Zone.zoneStep) - controllTarget.transform.localPosition);
             SpaceManager.spaceContainer.transform.localPosition = -Space.RecalcPos(currSector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
             currZone = zone;
         }

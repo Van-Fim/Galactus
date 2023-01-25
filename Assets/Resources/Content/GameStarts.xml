@@ -1,9 +1,9 @@
 <templates>
 	<start name="Start01">
 		<space galaxy="0" system="0" sector="0" zone="0">
-			<ship template="Ship01" pilotTemplate="Pilot01">
+			<ship playerShip="1" template="Ship01" pilotTemplate="Pilot01">
 				<loadouts name="Ship01" />
-				<position x="0" y="5000" z="0" />
+				<position x="0" y="9000" z="0" />
 				<rotation x="0" y="0" z="0" />
 			</ship>
 			<player template="Pilot01">

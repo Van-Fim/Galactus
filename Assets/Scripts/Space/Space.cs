@@ -24,6 +24,7 @@ public abstract class Space
 
     public static UnityAction OnRenderAction;
     public static UnityAction OnDrawUiAction;
+    public static UnityAction OnClearAllControllersAction;
 
     public Space() { }
     public Space(string templateName)
@@ -34,6 +35,7 @@ public abstract class Space
     {
         OnRenderAction += OnRender;
         OnDrawUiAction += OnDrawUi;
+        OnClearAllControllersAction += OnClearAllControllers;
     }
 
     public virtual void DestroyController(int layer)
@@ -83,6 +85,14 @@ public abstract class Space
     public virtual void OnRender()
     {
 
+    }
+
+    public virtual void OnClearAllControllers()
+    {
+        if (spaceController != null)
+        {
+            GameObject.DestroyImmediate(spaceController.gameObject);
+        }
     }
 
     public virtual void OnDrawUi()
@@ -148,6 +158,10 @@ public abstract class Space
             ret.z -= 1;
         }
         return ret * stepValue;
+    }
+    public static void InvokeClearAllControllers()
+    {
+        OnClearAllControllersAction?.Invoke();
     }
     public static void InvokeRender()
     {

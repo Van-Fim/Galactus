@@ -174,7 +174,17 @@ public class GameStartData
                 Ship ship = Ship.Create(templateStringName);
                 ship.SetSpace(zone);
                 ship.transform.localPosition = position;
-                NetworkServer.Spawn(ship.gameObject, client.connectionToClient);
+
+                if (type == "ship")
+                {
+                    ship.isPlayerControll = true;
+                    NetworkServer.Spawn(ship.gameObject, client.connectionToClient);
+                    client.targetId = ship.netId;
+                }
+                else
+                {
+                    NetworkServer.Spawn(ship.gameObject);
+                }
                 SPObjectManager.singleton.shipsIds.Add(ship.netId);
             }
             if (type == "pilot")
@@ -209,7 +219,7 @@ public class GameStartData
                     pilot.isPlayerControll = true;
                     NetworkServer.Spawn(pilot.gameObject, client.connectionToClient);
                     SPObjectManager.singleton.pilotsIds.Add(pilot.netId);
-                    client.pilotId = pilot.netId;
+                    client.targetId = pilot.netId;
                 }
             }
         }

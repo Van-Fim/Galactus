@@ -57,6 +57,12 @@ public class NetManager : NetworkManager
         SpaceManager.Init();
         SpaceManager.singleton.Load();
 
+        for (int i = 0; i < SpaceManager.starSystems.Count; i++)
+        {
+            StarSystem system = SpaceManager.starSystems[i];
+            system.LoadAsteroids(60, 100, 200);
+        }
+
         yield return 1;
     }
 }

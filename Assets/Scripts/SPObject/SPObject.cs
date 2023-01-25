@@ -101,13 +101,31 @@ public abstract class SPObject : NetworkBehaviour
             transform.SetParent(null);
         }
 
-        if (Client.localClient.galaxyId == galaxyId && Client.localClient.systemId == systemId && Client.localClient.sectorId == sectorId)
+        if (!(this is Asteroid))
         {
-            main.SetActive(true);
+            if (Client.localClient.galaxyId == galaxyId && Client.localClient.systemId == systemId && Client.localClient.sectorId == sectorId)
+            {
+                main.SetActive(true);
+                netTranform.enabled = true;
+            }
+            else
+            {
+                main.SetActive(false);
+                netTranform.enabled = false;
+            }
         }
         else
         {
-            main.SetActive(false);
+            if (Client.localClient.galaxyId == galaxyId && Client.localClient.systemId == systemId)
+            {
+                main.SetActive(true);
+                netTranform.enabled = true;
+            }
+            else
+            {
+                main.SetActive(false);
+                netTranform.enabled = false;
+            }
         }
     }
 
