@@ -20,10 +20,18 @@ public abstract class SPObject : NetworkBehaviour
     public int sectorId;
     [SyncVar]
     public int zoneId;
+
+    Galaxy currGalaxy;
+    StarSystem currSystem;
+    Sector currSector;
+    Zone currZone;
+
     [SyncVar]
     public string modelPatch;
     [SyncVar]
     public string templateName;
+    [SyncVar]
+    public Vector3 globalPos;
 
     public NetTranform netTranform;
 
@@ -34,11 +42,32 @@ public abstract class SPObject : NetworkBehaviour
     public static UnityAction OnRenderAction;
     [SyncVar]
     public bool isInitialized = false;
+    [SyncVar]
+    public bool syncGlobalPos = false;
+
+    public void Update()
+    {
+        if (syncGlobalPos)
+        {
+            if (main != null && SpaceManager.spaceContainer != null)
+            {
+                globalPos = currSector.GetPosition() + currZone.GetPosition();
+            }
+        }
+    }
 
     public virtual void Init()
     {
         OnRenderAction += OnRender;
         isInitialized = true;
+    }
+
+    public void ReadSpace()
+    {
+        currGalaxy = SpaceManager.GetGalaxyByID(galaxyId);
+        currSystem = SpaceManager.GetSystemByID(galaxyId, systemId);
+        currSector = SpaceManager.GetSectorByID(galaxyId, systemId, sectorId);
+        currZone = SpaceManager.GetZoneByID(galaxyId, systemId, sectorId, zoneId);
     }
 
     public virtual void SetSpace(Space space)
@@ -68,6 +97,7 @@ public abstract class SPObject : NetworkBehaviour
             sectorId = sp.sectorId;
             zoneId = sp.id;
         }
+        ReadSpace();
     }
 
     public override void OnStartClient()

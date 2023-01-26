@@ -18,7 +18,7 @@ public class Sector : Space
 
     public override int GenerateId()
     {
-        int curId = 0;
+        int curId = 1;
         Space fnd = SpaceManager.sectors.Find(f => f.galaxyId == galaxyId && f.systemId == systemId && f.id == curId);
 
         while (fnd != null)

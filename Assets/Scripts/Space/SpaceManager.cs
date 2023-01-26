@@ -250,9 +250,8 @@ public class SpaceManager : MonoBehaviour
         }
         List<TemplateNode> nodes = currentSystemTemplate.GetNodeList("sector");
         TemplateNode nd = currentSystemTemplate.GetNode("sectors");
-        int maxRangeMin = int.Parse(nd.GetValue("maxRangeMin"));
-        int maxRangeMax = int.Parse(nd.GetValue("maxRangeMax"));
-        int range = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
+        int maxRangeMin = int.Parse(nd.GetValue("maxSectorRangeMin"));
+        int maxRangeMax = int.Parse(nd.GetValue("maxSectorRangeMax"));
         for (int j = 0; j < nodes.Count; j++)
         {
             TemplateNode node = nodes[j];
@@ -276,6 +275,10 @@ public class SpaceManager : MonoBehaviour
 
             for (int i = 0; i < count; i++)
             {
+                if (i == 0)
+                {
+                    sectorTemplateName = "Sector00";
+                }
                 Sector sector = new Sector(sectorTemplateName);
                 if (colorNodes.Count > 0)
                 {
@@ -283,14 +286,15 @@ public class SpaceManager : MonoBehaviour
                     sector.SetColor(colorNode.GetColor());
                 }
                 int counter = 10;
-                Vector2 position2D = UnityEngine.Random.insideUnitCircle * range;
+                Vector2 rndPos = UnityEngine.Random.insideUnitCircle * maxRangeMax;
+                int xPos = (int)rndPos.x;
                 int yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
-                Vector3 position = new Vector3(position2D.x, yPos, position2D.y);
-                position = Space.RecalcPos(position, Sector.sectorStep);
+                int zPos = (int)rndPos.y;
                 if (i == 0)
                 {
-                    position = Vector3.zero;
+                    xPos = yPos = zPos = 0;
                 }
+                Vector3 indexes = new Vector3(xPos, yPos, zPos);
                 List<Sector> fsps = sectors.FindAll(f => f.galaxyId == system.galaxyId && f.systemId == system.id);
                 while (counter > 0)
                 {
@@ -303,14 +307,14 @@ public class SpaceManager : MonoBehaviour
                         {
                             continue;
                         }
-                        Vector3 pos1 = sector1.GetPosition();
-                        float dst = Vector3.Distance(pos1, position);
-                        if (dst < size)
+                        Vector3 ind1 = sector1.GetIndexes();
+                        if (ind1 == indexes)
                         {
-                            position2D = UnityEngine.Random.insideUnitCircle * range;
+                            xPos = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
                             yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
-                            position = new Vector3(position2D.x, yPos, position2D.y);
-                            position = Space.RecalcPos(position, Sector.sectorStep);
+                            zPos = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
+
+                            indexes = new Vector3(xPos, yPos, zPos);
                             br = true;
                             break;
                         }
@@ -330,13 +334,20 @@ public class SpaceManager : MonoBehaviour
                     }
                 }
 
-                sector.SetPosition(position);
+                sector.SetIndexes(indexes);
+                sector.SetPosition(indexes * size);
                 sector.size = size;
                 sector.galaxyId = system.galaxyId;
                 sector.systemId = system.id;
                 sector.name = RandomName();
-                sector.GenerateId();
-                sector.SetIndexes(position / Sector.sectorStep);
+                if (i == 0)
+                {
+                    sector.id = 0;
+                }
+                else
+                {
+                    sector.GenerateId();
+                }
                 sector.Init();
                 sectors.Add(sector);
             }

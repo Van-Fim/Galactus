@@ -75,10 +75,12 @@ MonoBehaviour:
   zoneId: 0
   modelPatch: 
   templateName: 
+  globalPos: {x: 0, y: 0, z: 0}
   netTranform: {fileID: -5824391400389688126}
   rigidbodyMain: {fileID: 0}
   controller: {fileID: 0}
   isInitialized: 0
+  syncGlobalPos: 0
 --- !u!114 &-5824391400389688126
 MonoBehaviour:
   m_ObjectHideFlags: 0

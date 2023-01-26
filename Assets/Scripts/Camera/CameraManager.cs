@@ -21,7 +21,7 @@ public class CameraManager
 
         CameraController.startCamPositions.Add(new Vector3(0, 1500, 0));
         CameraController.startCamPositions.Add(new Vector3(0, 2000, 0));
-        CameraController.startCamPositions.Add(new Vector3(0, 6000, 0));
+        CameraController.startCamPositions.Add(new Vector3(0, 45000, 0));
         CameraController.startCamPositions.Add(new Vector3(0, 800, 0));
         SwitchByCode(0);
     }

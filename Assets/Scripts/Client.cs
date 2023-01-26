@@ -27,6 +27,7 @@ public class Client : NetworkBehaviour
     public GameStartData gameStartData;
     [SyncVar]
     public uint targetId;
+
     public SPObject controllTarget;
 
     public NetworkTransform networkTransform;
@@ -112,8 +113,16 @@ public class Client : NetworkBehaviour
                 Client.localClient.systemId = curSystemId;
                 Client.localClient.sectorId = curSectorId;
                 Client.localClient.zoneId = curZoneId;
+                
                 InvokeOnChangedZone(fzn);
             }
+        }
+        else
+        {
+            // if (SpaceManager.spaceContainer != null && controllTarget != null)
+            // {
+            //     controllTarget.transform.localPosition = SpaceManager.spaceContainer.transform.localPosition + globalPosition;
+            // }
         }
     }
 
@@ -245,6 +254,7 @@ public class Client : NetworkBehaviour
                         controllTarget.rigidbodyMain.mass *= scale;
                     }
                     controllTarget.controller = controllTarget.gameObject.AddComponent<ShipPlayerController>();
+                    controllTarget.syncGlobalPos = true;
                     CameraManager.mainCamera.enabled = false;
                     CameraManager.mainCamera.transform.SetParent(controllTarget.transform);
                     CameraManager.mainCamera.transform.localPosition = new Vector3(0, 75, -200);
@@ -307,7 +317,11 @@ public class Client : NetworkBehaviour
         Client.localClient.systemId = systemId;
         Client.localClient.sectorId = sectorId;
         Client.localClient.zoneId = zoneId;
-        Client.localClient.ReadSpace();
+
+        if (currZone.id == 0)
+        {
+            currZone.SetPosition(Vector3.zero);
+        }
 
         if (Client.localClient.targetId > 0)
         {
@@ -320,6 +334,8 @@ public class Client : NetworkBehaviour
             target.systemId = systemId;
             target.sectorId = sectorId;
             target.zoneId = zoneId;
+
+            target.ReadSpace();
         }
 
         Client.localClient.ReadSpace();
