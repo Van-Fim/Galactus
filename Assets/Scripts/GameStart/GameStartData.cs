@@ -95,7 +95,7 @@ public class GameStartData
             for (int j = 0; j < shipNodes.Count; j++)
             {
                 TemplateNode shipNode = shipNodes[j];
-                bool plyShipExist = System.Convert.ToBoolean(int.Parse(shipNode.GetValue("playerShip")));
+                bool plyShipExist = System.Convert.ToBoolean(byte.Parse(shipNode.GetValue("playerShip")));
 
                 if (plyShipExist)
                 {

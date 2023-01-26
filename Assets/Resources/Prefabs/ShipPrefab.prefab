@@ -68,6 +68,7 @@ MonoBehaviour:
   syncInterval: 0.1
   main: {fileID: 0}
   isPlayerControll: 0
+  isCanSyncPos: 0
   galaxyId: 0
   systemId: 0
   sectorId: 0

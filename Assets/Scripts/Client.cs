@@ -115,15 +115,6 @@ public class Client : NetworkBehaviour
                 InvokeOnChangedZone(fzn);
             }
         }
-        else
-        {
-            if (controllTarget != null)
-            {
-                Vector3 znPos = Vector3.zero;
-                znPos = currZone.GetPosition() + controllTarget.transform.localPosition;
-                znPos = Space.RecalcPos(znPos, Zone.zoneStep) / Zone.zoneStep;
-            }
-        }
     }
 
     public override void OnStartClient()
@@ -194,13 +185,34 @@ public class Client : NetworkBehaviour
                 controllTarget.systemId = systemId;
                 controllTarget.sectorId = sectorId;
                 controllTarget.zoneId = zoneId;
-                if (controllTarget.rigidbodyMain == null)
-                {
-                    controllTarget.rigidbodyMain = controllTarget.gameObject.GetComponent<Rigidbody>();
-                }
 
                 if (controllTarget is Pilot)
                 {
+                    Template template = TemplateManager.FindTemplate(controllTarget.templateName, "pilot");
+                    TemplateNode paramsNode = template.GetNode("params");
+                    float scaleMin = XMLF.FloatVal(paramsNode.GetValue("scaleMin"));
+                    float scaleMax = XMLF.FloatVal(paramsNode.GetValue("scaleMax"));
+                    float scale = UnityEngine.Random.Range(scaleMin, scaleMax + 1);
+                    if (scale == 0 || scaleMax == 0)
+                    {
+                        scale = XMLF.FloatVal(paramsNode.GetValue("scale"));
+                        if (scale == 0)
+                        {
+                            scale = 1;
+                        }
+                    }
+                    byte scaleMass = byte.Parse(paramsNode.GetValue("scaleMass"));
+                    controllTarget.rigidbodyMain = controllTarget.gameObject.AddComponent<Rigidbody>();
+                    controllTarget.rigidbodyMain.useGravity = false;
+                    controllTarget.rigidbodyMain.angularDrag = int.Parse(paramsNode.GetValue("angulardrag"));
+                    controllTarget.rigidbodyMain.drag = int.Parse(paramsNode.GetValue("drag"));
+                    controllTarget.rigidbodyMain.mass = int.Parse(paramsNode.GetValue("mass"));
+                    controllTarget.gameObject.transform.localScale = new Vector3(scale, scale, scale);
+                    if (scaleMass > 0)
+                    {
+                        controllTarget.rigidbodyMain.mass *= scale;
+                    }
+
                     controllTarget.controller = controllTarget.gameObject.AddComponent<PlayerController>();
                     CameraManager.mainCamera.enabled = false;
                     CameraManager.mainCamera.transform.SetParent(controllTarget.transform);
@@ -208,6 +220,30 @@ public class Client : NetworkBehaviour
                 }
                 else if (controllTarget is Ship)
                 {
+                    Template template = TemplateManager.FindTemplate(controllTarget.templateName, "ship");
+                    TemplateNode paramsNode = template.GetNode("params");
+                    float scaleMin = XMLF.FloatVal(paramsNode.GetValue("scaleMin"));
+                    float scaleMax = XMLF.FloatVal(paramsNode.GetValue("scaleMax"));
+                    float scale = UnityEngine.Random.Range(scaleMin, scaleMax + 1);
+                    if (scale == 0 || scaleMax == 0)
+                    {
+                        scale = XMLF.FloatVal(paramsNode.GetValue("scale"));
+                        if (scale == 0)
+                        {
+                            scale = 1;
+                        }
+                    }
+                    byte scaleMass = byte.Parse(paramsNode.GetValue("scaleMass"));
+                    controllTarget.rigidbodyMain = controllTarget.gameObject.AddComponent<Rigidbody>();
+                    controllTarget.rigidbodyMain.useGravity = false;
+                    controllTarget.rigidbodyMain.angularDrag = int.Parse(paramsNode.GetValue("angulardrag"));
+                    controllTarget.rigidbodyMain.drag = int.Parse(paramsNode.GetValue("drag"));
+                    controllTarget.rigidbodyMain.mass = int.Parse(paramsNode.GetValue("mass"));
+                    controllTarget.gameObject.transform.localScale = new Vector3(scale, scale, scale);
+                    if (scaleMass > 0)
+                    {
+                        controllTarget.rigidbodyMain.mass *= scale;
+                    }
                     controllTarget.controller = controllTarget.gameObject.AddComponent<ShipPlayerController>();
                     CameraManager.mainCamera.enabled = false;
                     CameraManager.mainCamera.transform.SetParent(controllTarget.transform);
