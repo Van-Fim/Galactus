@@ -7,11 +7,11 @@ using UnityEngine.Events;
 public abstract class SPObject : NetworkBehaviour
 {
     public GameObject main;
+    public bool isLocalPlayerControll;
     [SyncVar]
     public bool isPlayerControll;
     [SyncVar]
     public bool isCanSyncPos;
-    //public Controller controller;
     [SyncVar]
     public int galaxyId;
     [SyncVar]
@@ -30,8 +30,6 @@ public abstract class SPObject : NetworkBehaviour
     public string modelPatch;
     [SyncVar]
     public string templateName;
-    [SyncVar]
-    public Vector3 globalPos;
 
     public NetTranform netTranform;
 
@@ -42,17 +40,28 @@ public abstract class SPObject : NetworkBehaviour
     public static UnityAction OnRenderAction;
     [SyncVar]
     public bool isInitialized = false;
-    [SyncVar]
-    public bool syncGlobalPos = false;
 
-    public void Update()
+    public void UpdaeGlobalPos()
     {
-        if (syncGlobalPos)
+        if (main != null && SpaceManager.spaceContainer != null)
         {
-            if (main != null && SpaceManager.spaceContainer != null)
+            Vector3 globalPos = currSector.GetPosition() + currZone.GetPosition();
+            UpdaeGlobalPos(globalPos);
+            netTranform.syncGlobalPos = true;
+            if (netTranform != null)
             {
-                globalPos = currSector.GetPosition() + currZone.GetPosition();
+                netTranform.globalPos = globalPos;
             }
+        }
+    }
+
+    [Command]
+    public void UpdaeGlobalPos(Vector3 position)
+    {
+        if (netTranform != null)
+        {
+            netTranform.globalPos = position;
+            ClientManager.singleton.UpdaeGlobalClientPos(netId, position);
         }
     }
 
@@ -60,6 +69,64 @@ public abstract class SPObject : NetworkBehaviour
     {
         OnRenderAction += OnRender;
         isInitialized = true;
+    }
+
+    public void SetPlayerControll()
+    {
+        SPObject controllTarget = this;
+        controllTarget.isPlayerControll = true;
+        controllTarget.galaxyId = galaxyId;
+        controllTarget.systemId = systemId;
+        controllTarget.sectorId = sectorId;
+        controllTarget.zoneId = zoneId;
+        Template template = null;
+        TemplateNode paramsNode = null;
+        if (controllTarget is Pilot)
+        {
+            template = TemplateManager.FindTemplate(controllTarget.templateName, "pilot");
+            paramsNode = template.GetNode("params");
+
+            controllTarget.controller = controllTarget.gameObject.AddComponent<PlayerController>();
+            CameraManager.mainCamera.enabled = false;
+            CameraManager.mainCamera.transform.SetParent(controllTarget.transform);
+            CameraManager.mainCamera.transform.localPosition = new Vector3(0, 1.6f, -3f);
+        }
+        else if (controllTarget is Ship)
+        {
+            template = TemplateManager.FindTemplate(controllTarget.templateName, "ship");
+            paramsNode = template.GetNode("params");
+
+            controllTarget.controller = controllTarget.gameObject.AddComponent<ShipPlayerController>();
+            CameraManager.mainCamera.enabled = false;
+            CameraManager.mainCamera.transform.SetParent(controllTarget.transform);
+            CameraManager.mainCamera.transform.localPosition = new Vector3(0, 75, -200);
+        }
+        float scaleMin = XMLF.FloatVal(paramsNode.GetValue("scaleMin"));
+        float scaleMax = XMLF.FloatVal(paramsNode.GetValue("scaleMax"));
+        float scale = UnityEngine.Random.Range(scaleMin, scaleMax + 1);
+        if (scale == 0 || scaleMax == 0)
+        {
+            scale = XMLF.FloatVal(paramsNode.GetValue("scale"));
+            if (scale == 0)
+            {
+                scale = 1;
+            }
+        }
+        byte scaleMass = byte.Parse(paramsNode.GetValue("scaleMass"));
+        controllTarget.rigidbodyMain = controllTarget.gameObject.AddComponent<Rigidbody>();
+        controllTarget.rigidbodyMain.useGravity = false;
+        controllTarget.rigidbodyMain.angularDrag = int.Parse(paramsNode.GetValue("angulardrag"));
+        controllTarget.rigidbodyMain.drag = int.Parse(paramsNode.GetValue("drag"));
+        controllTarget.rigidbodyMain.mass = int.Parse(paramsNode.GetValue("mass"));
+        controllTarget.gameObject.transform.localScale = new Vector3(scale, scale, scale);
+        if (scaleMass > 0)
+        {
+            controllTarget.rigidbodyMain.mass *= scale;
+        }
+        controllTarget.UpdaeGlobalPos();
+        controllTarget.controller.obj = controllTarget;
+        isLocalPlayerControll = true;
+        Client.localClient.controllTarget = controllTarget;
     }
 
     public void ReadSpace()

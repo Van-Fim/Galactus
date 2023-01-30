@@ -11,4 +11,15 @@ public class ClientManager : NetworkBehaviour
     {
         singleton = GameObject.Instantiate(GameContentManager.ClientManagerPrefab);
     }
+
+    [ClientRpc]
+    public void UpdaeGlobalClientPos(uint netId, Vector3 position)
+    {
+        SPObject sp = NetworkClient.spawned[netId].GetComponent<SPObject>();
+        if (sp != null && !sp.isLocalPlayerControll)
+        {
+            sp.netTranform.globalPos = position;
+            sp.netTranform.syncGlobalPos = true;
+        }
+    }
 }

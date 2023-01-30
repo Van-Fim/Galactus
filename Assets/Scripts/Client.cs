@@ -113,7 +113,8 @@ public class Client : NetworkBehaviour
                 Client.localClient.systemId = curSystemId;
                 Client.localClient.sectorId = curSectorId;
                 Client.localClient.zoneId = curZoneId;
-                
+
+                controllTarget.UpdaeGlobalPos();
                 InvokeOnChangedZone(fzn);
             }
         }
@@ -171,11 +172,7 @@ public class Client : NetworkBehaviour
     {
         if (netId > 0)
         {
-            controllTarget = NetworkClient.spawned[netId].GetComponent<Ship>();
-            if (controllTarget == null)
-            {
-                controllTarget = NetworkClient.spawned[netId].GetComponent<Pilot>();
-            }
+            controllTarget = NetworkClient.spawned[netId].GetComponent<SPObject>();
             if (isLocalPlayer)
             {
                 this.gameStartData = gameStartData;
@@ -187,79 +184,8 @@ public class Client : NetworkBehaviour
                 sectorId = gameStartData.sectorId;
                 zoneId = gameStartData.zoneId;
                 this.ReadSpace();
+                controllTarget.SetPlayerControll();
 
-                controllTarget.isPlayerControll = true;
-
-                controllTarget.galaxyId = galaxyId;
-                controllTarget.systemId = systemId;
-                controllTarget.sectorId = sectorId;
-                controllTarget.zoneId = zoneId;
-
-                if (controllTarget is Pilot)
-                {
-                    Template template = TemplateManager.FindTemplate(controllTarget.templateName, "pilot");
-                    TemplateNode paramsNode = template.GetNode("params");
-                    float scaleMin = XMLF.FloatVal(paramsNode.GetValue("scaleMin"));
-                    float scaleMax = XMLF.FloatVal(paramsNode.GetValue("scaleMax"));
-                    float scale = UnityEngine.Random.Range(scaleMin, scaleMax + 1);
-                    if (scale == 0 || scaleMax == 0)
-                    {
-                        scale = XMLF.FloatVal(paramsNode.GetValue("scale"));
-                        if (scale == 0)
-                        {
-                            scale = 1;
-                        }
-                    }
-                    byte scaleMass = byte.Parse(paramsNode.GetValue("scaleMass"));
-                    controllTarget.rigidbodyMain = controllTarget.gameObject.AddComponent<Rigidbody>();
-                    controllTarget.rigidbodyMain.useGravity = false;
-                    controllTarget.rigidbodyMain.angularDrag = int.Parse(paramsNode.GetValue("angulardrag"));
-                    controllTarget.rigidbodyMain.drag = int.Parse(paramsNode.GetValue("drag"));
-                    controllTarget.rigidbodyMain.mass = int.Parse(paramsNode.GetValue("mass"));
-                    controllTarget.gameObject.transform.localScale = new Vector3(scale, scale, scale);
-                    if (scaleMass > 0)
-                    {
-                        controllTarget.rigidbodyMain.mass *= scale;
-                    }
-
-                    controllTarget.controller = controllTarget.gameObject.AddComponent<PlayerController>();
-                    CameraManager.mainCamera.enabled = false;
-                    CameraManager.mainCamera.transform.SetParent(controllTarget.transform);
-                    CameraManager.mainCamera.transform.localPosition = new Vector3(0, 1.6f, -3f);
-                }
-                else if (controllTarget is Ship)
-                {
-                    Template template = TemplateManager.FindTemplate(controllTarget.templateName, "ship");
-                    TemplateNode paramsNode = template.GetNode("params");
-                    float scaleMin = XMLF.FloatVal(paramsNode.GetValue("scaleMin"));
-                    float scaleMax = XMLF.FloatVal(paramsNode.GetValue("scaleMax"));
-                    float scale = UnityEngine.Random.Range(scaleMin, scaleMax + 1);
-                    if (scale == 0 || scaleMax == 0)
-                    {
-                        scale = XMLF.FloatVal(paramsNode.GetValue("scale"));
-                        if (scale == 0)
-                        {
-                            scale = 1;
-                        }
-                    }
-                    byte scaleMass = byte.Parse(paramsNode.GetValue("scaleMass"));
-                    controllTarget.rigidbodyMain = controllTarget.gameObject.AddComponent<Rigidbody>();
-                    controllTarget.rigidbodyMain.useGravity = false;
-                    controllTarget.rigidbodyMain.angularDrag = int.Parse(paramsNode.GetValue("angulardrag"));
-                    controllTarget.rigidbodyMain.drag = int.Parse(paramsNode.GetValue("drag"));
-                    controllTarget.rigidbodyMain.mass = int.Parse(paramsNode.GetValue("mass"));
-                    controllTarget.gameObject.transform.localScale = new Vector3(scale, scale, scale);
-                    if (scaleMass > 0)
-                    {
-                        controllTarget.rigidbodyMain.mass *= scale;
-                    }
-                    controllTarget.controller = controllTarget.gameObject.AddComponent<ShipPlayerController>();
-                    controllTarget.syncGlobalPos = true;
-                    CameraManager.mainCamera.enabled = false;
-                    CameraManager.mainCamera.transform.SetParent(controllTarget.transform);
-                    CameraManager.mainCamera.transform.localPosition = new Vector3(0, 75, -200);
-                }
-                controllTarget.controller.obj = controllTarget;
                 ContinueInit();
             }
         }

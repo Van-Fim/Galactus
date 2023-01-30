@@ -26,7 +26,7 @@ public class StarSystem : Space
             {
                 Asteroid ast = Asteroid.Create("Aster01");
                 ast.SetSpace(this);
-                Vector3 pos = Random.insideUnitSphere * 3000000;
+                Vector3 pos = Random.insideUnitSphere * 1000000;
                 ast.transform.localPosition = pos;
                 NetworkServer.Spawn(ast.gameObject);
             }

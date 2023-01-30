@@ -81,6 +81,12 @@ public class Controller : MonoBehaviour
 
     public virtual void Move()
     {
+        if (Input.GetKey("space") && obj.rigidbodyMain != null)
+        {
+            obj.rigidbodyMain.velocity = Vector3.zero;
+            val2 = val = 0;
+            return;
+        }
         float changeFactor = Input.GetAxis("ChangeSpeed");
 
         val += changeFactor;
