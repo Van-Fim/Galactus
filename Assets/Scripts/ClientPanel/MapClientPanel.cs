@@ -92,10 +92,11 @@ public class MapClientPanel : ClientPanel
         Space.InvokeClearAllControllers();
         ChangeLayer(currentLayer);
         CameraManager.minimapCamera.ResetSpeed();
+        transform.SetAsLastSibling();
     }
-    public override void Hide()
+    public override void Close()
     {
-        base.Hide();
+        base.Close();
         CameraManager.SwitchByCode(0);
         Controller.blocked = false;
     }
@@ -109,7 +110,7 @@ public class MapClientPanel : ClientPanel
         });
         closeButton.onClick.AddListener(() =>
         {
-            ClientPanelManager.Show<HudClientPanel>();
+            ClientPanelManager.Close<MapClientPanel>();
             SpaceUiObj.InvokeDestroyAll();
         });
         warpButton.onClick.AddListener(() =>

@@ -8,8 +8,9 @@ public abstract class ClientPanel : MonoBehaviour
     public virtual void Show()
     {
         gameObject.SetActive(true);
+        transform.SetAsLastSibling();
     }
-    public virtual void Hide()
+    public virtual void Close()
     {
         gameObject.SetActive(false);
     }

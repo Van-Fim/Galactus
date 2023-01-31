@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class ClientPanelManager : MonoBehaviour
 {
+    public static ClientPanelManager singleton;
     public static List<ClientPanel> panels = new List<ClientPanel>();
-    static ClientPanel currentClientBody;
+
+    public void Update(){
+        if (panels.Count > 0 && Input.GetKeyDown("`"))
+        {
+            ClientPanelManager.Show<DebugPanel>();
+        }
+    }
     public static T GetPanel<T>() where T : ClientPanel
     {
         for (int i = 0; i < panels.Count; i++)
@@ -18,36 +25,32 @@ public class ClientPanelManager : MonoBehaviour
         return null;
     }
 
-    public static void Show<T>(bool headerToo = true) where T : ClientPanel
+    public static void Show<T>() where T : ClientPanel
     {
-        if (currentClientBody != null)
-        {
-            currentClientBody.Hide();
-        }
         T panel = ClientPanelManager.GetPanel<T>();
-        currentClientBody = panel;
-        currentClientBody.Show();
+        panel.Show();
     }
 
-    public static void Hide<T>(bool headerToo = true) where T : ClientPanel
+    public static void Close<T>() where T : ClientPanel
     {
-        if (currentClientBody != null)
-        {
-            currentClientBody.Hide();
-        }
+        T panel = ClientPanelManager.GetPanel<T>();
+        panel.Close();
     }
 
     public static void Init()
     {
         InitByPrefab(GameContentManager.hudClientPanelPrefab);
         InitByPrefab(GameContentManager.mapClientPanelPrefab);
+        InitByPrefab(GameContentManager.debugPanelPrefab);
+        singleton = new GameObject().AddComponent<ClientPanelManager>();
+        DontDestroyOnLoad(singleton.gameObject);
     }
     public static ClientPanel InitByPrefab(ClientPanel prefab)
     {
         ClientPanel panel = Instantiate(prefab, CanvasManager.canvas.transform);
         panel.gameObject.name = panel.GetType().ToString();
         panel.Init();
-        panel.Hide();
+        panel.Close();
         panels.Add(panel);
         return panel;
     }

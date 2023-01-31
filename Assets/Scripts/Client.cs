@@ -34,12 +34,10 @@ public class Client : NetworkBehaviour
 
     public static UnityAction<Zone> OnChangedZone;
 
-    Galaxy currGalaxy;
-    StarSystem currSystem;
-    Sector currSector;
-    Zone currZone;
-
-    public Vector3 currentZonePos = Vector3.zero;
+    public Galaxy currGalaxy;
+    public StarSystem currSystem;
+    public Sector currSector;
+    public Zone currZone;
 
     public static Client localClient;
 
@@ -73,11 +71,17 @@ public class Client : NetworkBehaviour
 
     }
 
+    [Command]
+    public void UpdateGlobalPos()
+    {
+        ClientManager.singleton.UpdaeGlobalClientPos();
+    }
+
     void Update()
     {
         if (isLocalPlayer)
         {
-            if (currZone == null)
+            if (currZone == null || currSector == null)
             {
                 return;
             }
@@ -113,10 +117,12 @@ public class Client : NetworkBehaviour
                 Client.localClient.systemId = curSystemId;
                 Client.localClient.sectorId = curSectorId;
                 Client.localClient.zoneId = curZoneId;
+                Client.localClient.ReadSpace();
+                //UpdateGlobalPos();
 
-                controllTarget.UpdaeGlobalPos();
                 InvokeOnChangedZone(fzn);
             }
+            transform.localPosition = currSector.GetPosition() + currZone.GetPosition() + controllTarget.transform.localPosition;
         }
         else
         {
@@ -161,9 +167,8 @@ public class Client : NetworkBehaviour
 
     public void ContinueInit()
     {
-        ClientPanelManager.Init();
         ClientPanelManager.Show<HudClientPanel>();
-
+        
         WarpClient(galaxyId, systemId, sectorId, zoneId);
     }
 
@@ -178,7 +183,6 @@ public class Client : NetworkBehaviour
                 this.gameStartData = gameStartData;
 
                 localClient = this;
-                localClient.targetId = netId;
                 galaxyId = gameStartData.galaxyId;
                 systemId = gameStartData.starSystemId;
                 sectorId = gameStartData.sectorId;

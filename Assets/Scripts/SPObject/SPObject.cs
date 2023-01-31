@@ -41,30 +41,6 @@ public abstract class SPObject : NetworkBehaviour
     [SyncVar]
     public bool isInitialized = false;
 
-    public void UpdaeGlobalPos()
-    {
-        if (main != null && SpaceManager.spaceContainer != null)
-        {
-            Vector3 globalPos = currSector.GetPosition() + currZone.GetPosition();
-            UpdaeGlobalPos(globalPos);
-            netTranform.syncGlobalPos = true;
-            if (netTranform != null)
-            {
-                netTranform.globalPos = globalPos;
-            }
-        }
-    }
-
-    [Command]
-    public void UpdaeGlobalPos(Vector3 position)
-    {
-        if (netTranform != null)
-        {
-            netTranform.globalPos = position;
-            ClientManager.singleton.UpdaeGlobalClientPos(netId, position);
-        }
-    }
-
     public virtual void Init()
     {
         OnRenderAction += OnRender;
@@ -123,10 +99,12 @@ public abstract class SPObject : NetworkBehaviour
         {
             controllTarget.rigidbodyMain.mass *= scale;
         }
-        controllTarget.UpdaeGlobalPos();
+        Client.localClient.targetId = controllTarget.netId;
         controllTarget.controller.obj = controllTarget;
         isLocalPlayerControll = true;
         Client.localClient.controllTarget = controllTarget;
+        Client.localClient.controllTarget.netTranform.syncGlobalPos = true;
+        Client.localClient.controllTarget.netTranform.clientId = Client.localClient.netId;
     }
 
     public void ReadSpace()

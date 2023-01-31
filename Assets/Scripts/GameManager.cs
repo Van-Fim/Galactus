@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
         CameraManager.SwitchByCode(0);
 
         CanvasManager.Init();
+        DebugConsole.Init();
+        ClientPanelManager.Init();
         // ClientPanelManager.Init();
         // ClientPanelManager.Show<HudClientPanel>();
         // Client.Init();

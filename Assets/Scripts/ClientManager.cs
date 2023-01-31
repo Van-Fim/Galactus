@@ -13,13 +13,15 @@ public class ClientManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void UpdaeGlobalClientPos(uint netId, Vector3 position)
+    public void UpdaeGlobalClientPos()
     {
-        SPObject sp = NetworkClient.spawned[netId].GetComponent<SPObject>();
-        if (sp != null && !sp.isLocalPlayerControll)
-        {
-            sp.netTranform.globalPos = position;
-            sp.netTranform.syncGlobalPos = true;
-        }
+        // for (int i = 0; i < clientIds.Count; i++)
+        // {
+        //     Client cl = NetworkClient.spawned[clientIds[i]].GetComponent<Client>();
+        //     SPObject sp = NetworkClient.spawned[cl.targetId].GetComponent<SPObject>();
+        //     cl.ReadSpace();
+        //     sp.netTranform.globalPos = cl.currSector.GetPosition() + cl.currZone.GetPosition();
+        //     Debug.Log(sp.netTranform.globalPos);
+        // }
     }
 }
