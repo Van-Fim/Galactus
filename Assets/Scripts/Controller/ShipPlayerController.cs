@@ -6,8 +6,8 @@ public class ShipPlayerController : Controller
 {
     public void Start()
     {
-        maxSpeed = 10000000;
+        maxSpeed = 1000000;
         rotationSpeed = 150;
-        velocity = 100000000;
+        velocity = 10000000;
     }
 }

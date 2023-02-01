@@ -79,6 +79,11 @@ public class Client : NetworkBehaviour
 
     void Update()
     {
+        UPD();
+    }
+
+    public void UPD(bool forceUpdate = false)
+    {
         if (isLocalPlayer)
         {
             if (currZone == null || currSector == null)
@@ -99,7 +104,7 @@ public class Client : NetworkBehaviour
             int curZoneId = currZone.id;
 
             bool checkSpace = currZone.galaxyId == curGalaxyId && currZone.systemId == curSystemId && currZone.sectorId == curSectorId && currZone.id == curZoneId;
-            if (currZone.GetIndexes() != znPos || !checkSpace)
+            if (currZone.GetIndexes() != znPos || !checkSpace || forceUpdate)
             {
                 Zone fzn = SpaceManager.zones.Find(f => f.galaxyId == currGalaxy.id && f.systemId == currSystem.id && f.sectorId == currSector.id && f.GetIndexes() == znPos);
 
@@ -113,6 +118,7 @@ public class Client : NetworkBehaviour
                         fzn.spaceController.transform.localPosition = fzn.GetPosition() / Zone.minimapDivFactor;
                     }
                 }
+
                 Client.localClient.galaxyId = curGalaxyId;
                 Client.localClient.systemId = curSystemId;
                 Client.localClient.sectorId = curSectorId;
@@ -168,8 +174,9 @@ public class Client : NetworkBehaviour
     public void ContinueInit()
     {
         ClientPanelManager.Show<HudClientPanel>();
-        
+
         WarpClient(galaxyId, systemId, sectorId, zoneId);
+        UPD(true);
     }
 
     [ClientRpc]
