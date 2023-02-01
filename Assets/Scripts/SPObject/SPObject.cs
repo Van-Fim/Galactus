@@ -101,7 +101,7 @@ public abstract class SPObject : NetworkBehaviour
         }
         Client.localClient.targetId = controllTarget.netId;
         controllTarget.controller.obj = controllTarget;
-        isLocalPlayerControll = true;
+        controllTarget.isLocalPlayerControll = true;
         Client.localClient.controllTarget = controllTarget;
         Client.localClient.controllTarget.netTranform.syncGlobalPos = true;
         Client.localClient.controllTarget.netTranform.clientId = Client.localClient.netId;

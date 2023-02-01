@@ -33,9 +33,8 @@ public class NetTranform : NetworkTransform
             if (sPObject != null && !sPObject.isLocalPlayerControll && client != null)
             {
                 position = (SpaceManager.spaceContainer.transform.localPosition + client.transform.localPosition);
-                DebugConsole.ShowMessage(SpaceManager.spaceContainer.transform.localPosition);
+                DebugConsole.Log($"{Client.localClient == client}");
             }
-            DebugConsole.ShowMessage(SpaceManager.spaceContainer.transform.localPosition, true);
         }
         base.OnServerToClientSync(position, rotation, scale);
     }

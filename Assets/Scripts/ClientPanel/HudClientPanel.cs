@@ -13,4 +13,8 @@ public class HudClientPanel : ClientPanel
             ClientPanelManager.Show<MapClientPanel>();
         });
     }
+    public override void Show()
+    {
+        base.Show();
+    }
 }

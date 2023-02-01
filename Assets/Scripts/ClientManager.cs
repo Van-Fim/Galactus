@@ -12,16 +12,22 @@ public class ClientManager : NetworkBehaviour
         singleton = GameObject.Instantiate(GameContentManager.ClientManagerPrefab);
     }
 
+    public override void OnStartClient()
+    {
+        singleton = this;
+    }
+
     [ClientRpc]
     public void UpdaeGlobalClientPos()
     {
-        // for (int i = 0; i < clientIds.Count; i++)
-        // {
-        //     Client cl = NetworkClient.spawned[clientIds[i]].GetComponent<Client>();
-        //     SPObject sp = NetworkClient.spawned[cl.targetId].GetComponent<SPObject>();
-        //     cl.ReadSpace();
-        //     sp.netTranform.globalPos = cl.currSector.GetPosition() + cl.currZone.GetPosition();
-        //     Debug.Log(sp.netTranform.globalPos);
-        // }
+        for (int i = 0; i < clientIds.Count; i++)
+        {
+            Client cl = NetworkClient.spawned[clientIds[i]].GetComponent<Client>();
+            SPObject sp = NetworkClient.spawned[cl.targetId].GetComponent<SPObject>();
+            cl.ReadSpace();
+            sp.netTranform.globalPos = cl.currSector.GetPosition() + cl.currZone.GetPosition();
+            sp.netTranform.syncGlobalPos = true;
+            sp.netTranform.client = cl;
+        }
     }
 }

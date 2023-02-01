@@ -118,7 +118,7 @@ public class Client : NetworkBehaviour
                 Client.localClient.sectorId = curSectorId;
                 Client.localClient.zoneId = curZoneId;
                 Client.localClient.ReadSpace();
-                //UpdateGlobalPos();
+                UpdateGlobalPos();
 
                 InvokeOnChangedZone(fzn);
             }
