@@ -18,6 +18,7 @@ public class StarSystem : Space
 
     public void LoadAsteroids(int chance, int countMin, int countMax)
     {
+        return;
         int chr = Random.Range(0, 101);
         if (chr <= chance)
         {

@@ -38,7 +38,7 @@ public class NetTranform : NetworkTransform
             if (sPObject != null && !sPObject.isLocalPlayerControll && client != null)
             {
                 position = (SpaceManager.spaceContainer.transform.localPosition + client.transform.localPosition);
-                DebugConsole.Log($"{client} {SpaceManager.spaceContainer.transform.localPosition} {client.transform.localPosition} {SpaceManager.spaceContainer.transform.localPosition + client.transform.localPosition}", false);
+                //DebugConsole.Log($"{client} {SpaceManager.spaceContainer.transform.localPosition} {client.transform.localPosition} {SpaceManager.spaceContainer.transform.localPosition + client.transform.localPosition}", false);
             }
             //DebugConsole.Log($"{sPObject != null && !sPObject.isLocalPlayerControll && client != null} {syncGlobalPos}", false);
         }
@@ -50,7 +50,7 @@ public class NetTranform : NetworkTransform
             if (sPObject != null && !sPObject.isLocalPlayerControll && client != null)
             {
                 position = (SpaceManager.spaceContainer.transform.localPosition + client.transform.localPosition);
-                DebugConsole.Log($"{client} {SpaceManager.spaceContainer.transform.localPosition} {client.transform.localPosition} {SpaceManager.spaceContainer.transform.localPosition + client.transform.localPosition}", false);
+                //DebugConsole.Log($"{client} {SpaceManager.spaceContainer.transform.localPosition} {client.transform.localPosition} {SpaceManager.spaceContainer.transform.localPosition + client.transform.localPosition}", false);
             }
             //DebugConsole.Log($"{sPObject != null && !sPObject.isLocalPlayerControll && client != null} {syncGlobalPos}", false);
         }

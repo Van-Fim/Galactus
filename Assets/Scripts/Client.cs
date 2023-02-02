@@ -157,6 +157,12 @@ public class Client : NetworkBehaviour
         }
     }
 
+    [Command]
+    public void WarpCompleted(uint netId, int galaxyId, int systemId, int sectorId, int zoneid)
+    {
+        SPObjectManager.singleton.InvokeRenderClient(netId, galaxyId, systemId, sectorId, zoneId);
+    }
+
     public override void OnStartClient()
     {
         if (isLocalPlayer)
@@ -301,7 +307,7 @@ public class Client : NetworkBehaviour
 
         SpaceManager.spaceContainer.transform.localPosition = -recPos;
 
-        SPObject.InvokeRender();
+        WarpCompleted(netId, galaxyId, systemId, sectorId, zoneId);
     }
 
     public void ZoneChanged(Zone zone)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public class GameManager : MonoBehaviour
 {
@@ -44,5 +45,6 @@ public class GameManager : MonoBehaviour
         // gameStartData.LoadContent();
 
         // SpaceManager.singleton.WarpClient(gameStartData.galaxyId, gameStartData.starSystemId, gameStartData.sectorId, gameStartData.zoneId);
+        //NetManager.singleton.StartServer();
     }
 }

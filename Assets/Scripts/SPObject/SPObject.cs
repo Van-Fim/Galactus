@@ -160,7 +160,7 @@ public abstract class SPObject : NetworkBehaviour
         {
             return;
         }
-
+        
         if (modelPatch.Length > 0 && main == null)
         {
             GameObject minst = Resources.Load<GameObject>($"{modelPatch}/MAIN");

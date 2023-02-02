@@ -196,6 +196,7 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
                 image.color = defcolor;
             }
         }
+        transform.SetAsLastSibling();
     }
     public void OnPointerClick(PointerEventData pointerEventData)
     {

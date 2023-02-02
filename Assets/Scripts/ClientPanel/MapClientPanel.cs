@@ -93,6 +93,8 @@ public class MapClientPanel : ClientPanel
         ChangeLayer(currentLayer);
         CameraManager.minimapCamera.ResetSpeed();
         transform.SetAsLastSibling();
+
+        rawImage.texture = CameraManager.minimapCamera.curCamera.targetTexture;
     }
     public override void Close()
     {

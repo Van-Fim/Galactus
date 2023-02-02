@@ -21,8 +21,13 @@ public class CameraManager
 
         CameraController.startCamPositions.Add(new Vector3(0, 1500, 0));
         CameraController.startCamPositions.Add(new Vector3(0, 2000, 0));
-        CameraController.startCamPositions.Add(new Vector3(0, 45000, 0));
+        CameraController.startCamPositions.Add(new Vector3(0, 10000, 0));
         CameraController.startCamPositions.Add(new Vector3(0, 800, 0));
+
+        RenderTexture camTexture = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
+        camTexture.Create();
+        CameraManager.minimapCamera.curCamera.targetTexture = camTexture;
+        CameraManager.minimapCamera.curCamera.Render();
         SwitchByCode(0);
     }
 
