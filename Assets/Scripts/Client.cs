@@ -28,6 +28,10 @@ public class Client : NetworkBehaviour
     [SyncVar]
     public uint targetId;
 
+    [SyncVar]
+    public Vector3 currZoneIndexes = Vector3.zero;
+    [SyncVar]
+    public Vector3 currSectorIndexes = Vector3.zero;
     public SPObject controllTarget;
 
     public NetworkTransform networkTransform;
@@ -124,18 +128,32 @@ public class Client : NetworkBehaviour
                 Client.localClient.sectorId = curSectorId;
                 Client.localClient.zoneId = curZoneId;
                 Client.localClient.ReadSpace();
-                UpdateGlobalPos();
+                currSectorIndexes = currSector.GetIndexes();
+                currZoneIndexes = currZone.GetIndexes();
+                //UpdateGlobalPos();
 
                 InvokeOnChangedZone(fzn);
             }
-            transform.localPosition = currSector.GetPosition() + currZone.GetPosition() + controllTarget.transform.localPosition;
         }
         else
         {
-            // if (SpaceManager.spaceContainer != null && controllTarget != null)
-            // {
-            //     controllTarget.transform.localPosition = SpaceManager.spaceContainer.transform.localPosition + globalPosition;
-            // }
+            if (targetId > 0)
+            {
+                SPObject sp = NetworkClient.spawned[targetId].GetComponent<SPObject>();
+                controllTarget = sp;
+                if (sp.transform.parent == null && sp.clientContainer == null)
+                {
+                    GameObject container = new GameObject();
+                    sp.transform.SetParent(container.transform);
+                    sp.clientContainer = container;
+                    container.name = $"Player_{netId}_container";
+                }
+                ReadSpace();
+                if (sp.clientContainer != null)
+                {
+                    sp.clientContainer.transform.localPosition = SpaceManager.spaceContainer.transform.localPosition + currSector.GetPosition() + currZoneIndexes * Zone.zoneStep;
+                }
+            }
         }
     }
 
@@ -156,6 +174,7 @@ public class Client : NetworkBehaviour
         {
             ReadSpace();
         }
+        gameObject.name = $"Player_{netId}";
     }
 
     [Command]

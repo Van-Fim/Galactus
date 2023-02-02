@@ -25,9 +25,11 @@ public class ClientManager : NetworkBehaviour
             Client cl = NetworkClient.spawned[clientIds[i]].GetComponent<Client>();
             SPObject sp = NetworkClient.spawned[cl.targetId].GetComponent<SPObject>();
             cl.ReadSpace();
-            sp.netTranform.globalPos = cl.currSector.GetPosition() + cl.currZone.GetPosition();
-            sp.netTranform.syncGlobalPos = true;
-            sp.netTranform.client = cl;
+
+            if (sp.clientContainer != null && !cl.isLocalPlayer)
+            {
+                sp.clientContainer.transform.localPosition = SpaceManager.spaceContainer.transform.localPosition + cl.currSector.GetPosition() + cl.currZoneIndexes * Zone.zoneStep;
+            }
         }
     }
 }

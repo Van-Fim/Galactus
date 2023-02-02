@@ -180,6 +180,8 @@ public class GameStartData
                     ship.isPlayerControll = true;
                     NetworkServer.Spawn(ship.gameObject, client.connectionToClient);
                     client.targetId = ship.netId;
+                    ship.gameObject.name = $"Ship_{ship.netId}";
+                    ship.clientNetId = client.netId;
                 }
                 else
                 {

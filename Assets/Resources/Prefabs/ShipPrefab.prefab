@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2564950108980009015}
   - component: {fileID: -7530652996865823134}
   - component: {fileID: -6466271960910200307}
-  - component: {fileID: -5824391400389688126}
+  - component: {fileID: -5099504129383034821}
   m_Layer: 0
   m_Name: ShipPrefab
   m_TagString: Untagged
@@ -67,6 +67,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   main: {fileID: 0}
+  isLocalPlayerControll: 0
   isPlayerControll: 0
   isCanSyncPos: 0
   galaxyId: 0
@@ -75,13 +76,11 @@ MonoBehaviour:
   zoneId: 0
   modelPatch: 
   templateName: 
-  globalPos: {x: 0, y: 0, z: 0}
-  netTranform: {fileID: -5824391400389688126}
+  networkTransform: {fileID: -5099504129383034821}
   rigidbodyMain: {fileID: 0}
   controller: {fileID: 0}
   isInitialized: 0
-  syncGlobalPos: 0
---- !u!114 &-5824391400389688126
+--- !u!114 &-5099504129383034821
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -90,7 +89,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2564950108980009019}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49e407e557451bd4c8c6a164ccba0830, type: 3}
+  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 1

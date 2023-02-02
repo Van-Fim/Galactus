@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public abstract class SPObject : NetworkBehaviour
 {
     public GameObject main;
+    public GameObject clientContainer;
     public bool isLocalPlayerControll;
     [SyncVar]
     public bool isPlayerControll;
@@ -25,13 +26,14 @@ public abstract class SPObject : NetworkBehaviour
     StarSystem currSystem;
     Sector currSector;
     Zone currZone;
-
+    [SyncVar]
+    public uint clientNetId;
     [SyncVar]
     public string modelPatch;
     [SyncVar]
     public string templateName;
 
-    public NetTranform netTranform;
+    public NetworkTransform networkTransform;
 
     public Rigidbody rigidbodyMain;
 
@@ -103,8 +105,6 @@ public abstract class SPObject : NetworkBehaviour
         controllTarget.controller.obj = controllTarget;
         controllTarget.isLocalPlayerControll = true;
         Client.localClient.controllTarget = controllTarget;
-        Client.localClient.controllTarget.netTranform.syncGlobalPos = true;
-        Client.localClient.controllTarget.netTranform.clientId = Client.localClient.netId;
     }
 
     public void ReadSpace()
@@ -181,12 +181,10 @@ public abstract class SPObject : NetworkBehaviour
             if (Client.localClient.galaxyId == galaxyId && Client.localClient.systemId == systemId && Client.localClient.sectorId == sectorId)
             {
                 main.SetActive(true);
-                netTranform.enabled = true;
             }
             else
             {
                 main.SetActive(false);
-                netTranform.enabled = false;
             }
         }
         else
@@ -194,12 +192,12 @@ public abstract class SPObject : NetworkBehaviour
             if (Client.localClient.galaxyId == galaxyId && Client.localClient.systemId == systemId)
             {
                 main.SetActive(true);
-                netTranform.enabled = true;
+                networkTransform.enabled = true;
             }
             else
             {
                 main.SetActive(false);
-                netTranform.enabled = false;
+                networkTransform.enabled = false;
             }
         }
     }

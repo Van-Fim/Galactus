@@ -57,6 +57,15 @@ public class DebugConsole
         commands.Add(consoleCommand);
 
         consoleCommand = new DebugConsoleCommand();
+        consoleCommand.command = "ClearCurrPage";
+        consoleCommand.action = delegate ()
+        {
+            LogPage curPage = pages.Find(f => f.name == currentPage);
+            curPage.list = new List<string>();
+        };
+        commands.Add(consoleCommand);
+
+        consoleCommand = new DebugConsoleCommand();
         consoleCommand.command = "GetObjInfo";
         consoleCommand.action = delegate ()
         {
@@ -120,9 +129,9 @@ public class DebugConsole
 
                 textString += $"<color=blue>=========</color>\n<color=green>Local player:</color> {localPlayer}\n<color=green>name:</color> {cl.name}";
                 textString += $"\n<color=green>position:</color> {cl.transform.localPosition}\n<color=green>rotation:</color> {cl.transform.localEulerAngles}";
-                if (Client.localClient.controllTarget != null)
+                if (cl.controllTarget != null)
                 {
-                    SPObject trgt = Client.localClient.controllTarget;
+                    SPObject trgt = cl.controllTarget;
                     textString += $"\n-----\n<color=green>name:</color> {trgt.name}";
                     textString += $"\n<color=green>position:</color> {trgt.transform.localPosition}\n<color=green>rotation:</color> {trgt.transform.localEulerAngles}";
                     textString += $"\n-----";

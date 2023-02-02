@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4401386127403524275}
   - component: {fileID: 4401386127403524286}
   - component: {fileID: 4401386127403524285}
-  - component: {fileID: 4401386127403524284}
+  - component: {fileID: -9137068185668232112}
   m_Layer: 0
   m_Name: AsteroidPrefab
   m_TagString: Untagged
@@ -67,6 +67,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   main: {fileID: 0}
+  isLocalPlayerControll: 0
   isPlayerControll: 0
   isCanSyncPos: 0
   galaxyId: 0
@@ -75,20 +76,20 @@ MonoBehaviour:
   zoneId: 0
   modelPatch: 
   templateName: 
-  netTranform: {fileID: 4401386127403524284}
+  networkTransform: {fileID: -9137068185668232112}
   rigidbodyMain: {fileID: 0}
   controller: {fileID: 0}
   isInitialized: 0
---- !u!114 &4401386127403524284
+--- !u!114 &-9137068185668232112
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4401386127403524274}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49e407e557451bd4c8c6a164ccba0830, type: 3}
+  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 0
