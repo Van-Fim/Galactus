@@ -10,10 +10,14 @@ public class SpaceManager : MonoBehaviour
     public static List<Sector> sectors = new List<Sector>();
     public static List<Zone> zones = new List<Zone>();
 
+    public static List<Sun> suns = new List<Sun>();
+    public static List<Planet> planets = new List<Planet>();
+
     public static List<string> names = new List<string>();
     public static SpaceManager singleton;
 
     public static GameObject spaceContainer;
+    public static GameObject solarContainer;
 
     public static void Init()
     {
@@ -28,6 +32,11 @@ public class SpaceManager : MonoBehaviour
         spaceContainer.transform.position = Vector3.zero;
         spaceContainer.transform.rotation = Quaternion.identity;
 
+        solarContainer = new GameObject();
+        solarContainer.name = "SolarContainer";
+        solarContainer.transform.position = Vector3.zero;
+        solarContainer.transform.rotation = Quaternion.identity;
+
         UnityEngine.Random.InitState(GameManager.singleton.seed.GetHashCode());
         LoadGalaxies("default");
 
@@ -40,6 +49,7 @@ public class SpaceManager : MonoBehaviour
         for (int i = 0; i < starSystems.Count; i++)
         {
             StarSystem system = starSystems[i];
+            system.LoadSuns();
             LoadSectors(system);
         }
 
@@ -48,6 +58,7 @@ public class SpaceManager : MonoBehaviour
             Sector sector = sectors[i];
             LoadZones(sector);
         }
+        DebugConsole.Log(suns.Count);
     }
 
     public static Galaxy GetGalaxyByID(int id)
@@ -293,6 +304,11 @@ public class SpaceManager : MonoBehaviour
                 if (i == 0)
                 {
                     xPos = yPos = zPos = 0;
+                    Sun sn = SpaceManager.suns.Find(f=>f.galaxyId == system.galaxyId && f.systemId == system.id);
+                    if (sn != null)
+                    {
+                        zPos = (sn.scale)/Sector.sectorStep;
+                    }
                 }
                 Vector3 indexes = new Vector3(xPos, yPos, zPos);
                 List<Sector> fsps = sectors.FindAll(f => f.galaxyId == system.galaxyId && f.systemId == system.id);
@@ -532,6 +548,7 @@ public class SpaceManager : MonoBehaviour
             }
         }
     }
+
     public static void GenerateArm(string galaxySeed, Galaxy galaxy, List<TemplateNode> nodes, int numOfStars, float rotation, float spin, double armSpread, double starsAtCenterRatio, float galMaxRange)
     {
         System.Random r = new System.Random(galaxySeed.GetHashCode());

@@ -9,7 +9,7 @@ public class Zone : Space
     public int sectorId;
 
     public static int minimapDivFactor = 2000;
-    public static int zoneStep = 2500;
+    public static int zoneStep = 25000;
 
     public int[] indexes = { 0, 0, 0 };
 

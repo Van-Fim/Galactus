@@ -4,6 +4,7 @@ using System;
 using System.Net.Sockets;
 using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Collections.Generic;
 using Mirror;
 using UnityEngine.Events;
 public class Client : NetworkBehaviour
@@ -306,7 +307,9 @@ public class Client : NetworkBehaviour
         Vector3 recPos = Space.RecalcPos(sector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
 
         SpaceManager.spaceContainer.transform.localPosition = -recPos;
+        SpaceManager.solarContainer.transform.localPosition = -recPos;
 
+        Sun.InvokeRender();
         WarpCompleted(netId, galaxyId, systemId, sectorId, zoneId);
     }
 
@@ -316,6 +319,7 @@ public class Client : NetworkBehaviour
         {
             controllTarget.transform.localPosition = -(Space.RecalcPos(controllTarget.transform.localPosition, Zone.zoneStep) - controllTarget.transform.localPosition);
             SpaceManager.spaceContainer.transform.localPosition = -Space.RecalcPos(currSector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
+            SpaceManager.solarContainer.transform.localPosition = -Space.RecalcPos(currSector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
             currZone = zone;
         }
     }

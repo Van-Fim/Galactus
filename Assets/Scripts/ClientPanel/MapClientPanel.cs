@@ -84,6 +84,7 @@ public class MapClientPanel : ClientPanel
         base.Show();
         CameraManager.SwitchByCode(1);
         Controller.blocked = true;
+        rawImage.texture = CameraManager.minimapCamera.curCamera.targetTexture;
 
         selectedGalaxyId = Client.localClient.galaxyId;
         selectedSystemId = Client.localClient.systemId;
@@ -93,8 +94,6 @@ public class MapClientPanel : ClientPanel
         ChangeLayer(currentLayer);
         CameraManager.minimapCamera.ResetSpeed();
         transform.SetAsLastSibling();
-
-        rawImage.texture = CameraManager.minimapCamera.curCamera.targetTexture;
     }
     public override void Close()
     {

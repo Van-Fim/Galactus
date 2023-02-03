@@ -95,7 +95,6 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
             spacePosition = spacePosition / Zone.minimapDivFactor;
         }
         Vector3 pp = CameraManager.minimapCamera.curCamera.WorldToViewportPoint(spacePosition);
-
         pp.Scale(new Vector3(rawRect.width, rawRect.height, 1f));
 
         transform.position = new Vector3(pp.x, pp.y, 0);

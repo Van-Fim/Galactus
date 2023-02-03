@@ -33,6 +33,12 @@ public class DebugConsole
             NetManager.singleton.StartHost();
             DebugPanel panel = ClientPanelManager.GetPanel<DebugPanel>();
             panel.Close();
+            string textString = "";
+            textString += $"<color=green>|||||||||||||</color>\n";
+            textString += $"<color=green>Local ip:</color> {Client.GetLocalIPAddress()}\n";
+            textString += $"<color=green>Server state:</color> OK\n";
+            textString += $"<color=green>|||||||||||||</color>\n\n";
+            DebugConsole.Log(textString);
         };
         commands.Add(consoleCommand);
 
@@ -42,7 +48,12 @@ public class DebugConsole
         {
             NetManager.singleton.StartServer();
             DebugPanel panel = ClientPanelManager.GetPanel<DebugPanel>();
-            panel.Close();
+            string textString = "";
+            textString += $"<color=green>|||||||||||||</color>\n";
+            textString += $"<color=green>Server local ip:</color> {Client.GetLocalIPAddress()}\n";
+            textString += $"<color=green>Server state:</color> OK\n";
+            textString += $"<color=green>|||||||||||||</color>\n\n";
+            DebugConsole.Log(textString);
         };
         commands.Add(consoleCommand);
 
@@ -53,6 +64,12 @@ public class DebugConsole
             NetManager.singleton.StartClient();
             DebugPanel panel = ClientPanelManager.GetPanel<DebugPanel>();
             panel.Close();
+            string textString = "";
+            textString += $"<color=green>|||||||||||||</color>\n";
+            textString += $"<color=green>Local ip:</color> {Client.GetLocalIPAddress()}\n";
+            textString += $"<color=green>Server state:</color> OK\n";
+            textString += $"<color=green>|||||||||||||</color>\n\n";
+            DebugConsole.Log(textString);
         };
         commands.Add(consoleCommand);
 
@@ -109,7 +126,6 @@ public class DebugConsole
                 textString += $"\n-----";
             }
             textString += $"\n<color=blue>=========</color>\n\n";
-            Log(textString + "\n\n\n\n", false, null, currentPage);
         };
         commands.Add(consoleCommand);
 
@@ -138,7 +154,6 @@ public class DebugConsole
                 }
                 textString += $"\n<color=blue>=========</color>\n\n";
             }
-            Log(textString + "\n\n\n\n", false, null, currentPage);
         };
         commands.Add(consoleCommand);
 
@@ -150,11 +165,11 @@ public class DebugConsole
             if (DebugConsoleCommand.args.Length > 0)
             {
                 ftype = Type.GetType(DebugConsoleCommand.args[0]);
-            }
-            if (ftype == null)
-            {
-                Log($"Error type {DebugConsoleCommand.args[0]} not exists", false, null, currentPage);
-                return;
+                if (ftype == null)
+                {
+                    Log($"Error type {DebugConsoleCommand.args[0]} not exists", false, null, currentPage);
+                    return;
+                }
             }
             LogPage curPage = pages.Find(f => f.name == currentPage);
             if (curPage == null)

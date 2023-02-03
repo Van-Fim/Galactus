@@ -10,25 +10,25 @@
 			<color r="100" g="100" b="255" a="255" />
 		</colors>
 	</planet>
-		<planet name="Planet02" type="1">
+	<planet name="Planet02" type="1">
 		<model patch="Models/Planets/Planet01" />
 		<scale min="300" max="300" />
 		<orbitPeriod min="2000" max="3000" />
-			<rotateSpeed min="10" max="10" />
+		<rotateSpeed min="10" max="10" />
 		<colors>
 			<color r="255" g="0" b="0" a="255" />
 			<color r="0" g="255" b="0" a="255" />
 			<color r="100" g="100" b="255" a="255" />
 		</colors>
-		<satellites min="1" max="4" >
+		<satellites min="1" max="4">
 			<satellite template="Planet03" minRange="0" maxRange="2000" />
 		</satellites>
 	</planet>
-		<planet name="Planet03" type="1">
+	<planet name="Planet03" type="1">
 		<model patch="Models/Planets/Planet01" />
 		<scale min="100" max="100" />
 		<orbitPeriod min="2000" max="3000" />
-			<rotateSpeed min="10" max="10" />
+		<rotateSpeed min="10" max="10" />
 		<colors>
 			<color r="255" g="0" b="0" a="255" />
 			<color r="0" g="255" b="0" a="255" />
