@@ -6,6 +6,7 @@ public class CameraManager
 {
     public static CameraController mainCamera;
     public static CameraController minimapCamera;
+    public static PlanetCamera planetCamera;
     public static Camera skyboxCamera;
 
     public static byte currentCameraCode = 0;
@@ -15,9 +16,11 @@ public class CameraManager
         CameraManager.mainCamera = GameObject.Instantiate(GameContentManager.mainCameraPrefab);
         CameraManager.skyboxCamera = GameObject.Instantiate(GameContentManager.skyboxCameraPrefab, CameraManager.mainCamera.transform);
         CameraManager.minimapCamera = GameObject.Instantiate(GameContentManager.minimapCameraPrefab);
+        CameraManager.planetCamera = GameObject.Instantiate(GameContentManager.planetCameraPrefab);
 
         GameObject.DontDestroyOnLoad(CameraManager.mainCamera);
         GameObject.DontDestroyOnLoad(CameraManager.minimapCamera);
+        GameObject.DontDestroyOnLoad(CameraManager.planetCamera);
 
         CameraController.startCamPositions.Add(new Vector3(0, 1500, 0));
         CameraController.startCamPositions.Add(new Vector3(0, 2000, 0));

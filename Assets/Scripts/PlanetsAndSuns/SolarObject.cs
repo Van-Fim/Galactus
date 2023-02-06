@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class SolarObject
 {
+    public static int scaleFactor = 50000;
+    public static int hyperScaleFactor = 1;
     public SolarController solarController;
     public int parentSolarObjectId;
     public int galaxyId;
@@ -47,16 +49,18 @@ public class SolarObject
 
     public virtual void OnRender()
     {
-        DebugConsole.Log(Client.localClient.galaxyId == galaxyId && Client.localClient.systemId == id);
-        if (Client.localClient.galaxyId == galaxyId && Client.localClient.systemId == id)
+        if (Client.localClient.galaxyId == galaxyId && Client.localClient.systemId == systemId)
         {
-            solarController = new GameObject().AddComponent<SolarController>();
-            solarController.transform.SetParent(SpaceManager.solarContainer.transform);
-            solarController.transform.localPosition = GetPosition();
-            solarController.transform.eulerAngles = GetRotation();
-            GameObject sunGameobject = Resources.Load<GameObject>($"{model}/MAIN");
-            main = GameObject.Instantiate(sunGameobject, solarController.transform);
-            main.transform.localScale = new Vector3(0.1f * scale, 0.1f * scale, 0.1f * scale);
+            if (main == null)
+            {
+                solarController = new GameObject().AddComponent<SolarController>();
+                solarController.transform.SetParent(SpaceManager.solarContainer.transform);
+                solarController.transform.localPosition = GetPosition();
+                solarController.transform.eulerAngles = GetRotation();
+                GameObject sunGameobject = Resources.Load<GameObject>($"{model}/MAIN");
+                main = GameObject.Instantiate(sunGameobject, solarController.transform);
+                main.transform.localScale = new Vector3(scale, scale, scale);
+            }
         }
         else
         {
@@ -121,7 +125,6 @@ public class SolarObject
 
     public static void InvokeRender()
     {
-        DebugConsole.Log("inv");
         OnRenderAction?.Invoke();
     }
 

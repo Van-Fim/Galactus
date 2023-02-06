@@ -25,14 +25,24 @@ public class Client : NetworkBehaviour
     [SyncVar]
     public bool startGameStarted;
     [SyncVar]
+    public bool isHyperMode;
+    [SyncVar]
     public GameStartData gameStartData;
     [SyncVar]
     public uint targetId;
 
-    [SyncVar]
+
     public Vector3 currZoneIndexes = Vector3.zero;
-    [SyncVar]
+
     public Vector3 currSectorIndexes = Vector3.zero;
+
+    [SyncVar]
+    public int currSectorHyperId = 0;
+
+    [SyncVar]
+    public Vector3 currZoneHyperIndexes = Vector3.zero;
+    [SyncVar]
+    public Vector3 currSectorHyperIndexes = Vector3.zero;
     public SPObject controllTarget;
 
     public NetworkTransform networkTransform;
@@ -84,9 +94,56 @@ public class Client : NetworkBehaviour
 
     void Update()
     {
-        UPD();
-    }
+        if (isLocalPlayer && controllTarget != null)
+        {
+            if (Input.GetKeyDown(KeyCode.H)&&!Controller.blocked)
+            {
+                isHyperMode = !isHyperMode;
 
+                if (isHyperMode)
+                {
+                    currSectorHyperId = currSector.id;
+                    currSectorHyperIndexes = currSector.GetIndexes();
+                    sectorId = 0;
+                    zoneId = 0;
+                    ReadSpace();
+                    currSector.SetPosition(Vector3.zero);
+                    Vector3 newPos = ((currSectorHyperIndexes * Sector.sectorStep));
+                    newPos = newPos / SolarObject.scaleFactor;
+                    currZone.SetIndexes(newPos / Zone.zoneStep);
+                    currZone.SetPosition(currZone.GetIndexes() * Zone.zoneStep);
+                    controllTarget.transform.localPosition = newPos - currZone.GetPosition();
+                    SpaceManager.spaceContainer.transform.localPosition = -currZone.GetPosition();
+                    CameraManager.planetCamera.transform.localPosition = (Client.localClient.currSector.GetPosition() + Client.localClient.currZone.GetPosition() + CameraManager.mainCamera.transform.position) / SolarObject.hyperScaleFactor;
+                    currZoneIndexes = currZone.GetIndexes();
+                }
+                else
+                {
+                    Vector3 newPos = (currZone.GetPosition() + controllTarget.transform.localPosition) * SolarObject.scaleFactor;
+                    currSector.SetIndexes(newPos / Sector.sectorStep);
+                    currSector.SetPosition(currSector.GetIndexes() * Sector.sectorStep);
+                    currZone.SetIndexes(Vector3.zero);
+                    currZone.SetPosition(Vector3.zero);
+                    controllTarget.transform.localPosition = Vector3.zero;
+                    currZoneIndexes = currZone.GetIndexes();
+                    SpaceManager.spaceContainer.transform.localPosition = -(currSector.GetPosition() + currZone.GetPosition());
+                }
+                SPObject.InvokeRender();
+            }
+        }
+        if (isHyperMode)
+        {
+            UPD();
+        }
+        else
+        {
+            UPD();
+        }
+    }
+    public void HUPD(bool forceUpdate = false)
+    {
+        
+    }
     public void UPD(bool forceUpdate = false)
     {
         if (isLocalPlayer)
@@ -203,6 +260,7 @@ public class Client : NetworkBehaviour
 
         WarpClient(galaxyId, systemId, sectorId, zoneId);
         UPD(true);
+        CameraManager.planetCamera.startUpdate = true;
     }
 
     [ClientRpc]
@@ -307,7 +365,7 @@ public class Client : NetworkBehaviour
         Vector3 recPos = Space.RecalcPos(sector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
 
         SpaceManager.spaceContainer.transform.localPosition = -recPos;
-        SpaceManager.solarContainer.transform.localPosition = -recPos;
+        //SpaceManager.solarContainer.transform.localPosition = -recPos;
 
         Sun.InvokeRender();
         WarpCompleted(netId, galaxyId, systemId, sectorId, zoneId);
@@ -319,7 +377,7 @@ public class Client : NetworkBehaviour
         {
             controllTarget.transform.localPosition = -(Space.RecalcPos(controllTarget.transform.localPosition, Zone.zoneStep) - controllTarget.transform.localPosition);
             SpaceManager.spaceContainer.transform.localPosition = -Space.RecalcPos(currSector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
-            SpaceManager.solarContainer.transform.localPosition = -Space.RecalcPos(currSector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
+            //SpaceManager.solarContainer.transform.localPosition = -Space.RecalcPos(currSector.GetPosition() + zone.GetPosition(), Zone.zoneStep);
             currZone = zone;
         }
     }

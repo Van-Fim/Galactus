@@ -6,6 +6,7 @@ using System.Linq;
 public class DebugConsoleCommand
 {
     public string command;
+    public int descId;
     public static string[] args;
     public Action action;
 }
@@ -14,7 +15,7 @@ public class LogPage
     public string name = "main";
     public List<String> list = new List<string>();
     public List<String> history = new List<string>();
-    public int listMaxLines = 30;
+    public int listMaxLines = 100;
     public int historyCount = 20;
 }
 public class DebugConsole
@@ -69,6 +70,21 @@ public class DebugConsole
             textString += $"<color=green>Local ip:</color> {Client.GetLocalIPAddress()}\n";
             textString += $"<color=green>Server state:</color> OK\n";
             textString += $"<color=green>|||||||||||||</color>\n\n";
+            DebugConsole.Log(textString);
+        };
+        commands.Add(consoleCommand);
+
+        consoleCommand = new DebugConsoleCommand();
+        consoleCommand.command = "Help";
+        consoleCommand.action = delegate ()
+        {
+            string textString = "";
+            for (int i = 0; i < commands.Count; i++)
+            {
+                textString += $"<color=green>Command:</color> {commands[i].command}\n";
+                textString += $"<color=green>Description:</color> {i}\n";
+                textString += $"<color=green>|||||||||||||</color>\n\n";
+            }
             DebugConsole.Log(textString);
         };
         commands.Add(consoleCommand);

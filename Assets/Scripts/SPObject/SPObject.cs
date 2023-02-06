@@ -160,7 +160,14 @@ public abstract class SPObject : NetworkBehaviour
         {
             return;
         }
-        
+
+        if (Client.localClient.isHyperMode && main != null && !isLocalPlayerControll)
+        {
+            main.SetActive(false);
+            networkTransform.enabled = false;
+            return;
+        }
+
         if (modelPatch.Length > 0 && main == null)
         {
             GameObject minst = Resources.Load<GameObject>($"{modelPatch}/MAIN");

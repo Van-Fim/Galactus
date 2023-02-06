@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 9184368243175861623}
   - component: {fileID: 6689973998373633841}
   - component: {fileID: 5006767086373804654}
-  - component: {fileID: 4081939411055597334}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HULL
   m_TagString: Hull
   m_Icon: {fileID: 0}
@@ -84,19 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &4081939411055597334
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5693093934889044378}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8152590482333822834
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,7 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5150015714411289953}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MAIN
   m_TagString: Main
   m_Icon: {fileID: 0}

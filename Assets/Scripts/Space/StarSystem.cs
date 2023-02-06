@@ -56,6 +56,8 @@ public class StarSystem : Space
                 int minRange = int.Parse(sunNode.GetValue("minRange"));
                 int maxRange = int.Parse(sunNode.GetValue("maxRange"));
                 Sun sun = new Sun(this, templateSName, minRange, maxRange);
+                sun.galaxyId = galaxyId;
+                sun.systemId = id;
                 sun.Init();
             }
         }

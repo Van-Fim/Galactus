@@ -23,10 +23,7 @@ public class SpaceManager : MonoBehaviour
     {
         singleton = new GameObject().AddComponent<SpaceManager>();
         singleton.name = "SpaceManager";
-    }
 
-    public void Load()
-    {
         spaceContainer = new GameObject();
         spaceContainer.name = "SpaceContainer";
         spaceContainer.transform.position = Vector3.zero;
@@ -36,7 +33,10 @@ public class SpaceManager : MonoBehaviour
         solarContainer.name = "SolarContainer";
         solarContainer.transform.position = Vector3.zero;
         solarContainer.transform.rotation = Quaternion.identity;
+    }
 
+    public void Load()
+    {
         UnityEngine.Random.InitState(GameManager.singleton.seed.GetHashCode());
         LoadGalaxies("default");
 
@@ -58,7 +58,6 @@ public class SpaceManager : MonoBehaviour
             Sector sector = sectors[i];
             LoadZones(sector);
         }
-        DebugConsole.Log(suns.Count);
     }
 
     public static Galaxy GetGalaxyByID(int id)
@@ -304,10 +303,10 @@ public class SpaceManager : MonoBehaviour
                 if (i == 0)
                 {
                     xPos = yPos = zPos = 0;
-                    Sun sn = SpaceManager.suns.Find(f=>f.galaxyId == system.galaxyId && f.systemId == system.id);
+                    Sun sn = SpaceManager.suns.Find(f => f.galaxyId == system.galaxyId && f.systemId == system.id);
                     if (sn != null)
                     {
-                        zPos = (sn.scale)/Sector.sectorStep;
+                        zPos = ((sn.scale * SolarObject.scaleFactor)) / Sector.sectorStep;
                     }
                 }
                 Vector3 indexes = new Vector3(xPos, yPos, zPos);
