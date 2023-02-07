@@ -1,5 +1,6 @@
 using Mirror;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using System;
 using System.Linq;
@@ -24,6 +25,7 @@ public class DebugConsole
     public static List<LogPage> pages = new List<LogPage>();
     public static string currentPage = "main";
     public static bool collapse = false;
+    public static bool showFileLineInfo = false;
 
     public static void Init()
     {
@@ -141,6 +143,21 @@ public class DebugConsole
                 textString += $"\n<color=green>position:</color> {trgt.transform.localPosition}\n<color=green>rotation:</color> {trgt.transform.localEulerAngles}";
                 textString += $"\n-----";
             }
+            textString += $"\n<color=blue>=========</color>\n\n";
+        };
+        commands.Add(consoleCommand);
+
+        consoleCommand = new DebugConsoleCommand();
+        consoleCommand.command = "ShowCMDFInfo";
+        consoleCommand.action = delegate ()
+        {
+            string textString = "";
+            if (DebugConsoleCommand.args.Length > 0)
+            {
+                showFileLineInfo = System.Convert.ToBoolean(DebugConsoleCommand.args[0]);
+            }
+
+            textString += $"<color=blue>=========</color>\n<color=green>state:</color> {showFileLineInfo}";
             textString += $"\n<color=blue>=========</color>\n\n";
         };
         commands.Add(consoleCommand);
@@ -272,9 +289,15 @@ public class DebugConsole
         ShowPage(currentPage);
         return true;
     }
-    public static void Log(System.Object message, bool collapse = false, string type = null, string page = null)
+    public static void Log(System.Object message, bool collapse = false, string type = null, string page = null, [CallerLineNumber] int lineNumber = 0,
+    [CallerFilePath] string callerFilePatch = null)
     {
-        string text = message.ToString();
+        string text = $"{message.ToString()}";
+        if (showFileLineInfo)
+        {
+            text = $"[{callerFilePatch}]{lineNumber}::{message.ToString()}";
+        }
+
         if (page == null)
         {
             page = currentPage;

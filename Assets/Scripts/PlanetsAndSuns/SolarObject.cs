@@ -6,10 +6,11 @@ using UnityEngine;
 
 public class SolarObject
 {
-    public static int scaleFactor = 50000;
+    public static int scaleFactor = 100000;
     public static int hyperScaleFactor = 1;
     public SolarController solarController;
     public int parentSolarObjectId;
+    public SolarObject parentSolarObject;
     public int galaxyId;
     public int systemId;
     public int id = 0;
@@ -60,7 +61,8 @@ public class SolarObject
                 solarController.transform.eulerAngles = GetRotation();
                 GameObject sunGameobject = Resources.Load<GameObject>($"{model}/MAIN");
                 main = GameObject.Instantiate(sunGameobject, solarController.transform);
-                main.transform.localScale = new Vector3(scale, scale, scale);
+                float fscale = scale/SolarObject.scaleFactor;
+                main.transform.localScale = new Vector3(fscale, fscale, fscale);
             }
         }
         else
@@ -108,7 +110,7 @@ public class SolarObject
     }
     public virtual Vector3 GetPosition()
     {
-        Vector3 ret = new Vector3(this.position[0], this.position[1], this.position[1]);
+        Vector3 ret = new Vector3(this.position[0], this.position[1], this.position[2]);
         // if(solarController != null) {
         //     SetPosition(solarController.transform.localPosition);
         //     ret = new Vector2(this.position[0], this.position[1]);

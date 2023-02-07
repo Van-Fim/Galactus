@@ -50,6 +50,7 @@ public class SpaceManager : MonoBehaviour
         {
             StarSystem system = starSystems[i];
             system.LoadSuns();
+            system.LoadPlanets();
             LoadSectors(system);
         }
 
@@ -263,6 +264,10 @@ public class SpaceManager : MonoBehaviour
         int maxRangeMin = int.Parse(nd.GetValue("maxSectorRangeMin"));
         int maxRangeMax = int.Parse(nd.GetValue("maxSectorRangeMax"));
         List<Sun> suns = SpaceManager.suns.FindAll(f => f.galaxyId == system.galaxyId && f.systemId == system.id);
+        List<Planet> planets = SpaceManager.planets.FindAll(f => f.galaxyId == system.galaxyId && f.systemId == system.id);
+        List<SolarObject> allObjs = new List<SolarObject>();
+        allObjs.AddRange(suns);
+        allObjs.AddRange(planets);
         Sun sn = suns[0];
         for (int j = 0; j < nodes.Count; j++)
         {
@@ -309,7 +314,7 @@ public class SpaceManager : MonoBehaviour
 
                     if (sn != null)
                     {
-                        zPos = ((sn.scale * SolarObject.scaleFactor)) / Sector.sectorStep;
+                        zPos = ((sn.scale)) / Sector.sectorStep;
                     }
                 }
                 Vector3 indexes = new Vector3(xPos, yPos, zPos);

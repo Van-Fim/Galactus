@@ -62,7 +62,33 @@ public class StarSystem : Space
             }
         }
     }
-
+    public void LoadPlanets()
+    {
+        Template template = TemplateManager.FindTemplate(templateName, "system");
+        if (template == null)
+        {
+            Debug.LogError("System template " + templateName + " not found");
+            return;
+        }
+        List<Sun> suns = SpaceManager.suns.FindAll(f => f.galaxyId == galaxyId && f.systemId == id);
+        Sun sun = suns[Random.Range(0,suns.Count)];
+        List<TemplateNode> planetNodes = template.GetNodeList("planet");
+        if (planetNodes.Count > 0)
+        {
+            int minCount = int.Parse(template.GetValue("planets", "min"));
+            int maxCount = int.Parse(template.GetValue("planets", "max"));
+            int count = UnityEngine.Random.Range(minCount, maxCount + 1);
+            for (int i = 0; i < count; i++)
+            {
+                TemplateNode planetNode = TemplateNode.GetByWeightsList(planetNodes);
+                string templateSName = planetNode.GetValue("template");
+                int minRange = int.Parse(planetNode.GetValue("minRange"));
+                int maxRange = int.Parse(planetNode.GetValue("maxRange"));
+                Planet planet = new Planet(this, sun, templateSName, minRange, maxRange);
+                planet.Init();
+            }
+        }
+    }
     public override int GenerateId()
     {
         int curId = 0;
@@ -86,8 +112,8 @@ public class StarSystem : Space
             spaceController = GameObject.Instantiate(GameContentManager.systemPrefab, SpaceManager.singleton.transform);
             spaceController.transform.localPosition = pos;
             spaceController.transform.localEulerAngles = rot;
-            spaceController.meshRenderer.material.SetColor("_TintColor", GetBgColor());
-            spaceController.meshRenderer.material.SetColor("_Color", GetBgColor());
+            spaceController.meshRenderer.material.SetColor("_TintColor", GetColor());
+            spaceController.meshRenderer.material.SetColor("_Color", GetColor());
             spaceController.meshRenderer.enabled = true;
             spaceController.Init();
         }

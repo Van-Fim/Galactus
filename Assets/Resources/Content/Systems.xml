@@ -1,10 +1,10 @@
 <templates>
 	<system name="System01">
 		<planets min="8" max="8">
-			<planet weight="50" template="Planet01" minRange="0" maxRange="30000" />
-			<planet weight="50" template="Planet02" minRange="0" maxRange="30000" />
+			<planet weight="50" template="Planet01" minRange="0" maxRange="300000" />
+			<planet weight="50" template="Planet02" minRange="0" maxRange="300000" />
 		</planets>
-		<sectors maxSectorRangeMin="1000" maxSectorRangeMax="1000">
+		<sectors maxSectorRangeMin="2000" maxSectorRangeMax="2000">
 			<sector min="2" max="5" template="Sector01" Ymin="0" Ymax="0" />
 		</sectors>
 		<suns min="1" max="1">
@@ -24,10 +24,10 @@
 	</system>
 	<system name="System02">
 		<planets min="0" max="2">
-			<planet weight="40" template="Planet01" minRange="0" maxRange="30000" />
-			<planet weight="60" template="Planet02" minRange="0" maxRange="30000" />
+			<planet weight="40" template="Planet01" minRange="0" maxRange="300000" />
+			<planet weight="60" template="Planet02" minRange="0" maxRange="300000" />
 		</planets>
-		<sectors maxSectorRangeMin="1000" maxSectorRangeMax="1000">
+		<sectors maxSectorRangeMin="2000" maxSectorRangeMax="2000">
 			<sector min="2" max="2" template="Sector01" Ymin="0" Ymax="0" />
 		</sectors>
 		<suns min="1" max="1">

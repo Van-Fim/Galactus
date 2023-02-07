@@ -16,7 +16,7 @@ public class Sun : SolarObject
         model = sunTemplate.GetValue("model", "patch");
         int scaleMin = int.Parse(sunTemplate.GetValue("scale", "min"));
         int scaleMax = int.Parse(sunTemplate.GetValue("scale", "max"));
-        this.scale = Random.Range(scaleMin, scaleMax);
+        this.scale = Random.Range(scaleMin, scaleMax) * SolarObject.scaleFactor;
 
         int range = maxRange - minRange;
         float curDistance = 0;
@@ -29,7 +29,7 @@ public class Sun : SolarObject
 
         while (repeatCount > 0 && found)
         {
-            Vector2 vPosition = UnityEngine.Random.insideUnitCircle * range;
+            Vector2 vPosition = UnityEngine.Random.insideUnitCircle * (range * SolarObject.scaleFactor);
             Vector2 fPosition = (vPosition.normalized * minRange);
             Vector2 pos = fPosition + vPosition;
             sunPosition = new Vector3(pos.x, 0, pos.y) * SolarObject.scaleFactor;
@@ -88,22 +88,25 @@ public class Sun : SolarObject
                 StarSystem sys = SpaceManager.GetSystemByID(galaxyId, systemId);
                 solarController = new GameObject().AddComponent<SolarController>();
                 solarController.transform.SetParent(SpaceManager.solarContainer.transform);
-                solarController.transform.localPosition = GetPosition();
+                solarController.transform.localPosition = GetPosition()/SolarObject.scaleFactor;
                 solarController.transform.eulerAngles = GetRotation();
                 GameObject sunGameobject = Resources.Load<GameObject>($"{model}/MAIN");
                 main = GameObject.Instantiate(sunGameobject, solarController.transform);
-                main.transform.localScale = new Vector3(scale, scale, scale);
+                float fscale = scale / SolarObject.scaleFactor;
+                main.transform.localScale = new Vector3(fscale, fscale, fscale);
                 GameObject hull = main.transform.Find("HULL").gameObject;
                 Color32 col = sys.GetColor();
 
                 hull.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", col);
                 hull.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", col);
-                
+                /*
                 sunLight = new GameObject().AddComponent<Light>();
                 sunLight.transform.SetParent(SpaceManager.spaceContainer.transform);
                 sunLight.transform.localPosition = GetPosition();
                 sunLight.range = 1000000000;
                 sunLight.color = col;
+                */
+                solarController.gameObject.name = "Sun_" + id.ToString();
             }
         }
         else
