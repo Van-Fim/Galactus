@@ -11,6 +11,8 @@ public class Zone : Space
     public static int minimapDivFactor = 2000;
     public static int zoneStep = 25000;
 
+    public Vector3 startPos;
+
     public int[] indexes = { 0, 0, 0 };
 
     public Zone() : base() { }

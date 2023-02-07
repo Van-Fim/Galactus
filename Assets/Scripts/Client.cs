@@ -36,13 +36,6 @@ public class Client : NetworkBehaviour
 
     public Vector3 currSectorIndexes = Vector3.zero;
 
-    [SyncVar]
-    public int currSectorHyperId = 0;
-
-    [SyncVar]
-    public Vector3 currZoneHyperIndexes = Vector3.zero;
-    [SyncVar]
-    public Vector3 currSectorHyperIndexes = Vector3.zero;
     public SPObject controllTarget;
 
     public NetworkTransform networkTransform;
@@ -96,30 +89,46 @@ public class Client : NetworkBehaviour
     {
         if (isLocalPlayer && controllTarget != null)
         {
-            if (Input.GetKeyDown(KeyCode.H)&&!Controller.blocked)
+            if (Input.GetKeyDown(KeyCode.H) && !Controller.blocked)
             {
                 isHyperMode = !isHyperMode;
 
                 if (isHyperMode)
                 {
-                    currSectorHyperId = currSector.id;
-                    currSectorHyperIndexes = currSector.GetIndexes();
+                    int currSectorHyperId = currSector.id;
+                    Vector3 currSectorHyperIndexes = currSector.GetIndexes();
+
+                    Vector3 newPos = ((currSectorHyperIndexes * Sector.sectorStep));
+                    newPos = newPos / SolarObject.scaleFactor;
                     sectorId = 0;
                     zoneId = 0;
                     ReadSpace();
                     currSector.SetPosition(Vector3.zero);
-                    Vector3 newPos = ((currSectorHyperIndexes * Sector.sectorStep));
-                    newPos = newPos / SolarObject.scaleFactor;
                     currZone.SetIndexes(newPos / Zone.zoneStep);
                     currZone.SetPosition(currZone.GetIndexes() * Zone.zoneStep);
                     controllTarget.transform.localPosition = newPos - currZone.GetPosition();
                     SpaceManager.spaceContainer.transform.localPosition = -currZone.GetPosition();
                     CameraManager.planetCamera.transform.localPosition = (Client.localClient.currSector.GetPosition() + Client.localClient.currZone.GetPosition() + CameraManager.mainCamera.transform.position) / SolarObject.hyperScaleFactor;
                     currZoneIndexes = currZone.GetIndexes();
+
+                    controllTarget.galaxyId = galaxyId;
+                    controllTarget.systemId = systemId;
+                    controllTarget.sectorId = sectorId;
+                    controllTarget.zoneId = zoneId;
                 }
                 else
                 {
                     Vector3 newPos = (currZone.GetPosition() + controllTarget.transform.localPosition) * SolarObject.scaleFactor;
+                    Vector3 indexes = newPos / Sector.sectorStep;
+                    Sector fsector = SpaceManager.sectors.Find(f => f.galaxyId == galaxyId && f.systemId == systemId && f.GetIndexes() == indexes);
+                    if (fsector != null)
+                    {
+                        sectorId = fsector.id;
+                    }
+                    else
+                    {
+                        sectorId = 0;
+                    }
                     currSector.SetIndexes(newPos / Sector.sectorStep);
                     currSector.SetPosition(currSector.GetIndexes() * Sector.sectorStep);
                     currZone.SetIndexes(Vector3.zero);
@@ -127,6 +136,11 @@ public class Client : NetworkBehaviour
                     controllTarget.transform.localPosition = Vector3.zero;
                     currZoneIndexes = currZone.GetIndexes();
                     SpaceManager.spaceContainer.transform.localPosition = -(currSector.GetPosition() + currZone.GetPosition());
+
+                    controllTarget.galaxyId = galaxyId;
+                    controllTarget.systemId = systemId;
+                    controllTarget.sectorId = sectorId;
+                    controllTarget.zoneId = zoneId;
                 }
                 SPObject.InvokeRender();
             }
@@ -142,7 +156,7 @@ public class Client : NetworkBehaviour
     }
     public void HUPD(bool forceUpdate = false)
     {
-        
+
     }
     public void UPD(bool forceUpdate = false)
     {
@@ -358,7 +372,11 @@ public class Client : NetworkBehaviour
 
             target.ReadSpace();
         }
-
+        if (sectorId == 0)
+        {
+            sector.SetPosition(sector.startPos);
+            sector.SetIndexes(sector.startPos/Sector.sectorStep);
+        }
         Client.localClient.ReadSpace();
 
         Vector3 ralPos = sector.GetPosition() + zone.GetPosition();

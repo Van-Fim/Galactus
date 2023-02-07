@@ -8,7 +8,9 @@ public class Sector : Space
     public int systemId;
 
     public static int sectorStep = 1000000;
-    public static int minimapDivFactor = 15000;
+    public static int minimapDivFactor = 30000;
+
+    public Vector3 startPos;
 
     public int[] indexes = { 0, 0, 0 };
     public Sector() : base() { }

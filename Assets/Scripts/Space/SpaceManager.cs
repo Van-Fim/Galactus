@@ -262,6 +262,8 @@ public class SpaceManager : MonoBehaviour
         TemplateNode nd = currentSystemTemplate.GetNode("sectors");
         int maxRangeMin = int.Parse(nd.GetValue("maxSectorRangeMin"));
         int maxRangeMax = int.Parse(nd.GetValue("maxSectorRangeMax"));
+        List<Sun> suns = SpaceManager.suns.FindAll(f => f.galaxyId == system.galaxyId && f.systemId == system.id);
+        Sun sn = suns[0];
         for (int j = 0; j < nodes.Count; j++)
         {
             TemplateNode node = nodes[j];
@@ -300,10 +302,11 @@ public class SpaceManager : MonoBehaviour
                 int xPos = (int)rndPos.x;
                 int yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
                 int zPos = (int)rndPos.y;
+                int dist = 0;
                 if (i == 0)
                 {
                     xPos = yPos = zPos = 0;
-                    Sun sn = SpaceManager.suns.Find(f => f.galaxyId == system.galaxyId && f.systemId == system.id);
+
                     if (sn != null)
                     {
                         zPos = ((sn.scale * SolarObject.scaleFactor)) / Sector.sectorStep;
@@ -323,14 +326,21 @@ public class SpaceManager : MonoBehaviour
                             continue;
                         }
                         Vector3 ind1 = sector1.GetIndexes();
-                        if (ind1 == indexes)
+                        for (int s = 0; s < suns.Count; s++)
                         {
-                            xPos = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
-                            yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
-                            zPos = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
+                            if (ind1 == indexes || Vector3.Distance(new Vector3(xPos, yPos, zPos), suns[s].GetPosition()) < dist)
+                            {
+                                xPos = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
+                                yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
+                                zPos = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
 
-                            indexes = new Vector3(xPos, yPos, zPos);
-                            br = true;
+                                indexes = new Vector3(xPos, yPos, zPos);
+                                br = true;
+                                break;
+                            }
+                        }
+                        if (br)
+                        {
                             break;
                         }
                     }
@@ -351,6 +361,7 @@ public class SpaceManager : MonoBehaviour
 
                 sector.SetIndexes(indexes);
                 sector.SetPosition(indexes * size);
+                sector.startPos = (indexes * size);
                 sector.size = size;
                 sector.galaxyId = system.galaxyId;
                 sector.systemId = system.id;
