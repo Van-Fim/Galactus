@@ -53,6 +53,7 @@ public class SolarObject
         {
             if (main == null)
             {
+                StarSystem sys = SpaceManager.GetSystemByID(galaxyId, systemId);
                 solarController = new GameObject().AddComponent<SolarController>();
                 solarController.transform.SetParent(SpaceManager.solarContainer.transform);
                 solarController.transform.localPosition = GetPosition();
