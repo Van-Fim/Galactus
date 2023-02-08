@@ -129,10 +129,12 @@ public class Client : NetworkBehaviour
                     {
                         sectorId = 0;
                     }
-                    currSector.SetIndexes(newPos / Sector.sectorStep);
+                    currSector.SetIndexes(indexes);
                     currSector.SetPosition(currSector.GetIndexes() * Sector.sectorStep);
-                    currZone.SetIndexes(Vector3.zero);
-                    currZone.SetPosition(Vector3.zero);
+                    Vector3 newZonePos = (newPos - currSector.GetPosition());
+                    DebugConsole.Log($"{newZonePos} {(newZonePos/Zone.zoneStep)}");
+                    currZone.SetIndexes(newZonePos/Zone.zoneStep);
+                    currZone.SetPosition(currZone.GetIndexes()*Zone.zoneStep);
                     controllTarget.transform.localPosition = Vector3.zero;
                     currZoneIndexes = currZone.GetIndexes();
                     SpaceManager.spaceContainer.transform.localPosition = -(currSector.GetPosition() + currZone.GetPosition());
