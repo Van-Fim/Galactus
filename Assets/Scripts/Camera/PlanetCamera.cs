@@ -12,7 +12,6 @@ public class PlanetCamera : MonoBehaviour
             if (Client.localClient.isHyperMode)
             {
                 transform.localPosition = (Client.localClient.currSector.GetPosition() + Client.localClient.currZone.GetPosition() +  CameraManager.mainCamera.transform.position)/SolarObject.hyperScaleFactor;
-                //transform.localPosition = (-SpaceManager.spaceContainer.transform.localPosition + Client.localClient.currSector.GetPosition() + Client.localClient.currZone.GetPosition() +  CameraManager.mainCamera.transform.position)/SolarObject.hyperScaleFactor;
             }
             else{
                 transform.localPosition = (Client.localClient.currSector.GetPosition() + Client.localClient.currZone.GetPosition() +  CameraManager.mainCamera.transform.position)/SolarObject.scaleFactor;

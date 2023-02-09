@@ -28,7 +28,7 @@ public class ClientManager : NetworkBehaviour
 
             if (sp.clientContainer != null && !cl.isLocalPlayer)
             {
-                sp.clientContainer.transform.localPosition = SpaceManager.spaceContainer.transform.localPosition + cl.currSector.GetPosition() + cl.currZoneIndexes * Zone.zoneStep;
+                sp.clientContainer.transform.localPosition = SpaceManager.spaceContainer.transform.localPosition + cl.currSectorIndexes * Sector.sectorStep + cl.currZoneIndexes * Zone.zoneStep;
             }
         }
     }

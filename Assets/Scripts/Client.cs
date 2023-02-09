@@ -108,8 +108,9 @@ public class Client : NetworkBehaviour
                     currZone.SetPosition(currZone.GetIndexes() * Zone.zoneStep);
                     controllTarget.transform.localPosition = newPos - currZone.GetPosition();
                     SpaceManager.spaceContainer.transform.localPosition = -currZone.GetPosition();
-                    CameraManager.planetCamera.transform.localPosition = (Client.localClient.currSector.GetPosition() + Client.localClient.currZone.GetPosition() + CameraManager.mainCamera.transform.position) / SolarObject.hyperScaleFactor;
+
                     currZoneIndexes = currZone.GetIndexes();
+                    currSectorIndexes = currSector.GetIndexes();
 
                     controllTarget.galaxyId = galaxyId;
                     controllTarget.systemId = systemId;
@@ -137,6 +138,7 @@ public class Client : NetworkBehaviour
                     currZone.SetPosition(currZone.GetIndexes() * Zone.zoneStep);
                     controllTarget.transform.localPosition = Vector3.zero;
                     currZoneIndexes = currZone.GetIndexes();
+                    currSectorIndexes = currSector.GetIndexes();
                     SpaceManager.spaceContainer.transform.localPosition = -(currSector.GetPosition() + currZone.GetPosition());
 
                     controllTarget.galaxyId = galaxyId;
@@ -202,8 +204,9 @@ public class Client : NetworkBehaviour
                 Client.localClient.sectorId = curSectorId;
                 Client.localClient.zoneId = curZoneId;
                 Client.localClient.ReadSpace();
-                currSectorIndexes = currSector.GetIndexes();
+                
                 currZoneIndexes = currZone.GetIndexes();
+                currSectorIndexes = currSector.GetIndexes();
                 //UpdateGlobalPos();
 
                 InvokeOnChangedZone(fzn);
