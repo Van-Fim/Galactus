@@ -134,7 +134,7 @@ public class Client : NetworkBehaviour
                     Vector3 newZonePos = (newPos - currSector.GetPosition());
                     DebugConsole.Log($"{newZonePos} {(newZonePos/Zone.zoneStep)}");
                     currZone.SetIndexes(newZonePos/Zone.zoneStep);
-                    currZone.SetPosition(currZone.GetIndexes()*Zone.zoneStep);
+                    currZone.SetPosition(currZone.GetIndexes() * Zone.zoneStep);
                     controllTarget.transform.localPosition = Vector3.zero;
                     currZoneIndexes = currZone.GetIndexes();
                     SpaceManager.spaceContainer.transform.localPosition = -(currSector.GetPosition() + currZone.GetPosition());

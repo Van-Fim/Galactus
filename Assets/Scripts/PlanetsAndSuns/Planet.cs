@@ -326,7 +326,7 @@ public class Planet : SolarObject
                 StarSystem sys = SpaceManager.GetSystemByID(galaxyId, systemId);
                 solarController = new GameObject().AddComponent<SolarController>();
                 if (parentSolarObject.GetType() == typeof(Sun))
-                    solarController.transform.SetParent(parentSolarObject.transform);
+                    solarController.transform.SetParent(SpaceManager.solarContainer.transform);
                 else
                     solarController.transform.SetParent(SpaceManager.solarContainer.transform);
                 solarController.transform.localPosition = GetPosition() / SolarObject.scaleFactor;
