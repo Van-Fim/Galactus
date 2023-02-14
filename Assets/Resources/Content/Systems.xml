@@ -1,6 +1,6 @@
 <templates>
 	<system name="System01">
-		<planets min="8" max="8">
+		<planets min="18" max="18">
 			<planet weight="50" template="Planet01" minRange="0" maxRange="300000" />
 			<planet weight="50" template="Planet02" minRange="0" maxRange="300000" />
 		</planets>

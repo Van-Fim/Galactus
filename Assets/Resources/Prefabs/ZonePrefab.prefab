@@ -46,23 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 7190490987974345779}
-  space:
-    id: -1
-    size: 10
-    templateName: 
-    name: 
-    position:
-    - 0
-    - 0
-    - 0
-    rotation:
-    - 0
-    - 0
-    - 0
-    color: 000000
-    spaceController: {fileID: 0}
-    uiSpaceObject: {fileID: 0}
   layer: 3
+  isInitialized: 0
 --- !u!1 &6997505442839084505
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,7 +110,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 880f41c40dab25a4d941f25fd34d2f53, type: 2}
+  - {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
