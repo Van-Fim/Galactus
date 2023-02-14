@@ -99,6 +99,7 @@ public class Client : NetworkBehaviour
                     Vector3 currSectorHyperIndexes = currSector.GetIndexes();
 
                     Vector3 newPos = ((currSectorHyperIndexes * Sector.sectorStep));
+                    PlanetCamera.fixPos = newPos;
                     newPos = newPos / SolarObject.scaleFactor;
                     sectorId = 0;
                     zoneId = 0;
@@ -133,7 +134,6 @@ public class Client : NetworkBehaviour
                     currSector.SetIndexes(indexes);
                     currSector.SetPosition(currSector.GetIndexes() * Sector.sectorStep);
                     Vector3 newZonePos = (newPos - currSector.GetPosition());
-                    DebugConsole.Log($"{newZonePos} {(newZonePos/Zone.zoneStep)}");
                     currZone.SetIndexes(newZonePos/Zone.zoneStep);
                     currZone.SetPosition(currZone.GetIndexes() * Zone.zoneStep);
                     controllTarget.transform.localPosition = Vector3.zero;

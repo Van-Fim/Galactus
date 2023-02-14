@@ -1,7 +1,7 @@
 <templates>
 	<planet name="Planet01" type="1">
 		<model patch="Models/Planets/Planet01" />
-		<scale min="1500" max="1500" />
+		<scale min="300" max="300" />
 		<orbitPeriod min="2000" max="3000" />
 		<rotateSpeed min="10" max="10" />
 		<colors>
@@ -12,7 +12,7 @@
 	</planet>
 	<planet name="Planet02" type="1">
 		<model patch="Models/Planets/Planet02" />
-		<scale min="1500" max="1500" />
+		<scale min="300" max="300" />
 		<orbitPeriod min="2000" max="3000" />
 		<rotateSpeed min="10" max="10" />
 		<colors>

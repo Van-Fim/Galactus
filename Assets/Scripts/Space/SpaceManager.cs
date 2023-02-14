@@ -18,6 +18,7 @@ public class SpaceManager : MonoBehaviour
 
     public static GameObject spaceContainer;
     public static GameObject solarContainer;
+    public static GameObject debugZoneContainer;
 
     public static void Init()
     {
@@ -33,6 +34,12 @@ public class SpaceManager : MonoBehaviour
         solarContainer.name = "SolarContainer";
         solarContainer.transform.position = Vector3.zero;
         solarContainer.transform.rotation = Quaternion.identity;
+
+        debugZoneContainer = GameObject.Instantiate(GameContentManager.debugZonePrefab);
+        debugZoneContainer.GetComponent<Renderer>().material.SetColor("_TintColor", new Color32(164, 157, 0, 80));
+        debugZoneContainer.transform.localScale = new Vector3(Zone.zoneStep,Zone.zoneStep,Zone.zoneStep);
+        debugZoneContainer.transform.localPosition = Vector3.zero;
+        debugZoneContainer.transform.localRotation = Quaternion.identity;
     }
 
     public void Load()

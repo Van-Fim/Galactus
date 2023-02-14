@@ -14,6 +14,9 @@ public class GameContentManager
 
     public static CanvasController canvasPrefab;
 
+    public static GameObject debugZonePrefab;
+    public static GameObject debugSectorPrefab;
+
     public static Ship shipPrefab;
     public static Pilot pilotPrefab;
     public static Asteroid asteroidPrefab;
@@ -29,6 +32,8 @@ public class GameContentManager
     public static SpaceUiObj spaceUiObjPrefab;
     public static SPObjectManager SPObjectManagerPrefab;
     public static ClientManager ClientManagerPrefab;
+
+    public static Light SunLightPrefab;
 
     public static void InitContent()
     {
@@ -74,5 +79,8 @@ public class GameContentManager
         spaceUiObjPrefab = Resources.Load<SpaceUiObj>("Prefabs/SpaceUiObjPrefab");
         SPObjectManagerPrefab = Resources.Load<SPObjectManager>("Prefabs/SPObjectManagerPrefab");
         ClientManagerPrefab = Resources.Load<ClientManager>("Prefabs/ClientManagerPrefab");
+        SunLightPrefab = Resources.Load<Light>("Prefabs/SunLightPrefab");
+        debugZonePrefab = Resources.Load<GameObject>("Prefabs/DebugZonePrefab");
+        debugSectorPrefab = Resources.Load<GameObject>("Prefabs/DebugSectorPrefab");
     }
 }

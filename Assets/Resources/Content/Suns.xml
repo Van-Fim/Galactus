@@ -1,6 +1,6 @@
 <templates>
 	<sun name="Sun01" type="1">
 		<model patch="Models/Suns/Sun01" />
-		<scale min="10000" max="10000" />
+		<scale min="2500" max="2500" />
 	</sun>
 </templates>

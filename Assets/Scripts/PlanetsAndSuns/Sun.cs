@@ -99,13 +99,13 @@ public class Sun : SolarObject
 
                 hull.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", col);
                 hull.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", col);
-                /*
-                sunLight = new GameObject().AddComponent<Light>();
-                sunLight.transform.SetParent(SpaceManager.spaceContainer.transform);
-                sunLight.transform.localPosition = GetPosition();
-                sunLight.range = 1000000000;
+                hull.GetComponent<MeshRenderer>().material.SetColor("_TintColor", col);
+
+                sunLight = GameObject.Instantiate(GameContentManager.SunLightPrefab);
+                sunLight.transform.SetParent(main.transform);
+                sunLight.transform.localPosition = Vector3.zero;
                 sunLight.color = col;
-                */
+                
                 solarController.gameObject.name = "Sun_" + id.ToString();
             }
         }
