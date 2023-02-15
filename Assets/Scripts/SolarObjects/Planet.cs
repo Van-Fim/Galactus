@@ -317,6 +317,29 @@ public class Planet : SolarObject
         this.AddSattelites();
     }
 
+    public override void AddSattelites()
+    {
+        if (this.deptch > 2)
+        {
+            return;
+        }
+        int satelliteCountMin = int.Parse(template.GetValue("satellites", "min"));
+        int satelliteCountMax = int.Parse(template.GetValue("satellites", "max"));
+        int satelliteCount = Random.Range(satelliteCountMin, satelliteCountMax + 1);
+        List<TemplateNode> satellitesNodes = template.GetNodeList("satellite");
+        if (satellitesNodes.Count > 0)
+        {
+            for (int i = 0; i < satelliteCount; i++)
+            {
+                TemplateNode satelliteNode = TemplateNode.GetByWeightsList(satellitesNodes);
+                string satelliteTemplateName = satelliteNode.GetValue("template");
+                int satelliteMinRange = int.Parse(satelliteNode.GetValue("minRange"));
+                int satelliteMaxRange = int.Parse(satelliteNode.GetValue("maxRange"));
+                Planet satellitePlanet = new Planet(this, satelliteTemplateName, satelliteMinRange, satelliteMaxRange);
+            }
+        }
+    }
+
     public override void OnRender()
     {
         if (Client.localClient.galaxyId == galaxyId && Client.localClient.systemId == systemId)
@@ -328,7 +351,7 @@ public class Planet : SolarObject
                 if (parentSolarObject.GetType() == typeof(Sun))
                     solarController.transform.SetParent(SpaceManager.solarContainer.transform);
                 else
-                    solarController.transform.SetParent(SpaceManager.solarContainer.transform);
+                    solarController.transform.SetParent(parentSolarObject.transform);
                 solarController.transform.localPosition = GetPosition() / SolarObject.scaleFactor;
                 solarController.transform.eulerAngles = GetRotation();
                 GameObject sunGameobject = Resources.Load<GameObject>($"{model}/MAIN");
@@ -337,6 +360,7 @@ public class Planet : SolarObject
                 main.transform.localScale = new Vector3(fscale, fscale, fscale);
                 GameObject hull = main.transform.Find("HULL").gameObject;
                 Color32 col = sys.GetColor();
+                DrawCircle();
                 //hull.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", col);
                 //hull.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", col);
                 /*

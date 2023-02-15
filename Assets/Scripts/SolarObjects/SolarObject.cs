@@ -39,6 +39,8 @@ public class SolarObject
     [System.NonSerialized]
     public Template template;
 
+    EllipseRenderer ellipseRenderer;
+
     public Space space;
 
     public static UnityAction OnRenderAction;
@@ -61,7 +63,7 @@ public class SolarObject
                 solarController.transform.eulerAngles = GetRotation();
                 GameObject sunGameobject = Resources.Load<GameObject>($"{model}/MAIN");
                 main = GameObject.Instantiate(sunGameobject, solarController.transform);
-                float fscale = scale/SolarObject.scaleFactor;
+                float fscale = scale / SolarObject.scaleFactor;
                 main.transform.localScale = new Vector3(fscale, fscale, fscale);
             }
         }
@@ -76,12 +78,21 @@ public class SolarObject
 
     }
 
-    public virtual void DrawCircle(SolarObject parentSolarObject)
+    public virtual void DrawCircle()
     {
-        Vector2 position = parentSolarObject.GetPosition();
-        Vector2 pos = this.GetPosition();
+        ellipseRenderer.solarObject = this;
+        ellipseRenderer.parentObject = parentSolarObject;
+        Vector3 position = parentSolarObject.GetPosition() / SolarObject.scaleFactor;
+        Vector3 pos = this.GetPosition() / SolarObject.scaleFactor;
 
         float radius = Vector3.Distance(position, pos);
+
+        ellipseRenderer = solarController.gameObject.AddComponent<EllipseRenderer>();
+        ellipseRenderer.lr = solarController.gameObject.GetComponent<LineRenderer>();
+        //ellipseRenderer.lr.useWorldSpace = false;
+        ellipseRenderer.lr.material = Resources.Load<Material>("Materials/OrbitMaterial");
+        ellipseRenderer.segments = 128;
+        ellipseRenderer.ellipse = new Ellipse(radius, radius);
     }
 
     public virtual Color32 GetColor()

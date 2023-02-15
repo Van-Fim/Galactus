@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlanetCamera : MonoBehaviour
 {
     public bool startUpdate;
+    public Camera curCamera;
     public static Vector3 fixPos;
     void Update()
     {
