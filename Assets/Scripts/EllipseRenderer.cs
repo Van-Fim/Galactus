@@ -20,6 +20,10 @@ public class EllipseRenderer : MonoBehaviour
     }
     public void CalculateEllipse()
     {
+        if (parentObject == null)
+        {
+            return;
+        }
         float minlineWidth = 10f;
         if (parentObject.GetType() == typeof(SolarObject))
         {

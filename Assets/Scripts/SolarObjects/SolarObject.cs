@@ -80,6 +80,7 @@ public class SolarObject
 
     public virtual void DrawCircle()
     {
+        ellipseRenderer = solarController.gameObject.AddComponent<EllipseRenderer>();
         ellipseRenderer.solarObject = this;
         ellipseRenderer.parentObject = parentSolarObject;
         Vector3 position = parentSolarObject.GetPosition() / SolarObject.scaleFactor;
@@ -87,7 +88,6 @@ public class SolarObject
 
         float radius = Vector3.Distance(position, pos);
 
-        ellipseRenderer = solarController.gameObject.AddComponent<EllipseRenderer>();
         ellipseRenderer.lr = solarController.gameObject.GetComponent<LineRenderer>();
         //ellipseRenderer.lr.useWorldSpace = false;
         ellipseRenderer.lr.material = Resources.Load<Material>("Materials/OrbitMaterial");
