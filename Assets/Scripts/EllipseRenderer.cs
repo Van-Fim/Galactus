@@ -19,7 +19,7 @@ public class EllipseRenderer : MonoBehaviour
     }
     public void CalculateEllipse()
     {
-        if (parentObject == null)
+        if (parentObject == null || parentObject.solarController == null)
         {
             return;
         }
@@ -40,7 +40,6 @@ public class EllipseRenderer : MonoBehaviour
         for (int i = 0; i < segments; i++)
         {
             Vector2 position2D = ellipse.Evaluate((float)i / (float)segments);
-            DebugConsole.Log(position2D, false, null, "points");
             points[i] = new Vector3(position.x + position2D.x, 0f, position.y + position2D.y);
         }
         points[segments] = points[0];

@@ -176,8 +176,9 @@ public class Planet : SolarObject
     public Planet(Planet planet, string templateName, int minRange = 0, int maxRange = 0)
     {
         this.parentSolarObject = planet;
+
         galaxyId = planet.galaxyId;
-        systemId = planet.id;
+        systemId = planet.systemId;
         StarSystem system = SpaceManager.GetSystemByID(galaxyId, systemId);
         int planetIndex = SpaceManager.planets.IndexOf(planet);
         this.parentSolarObject = SpaceManager.planets[planetIndex];
@@ -240,7 +241,6 @@ public class Planet : SolarObject
         List<Planet> planets = SpaceManager.planets.FindAll(f => f.galaxyId == system.galaxyId && f.systemId == systemId);
         allObjects.AddRange(planets);
         //allObjects.AddRange(system.asteroidFields);
-
         while (repeatCount > 0 && found)
         {
             Vector2 vPosition = UnityEngine.Random.insideUnitCircle * (range);
@@ -273,22 +273,15 @@ public class Planet : SolarObject
 
                 float dist1 = Vector3.Distance(planet.GetPosition() / SolarObject.scaleFactor, planetPosition / SolarObject.scaleFactor);
                 dist2 = 0;
-                if (pl != planet)
-                {
-                    dist2 = Vector3.Distance(planet.GetPosition() / SolarObject.scaleFactor, pl.GetPosition() / SolarObject.scaleFactor);
-                }
                 curDistance = Mathf.Abs(dist1 - dist2);
                 float planetDistance = (pl.scale / SolarObject.scaleFactor + this.scale / SolarObject.scaleFactor);
                 sumDistance = (pl.scale / SolarObject.scaleFactor + this.scale / SolarObject.scaleFactor) * 1.5f;
                 found = false;
-                if (galaxyId == 0 && systemId == 0 && id == 0)
-                {
-                    DebugConsole.Log($"{pl.scale} {this.scale} {curDistance}");
-                }
+
                 if (curDistance < sumDistance || dist1 < planetDistance)
                 {
-                    found = true;
-                    break;
+                    //found = true;
+                    //break;
                 }
             }
             if (!found)
@@ -297,6 +290,7 @@ public class Planet : SolarObject
             }
             repeatCount--;
         }
+
         if (found)
         {
             return;
@@ -311,6 +305,7 @@ public class Planet : SolarObject
             findId++;
             fplanet = planets.Find(f => f.id == findId);
         }
+
         this.id = findId;
         byte bDir = (byte)UnityEngine.Random.Range(0, 2);
         this.backDir = false;
@@ -343,6 +338,7 @@ public class Planet : SolarObject
                 int satelliteMinRange = int.Parse(satelliteNode.GetValue("minRange"));
                 int satelliteMaxRange = int.Parse(satelliteNode.GetValue("maxRange"));
                 Planet satellitePlanet = new Planet(this, satelliteTemplateName, satelliteMinRange, satelliteMaxRange);
+                satellitePlanet.Init();
             }
         }
     }
@@ -355,10 +351,14 @@ public class Planet : SolarObject
             {
                 StarSystem sys = SpaceManager.GetSystemByID(galaxyId, systemId);
                 solarController = new GameObject().AddComponent<SolarController>();
+                if (parentSolarObject.main == null)
+                {
+                    parentSolarObject.OnRender();
+                }
                 if (parentSolarObject.GetType() == typeof(Sun))
                     solarController.transform.SetParent(SpaceManager.solarContainer.transform);
                 else
-                    solarController.transform.SetParent(parentSolarObject.transform);
+                    solarController.transform.SetParent(parentSolarObject.solarController.transform);
                 solarController.transform.localPosition = GetPosition() / SolarObject.scaleFactor;
                 solarController.transform.eulerAngles = GetRotation();
                 GameObject sunGameobject = Resources.Load<GameObject>($"{model}/MAIN");
