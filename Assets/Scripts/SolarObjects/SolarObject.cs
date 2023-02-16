@@ -87,12 +87,12 @@ public class SolarObject
         Vector3 pos = this.GetPosition() / SolarObject.scaleFactor;
 
         float radius = Vector3.Distance(position, pos);
-
         ellipseRenderer.lr = solarController.gameObject.GetComponent<LineRenderer>();
         //ellipseRenderer.lr.useWorldSpace = false;
         ellipseRenderer.lr.material = Resources.Load<Material>("Materials/OrbitMaterial");
         ellipseRenderer.segments = 128;
         ellipseRenderer.ellipse = new Ellipse(radius, radius);
+        ellipseRenderer.CalculateEllipse();
     }
 
     public virtual Color32 GetColor()

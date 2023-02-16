@@ -107,6 +107,7 @@ public class Sun : SolarObject
                 sunLight.color = col;
                 
                 solarController.gameObject.name = "Sun_" + id.ToString();
+                solarController.gameObject.layer = 7;
             }
         }
         else
