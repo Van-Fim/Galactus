@@ -206,6 +206,7 @@ public class Planet : SolarObject
         float dist2 = 1000;
         int repeatCount = 10;
         Vector3 planetPosition = Vector3.zero;
+        Vector3 plpos = Vector3.zero;
         bool found = true;
 
         List<TemplateNode> orbitColorNodes = template.GetNodeList("orbit_color");
@@ -246,8 +247,8 @@ public class Planet : SolarObject
             Vector2 vPosition = UnityEngine.Random.insideUnitCircle * (range);
             Vector2 fPosition = (vPosition.normalized * minRange);
             Vector2 pos = fPosition + vPosition;
-            planetPosition = new Vector3(pos.x, 0, pos.y) * SolarObject.scaleFactor;
-            planetPosition += planet.GetPosition();
+            plpos = new Vector3(pos.x, 0, pos.y) * SolarObject.scaleFactor;
+            planetPosition = plpos + planet.GetPosition();
 
             if (allObjects.Count == 0)
             {
@@ -296,7 +297,7 @@ public class Planet : SolarObject
             return;
         }
 
-        SetPosition(planetPosition);
+        SetPosition(plpos);
         int findId = 0;
         Planet fplanet = planets.Find(f => f.id == findId);
 

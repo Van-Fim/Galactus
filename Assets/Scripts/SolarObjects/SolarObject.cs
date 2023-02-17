@@ -84,7 +84,7 @@ public class SolarObject
         ellipseRenderer.solarObject = this;
         ellipseRenderer.parentObject = parentSolarObject;
         Vector3 position = parentSolarObject.GetPosition() / SolarObject.scaleFactor;
-        Vector3 pos = this.GetPosition() / SolarObject.scaleFactor;
+        Vector3 pos = parentSolarObject.GetPosition() / SolarObject.scaleFactor + this.GetPosition() / SolarObject.scaleFactor;
 
         float radius = Vector3.Distance(position, pos);
         ellipseRenderer.lr = solarController.gameObject.GetComponent<LineRenderer>();
