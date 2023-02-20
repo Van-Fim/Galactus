@@ -29,7 +29,7 @@ public class Planet : SolarObject
         int scaleMin = int.Parse(template.GetValue("scale", "min"));
         int scaleMax = int.Parse(template.GetValue("scale", "max"));
 
-        this.scale = Random.Range(scaleMin, scaleMax + 1) * SolarObject.scaleFactor;
+        this.scale = Random.Range(scaleMin, scaleMax + 1);
 
         float speedMin = XMLF.FloatVal(template.GetValue("orbitPeriod", "min"));
         float speedMax = XMLF.FloatVal(template.GetValue("orbitPeriod", "max"));
@@ -54,7 +54,7 @@ public class Planet : SolarObject
             for (int i = 0; i < satelliteCount; i++)
             {
                 TemplateNode satelliteNode = TemplateNode.GetByWeightsList(satellitesNodes);
-                int satelliteMaxRange = int.Parse(satelliteNode.GetValue("maxRange")) * SolarObject.scaleFactor;
+                int satelliteMaxRange = int.Parse(satelliteNode.GetValue("maxRange"));
                 if (this.sateliteMaxDist < satelliteMaxRange)
                 {
                     this.sateliteMaxDist = satelliteMaxRange;
@@ -99,20 +99,8 @@ public class Planet : SolarObject
             Vector2 vPosition = UnityEngine.Random.insideUnitCircle * (range);
             Vector2 fPosition = (vPosition.normalized * minRange);
             Vector2 pos = fPosition + vPosition;
-            planetPosition = new Vector3(pos.x, 0, pos.y) * SolarObject.scaleFactor;
-            if (allObjects.Count == 0)
-            {
-                float sunDistance = (this.scale + sun.scale) * 2;
-                dist2 = Vector3.Distance(planetPosition, sun.GetPosition());
-                if (dist2 < sunDistance)
-                {
-                    found = true;
-                    repeatCount--;
-                    continue;
-                }
-                found = false;
-                break;
-            }
+            planetPosition = new Vector3(pos.x, 0, pos.y);
+
             for (int i = 0; i < allObjects.Count; i++)
             {
                 SolarObject pl = allObjects[i];
@@ -120,11 +108,11 @@ public class Planet : SolarObject
                 {
                     continue;
                 }
-                float dist1 = Vector3.Distance(pl.GetPosition(), sun.GetPosition()) / SolarObject.scaleFactor;
-                dist2 = Vector3.Distance(planetPosition, sun.GetPosition()) / SolarObject.scaleFactor;
+                float dist1 = Vector3.Distance(pl.GetPosition(), sun.GetPosition());
+                dist2 = Vector3.Distance(planetPosition, sun.GetPosition());
                 curDistance = Mathf.Abs(dist1 - dist2);
-                sumDistance = (pl.scale / SolarObject.scaleFactor + this.scale / SolarObject.scaleFactor) * 4 + (pl.sateliteMaxDist / SolarObject.scaleFactor + this.sateliteMaxDist / SolarObject.scaleFactor);
-                float sunDistance = (this.scale / SolarObject.scaleFactor + (sun.scale / SolarObject.scaleFactor) * 2) * 3 + (pl.sateliteMaxDist / SolarObject.scaleFactor + this.sateliteMaxDist / SolarObject.scaleFactor);
+                sumDistance = (pl.scale + this.scale) * 6 + (pl.sateliteMaxDist + this.sateliteMaxDist);
+                float sunDistance = (this.scale + (sun.scale) * 2) * 3 + (pl.sateliteMaxDist + this.sateliteMaxDist);
                 found = false;
                 if (curDistance < sumDistance || dist2 < sunDistance)
                 {
@@ -189,7 +177,7 @@ public class Planet : SolarObject
         int scaleMin = int.Parse(template.GetValue("scale", "min"));
         int scaleMax = int.Parse(template.GetValue("scale", "max"));
 
-        this.scale = Random.Range(scaleMin, scaleMax) * SolarObject.scaleFactor;
+        this.scale = Random.Range(scaleMin, scaleMax);
 
         float speedMin = XMLF.FloatVal(template.GetValue("orbitPeriod", "min"));
         float speedMax = XMLF.FloatVal(template.GetValue("orbitPeriod", "max"));
@@ -247,22 +235,8 @@ public class Planet : SolarObject
             Vector2 vPosition = UnityEngine.Random.insideUnitCircle * (range);
             Vector2 fPosition = (vPosition.normalized * minRange);
             Vector2 pos = fPosition + vPosition;
-            plpos = new Vector3(pos.x, 0, pos.y) * SolarObject.scaleFactor;
+            plpos = new Vector3(pos.x, 0, pos.y);
             planetPosition = plpos + planet.GetPosition();
-
-            if (allObjects.Count == 0)
-            {
-                float planetDistance = (this.scale / SolarObject.scaleFactor + parentSolarObject.scale / SolarObject.scaleFactor) * 1.5f;
-                dist2 = Vector3.Distance(planetPosition / SolarObject.scaleFactor, parentSolarObject.GetPosition() / SolarObject.scaleFactor);
-                if (dist2 < planetDistance)
-                {
-                    found = true;
-                    repeatCount--;
-                    continue;
-                }
-                found = false;
-                break;
-            }
 
             for (int i = 0; i < allObjects.Count; i++)
             {
@@ -272,17 +246,23 @@ public class Planet : SolarObject
                     continue;
                 }
 
-                float dist1 = Vector3.Distance(planet.GetPosition() / SolarObject.scaleFactor, planetPosition / SolarObject.scaleFactor);
+                Vector3 plPos = pl.parentSolarObject.GetPosition() + pl.GetPosition();
+
+                float dist1 = Vector3.Distance(planet.GetPosition(), planetPosition);
                 dist2 = 0;
+                if (pl != planet)
+                {
+                    dist2 = Vector2.Distance(planet.GetPosition(), plPos);
+                }
                 curDistance = Mathf.Abs(dist1 - dist2);
-                float planetDistance = (pl.scale / SolarObject.scaleFactor + this.scale / SolarObject.scaleFactor);
-                sumDistance = (pl.scale / SolarObject.scaleFactor + this.scale / SolarObject.scaleFactor) * 1.5f;
+                float planetDistance = (pl.scale + this.scale);
+                sumDistance = (pl.scale + this.scale) * 1.5f;
                 found = false;
 
                 if (curDistance < sumDistance || dist1 < planetDistance)
                 {
-                    //found = true;
-                    //break;
+                    found = true;
+                    break;
                 }
             }
             if (!found)
@@ -294,6 +274,9 @@ public class Planet : SolarObject
 
         if (found)
         {
+            id = -1;
+            model = null;
+            systemId = -1;
             return;
         }
 
@@ -360,11 +343,11 @@ public class Planet : SolarObject
                     solarController.transform.SetParent(SpaceManager.solarContainer.transform);
                 else
                     solarController.transform.SetParent(parentSolarObject.solarController.transform);
-                solarController.transform.localPosition = GetPosition() / SolarObject.scaleFactor;
+                solarController.transform.localPosition = GetPosition();
                 solarController.transform.eulerAngles = GetRotation();
                 GameObject sunGameobject = Resources.Load<GameObject>($"{model}/MAIN");
                 main = GameObject.Instantiate(sunGameobject, solarController.transform);
-                float fscale = scale / SolarObject.scaleFactor;
+                float fscale = scale;
                 main.transform.localScale = new Vector3(fscale, fscale, fscale);
                 GameObject hull = main.transform.Find("HULL").gameObject;
                 Color32 col = sys.GetColor();

@@ -21,7 +21,7 @@
 			<color r="100" g="100" b="255" a="255" />
 		</colors>
 		<satellites min="1" max="4">
-			<satellite template="Planet03" minRange="0" maxRange="5000" />
+			<satellite template="Planet03" minRange="0" maxRange="3000" />
 		</satellites>
 	</planet>
 	<planet name="Planet03" type="1">

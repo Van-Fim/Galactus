@@ -1,7 +1,8 @@
 <templates>
 	<system name="System01">
-		<planets min="2" max="2">
-			<planet weight="50" template="Planet02" minRange="0" maxRange="100000" />
+		<planets min="20" max="20">
+			<planet weight="50" template="Planet01" minRange="0" maxRange="200000" />
+			<planet weight="50" template="Planet02" minRange="0" maxRange="200000" />
 		</planets>
 		<sectors maxSectorRangeMin="2000" maxSectorRangeMax="2000">
 			<sector min="2" max="5" template="Sector01" Ymin="0" Ymax="0" />

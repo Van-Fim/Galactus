@@ -321,7 +321,7 @@ public class SpaceManager : MonoBehaviour
 
                     if (sn != null)
                     {
-                        zPos = ((sn.scale)) / Sector.sectorStep;
+                        zPos = ((sn.scale * SolarObject.scaleFactor)) / Sector.sectorStep;
                     }
                 }
                 Vector3 indexes = new Vector3(xPos, yPos, zPos);

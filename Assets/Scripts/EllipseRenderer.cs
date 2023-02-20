@@ -23,23 +23,23 @@ public class EllipseRenderer : MonoBehaviour
         {
             return;
         }
-        float minlineWidth = 100f;
+        float minlineWidth = 20f;
         if (parentObject.GetType() == typeof(SolarObject))
         {
-            minlineWidth = 50f;
+            minlineWidth = 10f;
         }
         float lineWidth = minlineWidth;
-        lineWidth = CameraManager.planetCamera.curCamera.orthographicSize / 500;
+        //lineWidth = CameraManager.planetCamera.curCamera.orthographicSize / 500;
         if (lineWidth < minlineWidth)
         {
             lineWidth = minlineWidth;
         }
         Vector3[] points = new Vector3[segments + 1];
-        Vector3 position = parentObject.GetPosition()/SolarObject.scaleFactor;
-        Vector3 curPosition = solarObject.GetPosition()/SolarObject.scaleFactor;
+        Vector3 position = parentObject.GetPosition();
+        Vector3 curPosition = solarObject.GetPosition();
         if (parentObject.galaxyId == 0 && parentObject.systemId == 0)
         {
-            DebugConsole.Log($"{parentObject.main.name} {parentObject.GetPosition()/SolarObject.scaleFactor}");
+            DebugConsole.Log($"{parentObject.main.name} {parentObject.GetPosition()}");
         }
         for (int i = 0; i < segments; i++)
         {
