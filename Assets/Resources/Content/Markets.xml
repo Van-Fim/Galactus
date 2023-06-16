@@ -1,0 +1,38 @@
+<markets>
+	<market name="Market_1" type="1">
+		<equipment>
+			<ware name="plazmer_mk1">
+				<price min="70" max="130" />
+			</ware>
+			<ware name="blasto_mk1">
+				<price min="70" max="130" />
+			</ware>
+			<ware name="powerus_mk1">
+				<price min="70" max="130" />
+			</ware>
+			<ware name="powerus_mk2">
+				<price min="70" max="130" />
+			</ware>
+			<ware name="thrustur_mk1000">
+				<price min="70" max="130" />
+			</ware>
+			<ware name="thrustur_mk1000000">
+				<price min="70" max="130" />
+			</ware>
+		</equipment>
+		<wares>
+			<ware name="weapon_components">
+				<count min="10" max="20" maxcount="30" />
+				<price min="70" max="130" />
+			</ware>
+			<ware name="nanofibers">
+				<count min="10" max="20" maxcount="30" />
+				<price min="70" max="130" />
+			</ware>
+			<ware name="microchip">
+				<count min="10" max="20" maxcount="30" />
+				<price min="70" max="130" />
+			</ware>
+		</wares>
+	</market>
+</markets>

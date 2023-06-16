@@ -1,0 +1,16 @@
+<language>
+    <page id="1">
+        <text id="1" text="New game" />
+        <text id="2" text="Multiplayer" />
+        <text id="3" text="Save game" />
+        <text id="4" text="Load game" />
+        <text id="5" text="Settings" />
+        <text id="6" text="Quit" />
+    </page>
+    <page id="2">
+        <text id="1" text="Create host" />
+        <text id="2" text="Create server" />
+        <text id="3" text="Connect" />
+        <text id="4" text="Start game" />
+    </page>
+</language>

@@ -1,0 +1,11 @@
+<templates>
+	<hardpoint_type name="camera">
+		<compatibilities>
+			<hardpoint_compatibility name="adv_camera"/>
+		</compatibilities>
+	</hardpoint_type>
+	<hardpoint_type name="adv_camera">
+		<compatibilities>
+		</compatibilities>
+	</hardpoint_type>
+</templates>

@@ -1,0 +1,10 @@
+<templates>
+	<projectile name="blasto_mk1" type="1">
+		<params damage="60" speed="50000" fire_power="30" volume="1" mass="1" lifetime="2" />
+		<model patch="Models/Projectiles/Blasto Mk1" />
+	</projectile>
+	<projectile name="plazmer_mk1" type="1">
+		<params damage="180" speed="50000" fire_power="100" volume="1" mass="1" lifetime="2" />
+		<model patch="Models/Projectiles/Plazmer Mk1" />
+	</projectile>
+</templates>

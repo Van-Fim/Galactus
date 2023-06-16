@@ -1,0 +1,16 @@
+<templates>
+	<weapon name="blasto_mk1" type="1" >
+		<params rotation_speed="2" fire_rate="0.25" volume="10" mass="50" />
+		<model patch="Models/Weapons/Blasto Mk1" />
+		<projectile template="blasto_mk1" />
+		<sounds sound1="blasto_mk1" />
+		<price value="100000" />
+	</weapon>
+	<weapon name="plazmer_mk1" type="1" level="2" >
+		<params rotation_speed="2" fire_rate="0.4" volume="10" mass="50" />
+		<model patch="Models/Weapons/Plazmer Mk1" />
+		<projectile template="plazmer_mk1" />
+		<sounds sound1="plazmer_mk1" />
+		<price value="100000" />
+	</weapon>
+</templates>

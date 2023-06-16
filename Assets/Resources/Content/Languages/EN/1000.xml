@@ -1,0 +1,23 @@
+<language>
+    <page id="1">
+        <text id="1" text="Map" />
+    </page>
+    <page id="2">
+        <text id="1" text="Warp" />
+        <text id="2" text="Galaxies" />
+        <text id="3" text="Systems" />
+        <text id="4" text="Sectors" />
+        <text id="5" text="Zones" />
+    </page>
+    <page id="3">
+        <text id="1" text="New character" />
+        <text id="2" text="Start game" />
+    </page>
+    <page id="4">
+        <text id="1" text="Ok" />
+        <text id="2" text="Cancel" />
+        <text id="3" text="Enter name" />
+        <text id="4" text="New character created" />
+        <text id="5" text="Name allready exists!" />
+    </page>
+</language>

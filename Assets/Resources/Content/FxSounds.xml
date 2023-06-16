@@ -1,0 +1,18 @@
+<templates>
+	<sound name="engineus_mk1">
+		<patch patch="Content/Sounds/Fx/Engines/engineus_mk1.wav" />
+		<params loop="1" playOnAwake="0" volume="0.1" pitchMin="0.5" pitchMax="0.95" />
+	</sound>
+	<sound name="thrustur_mk1">
+		<patch patch="Content/Sounds/Fx/Thrusters/thrustur_mk1.wav" />
+		<params loop="1" playOnAwake="0" volume="0.3" pitchMin="0.95" pitchMax="0.95" />
+	</sound>
+	<sound name="blasto_mk1">
+		<patch patch="Content/Sounds/Fx/Weapons/blasto_mk1.wav" />
+		<params loop="0" playOnAwake="0" volume="0.5" pitchMin="1" pitchMax="1" />
+	</sound>
+	<sound name="plazmer_mk1">
+		<patch patch="Content/Sounds/Fx/Weapons/plazmer_mk1.wav" />
+		<params loop="0" playOnAwake="0" volume="0.5" pitchMin="1" pitchMax="1" />
+	</sound>
+</templates>

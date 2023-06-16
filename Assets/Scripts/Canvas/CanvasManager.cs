@@ -8,7 +8,8 @@ public class CanvasManager
     
     public static void Init()
     {
-        canvas = GameObject.Instantiate(GameContentManager.canvasPrefab);
+        canvas = GameObject.Instantiate(GamePrefabsManager.singleton.LoadPrefab<CanvasController>());
         GameObject.DontDestroyOnLoad(CanvasManager.canvas);
+        canvas.name = "Canvas";
     }
 }

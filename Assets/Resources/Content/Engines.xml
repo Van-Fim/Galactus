@@ -1,0 +1,7 @@
+<templates>
+	<engine name="engineus_mk1" type="1">
+		<params mass="50" volume="20" maxspeed="1500000" velocity="3000" rotationSpeed="100" cruisemaxspeed="200000000" cruisegears="2" cruisevelocity="10000" />
+		<sounds sound1="engineus_mk1" />
+		<price value="100000" />
+	</engine>
+</templates>

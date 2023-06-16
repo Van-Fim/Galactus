@@ -57,4 +57,10 @@
 			<rotation x="0" y="0" z="0" />
 		</hardpoint>
 	</hardpoints>
+	<hardpoints name="Pilot01">
+		<hardpoint id="1" type="camera">
+			<position x="0" y="1.6" z="-3" />
+			<rotation x="0" y="0" z="0" />
+		</hardpoint>
+	</hardpoints>
 </templates>

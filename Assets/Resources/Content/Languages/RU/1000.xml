@@ -1,0 +1,24 @@
+<language>
+    <page id="1">
+        <text id="1" text="Карта" />
+    </page>
+    <page id="2">
+        <text id="1" text="Прыжок" />
+        <text id="2" text="Галактики" />
+        <text id="3" text="Системы" />
+        <text id="4" text="Сектора" />
+        <text id="5" text="Зоны" />
+    </page>
+    <page id="3">
+        <text id="1" text="Новый персонаж" />
+        <text id="2" text="Удалить персонажа" />
+        <text id="3" text="Начать игру" />
+    </page>
+    <page id="4">
+        <text id="1" text="Ок" />
+        <text id="2" text="Отмена" />
+        <text id="3" text="Введите имя" />
+        <text id="4" text="Персонаж успешно создан!" />
+        <text id="5" text="Имя уже занято!" />
+    </page>
+</language>

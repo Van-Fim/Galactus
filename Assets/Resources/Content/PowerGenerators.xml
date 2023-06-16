@@ -1,0 +1,10 @@
+<templates>
+	<power_generator name="powerus_mk1" type="1">
+		<params mass="50" volume="20" energy_capacity="2500" energy_recharge_delay="10" energy_regeneration_step_value="15" energy_regeneration_step_delay="0.05" energy_regeneration_pause_delay="1" />
+		<price value="100000" />
+	</power_generator>
+	<power_generator name="powerus_mk2" type="1">
+		<params mass="50" volume="20" energy_capacity="5000" energy_recharge_delay="10" energy_regeneration_step_value="30" energy_regeneration_step_delay="0.05" energy_regeneration_pause_delay="1" />
+		<price value="100000" />
+	</power_generator>
+</templates>

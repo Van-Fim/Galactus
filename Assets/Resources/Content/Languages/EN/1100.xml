@@ -1,0 +1,9 @@
+<language>
+    <page id="1">
+        <text id="1" text="Name" />
+        <text id="2" text="Money" />
+        <text id="3" text="Space" />
+        <text id="4" text="Sector indexes" />
+        <text id="5" text="Zone indexes" />
+    </page>
+</language>

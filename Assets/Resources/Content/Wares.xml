@@ -1,0 +1,14 @@
+<wares>
+	<ware name="weapon_components" >
+		<params volume="5" mass="5" />
+		<price value="1000" />
+	</ware>
+	<ware name="nanofibers" >
+		<params volume="5" mass="5" />
+		<price value="1000" />
+	</ware>
+	<ware name="microchip" >
+		<params volume="5" mass="5" />
+		<price value="1000" />
+	</ware>
+</wares>

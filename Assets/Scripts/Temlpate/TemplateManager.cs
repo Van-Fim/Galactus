@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.IO;
 using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
@@ -39,12 +40,21 @@ public class TemplateManager
             Func01(xmlNode, template, templateNode);
         }
     }
+
     public static List<Template> LoadTemplates(string node, string patch, bool addToTemplates = true)
     {
         List<Template> ret = new List<Template>();
         TextAsset textAsset = (TextAsset)Resources.Load(patch);
+
         XmlDocument xDoc = new XmlDocument();
-        xDoc.LoadXml(textAsset.text);
+        if (textAsset != null)
+        {
+            xDoc.LoadXml(textAsset.text);
+        }
+        else
+        {
+            xDoc = XMLF.ReadFile(patch);
+        }
 
         if (Templates == null)
             Templates = new List<Template>();

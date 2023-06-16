@@ -1,0 +1,26 @@
+<templates>
+	<music name="music01">
+		<patch patch="Content/Sounds/Music/Music01.wav" />
+		<params loop="0" playOnAwake="1" volume="1" pitchMin="1" pitchMax="1" />
+	</music>
+	<music name="music02">
+		<patch patch="Content/Sounds/Music/Music02.wav" />
+		<params loop="0" playOnAwake="1" volume="1" pitchMin="1" pitchMax="1" />
+	</music>
+	<music name="music03">
+		<patch patch="Content/Sounds/Music/Music03.wav" />
+		<params loop="0" playOnAwake="1" volume="1" pitchMin="1" pitchMax="1" />
+	</music>
+	<music name="music04">
+		<patch patch="Content/Sounds/Music/Music04.wav" />
+		<params loop="0" playOnAwake="1" volume="1" pitchMin="1" pitchMax="1" />
+	</music>
+	<music name="music05">
+		<patch patch="Content/Sounds/Music/Music05.wav" />
+		<params loop="0" playOnAwake="1" volume="1" pitchMin="1" pitchMax="1" />
+	</music>
+	<music name="music06">
+		<patch patch="Content/Sounds/Music/Music06.wav" />
+		<params loop="0" playOnAwake="1" volume="1" pitchMin="1" pitchMax="1" />
+	</music>
+</templates>

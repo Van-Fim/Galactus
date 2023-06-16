@@ -2,42 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraManager
+public class CameraManager : MonoBehaviour
 {
+    public static CameraController skyboxCamera;
     public static CameraController mainCamera;
-    public static CameraController minimapCamera;
-    public static Camera skyboxCamera;
-
-    public static byte currentCameraCode = 0;
-
+    public static CameraManager singleton;
     public static void Init()
     {
-        CameraManager.mainCamera = GameObject.Instantiate(GameContentManager.mainCameraPrefab);
-        CameraManager.skyboxCamera = GameObject.Instantiate(GameContentManager.skyboxCameraPrefab, CameraManager.mainCamera.transform);
-        CameraManager.minimapCamera = GameObject.Instantiate(GameContentManager.minimapCameraPrefab);
+        GamePrefabsManager gmpr = GamePrefabsManager.singleton;
+        CameraManager.mainCamera = GameObject.Instantiate(gmpr.LoadPrefab<CameraController>("MainCameraPrefab"));
 
-        GameObject.DontDestroyOnLoad(CameraManager.mainCamera);
-        GameObject.DontDestroyOnLoad(CameraManager.minimapCamera);
-    }
+        CameraManager.skyboxCamera = GameObject.Instantiate(gmpr.LoadPrefab<CameraController>("SkyboxCameraPrefab"));
 
-    public static void SwitchByCode(byte code){
-        currentCameraCode = code;
-        if (currentCameraCode == 0)
-        {
-            mainCamera.GetComponent<Camera>().enabled = true;
-            //mainCamera.enabled = true;
-            minimapCamera.GetComponent<Camera>().enabled = false;
-            //minimapCamera.enabled = false;
-        }
-        else if (currentCameraCode == 1)
-        {
-            mainCamera.GetComponent<Camera>().enabled = false;
-            //mainCamera.enabled = false;
-            minimapCamera.GetComponent<Camera>().enabled = true;
-            //minimapCamera.enabled = true;
-
-            MinimapPanel.currentGalaxyId = NetClient.localClient.galaxyId;
-            MinimapPanel.currentSystemId = NetClient.localClient.systemId;
-        }
+        singleton = Instantiate(GamePrefabsManager.singleton.LoadPrefab<CameraManager>("CameraManagerPrefab"));
+        singleton.gameObject.name = "CameraManager";
+        DontDestroyOnLoad(singleton.gameObject);
+        DontDestroyOnLoad(CameraManager.mainCamera.gameObject);
+        DontDestroyOnLoad(CameraManager.skyboxCamera.gameObject);
     }
 }
