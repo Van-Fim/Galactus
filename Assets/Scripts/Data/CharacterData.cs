@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Data
 {
+    [System.Serializable]
     public class CharacterData : IData
     {
         public int id;

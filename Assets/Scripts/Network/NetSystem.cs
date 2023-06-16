@@ -26,7 +26,10 @@ public class NetSystem : NetworkManager
     }
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
-        
+        if (ServerDataManager.singleton != null)
+        {
+            ServerDataManager.singleton.SaveServerData();
+        }
     }
     public override void OnServerReady(NetworkConnectionToClient conn)
     {
@@ -48,6 +51,9 @@ public class NetSystem : NetworkManager
 
     IEnumerator InitStartContent()
     {
+        ServerDataManager.Init();
+        NetworkServer.Spawn(ServerDataManager.singleton.gameObject);
+        ServerDataManager.singleton.serverData.LoadServerData();
         onlineSceneLoaded = true;
         yield return 1;
     }
