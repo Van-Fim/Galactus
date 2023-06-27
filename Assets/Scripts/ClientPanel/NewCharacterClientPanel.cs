@@ -50,7 +50,8 @@ public class NewCharacterClientPanel : ClientPanel
         });
         okButton.onClick.AddListener(() =>
         {
-
+            NetClient cl = NetClient.singleton;
+            ServerDataManager.singleton.CheckLogin(cl.netId, loginInput.text, false);
         });
         cancelButton.onClick.AddListener(() =>
         {

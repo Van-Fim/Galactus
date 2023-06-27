@@ -90,6 +90,7 @@ public class MultiplayerPanel : ClientPanel
                 NetSystem.singleton.StartClient();
             }
             Close();
+            ClientPanelManager.Show<CharactersClientPanel>();
         });
         UpdateText();
     }

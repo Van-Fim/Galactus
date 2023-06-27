@@ -31,6 +31,27 @@ namespace Data
             CharacterData ret = characters.Find(f => f.login == login);
             return ret;
         }
+        public bool CheckLogin(string login, bool accountCheck = false)
+        {
+            bool ret = false;
+            if (accountCheck)
+            {
+                AccountData acs = accounts.Find(f => f.login == login);
+                if (acs != null)
+                {
+                    ret = true;
+                }
+            }
+            else
+            {
+                CharacterData chr = characters.Find(f => f.login == login);
+                if (chr != null)
+                {
+                    ret = true;
+                }
+            }
+            return ret;
+        }
         public AccountData CreateAccountData(string login, string password)
         {
             AccountData accountData = accounts.Find(f => f.login == login);

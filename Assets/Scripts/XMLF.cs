@@ -33,11 +33,11 @@ public class XMLF
     }
     public static string StrToMD5(string str)
     {
-        MD5 md5 = new MD5CryptoServiceProvider();
-        if (str.Length == 0)
+        if (str == null || str.Length == 0)
         {
             return null;
         }
+        MD5 md5 = new MD5CryptoServiceProvider();
         md5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(str));
 
         byte[] result = md5.Hash;

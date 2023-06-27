@@ -44,7 +44,7 @@ public class ServerDataManager : NetworkBehaviour
         NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
         AccountData adt = serverData.GetAccountByLogin(login);
         string mdPass = XMLF.StrToMD5(password);
-        
+
         if (adt != null)
         {
             if (adt.password != mdPass)
@@ -66,7 +66,7 @@ public class ServerDataManager : NetworkBehaviour
         NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
         CharacterData cht = serverData.GetCharacterByLogin(login);
         string mdPass = XMLF.StrToMD5(password);
-        
+
         if (cht != null)
         {
             if (cht.password != mdPass)
@@ -91,6 +91,22 @@ public class ServerDataManager : NetworkBehaviour
         return;
     }
     [Command(requiresAuthority = false)]
+    public void CheckLogin(uint netId, string login, bool accountCheck)
+    {
+        bool isLoginExists = serverData.CheckLogin(login, accountCheck);
+        NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
+        if (isLoginExists && !accountCheck)
+        {
+            cl.CharacterError(3);
+        }
+        else
+        {
+            CharacterData chr = new CharacterData();
+            chr.login = login;
+            cl.CharacterSuccess(chr, 3);
+        }
+    }
+    [Command(requiresAuthority = false)]
     public void SaveServerData()
     {
         serverData.SaveServerData();
@@ -103,11 +119,11 @@ public class ServerDataManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void SendAccountData(AccountData accountData)
     {
-        
+
     }
     [Command(requiresAuthority = false)]
     public void SendCharacterData(CharacterData characterData)
     {
-        
+
     }
 }
