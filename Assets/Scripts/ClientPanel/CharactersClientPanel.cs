@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Data;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 public class CharactersClientPanel : ClientPanel
 {
@@ -13,7 +14,7 @@ public class CharactersClientPanel : ClientPanel
     [SerializeField] private Button deleteCharButton;
     [SerializeField] private Button startGameButton;
     [SerializeField] private TMPro.TMP_Text infoText;
-    private CharacterButton selectedButton;
+    public CharacterButton selectedButton;
 
     public void UpdateCharacters(ServerData serverData)
     {
@@ -36,12 +37,66 @@ public class CharactersClientPanel : ClientPanel
         for (int i = 0; i < serverData.characters.Count; i++)
         {
             CharacterData ch = serverData.characters[i];
+            if (NetClient.singleton.accountData.id != ch.accountId)
+            {
+                continue;
+            }
             CharacterButton cbtn = Instantiate(characterButtonPrefab, createCharButton.transform.parent);
-            cbtn.charName = ch.login;
+            cbtn.characterData = ch;
             cbtn.Init();
 
             cbtn.button.onClick.AddListener(() =>
             {
+                for (int i = 0; i < charactersButtonsList.Count; i++)
+                {
+                    CharacterButton b = charactersButtonsList[i];
+                    if (b == null || b.gameObject == null)
+                    {
+                        continue;
+                    }
+                    if (b == cbtn)
+                    {
+                        List<Template> rtemps = TemplateManager.FindTemplates("resource_type");
+                        infoText.text = $"{LangSystem.ShowText(1100, 1, 1)}: {ch.login}\n";
+                        AccountData account = ServerDataManager.singleton.serverData.GetAccountById(ch.accountId);
+                        for (int i2 = 0; i2 < rtemps.Count; i2++)
+                        {
+                            Template tm = rtemps[i2];
+                            string subtype = tm.GetValue("resource_type", "subtype");
+                            if (subtype != "0")
+                            {
+                                continue;
+                            }
+                            ResourcesData res = account.GetResource(tm.TemplateName, subtype);
+                            string str = LangSystem.ShowText(res.name);
+                            infoText.text += $"{str}: {res.value}\n";
+                        }
+                        for (int i2 = 0; i2 < rtemps.Count; i2++)
+                        {
+                            Template tm = rtemps[i2];
+                            string subtype = tm.GetValue("resource_type", "subtype");
+                            if (subtype != "1")
+                            {
+                                continue;
+                            }
+                            ResourcesData res = ch.GetResource(tm.TemplateName, subtype);
+                            string str = LangSystem.ShowText(res.name);
+                            infoText.text += $"{str}: {res.value}\n";
+                        }
+                        cbtn.Selected = true;
+                        if (selectedButton != null)
+                        {
+                            selectedButton.Selected = false;
+                            selectedButton.UpdateText();
+                        }
+                        selectedButton = cbtn;
+                    }
+                    else
+                    {
+                        cbtn.Selected = false;
+                    }
+                    b.UpdateText();
+                }
             });
             charactersButtonsList.Add(cbtn);
         }
@@ -89,7 +144,7 @@ public class CharactersClientPanel : ClientPanel
         });
         deleteCharButton.onClick.AddListener(() =>
         {
-            ClientPanelManager.Show<NewCharacterClientPanel>();
+            ClientPanelManager.Show<DialogClientPanel>();
         });
         startGameButton.onClick.AddListener(() =>
         {

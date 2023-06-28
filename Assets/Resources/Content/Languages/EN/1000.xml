@@ -11,7 +11,8 @@
     </page>
     <page id="3">
         <text id="1" text="New character" />
-        <text id="2" text="Start game" />
+        <text id="2" text="Delete character" />
+        <text id="3" text="Start game" />
     </page>
     <page id="4">
         <text id="1" text="Ok" />

@@ -6,6 +6,8 @@ using UnityEngine;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using GameContent;
+using Data;
 
 public class DebugConsole
 {
@@ -72,6 +74,18 @@ public class DebugConsole
             LogPage page = pages.Find(f => f.name == DebugConsoleCommand.args[0]);
             DebugConsole.ShowErrorIsNull(page, $"Page {currentPage} not found");
             page.list = new List<string>();
+        });
+        AddConsoleCommand("SetResource", delegate ()
+        {
+            if (DebugConsoleCommand.args.Length > 2)
+            {
+                string login = DebugConsoleCommand.args[0];
+                string resName = DebugConsoleCommand.args[1];
+                string sval = DebugConsoleCommand.args[2];
+                float value = XMLF.FloatVal(sval);
+                NetClient.singleton.SetResourceValue(login, resName, "1", value);
+                NetClient.singleton.UpdateCharacters();
+            }
         });
         AddConsoleCommand("SetPageMaxLines", delegate ()
         {
@@ -166,6 +180,12 @@ public class DebugConsole
     public static void Init()
     {
         AddConsoleCommands();
+        ConfigData cfg = GameManager.singleton.configData;
+        string rCfgVal = cfg.GetParamValue("log_dir");
+        if (rCfgVal.Length > 0)
+        {
+            logdir = rCfgVal;
+        }
         new LogPage("main", 200, 30);
         new LogPage("server", 200, 30);
     }

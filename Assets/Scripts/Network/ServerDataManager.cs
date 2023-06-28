@@ -10,6 +10,13 @@ public class ServerDataManager : NetworkBehaviour
 {
     public ServerData serverData;
     public static ServerDataManager singleton;
+    public override void OnStartClient()
+    {
+        if (!isServer)
+        {
+            singleton = this;
+        }
+    }
     public static void Init()
     {
         ServerDataManager serverManager = GamePrefabsManager.singleton.LoadPrefab<ServerDataManager>();
@@ -61,6 +68,18 @@ public class ServerDataManager : NetworkBehaviour
         return;
     }
     [Command(requiresAuthority = false)]
+    public void DeleteCharacter(uint netId, string login)
+    {
+        NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
+        CharacterData cht = serverData.characters.Find(f => f.login == login);
+        if (cht != null)
+        {
+            int ind = serverData.characters.IndexOf(cht);
+            serverData.characters.Remove(serverData.characters[ind]);
+            cl.UpdateCharactersRpc(serverData);
+        }
+    }
+    [Command(requiresAuthority = false)]
     public void CheckCharacter(uint netId, string login, string password, int accountId)
     {
         NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
@@ -104,6 +123,30 @@ public class ServerDataManager : NetworkBehaviour
             CharacterData chr = new CharacterData();
             chr.login = login;
             cl.CharacterSuccess(chr, 3);
+        }
+    }
+    [Command(requiresAuthority = false)]
+    public void UpdateCharacters(uint netId)
+    {
+        NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
+        cl.UpdateCharactersRpc(serverData);
+    }
+    [Command(requiresAuthority = false)]
+    public void SetResourceValueCmd(string login, string name, string subtype, float value)
+    {
+        SetResourceValue(login, name, subtype, value);
+    }
+    public void SetResourceValue(string login, string name, string subtype, float value)
+    {
+        if (subtype == "0")
+        {
+            AccountData dta = serverData.accounts.Find(f => f.login == login);
+            dta.SetResourceValue(name, subtype, value);
+        }
+        else if (subtype == "1")
+        {
+            CharacterData dta = serverData.characters.Find(f => f.login == login);
+            dta.SetResourceValue(name, subtype, value);
         }
     }
     [Command(requiresAuthority = false)]

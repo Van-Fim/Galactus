@@ -38,6 +38,7 @@ public class GamePrefabsManager : MonoBehaviour
             TemplateManager.LoadTemplates("asteroid", list[i] + "/Asteroids");
             TemplateManager.LoadTemplates("pilot", list[i] + "/Pilots");
             TemplateManager.LoadTemplates("object", list[i] + "/Objects");
+            TemplateManager.LoadTemplates("resource_type", list[i] + "/ResourceTypes");
         }
     }
     public T LoadPrefab<T>(string name = null)

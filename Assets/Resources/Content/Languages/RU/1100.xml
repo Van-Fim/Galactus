@@ -1,9 +1,9 @@
 <language>
     <page id="1">
         <text id="1" text="Имя" />
-        <text id="2" text="Кредиты" />
-        <text id="3" text="Космос" />
-        <text id="4" text="Индексы сектора" />
-        <text id="5" text="Индексы зоны" />
+    </page>
+    <page id="2">
+        <text id="1" text="Общие деньги" />
+        <text id="2" text="Деньги" />
     </page>
 </language>

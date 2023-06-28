@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Data
 {
     [System.Serializable]
-    public class CharacterData : IData
+    public class CharacterData : ResourcesManager, IData
     {
         public int id;
         public int accountId;

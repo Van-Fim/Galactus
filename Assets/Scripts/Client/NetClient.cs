@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using Data;
+using GameContent;
 
 public class NetClient : NetworkBehaviour
 {
-    string login = "Efim";
-    string password = "!#1Efim1#!";
+    string login = "";
+    string password = "";
     public AccountData accountData;
     public CharacterData characterData;
     public static NetClient singleton;
@@ -15,10 +16,30 @@ public class NetClient : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            ServerDataManager.singleton.CheckAccount(netId, login, password);
+            ConfigData cdata = GameManager.singleton.configData;
+            ServerDataManager.singleton.CheckAccount(netId, cdata.login, password);
             singleton = this;
             UpdateCharacters();
         }
+    }
+    [TargetRpc]
+    public void UpdateCharactersRpc(ServerData serverData)
+    {
+        if (ServerDataManager.singleton == null)
+        {
+            return;
+        }
+        ServerDataManager.singleton.serverData = serverData;
+        CharactersClientPanel pn = ClientPanelManager.GetPanel<CharactersClientPanel>();
+        pn.UpdateCharacters(ServerDataManager.singleton.serverData);
+    }
+    public void DeleteCharacter(string login)
+    {
+        if (ServerDataManager.singleton == null)
+        {
+            return;
+        }
+        ServerDataManager.singleton.DeleteCharacter(netId, login);
     }
     public void UpdateCharacters()
     {
@@ -27,7 +48,18 @@ public class NetClient : NetworkBehaviour
             return;
         }
         CharactersClientPanel pn = ClientPanelManager.GetPanel<CharactersClientPanel>();
-        pn.UpdateCharacters(ServerDataManager.singleton.serverData);
+        ServerDataManager.singleton.UpdateCharacters(netId);
+    }
+    public void SetResourceValue(string login, string name, string subtype, float value)
+    {
+        if (isServer)
+        {
+            ServerDataManager.singleton.SetResourceValue(login, name, subtype, value);
+        }
+        else
+        {
+            ServerDataManager.singleton.SetResourceValueCmd(login, name, subtype, value);
+        }
     }
     [TargetRpc]
     public void AccountError(int errorCode)
@@ -89,5 +121,9 @@ public class NetClient : NetworkBehaviour
             panel.Close();
         }
         UpdateCharacters();
+    }
+    public void CheckLogin(string login)
+    {
+        ServerDataManager.singleton.CheckLogin(netId, login, false);
     }
 }

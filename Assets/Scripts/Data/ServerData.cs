@@ -94,6 +94,12 @@ namespace Data
                 characterData.accountId = accountId;
                 characterData.login = login;
                 characterData.password = XMLF.StrToMD5(password);
+                List<Template> rtemps = TemplateManager.FindTemplates("resource_type");
+                for (int i2 = 0; i2 < rtemps.Count; i2++)
+                {
+                    Template tm = rtemps[i2];
+                    ResourcesData res = characterData.GetResource(tm.TemplateName, "1");
+                }
                 characters.Add(characterData);
                 return characterData;
             }

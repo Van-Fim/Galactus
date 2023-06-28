@@ -66,6 +66,7 @@ public class ClientPanelManager : MonoBehaviour
         ClientPanelManager.InitByPrefab(GamePrefabsManager.singleton.LoadPrefab<NewCharacterClientPanel>());
         ClientPanelManager.InitByPrefab(GamePrefabsManager.singleton.LoadPrefab<DebugClientPanel>());
         ClientPanelManager.InitByPrefab(GamePrefabsManager.singleton.LoadPrefab<MultiplayerPanel>());
+        ClientPanelManager.InitByPrefab(GamePrefabsManager.singleton.LoadPrefab<DialogClientPanel>());
         singleton.gameObject.name = "ClientPanelManager";
         DontDestroyOnLoad(singleton.gameObject);
     }

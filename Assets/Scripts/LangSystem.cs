@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Xml;
 using UnityEngine;
 
@@ -37,6 +38,28 @@ public class LangSystem
                 ret = (node.Attributes["text"].Value);
             }
         }
+        return ret;
+    }
+    public static string ShowText(string text)
+    {
+        string ret = null;
+        Regex regex = new Regex(@".*?\[([^)]*)\].*");
+        MatchCollection matches = regex.Matches(text);
+        if (matches.Count == 0)
+        {
+            return ret;
+        }
+        if (matches[0].Groups.Count < 2)
+        {
+            return ret;
+        }
+        ret = $"{matches[0].Groups[1]}";
+        string[] arr = ret.Split(",");
+        if (arr.Length < 3)
+        {
+            return ret;
+        }
+        ret = ShowText(int.Parse(arr[0]), int.Parse(arr[1]), int.Parse(arr[2]));
         return ret;
     }
 }

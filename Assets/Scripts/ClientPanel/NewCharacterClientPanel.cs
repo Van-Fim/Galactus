@@ -31,6 +31,7 @@ public class NewCharacterClientPanel : ClientPanel
     public override void Open()
     {
         base.Open();
+        UpdateText();
     }
     public override void Close()
     {
@@ -51,7 +52,7 @@ public class NewCharacterClientPanel : ClientPanel
         okButton.onClick.AddListener(() =>
         {
             NetClient cl = NetClient.singleton;
-            ServerDataManager.singleton.CheckLogin(cl.netId, loginInput.text, false);
+            cl.CheckLogin(loginInput.text);
         });
         cancelButton.onClick.AddListener(() =>
         {
