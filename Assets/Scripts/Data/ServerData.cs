@@ -10,6 +10,7 @@ namespace Data
     {
         public List<AccountData> accounts = new List<AccountData>();
         public List<CharacterData> characters = new List<CharacterData>();
+        public List<GameStartData> gameStarts = new List<GameStartData>();
 
         public AccountData GetAccountById(int id)
         {
@@ -75,7 +76,7 @@ namespace Data
             }
             return null;
         }
-        public CharacterData CreateCharacterData(string login, string password, int accountId)
+        public CharacterData CreateCharacterData(string login, string password, string gameStart, int accountId)
         {
             CharacterData characterData = characters.Find(f => f.login == login);
             if (characterData == null)
@@ -94,6 +95,7 @@ namespace Data
                 characterData.accountId = accountId;
                 characterData.login = login;
                 characterData.password = XMLF.StrToMD5(password);
+                characterData.gameStart = gameStart;
                 List<Template> rtemps = TemplateManager.FindTemplates("resource_type");
                 for (int i2 = 0; i2 < rtemps.Count; i2++)
                 {
@@ -118,8 +120,9 @@ namespace Data
             ret = true;
             return ret;
         }
-        public void LoadServerData()
+        public ServerData LoadServerData()
         {
+            ServerData ret = null;
             string dir = XMLF.GetDirPatch();
             string fileName = "server.data";
             FileStream file = null;
@@ -134,7 +137,10 @@ namespace Data
                 ServerData serverData = (ServerData)bf.Deserialize(file);
                 this.accounts = serverData.accounts;
                 this.characters = serverData.characters;
+                this.gameStarts = serverData.gameStarts;
+                ret = this;
             }
+            return ret;
         }
     }
 }

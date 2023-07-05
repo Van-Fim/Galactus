@@ -35,9 +35,9 @@ public class ServerDataManager : NetworkBehaviour
             cl.AccountSuccess(adt, 2);
         }
     }
-    public void CreateCharacter(uint netId, string login, string password, int accountId)
+    public void CreateCharacter(uint netId, string login, string password, string gameStart, int accountId)
     {
-        CharacterData cht = serverData.CreateCharacterData(login, password, accountId);
+        CharacterData cht = serverData.CreateCharacterData(login, password, gameStart, accountId);
         DebugConsole.ShowErrorIsNull(cht, $"Character {login} already exists");
         if (cht != null)
         {
@@ -80,11 +80,11 @@ public class ServerDataManager : NetworkBehaviour
         }
     }
     [Command(requiresAuthority = false)]
-    public void CheckCharacter(uint netId, string login, string password, int accountId)
+    public void CheckCharacter(uint netId, CharacterData characterData, int accountId)
     {
         NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
-        CharacterData cht = serverData.GetCharacterByLogin(login);
-        string mdPass = XMLF.StrToMD5(password);
+        CharacterData cht = serverData.GetCharacterByLogin(characterData.login);
+        string mdPass = XMLF.StrToMD5(characterData.password);
 
         if (cht != null)
         {
@@ -105,12 +105,12 @@ public class ServerDataManager : NetworkBehaviour
         }
         else
         {
-            CreateCharacter(netId, login, password, accountId);
+            CreateCharacter(netId, characterData.login, characterData.password, characterData.gameStart, accountId);
         }
         return;
     }
     [Command(requiresAuthority = false)]
-    public void CheckLogin(uint netId, string login, bool accountCheck)
+    public void CheckLogin(uint netId, string login, string gameStart, bool accountCheck)
     {
         bool isLoginExists = serverData.CheckLogin(login, accountCheck);
         NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
@@ -122,6 +122,7 @@ public class ServerDataManager : NetworkBehaviour
         {
             CharacterData chr = new CharacterData();
             chr.login = login;
+            chr.gameStart = gameStart;
             cl.CharacterSuccess(chr, 3);
         }
     }
@@ -130,6 +131,12 @@ public class ServerDataManager : NetworkBehaviour
     {
         NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
         cl.UpdateCharactersRpc(serverData);
+    }
+    [Command(requiresAuthority = false)]
+    public void UpdateAccount(uint netId)
+    {
+        NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
+        cl.UpdateAccountRpc(serverData);
     }
     [Command(requiresAuthority = false)]
     public void SetResourceValueCmd(string login, string name, string subtype, float value)
@@ -147,6 +154,24 @@ public class ServerDataManager : NetworkBehaviour
         {
             CharacterData dta = serverData.characters.Find(f => f.login == login);
             dta.SetResourceValue(name, subtype, value);
+        }
+    }
+    [Command(requiresAuthority = false)]
+    public void AddResourceValueCmd(string login, string name, string subtype, float value)
+    {
+        AddResourceValue(login, name, subtype, value);
+    }
+    public void AddResourceValue(string login, string name, string subtype, float value)
+    {
+        if (subtype == "0")
+        {
+            AccountData dta = serverData.accounts.Find(f => f.login == login);
+            dta.AddResourceValue(name, subtype, value);
+        }
+        else if (subtype == "1")
+        {
+            CharacterData dta = serverData.characters.Find(f => f.login == login);
+            dta.AddResourceValue(name, subtype, value);
         }
     }
     [Command(requiresAuthority = false)]

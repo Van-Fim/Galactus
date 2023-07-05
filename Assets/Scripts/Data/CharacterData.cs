@@ -10,5 +10,6 @@ namespace Data
         public int accountId;
         public string login;
         public string password;
+        public string gameStart;
     }
 }

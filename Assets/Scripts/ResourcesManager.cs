@@ -30,6 +30,13 @@ public class ResourcesManager
         resources[ind].value = value;
         return;
     }
+    public void AddResourceValue(string name, string subtype, float value)
+    {
+        ResourcesData ret = GetResource(name, subtype);
+        int ind = resources.IndexOf(ret);
+        resources[ind].value += value;
+        return;
+    }
     public ResourcesData AddResource(string templateName, string name, string subtype, float value = 0)
     {
         ResourcesData ret = null;

@@ -20,10 +20,15 @@
         <text id="3" text="Введите имя" />
         <text id="4" text="Персонаж успешно создан!" />
         <text id="5" text="Имя уже занято!" />
+        <text id="6" text="Выберите старт" />
     </page>
     <page id="5">
         <text id="1" text="Да" />
         <text id="2" text="Нет" />
         <text id="3" text="Персонаж будет удален навсегда! Вы уверены?" />
+    </page>
+    <page id="6">
+        <text id="1" text="Старт 01" />
+        <text id="2" text="Старт 02" />
     </page>
 </language>

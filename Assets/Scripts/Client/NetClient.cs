@@ -7,7 +7,6 @@ using GameContent;
 
 public class NetClient : NetworkBehaviour
 {
-    string login = "";
     string password = "";
     public AccountData accountData;
     public CharacterData characterData;
@@ -33,6 +32,17 @@ public class NetClient : NetworkBehaviour
         CharactersClientPanel pn = ClientPanelManager.GetPanel<CharactersClientPanel>();
         pn.UpdateCharacters(ServerDataManager.singleton.serverData);
     }
+    [TargetRpc]
+    public void UpdateAccountRpc(ServerData serverData)
+    {
+        if (ServerDataManager.singleton == null)
+        {
+            return;
+        }
+        ServerDataManager.singleton.serverData = serverData;
+        CharactersClientPanel pn = ClientPanelManager.GetPanel<CharactersClientPanel>();
+        pn.UpdateAccount(ServerDataManager.singleton.serverData);
+    }
     public void DeleteCharacter(string login)
     {
         if (ServerDataManager.singleton == null)
@@ -40,6 +50,15 @@ public class NetClient : NetworkBehaviour
             return;
         }
         ServerDataManager.singleton.DeleteCharacter(netId, login);
+    }
+    public void UpdateAccounts()
+    {
+        if (ServerDataManager.singleton == null)
+        {
+            return;
+        }
+        CharactersClientPanel pn = ClientPanelManager.GetPanel<CharactersClientPanel>();
+        ServerDataManager.singleton.UpdateAccount(netId);
     }
     public void UpdateCharacters()
     {
@@ -59,6 +78,17 @@ public class NetClient : NetworkBehaviour
         else
         {
             ServerDataManager.singleton.SetResourceValueCmd(login, name, subtype, value);
+        }
+    }
+    public void AddResourceValue(string login, string name, string subtype, float value)
+    {
+        if (isServer)
+        {
+            ServerDataManager.singleton.AddResourceValue(login, name, subtype, value);
+        }
+        else
+        {
+            ServerDataManager.singleton.AddResourceValueCmd(login, name, subtype, value);
         }
     }
     [TargetRpc]
@@ -116,14 +146,14 @@ public class NetClient : NetworkBehaviour
         else if (code == 3)
         {
             DebugConsole.Log($"Login ok", "success");
-            ServerDataManager.singleton.CheckCharacter(netId, characterData.login, characterData.password, accountData.id);
+            ServerDataManager.singleton.CheckCharacter(netId, characterData, accountData.id);
             panel.SetState(null);
             panel.Close();
         }
         UpdateCharacters();
     }
-    public void CheckLogin(string login)
+    public void CheckLogin(string login, string gameStart)
     {
-        ServerDataManager.singleton.CheckLogin(netId, login, false);
+        ServerDataManager.singleton.CheckLogin(netId, login, gameStart, false);
     }
 }

@@ -54,6 +54,7 @@ public class NetSystem : NetworkManager
         ServerDataManager.Init();
         NetworkServer.Spawn(ServerDataManager.singleton.gameObject);
         ServerDataManager.singleton.serverData.LoadServerData();
+        ServerDataManager.singleton.serverData.gameStarts = GameStartManager.LoadGameStarts();
         onlineSceneLoaded = true;
         yield return 1;
     }

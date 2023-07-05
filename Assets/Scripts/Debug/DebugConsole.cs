@@ -75,7 +75,7 @@ public class DebugConsole
             DebugConsole.ShowErrorIsNull(page, $"Page {currentPage} not found");
             page.list = new List<string>();
         });
-        AddConsoleCommand("SetResource", delegate ()
+        AddConsoleCommand("SetAccountResource", delegate ()
         {
             if (DebugConsoleCommand.args.Length > 2)
             {
@@ -83,7 +83,43 @@ public class DebugConsole
                 string resName = DebugConsoleCommand.args[1];
                 string sval = DebugConsoleCommand.args[2];
                 float value = XMLF.FloatVal(sval);
-                NetClient.singleton.SetResourceValue(login, resName, "1", value);
+                NetClient.singleton.SetResourceValue(login, resName, "0", value);
+                NetClient.singleton.UpdateCharacters();
+            }
+        });
+        AddConsoleCommand("SetClientResource", delegate ()
+        {
+            if (DebugConsoleCommand.args.Length > 2)
+            {
+                string login = DebugConsoleCommand.args[0];
+                string resName = DebugConsoleCommand.args[1];
+                string sval = DebugConsoleCommand.args[2];
+                float value = XMLF.FloatVal(sval);
+                NetClient.singleton.SetResourceValue(login, resName, "0", value);
+                NetClient.singleton.UpdateCharacters();
+            }
+        });
+        AddConsoleCommand("AddAccountResource", delegate ()
+        {
+            if (DebugConsoleCommand.args.Length > 2)
+            {
+                string login = DebugConsoleCommand.args[0];
+                string resName = DebugConsoleCommand.args[1];
+                string sval = DebugConsoleCommand.args[2];
+                float value = XMLF.FloatVal(sval);
+                NetClient.singleton.AddResourceValue(login, resName, "0", value);
+                NetClient.singleton.UpdateCharacters();
+            }
+        });
+        AddConsoleCommand("AddClientResource", delegate ()
+        {
+            if (DebugConsoleCommand.args.Length > 2)
+            {
+                string login = DebugConsoleCommand.args[0];
+                string resName = DebugConsoleCommand.args[1];
+                string sval = DebugConsoleCommand.args[2];
+                float value = XMLF.FloatVal(sval);
+                NetClient.singleton.AddResourceValue(login, resName, "0", value);
                 NetClient.singleton.UpdateCharacters();
             }
         });

@@ -15,7 +15,15 @@ public class CharactersClientPanel : ClientPanel
     [SerializeField] private Button startGameButton;
     [SerializeField] private TMPro.TMP_Text infoText;
     public CharacterButton selectedButton;
-
+    public void UpdateAccount(ServerData serverData)
+    {
+        if (ServerDataManager.singleton == null)
+        {
+            return;
+        }
+        GamePrefabsManager gmpr = GamePrefabsManager.singleton;
+        ServerDataManager.singleton.serverData = serverData;
+    }
     public void UpdateCharacters(ServerData serverData)
     {
         if (ServerDataManager.singleton == null)
@@ -41,6 +49,7 @@ public class CharactersClientPanel : ClientPanel
             {
                 continue;
             }
+            GameStartData gameStartData = serverData.gameStarts.Find(f => f.templateName == ch.gameStart);
             CharacterButton cbtn = Instantiate(characterButtonPrefab, createCharButton.transform.parent);
             cbtn.characterData = ch;
             cbtn.Init();
@@ -58,6 +67,7 @@ public class CharactersClientPanel : ClientPanel
                     {
                         List<Template> rtemps = TemplateManager.FindTemplates("resource_type");
                         infoText.text = $"{LangSystem.ShowText(1100, 1, 1)}: {ch.login}\n";
+                        infoText.text += $"{LangSystem.ShowText(1100, 1, 2)}: {LangSystem.ShowText(gameStartData.name)}\n";
                         AccountData account = ServerDataManager.singleton.serverData.GetAccountById(ch.accountId);
                         for (int i2 = 0; i2 < rtemps.Count; i2++)
                         {

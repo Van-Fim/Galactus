@@ -453,7 +453,6 @@ MonoBehaviour:
   closeButton: {fileID: 7532029567586998653}
   warpButton: {fileID: 3449590167772733587}
   layerDropdown: {fileID: 4179895654842935364}
-  rawImage: {fileID: 0}
 --- !u!1 &1366670181859006828
 GameObject:
   m_ObjectHideFlags: 0
