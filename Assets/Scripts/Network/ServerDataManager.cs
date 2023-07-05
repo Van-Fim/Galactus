@@ -42,6 +42,13 @@ public class ServerDataManager : NetworkBehaviour
         if (cht != null)
         {
             NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
+            
+            GameStartData gameStartData = serverData.gameStarts.Find(f => f.templateName == gameStart);
+            for (int i = 0; i < gameStartData.resourceDatas.Count; i++)
+            {
+                ParamData pd = gameStartData.resourceDatas[i];
+                cht.SetResourceValue(pd.name, "1", XMLF.FloatVal(pd.value));
+            }
             cl.CharacterSuccess(cht, 2);
         }
     }
