@@ -23,4 +23,16 @@
 			</ship>
 		</space>
 	</start>
+	<start name="Start03" text="[1000,6,3]">
+		<resources>
+			<resource name="money" value="5000" />
+		</resources>
+		<space galaxy="2" system="9" sector="1" zone="2">
+			<ship playerShip="1" template="Ship01" pilotTemplate="Pilot01">
+				<loadouts name="Ship01" />
+				<position x="0" y="-2000" z="0" />
+				<rotation x="0" y="0" z="0" />
+			</ship>
+		</space>
+	</start>
 </templates>

@@ -46,21 +46,11 @@ public class NewCharacterClientPanel : ClientPanel
         if (serverData.gameStarts.Count > 0)
         {
             gameStart = serverData.gameStarts[0].templateName;
-            okButton.onClick.AddListener(() =>
-            {
-                NetClient cl = NetClient.singleton;
-                cl.CheckLogin(loginInput.text, gameStart);
-            });
         }
         gameStartDropdown.onValueChanged.AddListener((int num) =>
         {
             ServerData serverData = ServerDataManager.singleton.serverData;
             gameStart = serverData.gameStarts[num].templateName;
-            okButton.onClick.AddListener(() =>
-            {
-                NetClient cl = NetClient.singleton;
-                cl.CheckLogin(loginInput.text, gameStart);
-            });
         });
     }
     public override void Open()

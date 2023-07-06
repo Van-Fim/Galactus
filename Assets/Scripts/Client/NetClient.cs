@@ -154,6 +154,7 @@ public class NetClient : NetworkBehaviour
     }
     public void CheckLogin(string login, string gameStart)
     {
+        DebugConsole.Log($"CheckLogin {gameStart}");
         ServerDataManager.singleton.CheckLogin(netId, login, gameStart, false);
     }
 }
