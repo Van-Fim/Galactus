@@ -4,6 +4,7 @@ using UnityEngine;
 using Data;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
+using GameContent;
 
 public class CharactersClientPanel : ClientPanel
 {
@@ -160,6 +161,7 @@ public class CharactersClientPanel : ClientPanel
         {
             ClientPanelManager.Close<CharactersClientPanel>();
             ClientPanelManager.Show<HudClientPanel>();
+            GameManager.singleton.StartGame();
         });
         UpdateText();
     }

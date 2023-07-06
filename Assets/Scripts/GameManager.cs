@@ -104,6 +104,10 @@ namespace GameContent
             }
             return ret;
         }
+        public void StartGame()
+        {
+            SpaceManager.Init();
+        }
         public void RunConfigCommands()
         {
             for (int i = 0; i < configData.commands.Count; i++)
