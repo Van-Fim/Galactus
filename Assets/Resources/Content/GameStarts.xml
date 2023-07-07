@@ -27,6 +27,9 @@
 		<resources>
 			<resource name="money" value="5000" />
 		</resources>
+		<params>
+			<param name="universe" value="un01" />
+		</params>
 		<space galaxy="2" system="9" sector="1" zone="2">
 			<ship playerShip="1" template="Ship01" pilotTemplate="Pilot01">
 				<loadouts name="Ship01" />

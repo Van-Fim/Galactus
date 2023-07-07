@@ -7,6 +7,7 @@ using GameContent;
 
 public class NetClient : NetworkBehaviour
 {
+    public string login;
     string password = "";
     public AccountData accountData;
     public CharacterData characterData;
@@ -29,6 +30,10 @@ public class NetClient : NetworkBehaviour
             return;
         }
         ServerDataManager.singleton.serverData = serverData;
+        if (characterData != null)
+        {
+            characterData = ServerDataManager.singleton.serverData.GetCharacterByLogin(characterData.login);
+        }
         CharactersClientPanel pn = ClientPanelManager.GetPanel<CharactersClientPanel>();
         pn.UpdateCharacters(ServerDataManager.singleton.serverData);
     }
@@ -40,6 +45,7 @@ public class NetClient : NetworkBehaviour
             return;
         }
         ServerDataManager.singleton.serverData = serverData;
+        accountData = ServerDataManager.singleton.serverData.GetAccountByLogin(accountData.login);
         CharactersClientPanel pn = ClientPanelManager.GetPanel<CharactersClientPanel>();
         pn.UpdateAccount(ServerDataManager.singleton.serverData);
     }

@@ -159,9 +159,13 @@ public class CharactersClientPanel : ClientPanel
         });
         startGameButton.onClick.AddListener(() =>
         {
-            ClientPanelManager.Close<CharactersClientPanel>();
-            ClientPanelManager.Show<HudClientPanel>();
-            GameManager.singleton.StartGame();
+            if (selectedButton != null && selectedButton.Selected)
+            {
+                ClientPanelManager.Close<CharactersClientPanel>();
+                ClientPanelManager.Show<HudClientPanel>();
+                NetClient.singleton.characterData = selectedButton.characterData;
+                GameManager.singleton.StartGame();
+            }
         });
         UpdateText();
     }

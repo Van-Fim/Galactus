@@ -107,6 +107,8 @@ namespace GameContent
         public void StartGame()
         {
             SpaceManager.Init();
+            GameStartData gsd = GameStartManager.GetGameStart(NetClient.singleton.characterData.gameStart);
+            SpaceManager.singleton.LoadGalaxies();
         }
         public void RunConfigCommands()
         {

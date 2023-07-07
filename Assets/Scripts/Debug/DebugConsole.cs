@@ -199,6 +199,10 @@ public class DebugConsole
         {
             DebugConsole.Log(message, "error");
         }
+        if (stop)
+        {
+            Application.Quit();
+        }
     }
     public static LogPage GetLogPage(string page)
     {

@@ -57,6 +57,9 @@ public class NewCharacterClientPanel : ClientPanel
     {
         base.Open();
         GetGameStarts();
+        int num = gameStartDropdown.value;
+        ServerData serverData = ServerDataManager.singleton.serverData;
+        gameStart = serverData.gameStarts[num].templateName;
         UpdateText();
     }
     public override void Close()

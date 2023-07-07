@@ -54,6 +54,7 @@ public class DialogClientPanel : ClientPanel
                 return;
             }
             cl.DeleteCharacter(cpl.selectedButton.characterData.login);
+            cpl.selectedButton = null;
             ClientPanelManager.Close<DialogClientPanel>();
         });
         noButton.onClick.AddListener(() =>

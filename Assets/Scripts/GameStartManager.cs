@@ -7,7 +7,7 @@ public class GameStartManager
     public static List<GameStartData> LoadGameStarts()
     {
         List<GameStartData> list = ServerDataManager.singleton.serverData.gameStarts;
-        
+
         if (list.Count > 0)
         {
             DebugConsole.Log($"{list[0].templateName}");
@@ -138,6 +138,10 @@ public class GameStartManager
             }
         }
         return ret;
+    }
+    public static GameStartData GetGameStart(string name)
+    {
+        return ServerDataManager.singleton.serverData.gameStarts.Find(f=>f.templateName == name);
     }
     public static Data.ParamData GetParam(GameStartData gameStartData, string name)
     {
