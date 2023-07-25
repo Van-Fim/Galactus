@@ -34,7 +34,7 @@ public class SpaceManager : MonoBehaviour
     }
     public void LoadGalaxies()
     {
-        UniverseBuilder.Build();
+        UniverseBuilder.Build(this);
     }
     public Galaxy GetGalaxyByID(int id)
     {

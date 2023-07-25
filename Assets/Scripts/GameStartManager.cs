@@ -7,11 +7,6 @@ public class GameStartManager
     public static List<GameStartData> LoadGameStarts()
     {
         List<GameStartData> list = ServerDataManager.singleton.serverData.gameStarts;
-
-        if (list.Count > 0)
-        {
-            DebugConsole.Log($"{list[0].templateName}");
-        }
         List<Template> templates = TemplateManager.FindTemplates("start");
         for (int i = 0; i < templates.Count; i++)
         {

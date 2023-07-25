@@ -6,7 +6,7 @@ namespace GameContent
     public class UniverseBuilder : ISpaceBuilder
     {
         public static string templateName = "default";
-        public static void Build()
+        public static void Build(SpaceManager spm)
         {
             System.Random rndm = new System.Random(GameManager.GetSeed());
             UnityEngine.Random.InitState(GameManager.GetSeed());
@@ -18,7 +18,6 @@ namespace GameContent
             int maxRangeMin = int.Parse(nd.GetValue("maxRangeMin"));
             int maxRangeMax = int.Parse(nd.GetValue("maxRangeMax"));
             float range = UnityEngine.Random.Range(maxRangeMin, maxRangeMax + 1);
-            SpaceManager spm = SpaceManager.singleton;
             for (int j = 0; j < nodes.Count; j++)
             {
                 TemplateNode node = nodes[j];
@@ -94,6 +93,7 @@ namespace GameContent
                         }
                     }
                     galaxy.SetPosition(position);
+                    galaxy.Init();
                     spm.galaxies.Add(galaxy);
                 }
             }

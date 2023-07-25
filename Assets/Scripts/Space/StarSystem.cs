@@ -5,15 +5,16 @@ using UnityEngine;
 public class StarSystem : GameContent.Space
 {
     public int galaxyId;
+    public string skyboxName;
     public StarSystem() { }
-    public StarSystem(string templateName) : base(templateName)
+    public StarSystem(string templateName, Galaxy galaxy, SpaceManager spaceManager) : base(templateName)
     {
-        SpaceManager spm = SpaceManager.singleton;
         int id = 0;
-        while (spm.starSystems.Find(f=>f.id == id) != null)
+        while (spaceManager.starSystems.Find(f=>f.id == id) != null)
         {
             id++;
         }
         this.id = id;
+        this.galaxyId = galaxy.id;
     }
 }

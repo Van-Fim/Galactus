@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void SetActive(bool active)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Camera camera = this.GetComponent<Camera>();
+        camera.enabled = active;
+        gameObject.SetActive(active);
     }
 }

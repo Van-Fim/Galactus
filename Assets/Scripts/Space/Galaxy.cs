@@ -4,6 +4,7 @@ using UnityEngine;
 using GameContent;
 public class Galaxy : GameContent.Space
 {
+    public bool loaded;
     public Galaxy() { }
     public Galaxy(string templateName) : base(templateName)
     {

@@ -15,7 +15,7 @@ public class DebugConsole
     public static List<LogPage> pages = new List<LogPage>();
     public static string currentPage = "main";
     public static bool collapse = false;
-    public static bool showFileLineInfo = false;
+    public static bool showFileLineInfo = true;
     public static bool saveLoadData = false;
     public static bool clearFileLogs = false;
     public static string logdir;

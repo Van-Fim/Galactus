@@ -163,4 +163,26 @@ public class NetClient : NetworkBehaviour
         DebugConsole.Log($"CheckLogin {gameStart}");
         ServerDataManager.singleton.CheckLogin(netId, login, gameStart, false);
     }
+    public static int GetGalaxyId()
+    {
+        return singleton.characterData.galaxyId;
+    }
+    public static int GetSystemId()
+    {
+        return singleton.characterData.systemId;
+    }
+    public static int GetSectorId()
+    {
+        return singleton.characterData.sectorId;
+    }
+    public static int GetZoneId()
+    {
+        return singleton.characterData.zoneId;
+    }
+    public static string GetGamestartTemplateName()
+    {
+        string ret = null;
+        ret = singleton.characterData.gameStart;
+        return ret;
+    }
 }

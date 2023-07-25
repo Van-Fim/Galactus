@@ -49,6 +49,10 @@ public class ServerDataManager : NetworkBehaviour
                 ParamData pd = gameStartData.resourceDatas[i];
                 cht.SetResourceValue(pd.name, "1", XMLF.FloatVal(pd.value));
             }
+            cht.galaxyId = int.Parse(gameStartData.GetParam("galaxy"));
+            cht.systemId = int.Parse(gameStartData.GetParam("system"));
+            cht.sectorId = int.Parse(gameStartData.GetParam("sector"));
+            cht.zoneId = int.Parse(gameStartData.GetParam("zone"));
             cl.CharacterSuccess(cht, 2);
         }
     }

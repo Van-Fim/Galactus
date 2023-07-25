@@ -5,19 +5,6 @@ using UnityEngine.UI;
 
 public class MapClientPanel : ClientPanel
 {
-    public static int prevSelectedGalaxyId = -1;
-    public static int prevSelectedSystemId = -1;
-    public static int prevSelectedSectorId = -1;
-    public static int prevSelectedZoneId = -1;
-    public static int selectedGalaxyId;
-    public static int selectedSystemId;
-    public static int selectedSectorId;
-    public static int selectedZoneId;
-    public static bool anotherGalaxySelected = true;
-    public static bool anotherSystemSelected = true;
-    public static bool anotherSectorSelected = true;
-    public static bool anotherZoneSelected = true;
-
     public static byte currentLayer;
     public static byte minLayer = 0;
 
@@ -53,16 +40,30 @@ public class MapClientPanel : ClientPanel
     public void ChangeLayer(byte layer)
     {
         currentLayer = layer;
+        if (layer == 0)
+        {
+            Galaxy.InvokeRender();
+        }
+        else if (layer == 1)
+        {
+            Galaxy currentGalaxy = MapSpaceManager.singleton.GetGalaxyByID(MapSpaceManager.selectedGalaxyId);
+            GameContent.GalaxyBuilder.Build(MapSpaceManager.singleton, currentGalaxy);
+            StarSystem.InvokeRender();
+            DebugConsole.Log($"{MapSpaceManager.singleton.starSystems.Count}");
+        }
     }
     public override void Open()
     {
+        CameraManager.SwitchByCode(1);
+        MapSpaceManager.singleton.LoadGalaxies();
+        ChangeLayer(0);
         base.Open();
     }
     public override void Close()
     {
         base.Close();
+        CameraManager.SwitchByCode(0);
     }
-
     public override void Init()
     {
         backButton.onClick.AddListener(() =>
@@ -75,21 +76,7 @@ public class MapClientPanel : ClientPanel
         });
         warpButton.onClick.AddListener(() =>
         {
-            if (currentLayer == 0)
-            {
-                selectedSystemId = 0;
-                selectedSectorId = 0;
-                selectedZoneId = 0;
-            }
-            else if (currentLayer == 1)
-            {
-                selectedSectorId = 0;
-                selectedZoneId = 0;
-            }
-            else if (currentLayer == 2)
-            {
-                selectedZoneId = 0;
-            }
+
         });
 
         list.Clear();

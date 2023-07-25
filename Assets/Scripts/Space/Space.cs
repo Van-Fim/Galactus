@@ -17,6 +17,7 @@ namespace GameContent
         public float[] rotation = new float[] { 0, 0, 0 };
         public byte[] color = new byte[] { 255, 255, 255, 255 };
         public byte[] bgcolor = new byte[] { 255, 255, 255, 255 };
+        public SpaceManager spaceManager;
         public static UnityAction OnRenderAction;
         public static UnityAction OnMinimapRenderAction;
         public static UnityAction OnDrawUiAction;
@@ -48,6 +49,25 @@ namespace GameContent
         }
         public virtual void OnRender()
         {
+            if (this is(Galaxy) && MapSpaceManager.selectedGalaxyId == id && MapClientPanel.currentLayer == 0)
+            {
+                DebugConsole.Log($"Galaxy {id}");
+            }
+            else if (this is(StarSystem) && MapSpaceManager.selectedSystemId == id && MapClientPanel.currentLayer == 1)
+            {
+                StarSystem val = (StarSystem) this;
+                DebugConsole.Log($"Galaxy {val.galaxyId} System {val.id}");
+            }
+            else if (this is(Sector) && MapSpaceManager.selectedSectorId == id && MapClientPanel.currentLayer == 2)
+            {
+                Sector val = (Sector) this;
+                DebugConsole.Log($"Galaxy {val.galaxyId} System {val.systemId} Sector {val.id}");
+            }
+            else if (this is(Zone) && MapSpaceManager.selectedZoneId == id && MapClientPanel.currentLayer == 3)
+            {
+                Zone val = (Zone) this;
+                DebugConsole.Log($"Galaxy {val.galaxyId} System {val.systemId} Sector {val.sectorId} Zone {id}");
+            }
         }
         public virtual void OnClearAllControllers()
         {

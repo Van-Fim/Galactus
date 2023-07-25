@@ -10,7 +10,7 @@ namespace GameContent
     public class GameManager : MonoBehaviour
     {
         public static GameManager singleton;
-        private string seed = "mygameSeed";
+        public string seed = "mygameSeed";
         public bool isGameInitialized;
         public static bool isInMainMenu = true;
         public ConfigData configData = new ConfigData();
@@ -107,8 +107,8 @@ namespace GameContent
         public void StartGame()
         {
             SpaceManager.Init();
-            GameStartData gsd = GameStartManager.GetGameStart(NetClient.singleton.characterData.gameStart);
-            SpaceManager.singleton.LoadGalaxies();
+            GameStartData gsd = GameStartManager.GetGameStart(NetClient.GetGamestartTemplateName());
+            MapSpaceManager.Init();
         }
         public void RunConfigCommands()
         {
