@@ -57,6 +57,18 @@ public class ServerDataManager : NetworkBehaviour
         }
     }
     [Command(requiresAuthority = false)]
+    public void WarpClient(CharacterData character, uint netId, WarpData warpData)
+    {
+        NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
+        character.galaxyId = warpData.galaxyId;
+        character.systemId = warpData.systemId;
+        character.sectorId = warpData.sectorId;
+        character.zoneId = warpData.zoneId;
+        character.SetPosition(warpData.position);
+        character.SetRotation(warpData.rotation);
+        cl.CompleteWarp(warpData);
+    }
+    [Command(requiresAuthority = false)]
     public void CheckAccount(uint netId, string login, string password)
     {
         NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();

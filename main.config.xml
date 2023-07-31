@@ -5,6 +5,5 @@
         <param log_dir="logs" />
     </params>
     <commands>
-        <command name="SetPageSettings true true false false" />
     </commands>
 </config>

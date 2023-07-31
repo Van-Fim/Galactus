@@ -152,16 +152,39 @@ public class NetClient : NetworkBehaviour
         else if (code == 3)
         {
             DebugConsole.Log($"Login ok", "success");
+            WarpData warpData = new WarpData();
+            warpData.galaxyId = characterData.galaxyId;
+            warpData.systemId = characterData.systemId;
+            warpData.sectorId = characterData.sectorId;
+            warpData.zoneId = characterData.zoneId;
+            warpData.position = characterData.GetPosition();
+            warpData.rotation = characterData.GetRotation();
+            WarpClient(warpData);
             ServerDataManager.singleton.CheckCharacter(netId, characterData, accountData.id);
             panel.SetState(null);
             panel.Close();
         }
         UpdateCharacters();
     }
+    [TargetRpc]
+    public void CompleteWarp(WarpData warpData)
+    {
+        characterData.galaxyId = warpData.galaxyId;
+        characterData.systemId = warpData.systemId;
+        characterData.sectorId = warpData.sectorId;
+        characterData.zoneId = warpData.zoneId;
+        characterData.SetPosition(warpData.position);
+        characterData.SetRotation(warpData.rotation);
+        DebugConsole.Log($"Character warp data:/n{characterData.galaxyId}");
+    }
     public void CheckLogin(string login, string gameStart)
     {
         DebugConsole.Log($"CheckLogin {gameStart}");
         ServerDataManager.singleton.CheckLogin(netId, login, gameStart, false);
+    }
+    public void WarpClient(WarpData warpData)
+    {
+        ServerDataManager.singleton.WarpClient(characterData, netId, warpData);
     }
     public static int GetGalaxyId()
     {
@@ -178,6 +201,30 @@ public class NetClient : NetworkBehaviour
     public static int GetZoneId()
     {
         return singleton.characterData.zoneId;
+    }
+    public static Galaxy GetGalaxy()
+    {
+        Galaxy ret = null;
+        ret = SpaceManager.singleton.GetGalaxyByID(GetGalaxyId());
+        return ret;
+    }
+    public static StarSystem GetSystem()
+    {
+        StarSystem ret = null;
+        ret = SpaceManager.singleton.GetSystemByID(GetGalaxyId(), GetSystemId());
+        return ret;
+    }
+    public static Sector GetSector()
+    {
+        Sector ret = null;
+        ret = SpaceManager.singleton.GetSectorByID(GetGalaxyId(), GetSystemId(), GetSectorId());
+        return ret;
+    }
+    public static Zone GetZone()
+    {
+        Zone ret = null;
+        ret = SpaceManager.singleton.GetZoneByID(GetGalaxyId(), GetSystemId(), GetSectorId(), GetZoneId());
+        return ret;
     }
     public static string GetGamestartTemplateName()
     {

@@ -12,12 +12,14 @@ namespace GameContent
         public int size = 10;
         public string templateName;
         public string name;
+        public SpaceMapObject spaceMapObject;
         public int[] indexes = { 0, 0, 0 };
         public float[] position = new float[] { 0, 0, 0 };
         public float[] rotation = new float[] { 0, 0, 0 };
         public byte[] color = new byte[] { 255, 255, 255, 255 };
         public byte[] bgcolor = new byte[] { 255, 255, 255, 255 };
         public SpaceManager spaceManager;
+        public SpaceUiObj spaceUiObj;
         public static UnityAction OnRenderAction;
         public static UnityAction OnMinimapRenderAction;
         public static UnityAction OnDrawUiAction;
@@ -49,24 +51,107 @@ namespace GameContent
         }
         public virtual void OnRender()
         {
-            if (this is(Galaxy) && MapSpaceManager.selectedGalaxyId == id && MapClientPanel.currentLayer == 0)
+            DestroyController(0);
+            DestroyController(1);
+            DestroyController(2);
+            DestroyController(3);
+            if (this is (Galaxy))
             {
-                DebugConsole.Log($"Galaxy {id}");
+                Vector3 pos = GetPosition();
+                Vector3 rot = GetRotation();
+                SpaceMapObject spmPrefab = GamePrefabsManager.singleton.LoadPrefab<SpaceMapObject>("GalaxyMapObjectPrefab");
+                if (MapClientPanel.currentLayer == spmPrefab.layer)
+                {
+                    if (spaceMapObject == null)
+                    {
+                        spaceMapObject = GameObject.Instantiate(spmPrefab, SpaceManager.singleton.transform);
+                        spaceMapObject.layer = spmPrefab.layer;
+                        spaceMapObject.transform.localPosition = pos;
+                        spaceMapObject.transform.localEulerAngles = rot;
+                        spaceMapObject.meshRenderer.material.SetColor("_TintColor", GetColor());
+                        spaceMapObject.meshRenderer.material.SetColor("_Color", GetColor());
+                        spaceMapObject.meshRenderer.enabled = true;
+                        spaceMapObject.Init();
+
+                        //DebugConsole.Log($"id rendered {id}");
+                    }
+                }
+                else
+                {
+                    //DestroyController(spmPrefab.layer);
+                }
             }
-            else if (this is(StarSystem) && MapSpaceManager.selectedSystemId == id && MapClientPanel.currentLayer == 1)
+            else if (this is (StarSystem))
             {
-                StarSystem val = (StarSystem) this;
-                DebugConsole.Log($"Galaxy {val.galaxyId} System {val.id}");
+                StarSystem val = (StarSystem)this;
+                if (val.galaxyId != MapSpaceManager.selectedGalaxyId)
+                {
+                    return;
+                }
+                Vector3 pos = GetPosition();
+                Vector3 rot = GetRotation();
+                SpaceMapObject spmPrefab = GamePrefabsManager.singleton.LoadPrefab<SpaceMapObject>("SystemMapObjectPrefab");
+                if (MapClientPanel.currentLayer == spmPrefab.layer)
+                {
+                    if (spaceMapObject == null)
+                    {
+                        spaceMapObject = GameObject.Instantiate(spmPrefab, SpaceManager.singleton.transform);
+                        spaceMapObject.layer = spmPrefab.layer;
+                        spaceMapObject.transform.localPosition = pos;
+                        spaceMapObject.transform.localEulerAngles = rot;
+                        spaceMapObject.meshRenderer.material.SetColor("_TintColor", GetColor());
+                        spaceMapObject.meshRenderer.material.SetColor("_Color", GetColor());
+                        spaceMapObject.meshRenderer.enabled = true;
+                        spaceMapObject.Init();
+
+                        //DebugConsole.Log($"id rendered {id}");
+                    }
+                }
+                else
+                {
+                    //DestroyController(spmPrefab.layer);
+                }
             }
-            else if (this is(Sector) && MapSpaceManager.selectedSectorId == id && MapClientPanel.currentLayer == 2)
+            else if (this is (Sector) && MapSpaceManager.selectedSectorId == id && MapClientPanel.currentLayer == 2)
             {
-                Sector val = (Sector) this;
-                DebugConsole.Log($"Galaxy {val.galaxyId} System {val.systemId} Sector {val.id}");
+                Sector val = (Sector)this;
+                if (val.galaxyId != MapSpaceManager.selectedGalaxyId || val.systemId != MapSpaceManager.selectedSystemId)
+                {
+                    return;
+                }
+                Vector3 pos = GetPosition();
+                Vector3 rot = GetRotation();
+                SpaceMapObject spmPrefab = GamePrefabsManager.singleton.LoadPrefab<SpaceMapObject>("SectorMapObjectPrefab");
+                if (MapClientPanel.currentLayer == spmPrefab.layer)
+                {
+                    if (spaceMapObject == null)
+                    {
+                        spaceMapObject = GameObject.Instantiate(spmPrefab, SpaceManager.singleton.transform);
+                        spaceMapObject.layer = spmPrefab.layer;
+                        spaceMapObject.transform.localPosition = pos;
+                        spaceMapObject.transform.localEulerAngles = rot;
+                        spaceMapObject.meshRenderer.material.SetColor("_TintColor", GetColor());
+                        spaceMapObject.meshRenderer.material.SetColor("_Color", GetColor());
+                        spaceMapObject.meshRenderer.enabled = true;
+                        spaceMapObject.Init();
+                    }
+                }
+                else
+                {
+                    //DestroyController(spmPrefab.layer);
+                }
             }
-            else if (this is(Zone) && MapSpaceManager.selectedZoneId == id && MapClientPanel.currentLayer == 3)
+            else if (this is (Zone) && MapSpaceManager.selectedZoneId == id && MapClientPanel.currentLayer == 3)
             {
-                Zone val = (Zone) this;
+                Zone val = (Zone)this;
                 DebugConsole.Log($"Galaxy {val.galaxyId} System {val.systemId} Sector {val.sectorId} Zone {id}");
+            }
+        }
+        public virtual void DestroyController(int layer)
+        {
+            if (spaceMapObject != null && spaceMapObject.layer == layer)
+            {
+                GameObject.DestroyImmediate(spaceMapObject.gameObject);
             }
         }
         public virtual void OnClearAllControllers()
@@ -74,6 +159,14 @@ namespace GameContent
         }
         public virtual void OnDrawUi()
         {
+            if (spaceUiObj == null && spaceMapObject != null)
+            {
+                spaceUiObj = GameObject.Instantiate(GamePrefabsManager.singleton.LoadPrefab<SpaceUiObj>("SpaceUiObj"), CanvasManager.canvas.transform);
+                spaceUiObj.space = this;
+                spaceUiObj.transform.localPosition = Vector3.zero;
+                spaceUiObj.transform.localRotation = Quaternion.identity;
+                spaceUiObj.Init();
+            }
         }
         public virtual void SetColor(Color32 color)
         {

@@ -1,7 +1,8 @@
 	<templates>
 		<universe name="default">
 			<galaxies maxRangeMin="1000" maxRangeMax="1000">
-				<galaxy template="Gal2" size="50" min="20" max="20"/>
+				<galaxy template="Gal1" size="50" min="10" max="10"/>
+				<galaxy template="Gal2" size="50" min="10" max="10"/>
 			</galaxies>
 		</universe>
 		<universe name="un01">

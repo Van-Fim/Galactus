@@ -40,23 +40,48 @@ public class MapClientPanel : ClientPanel
     public void ChangeLayer(byte layer)
     {
         currentLayer = layer;
+        SpaceUiObj.InvokeDestroyAll();
         if (layer == 0)
         {
             Galaxy.InvokeRender();
+            CameraManager.UpdateCamBoost(CameraManager.minimapCamera, 3.5f);
         }
         else if (layer == 1)
         {
             Galaxy currentGalaxy = MapSpaceManager.singleton.GetGalaxyByID(MapSpaceManager.selectedGalaxyId);
-            GameContent.GalaxyBuilder.Build(MapSpaceManager.singleton, currentGalaxy);
+            GalaxyBuilder.Build(MapSpaceManager.singleton, currentGalaxy);
             StarSystem.InvokeRender();
-            DebugConsole.Log($"{MapSpaceManager.singleton.starSystems.Count}");
+            CameraManager.UpdateCamBoost(CameraManager.minimapCamera, 3.5f);
         }
+        else if (layer == 2)
+        {
+            Galaxy currentGalaxy = MapSpaceManager.singleton.GetGalaxyByID(MapSpaceManager.selectedGalaxyId);
+            GalaxyBuilder.Build(MapSpaceManager.singleton, currentGalaxy);
+            StarSystem currentSystem = MapSpaceManager.singleton.GetSystemByID(MapSpaceManager.selectedGalaxyId, MapSpaceManager.selectedSystemId);
+            Sector.InvokeRender();
+            PlanetsBuilder.Build(MapSpaceManager.singleton, currentSystem);
+            Planet.InvokeRender();
+            Sun.InvokeRender();
+            CameraManager.UpdateCamBoost(CameraManager.minimapCamera, 2.0f);
+        }
+        else if (layer == 3)
+        {
+            CameraManager.UpdateCamBoost(CameraManager.minimapCamera, -2.5f);
+        }
+        CameraManager.minimapCamera.SetPositionByLayer(layer);
+        GameContent.Space.InvokeDrawUi();
     }
     public override void Open()
     {
         CameraManager.SwitchByCode(1);
         MapSpaceManager.singleton.LoadGalaxies();
         ChangeLayer(0);
+
+        if (MapSpaceManager.anotherGalaxySelected)
+        {
+            GameContent.Space space = MapSpaceManager.singleton.GetGalaxyByID(MapSpaceManager.selectedGalaxyId);
+            MapSpaceManager.InvokeAnotherSpaceSelected(space);
+        }
         base.Open();
     }
     public override void Close()

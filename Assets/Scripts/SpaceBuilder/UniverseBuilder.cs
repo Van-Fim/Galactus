@@ -45,12 +45,8 @@ namespace GameContent
                     if (colorNodes.Count > 0)
                     {
                         TemplateNode colorNode = TemplateNode.GetByWeightsList(colorNodes);
-                        byte r = byte.Parse(colorNode.GetValue("r"));
-                        byte g = byte.Parse(colorNode.GetValue("g"));
-                        byte b = byte.Parse(colorNode.GetValue("b"));
-                        byte a = byte.Parse(colorNode.GetValue("a"));
-
-                        galaxy.color = new byte[] { r, g, b, a };
+                        Color32 col = colorNode.GetColor();
+                        galaxy.SetColor(col);
                     }
                     int counter = 10;
                     Vector3 position3D = UnityEngine.Random.insideUnitSphere * range;

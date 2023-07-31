@@ -8,7 +8,7 @@ using System.Linq;
 public class DebugConsoleCommand
 {
     public string command;
-    public int descId;
+    public string description;
     public static string[] args;
     public Action action;
 }

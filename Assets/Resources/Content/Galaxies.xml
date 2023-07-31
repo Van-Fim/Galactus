@@ -1,10 +1,10 @@
 	<templates>
-		<galaxy name="Gal1" type="default" systems_min="2000" systems_max="2000">
+		<galaxy name="Gal1" type="default" systems_min="500" systems_max="500">
 			<systems>
-				<system template="System03" weight="100" minRange="0" maxRange="20000" size="10" Ymin="-300" Ymax="300" ></system>
+				<system template="System02" weight="100" minRange="0" maxRange="5000" size="10" Ymin="-100" Ymax="100" ></system>
 			</systems>
 			<colors>
-				<color r="255" g="0" b="0" a="255" />
+				<color r="255" g="100" b="100" a="255" />
 			</colors>
 		</galaxy>
 		<galaxy name="Gal2" type="galaxy" numOfArms="2" spin="1.6" armSpread="0.2" starsAtCenterRatio="1.0" systems_min="2000" systems_max="2000">
@@ -14,7 +14,7 @@
 				<system template="System03" weight="100" minRange="10000" maxRange="30000" size="10" Ymin="-300" Ymax="300" ></system>
 			</systems>
 			<colors>
-				<color r="255" g="255" b="255" a="255" />
+				<color r="255" g="200" b="100" a="255" />
 			</colors>
 		</galaxy>
 	</templates>

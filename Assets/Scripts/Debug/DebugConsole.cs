@@ -15,7 +15,7 @@ public class DebugConsole
     public static List<LogPage> pages = new List<LogPage>();
     public static string currentPage = "main";
     public static bool collapse = false;
-    public static bool showFileLineInfo = true;
+    public static bool showFileLineInfo = false;
     public static bool saveLoadData = false;
     public static bool clearFileLogs = false;
     public static string logdir;
@@ -33,49 +33,49 @@ public class DebugConsole
     }
     public static void AddConsoleCommands()
     {
-        AddConsoleCommand("StartHost", delegate ()
+        AddConsoleCommand("StartHost", "[100,1,1]", delegate ()
         {
             //NetManager.singleton.StartHost();
             DebugClientPanel panel = ClientPanelManager.GetPanel<DebugClientPanel>();
             panel.Close();
             string textString = "";
-            textString += $"<color=green>|||||||||||||</color>\n";
+            textString += $"<color=green>||||||||||||||||||||||||||||||||||||||</color>\n";
             //textString += $"<color=green>Local ip:</color> {ClientAuthenticator.GetLocalIPAddress()}\n";
             textString += $"<color=green>Server state:</color> OK\n";
-            textString += $"<color=green>|||||||||||||</color>\n\n";
+            textString += $"<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
             DebugConsole.Log(textString, null, "server");
         });
-        AddConsoleCommand("StartServer", delegate ()
+        AddConsoleCommand("StartServer", "[100,1,2]", delegate ()
         {
             //NetManager.singleton.StartServer();
             DebugClientPanel panel = ClientPanelManager.GetPanel<DebugClientPanel>();
             panel.Close();
             string textString = "";
-            textString += $"<color=green>|||||||||||||</color>\n";
+            textString += $"<color=green>||||||||||||||||||||||||||||||||||||||</color>\n";
             //textString += $"<color=green>Local ip:</color> {ClientAuthenticator.GetLocalIPAddress()}\n";
             textString += $"<color=green>Server state:</color> OK\n";
-            textString += $"<color=green>|||||||||||||</color>\n\n";
+            textString += $"<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
             DebugConsole.Log(textString, null, "server");
         });
-        AddConsoleCommand("StartClient", delegate ()
+        AddConsoleCommand("StartClient", "[100,1,3]", delegate ()
         {
             //NetManager.singleton.StartClient();
             DebugClientPanel panel = ClientPanelManager.GetPanel<DebugClientPanel>();
             panel.Close();
             string textString = "";
-            textString += $"<color=green>|||||||||||||</color>\n";
+            textString += $"<color=green>||||||||||||||||||||||||||||||||||||||</color>\n";
             //textString += $"<color=green>Local ip:</color> {ClientAuthenticator.GetLocalIPAddress()}\n";
             textString += $"<color=green>Server state:</color> OK\n";
-            textString += $"<color=green>|||||||||||||</color>\n\n";
+            textString += $"<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
             DebugConsole.Log(textString, null, "server");
         });
-        AddConsoleCommand("ClearPage", delegate ()
+        AddConsoleCommand("ClearPage", "[100,1,4]", delegate ()
         {
             LogPage page = pages.Find(f => f.name == DebugConsoleCommand.args[0]);
             DebugConsole.ShowErrorIsNull(page, $"Page {currentPage} not found");
             page.list = new List<string>();
         });
-        AddConsoleCommand("SetAccountResource", delegate ()
+        AddConsoleCommand("SetAccountResource", "[100,1,5]", delegate ()
         {
             if (DebugConsoleCommand.args.Length > 2)
             {
@@ -87,7 +87,7 @@ public class DebugConsole
                 NetClient.singleton.UpdateCharacters();
             }
         });
-        AddConsoleCommand("SetClientResource", delegate ()
+        AddConsoleCommand("SetClientResource", "[100,1,6]", delegate ()
         {
             if (DebugConsoleCommand.args.Length > 2)
             {
@@ -99,7 +99,7 @@ public class DebugConsole
                 NetClient.singleton.UpdateCharacters();
             }
         });
-        AddConsoleCommand("AddAccountResource", delegate ()
+        AddConsoleCommand("AddAccountResource", "[100,1,7]", delegate ()
         {
             if (DebugConsoleCommand.args.Length > 2)
             {
@@ -111,7 +111,7 @@ public class DebugConsole
                 NetClient.singleton.UpdateCharacters();
             }
         });
-        AddConsoleCommand("AddClientResource", delegate ()
+        AddConsoleCommand("AddClientResource", "[100,1,8]", delegate ()
         {
             if (DebugConsoleCommand.args.Length > 2)
             {
@@ -123,7 +123,7 @@ public class DebugConsole
                 NetClient.singleton.UpdateCharacters();
             }
         });
-        AddConsoleCommand("SetPageMaxLines", delegate ()
+        AddConsoleCommand("SetPageMaxLines", "[100,1,9]", delegate ()
         {
             if (DebugConsoleCommand.args.Length > 1)
             {
@@ -137,7 +137,7 @@ public class DebugConsole
                 pg.maxLinesCount = int.Parse(DebugConsoleCommand.args[1]);
             }
         });
-        AddConsoleCommand("CreatePage", delegate ()
+        AddConsoleCommand("CreatePage", "[100,1,10]", delegate ()
         {
             string page = "main";
             int mlc = 200;
@@ -156,7 +156,7 @@ public class DebugConsole
             }
             new LogPage(page, mlc, hlc);
         });
-        AddConsoleCommand("SetPageSettings", delegate ()
+        AddConsoleCommand("SetPageSettings", "[100,1,11]", delegate ()
         {
             if (DebugConsoleCommand.args.Length > 0)
             {
@@ -175,7 +175,7 @@ public class DebugConsole
                 clearFileLogs = bool.Parse(DebugConsoleCommand.args[3]);
             }
         });
-        AddConsoleCommand("ShowPage", delegate ()
+        AddConsoleCommand("ShowPage", "[100,1,12]", delegate ()
         {
             string page = "main";
             if (DebugConsoleCommand.args.Length > 0)
@@ -185,12 +185,29 @@ public class DebugConsole
             currentPage = page;
             ShowPage(page);
         });
-        AddConsoleCommand("SaveAccountData", delegate ()
+        AddConsoleCommand("SaveAccountData", "[100,1,13]", delegate ()
         {
             DebugConsole.Log($"OK\n", "success");
         });
-        AddConsoleCommand("ShowClientsList", delegate ()
+        AddConsoleCommand("ShowClientsList", "[100,1,14]", delegate ()
         {
+        });
+        AddConsoleCommand("Help", "[100,1,15]", delegate ()
+        {
+            //NetManager.singleton.StartClient();
+            DebugClientPanel panel = ClientPanelManager.GetPanel<DebugClientPanel>();
+            string textString = "";
+            textString += $"\n<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
+            //textString += $"<color=green>Local ip:</color> {ClientAuthenticator.GetLocalIPAddress()}\n";
+            for (int i = 0; i < DebugConsole.commands.Count; i++)
+            {
+                DebugConsoleCommand cmd = DebugConsole.commands[i];
+                textString += $"<color=white>Command: </color><color=green>{cmd.command}</color>\n";
+                textString += $"<color=white>Description: </color><color=green>{LangSystem.ShowText(cmd.description)}</color>\n";
+                textString += $"<color=blue>--------------------------------------\n</color>\n";
+            }
+            textString += $"<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
+            DebugConsole.Log(textString, null);
         });
     }
     public static void ShowErrorIsNull(System.Object checkobject, string message, bool stop = false)
@@ -210,10 +227,11 @@ public class DebugConsole
         DebugConsole.ShowErrorIsNull(curPage, $"Page {page} not found");
         return curPage;
     }
-    public static void AddConsoleCommand(string command, Action action)
+    public static void AddConsoleCommand(string command, string description, Action action)
     {
         DebugConsoleCommand consoleCommand = new DebugConsoleCommand();
         consoleCommand.command = command;
+        consoleCommand.description = description;
         consoleCommand.action = action;
         commands.Add(consoleCommand);
     }
@@ -228,6 +246,13 @@ public class DebugConsole
         }
         new LogPage("main", 200, 30);
         new LogPage("server", 200, 30);
+    }
+    public static void ProcessCommandsList(List<string> commands)
+    {
+        for (int i = 0; i < commands.Count; i++)
+        {
+            ProcessCommand(commands[i]);
+        }
     }
     public static bool ProcessCommand(string inputValue, bool autoAddPrefix = false, string prefix = "")
     {

@@ -8,7 +8,7 @@ using UnityEngine.Rendering.VirtualTexturing;
 public class SpaceMapObject : MonoBehaviour
 {
     public MeshRenderer meshRenderer;
-    public Space space;
+    public GameContent.Space space;
     public byte layer = 0;
 
     public bool isInitialized = false;

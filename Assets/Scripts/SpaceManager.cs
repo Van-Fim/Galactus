@@ -12,6 +12,8 @@ public class SpaceManager : MonoBehaviour
     public List<StarSystem> starSystems = new List<StarSystem>();
     public List<Sector> sectors = new List<Sector>();
     public List<Zone> zones = new List<Zone>();
+    public List<Sun> suns = new List<Sun>();
+    public List<Planet> planets = new List<Planet>();
 
     public static void Init()
     {

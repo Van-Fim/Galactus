@@ -13,7 +13,7 @@ public class LangSystem
     }
     public static string ShowText(int section, int page, int id)
     {
-        string ret = "";
+        string ret = $"<color=red>[{section}, {page}, {id}]</color>";
         GamePrefabsManager gpm = GamePrefabsManager.singleton;
         for (int i = 0; i < gpm.list.Count; i++)
         {
@@ -59,7 +59,14 @@ public class LangSystem
         {
             return ret;
         }
-        ret = ShowText(int.Parse(arr[0]), int.Parse(arr[1]), int.Parse(arr[2]));
+        if (arr.Length == 3)
+        {
+            ret = ShowText(int.Parse(arr[0]), int.Parse(arr[1]), int.Parse(arr[2]));
+        }
+        else
+        {
+            ret = $"<color=red>[Error! Wrong format!]</color>";
+        }
         return ret;
     }
 }
