@@ -143,7 +143,7 @@ public class NetClient : NetworkBehaviour
         NewCharacterClientPanel panel = ClientPanelManager.GetPanel<NewCharacterClientPanel>();
         if (code == 1)
         {
-            DebugConsole.Log($"Character {characterData.login} already exists", "success");
+            DebugConsole.Log($"Character {characterData.login} {characterData.systemId} already exists", "success");
         }
         else if (code == 2)
         {
@@ -152,14 +152,6 @@ public class NetClient : NetworkBehaviour
         else if (code == 3)
         {
             DebugConsole.Log($"Login ok", "success");
-            WarpData warpData = new WarpData();
-            warpData.galaxyId = characterData.galaxyId;
-            warpData.systemId = characterData.systemId;
-            warpData.sectorId = characterData.sectorId;
-            warpData.zoneId = characterData.zoneId;
-            warpData.position = characterData.GetPosition();
-            warpData.rotation = characterData.GetRotation();
-            WarpClient(warpData);
             ServerDataManager.singleton.CheckCharacter(netId, characterData, accountData.id);
             panel.SetState(null);
             panel.Close();
@@ -175,7 +167,7 @@ public class NetClient : NetworkBehaviour
         characterData.zoneId = warpData.zoneId;
         characterData.SetPosition(warpData.position);
         characterData.SetRotation(warpData.rotation);
-        DebugConsole.Log($"Character warp data:/n{characterData.galaxyId}");
+        DebugConsole.Log(characterData.systemId);
     }
     public void CheckLogin(string login, string gameStart)
     {

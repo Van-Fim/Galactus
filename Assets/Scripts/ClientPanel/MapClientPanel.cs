@@ -101,7 +101,12 @@ public class MapClientPanel : ClientPanel
         });
         warpButton.onClick.AddListener(() =>
         {
-
+            Data.WarpData warpData = new Data.WarpData();
+            warpData.galaxyId = MapSpaceManager.selectedGalaxyId;
+            warpData.systemId = MapSpaceManager.selectedSystemId;
+            warpData.sectorId = MapSpaceManager.selectedSectorId;
+            warpData.zoneId = MapSpaceManager.selectedZoneId;
+            NetClient.singleton.WarpClient(warpData);
         });
 
         list.Clear();

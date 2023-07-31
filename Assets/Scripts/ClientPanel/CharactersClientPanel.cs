@@ -94,6 +94,13 @@ public class CharactersClientPanel : ClientPanel
                             string str = LangSystem.ShowText(res.name);
                             infoText.text += $"{str}: {res.value}\n";
                         }
+                        infoText.text += "\n";
+                        infoText.text += $"{LangSystem.ShowText(1100, 1, 3)}: {ch.galaxyId}\n";
+                        infoText.text += $"{LangSystem.ShowText(1100, 1, 4)}: {ch.systemId}\n";
+                        infoText.text += $"{LangSystem.ShowText(1100, 1, 5)}: {ch.sectorId}\n";
+                        infoText.text += $"{LangSystem.ShowText(1100, 1, 6)}: {ch.zoneId}\n";
+                        infoText.text += $"{LangSystem.ShowText(1100, 1, 7)}: {ch.GetPosition()}\n";
+                        infoText.text += $"{LangSystem.ShowText(1100, 1, 8)}: {ch.GetRotation()}\n";
                         cbtn.Selected = true;
                         if (selectedButton != null)
                         {
@@ -104,7 +111,10 @@ public class CharactersClientPanel : ClientPanel
                     }
                     else
                     {
-                        cbtn.Selected = false;
+                        if (cbtn != selectedButton)
+                        {
+                            cbtn.Selected = false;
+                        }
                     }
                     b.UpdateText();
                 }
@@ -164,6 +174,14 @@ public class CharactersClientPanel : ClientPanel
                 ClientPanelManager.Close<CharactersClientPanel>();
                 ClientPanelManager.Show<HudClientPanel>();
                 NetClient.singleton.characterData = selectedButton.characterData;
+                WarpData warpData = new WarpData();
+                warpData.galaxyId = NetClient.singleton.characterData.galaxyId;
+                warpData.systemId = NetClient.singleton.characterData.systemId;
+                warpData.sectorId = NetClient.singleton.characterData.sectorId;
+                warpData.zoneId = NetClient.singleton.characterData.zoneId;
+                warpData.position = NetClient.singleton.characterData.GetPosition();
+                warpData.rotation = NetClient.singleton.characterData.GetRotation();
+                NetClient.singleton.WarpClient(warpData);
                 GameManager.singleton.StartGame();
             }
         });

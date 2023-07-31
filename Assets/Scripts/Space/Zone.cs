@@ -7,6 +7,7 @@ public class Zone : GameContent.Space
     public int galaxyId;
     public int systemId;
     public int sectorId;
+    public static int zoneStep = 25000;
     public Zone() { }
     public Zone(string templateName) : base(templateName)
     {

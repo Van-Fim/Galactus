@@ -2,6 +2,12 @@
     <page id="1">
         <text id="1" text="Имя" />
         <text id="2" text="Старт" />
+        <text id="3" text="Галактика" />
+        <text id="4" text="Система" />
+        <text id="5" text="Сектор" />
+        <text id="6" text="Зона" />
+        <text id="7" text="Позиция" />
+        <text id="8" text="Вращение" />
     </page>
     <page id="2">
         <text id="1" text="Общие деньги" />

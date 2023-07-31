@@ -53,6 +53,8 @@ public class ServerDataManager : NetworkBehaviour
             cht.systemId = int.Parse(gameStartData.GetParam("system"));
             cht.sectorId = int.Parse(gameStartData.GetParam("sector"));
             cht.zoneId = int.Parse(gameStartData.GetParam("zone"));
+            cht.SetPosition(gameStartData.GetPosition());
+            cht.SetRotation(gameStartData.GetRotation());
             cl.CharacterSuccess(cht, 2);
         }
     }
