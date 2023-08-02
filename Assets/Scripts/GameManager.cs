@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
             for (int a = 0; a < nodeItem.Attributes.Count; a++)
             {
                 XmlAttribute xmlAttribute = nodeItem.Attributes[a];
-                if (xmlAttribute.Name == "name")
+                if (xmlAttribute.Name == "value")
                 {
                     ret.commands.Add(xmlAttribute.Value);
                 }
@@ -109,6 +109,21 @@ public class GameManager : MonoBehaviour
         GameStartData gsd = GameStartManager.GetGameStart(NetClient.GetGamestartTemplateName());
         MapSpaceManager.Init();
         MapSpaceManager.anotherGalaxySelected = true;
+
+        WarpData warpData = new WarpData();
+        warpData.galaxyId = NetClient.singleton.characterData.galaxyId;
+        warpData.systemId = NetClient.singleton.characterData.systemId;
+        warpData.sectorId = NetClient.singleton.characterData.sectorId;
+        warpData.zoneId = NetClient.singleton.characterData.zoneId;
+        warpData.position = NetClient.singleton.characterData.GetPosition();
+        warpData.rotation = NetClient.singleton.characterData.GetRotation();
+        NetClient.singleton.WarpClient(warpData);
+
+        SpaceManager.singleton.LoadGalaxies();
+        SpaceManager.singleton.BuildSystem(NetClient.GetGalaxyId(), NetClient.GetSystemId());
+
+        MapSpaceManager.singleton.LoadGalaxies();
+        MapSpaceManager.singleton.BuildSystem(MapSpaceManager.selectedGalaxyId, MapSpaceManager.selectedSystemId);
     }
     public void RunConfigCommands()
     {

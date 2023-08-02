@@ -174,14 +174,7 @@ public class CharactersClientPanel : ClientPanel
                 ClientPanelManager.Close<CharactersClientPanel>();
                 ClientPanelManager.Show<HudClientPanel>();
                 NetClient.singleton.characterData = selectedButton.characterData;
-                WarpData warpData = new WarpData();
-                warpData.galaxyId = NetClient.singleton.characterData.galaxyId;
-                warpData.systemId = NetClient.singleton.characterData.systemId;
-                warpData.sectorId = NetClient.singleton.characterData.sectorId;
-                warpData.zoneId = NetClient.singleton.characterData.zoneId;
-                warpData.position = NetClient.singleton.characterData.GetPosition();
-                warpData.rotation = NetClient.singleton.characterData.GetRotation();
-                NetClient.singleton.WarpClient(warpData);
+                
                 GameManager.singleton.StartGame();
             }
         });

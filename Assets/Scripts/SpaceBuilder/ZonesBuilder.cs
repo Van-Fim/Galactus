@@ -56,7 +56,7 @@ public class ZonesBuilder : MonoBehaviour
                 {
                     zoneTemplateName = "Zone00";
                 }
-                Zone zone = new Zone(zoneTemplateName);
+                Zone zone = new Zone(spm, zoneTemplateName);
                 if (colorNodes.Count > 0)
                 {
                     TemplateNode colorNode = TemplateNode.GetByWeightsList(colorNodes);

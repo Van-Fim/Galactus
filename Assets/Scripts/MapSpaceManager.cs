@@ -7,6 +7,7 @@ using GameContent;
 
 public class MapSpaceManager : SpaceManager
 {
+    public static new SpaceManager singleton;
     public static int selectedGalaxyId;
     public static int selectedSystemId;
     public static int selectedSectorId;
@@ -23,6 +24,7 @@ public class MapSpaceManager : SpaceManager
         MapSpaceManager.selectedSystemId = NetClient.GetSystemId();
         MapSpaceManager.selectedSectorId = NetClient.GetSectorId();
         MapSpaceManager.selectedZoneId = NetClient.GetZoneId();
+
         singleton.spaceContainer = new GameObject();
         singleton.spaceContainer.name = "SpaceContainer";
         singleton.spaceContainer.transform.position = Vector3.zero;
@@ -48,11 +50,20 @@ public class MapSpaceManager : SpaceManager
             MapSpaceManager.selectedSystemId = 0;
             MapSpaceManager.selectedSectorId = 0;
             MapSpaceManager.selectedZoneId = 0;
+            if (MapSpaceManager.selectedGalaxyId == NetClient.GetGalaxyId())
+            {
+                MapSpaceManager.selectedSystemId = NetClient.GetSystemId();
+            }
+            if (MapSpaceManager.selectedSystemId == NetClient.GetSystemId())
+            {
+                MapSpaceManager.selectedSectorId = NetClient.GetSectorId();
+            }
             StarSystem sp = MapSpaceManager.singleton.GetSystemByID(space.id, MapSpaceManager.selectedSystemId);
             if (sp != null)
             {
                 InvokeAnotherSpaceSelected(sp);
             }
+            anotherGalaxySelected = false;
         }
         if (space is StarSystem && anotherSystemSelected)
         {
@@ -60,11 +71,16 @@ public class MapSpaceManager : SpaceManager
             MapSpaceManager.selectedSectorId = 0;
             MapSpaceManager.selectedZoneId = 0;
             StarSystem starSystem = (StarSystem)space;
+            if (MapSpaceManager.selectedGalaxyId == NetClient.GetGalaxyId() && MapSpaceManager.selectedSystemId == NetClient.GetSystemId())
+            {
+                MapSpaceManager.selectedSectorId = NetClient.GetSectorId();
+            }
             Sector sp = MapSpaceManager.singleton.GetSectorByID(starSystem.galaxyId, starSystem.id, MapSpaceManager.selectedSystemId);
             if (sp != null)
             {
                 InvokeAnotherSpaceSelected(sp);
             }
+            anotherSystemSelected = false;
         }
         if (space is Sector && anotherSectorSelected)
         {
@@ -76,6 +92,7 @@ public class MapSpaceManager : SpaceManager
             {
                 InvokeAnotherSpaceSelected(sp);
             }
+            anotherZoneSelected = false;
         }
         if (space is Zone && anotherZoneSelected)
         {

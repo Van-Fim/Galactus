@@ -55,17 +55,12 @@ public class MapClientPanel : ClientPanel
         }
         else if (layer == 2)
         {
-            Galaxy currentGalaxy = MapSpaceManager.singleton.GetGalaxyByID(MapSpaceManager.selectedGalaxyId);
-            GalaxyBuilder.Build(MapSpaceManager.singleton, currentGalaxy);
-            StarSystem currentSystem = MapSpaceManager.singleton.GetSystemByID(MapSpaceManager.selectedGalaxyId, MapSpaceManager.selectedSystemId);
-            Sector.InvokeRender();
-            PlanetsBuilder.Build(MapSpaceManager.singleton, currentSystem);
-            Planet.InvokeRender();
-            Sun.InvokeRender();
+            MapSpaceManager.singleton.BuildSystem(MapSpaceManager.selectedGalaxyId, MapSpaceManager.selectedSystemId);
             CameraManager.UpdateCamBoost(CameraManager.minimapCamera, 2.0f);
         }
         else if (layer == 3)
         {
+            MapSpaceManager.singleton.BuildSystem(MapSpaceManager.selectedGalaxyId, MapSpaceManager.selectedSystemId);
             CameraManager.UpdateCamBoost(CameraManager.minimapCamera, -2.5f);
         }
         CameraManager.minimapCamera.SetPositionByLayer(layer);
@@ -74,7 +69,6 @@ public class MapClientPanel : ClientPanel
     public override void Open()
     {
         CameraManager.SwitchByCode(1);
-        MapSpaceManager.singleton.LoadGalaxies();
         ChangeLayer(0);
 
         if (MapSpaceManager.anotherGalaxySelected)

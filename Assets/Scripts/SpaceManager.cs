@@ -34,6 +34,19 @@ public class SpaceManager : MonoBehaviour
         singleton.gameObject.name = "SpaceManager";
         DontDestroyOnLoad(singleton.gameObject);
     }
+    public void BuildSystem(int galaxyId, int systemId)
+    {
+        Galaxy currentGalaxy = GetGalaxyByID(galaxyId);
+        GalaxyBuilder.Build(this, currentGalaxy);
+        StarSystem currentSystem = GetSystemByID(galaxyId, systemId);         
+        PlanetsBuilder.Build(this, currentSystem);
+        SectorsBuilder.Build(this, currentSystem);
+        ZonesBuilder.Build(this, currentSystem);
+        Sector.InvokeRender();
+        Zone.InvokeRender();
+        Planet.InvokeRender();
+        Sun.InvokeRender();
+    }
     public void LoadGalaxies()
     {
         UniverseBuilder.Build(this);
@@ -41,6 +54,7 @@ public class SpaceManager : MonoBehaviour
     public Galaxy GetGalaxyByID(int id)
     {
         Galaxy galaxy = galaxies.Find(f => f.id == id);
+        DebugConsole.Log($"{this.galaxies[0].id}");
         return galaxy;
     }
     public StarSystem GetSystemByID(int galaxyId, int id)

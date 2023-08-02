@@ -41,7 +41,7 @@ namespace GameContent
 
                 for (int i = 0; i < count; i++)
                 {
-                    Galaxy galaxy = new Galaxy(galaxyTemplateName);
+                    Galaxy galaxy = new Galaxy(spm, galaxyTemplateName);
                     if (colorNodes.Count > 0)
                     {
                         TemplateNode colorNode = TemplateNode.GetByWeightsList(colorNodes);

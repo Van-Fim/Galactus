@@ -9,9 +9,8 @@ public class Sector : GameContent.Space
     public static int sectorStep = 275000;
     public Vector3 startPos;
     public Sector() { }
-    public Sector(string templateName) : base(templateName)
+    public Sector(SpaceManager spm, string templateName) : base(templateName)
     {
-        SpaceManager spm = SpaceManager.singleton;
         int id = 0;
         while (spm.sectors.Find(f => f.id == id) != null)
         {

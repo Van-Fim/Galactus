@@ -1,7 +1,7 @@
 	<templates>
 		<galaxy name="Gal1" type="default" systems_min="500" systems_max="500">
 			<systems>
-				<system template="System02" weight="100" minRange="0" maxRange="5000" size="10" Ymin="-100" Ymax="100" ></system>
+				<system template="System01" weight="100" minRange="0" maxRange="5000" size="10" Ymin="-100" Ymax="100" ></system>
 			</systems>
 			<colors>
 				<color r="255" g="100" b="100" a="255" />

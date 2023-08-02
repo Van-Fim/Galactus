@@ -51,14 +51,13 @@ public class SectorsBuilder : MonoBehaviour
                 return;
             }
             List<TemplateNode> colorNodes = sectorTemplate.GetNodeList("color");
-
             for (int i = 0; i < count; i++)
             {
                 if (i == 0)
                 {
                     sectorTemplateName = "Sector00";
                 }
-                Sector sector = new Sector(sectorTemplateName);
+                Sector sector = new Sector(spm, sectorTemplateName);
                 if (colorNodes.Count > 0)
                 {
                     TemplateNode colorNode = TemplateNode.GetByWeightsList(colorNodes);
@@ -76,7 +75,7 @@ public class SectorsBuilder : MonoBehaviour
 
                     if (sn != null)
                     {
-                        zPos = (-sn.scale);
+                        zPos = (-sn.scale)*3;
                     }
                 }
                 Vector3 indexes = new Vector3(xPos, yPos, zPos);

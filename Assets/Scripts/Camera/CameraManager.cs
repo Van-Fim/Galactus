@@ -36,6 +36,7 @@ public class CameraManager : MonoBehaviour
         DontDestroyOnLoad(singleton.gameObject);
         DontDestroyOnLoad(CameraManager.mainCamera.gameObject);
         DontDestroyOnLoad(CameraManager.skyboxCamera.gameObject);
+        DontDestroyOnLoad(CameraManager.planetCamera.gameObject);
         DontDestroyOnLoad(CameraManager.minimapCamera.gameObject);
         CameraManager.skyboxCamera.transform.SetParent(mainCamera.transform);
         CameraController.startCamPositions.Add(new Vector3(0, 3000, 0));
@@ -61,10 +62,11 @@ public class CameraManager : MonoBehaviour
     }
     public void LateUpdate()
     {
-        if (mainCamera != null && planetCamera != null)
+        if (mainCamera != null && planetCamera != null && SpaceManager.singleton != null)
         {
+            Sector plySector = SpaceManager.singleton.GetSectorByID(NetClient.GetGalaxyId(), NetClient.GetSystemId(), NetClient.GetSectorId());
             planetCamera.transform.rotation = mainCamera.transform.rotation;
-            Vector3 sPos = Vector3.zero;
+            Vector3 sPos = plySector.GetPosition() / SolarObject.scaleFactor;
             Vector3 zPos = Vector3.zero;
             Vector3 cPos = mainCamera.transform.position / SolarObject.scaleFactor;
             CameraManager.planetCamera.transform.localPosition = sPos + zPos + cPos;

@@ -112,7 +112,7 @@ namespace GameContent
                     //DestroyController(spmPrefab.layer);
                 }
             }
-            else if (this is (Sector) && MapSpaceManager.selectedSectorId == id && MapClientPanel.currentLayer == 2)
+            else if (this is (Sector) && MapClientPanel.currentLayer == 2)
             {
                 Sector val = (Sector)this;
                 if (val.galaxyId != MapSpaceManager.selectedGalaxyId || val.systemId != MapSpaceManager.selectedSystemId)

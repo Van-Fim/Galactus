@@ -6,9 +6,8 @@ public class Galaxy : GameContent.Space
 {
     public bool loaded;
     public Galaxy() { }
-    public Galaxy(string templateName) : base(templateName)
+    public Galaxy(SpaceManager spm, string templateName) : base(templateName)
     {
-        SpaceManager spm = SpaceManager.singleton;
         int id = 0;
         while (spm.galaxies.Find(f=>f.id == id) != null)
         {
