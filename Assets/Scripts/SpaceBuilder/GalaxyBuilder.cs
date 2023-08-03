@@ -29,6 +29,11 @@ public class GalaxyBuilder : ISpaceBuilder
             Debug.LogError("Galaxy template " + galaxy.templateName + " is not found");
             return;
         }
+        for (int i = 0; i < spm.starSystems.Count; i++)
+        {
+            spm.starSystems[i].Destroy();
+        }
+        spm.starSystems = new List<StarSystem>();
         string galaxySeed = (GameManager.singleton.seed + "_" + galaxy.id.ToString());
         System.Random r = new System.Random(galaxySeed.GetHashCode());
         UnityEngine.Random.InitState(galaxySeed.GetHashCode());

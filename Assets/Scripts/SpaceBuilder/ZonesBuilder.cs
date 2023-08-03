@@ -24,6 +24,11 @@ public class ZonesBuilder : MonoBehaviour
             Debug.LogError("Sector template " + sectorTemplateName + " is not found");
             return;
         }
+        for (int i = 0; i < spm.zones.Count; i++)
+        {
+            spm.zones[i].Destroy();
+        }
+        spm.zones = new List<Zone>();
         List<TemplateNode> nodes = currentSectorTemplate.GetNodeList("zone");
         TemplateNode nd = currentSectorTemplate.GetNode("zones");
         int maxRangeMin = int.Parse(nd.GetValue("maxZoneRangeMin"));

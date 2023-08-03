@@ -38,10 +38,17 @@ public class SpaceManager : MonoBehaviour
     {
         Galaxy currentGalaxy = GetGalaxyByID(galaxyId);
         GalaxyBuilder.Build(this, currentGalaxy);
-        StarSystem currentSystem = GetSystemByID(galaxyId, systemId);         
+        StarSystem currentSystem = GetSystemByID(galaxyId, systemId);
+        string buildSeed = (GameManager.singleton.seed + "_" + currentGalaxy.id.ToString() + "_" + currentSystem.id.ToString());
+        Random.InitState((buildSeed).GetHashCode());
         PlanetsBuilder.Build(this, currentSystem);
+        Random.InitState((buildSeed).GetHashCode());
         SectorsBuilder.Build(this, currentSystem);
+        Random.InitState((buildSeed).GetHashCode());
         ZonesBuilder.Build(this, currentSystem);
+        Random.InitState((buildSeed).GetHashCode());
+        DebugConsole.Log($"{Random.Range(0,1000)} {sectors.Count}");
+        Random.InitState((buildSeed).GetHashCode());
         Sector.InvokeRender();
         Zone.InvokeRender();
         Planet.InvokeRender();
@@ -54,7 +61,6 @@ public class SpaceManager : MonoBehaviour
     public Galaxy GetGalaxyByID(int id)
     {
         Galaxy galaxy = galaxies.Find(f => f.id == id);
-        DebugConsole.Log($"{this.galaxies[0].id}");
         return galaxy;
     }
     public StarSystem GetSystemByID(int galaxyId, int id)

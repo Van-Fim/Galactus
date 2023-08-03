@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StarSystem : GameContent.Space
 {
+    public bool loaded;
     public int galaxyId;
     public string skyboxName;
     public StarSystem() { }

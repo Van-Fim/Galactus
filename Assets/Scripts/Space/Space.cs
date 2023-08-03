@@ -45,6 +45,14 @@ namespace GameContent
             OnDrawUiAction -= OnDrawUi;
             OnClearAllControllersAction -= OnClearAllControllers;
             templateName = null;
+            if (spaceUiObj != null)
+            {
+                GameObject.DestroyImmediate(spaceUiObj.gameObject);
+            }
+            if (spaceMapObject != null)
+            {
+                GameObject.DestroyImmediate(spaceMapObject.gameObject);
+            }
         }
         public virtual void OnMinimapRender()
         {

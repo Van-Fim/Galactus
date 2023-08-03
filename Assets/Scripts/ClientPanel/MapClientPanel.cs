@@ -50,7 +50,6 @@ public class MapClientPanel : ClientPanel
         {
             Galaxy currentGalaxy = MapSpaceManager.singleton.GetGalaxyByID(MapSpaceManager.selectedGalaxyId);
             GalaxyBuilder.Build(MapSpaceManager.singleton, currentGalaxy);
-            StarSystem.InvokeRender();
             CameraManager.UpdateCamBoost(CameraManager.minimapCamera, 3.5f);
         }
         else if (layer == 2)
@@ -63,6 +62,11 @@ public class MapClientPanel : ClientPanel
             MapSpaceManager.singleton.BuildSystem(MapSpaceManager.selectedGalaxyId, MapSpaceManager.selectedSystemId);
             CameraManager.UpdateCamBoost(CameraManager.minimapCamera, -2.5f);
         }
+        StarSystem.InvokeRender();
+        Sector.InvokeRender();
+        Zone.InvokeRender();
+        Planet.InvokeRender();
+        Sun.InvokeRender();
         CameraManager.minimapCamera.SetPositionByLayer(layer);
         GameContent.Space.InvokeDrawUi();
     }

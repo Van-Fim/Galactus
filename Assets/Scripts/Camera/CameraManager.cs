@@ -66,6 +66,7 @@ public class CameraManager : MonoBehaviour
         {
             Sector plySector = SpaceManager.singleton.GetSectorByID(NetClient.GetGalaxyId(), NetClient.GetSystemId(), NetClient.GetSectorId());
             planetCamera.transform.rotation = mainCamera.transform.rotation;
+            //DebugConsole.Log($"{NetClient.GetGalaxyId()} {NetClient.GetSystemId()} {plySector}");
             Vector3 sPos = plySector.GetPosition() / SolarObject.scaleFactor;
             Vector3 zPos = Vector3.zero;
             Vector3 cPos = mainCamera.transform.position / SolarObject.scaleFactor;

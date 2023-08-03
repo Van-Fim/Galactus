@@ -10,6 +10,12 @@ public class SectorsBuilder : MonoBehaviour
     }
     public static void LoadSectors(SpaceManager spm, StarSystem system)
     {
+        for (int i = 0; i < spm.sectors.Count; i++)
+        {
+            spm.sectors[i].Destroy();
+        }
+        spm.sectors = new List<Sector>();
+        
         string systemTemplateName = system.templateName;
         Template currentSystemTemplate = TemplateManager.FindTemplate(systemTemplateName, "system");
         if (currentSystemTemplate == null)

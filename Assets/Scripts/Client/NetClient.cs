@@ -167,6 +167,7 @@ public class NetClient : NetworkBehaviour
         characterData.zoneId = warpData.zoneId;
         characterData.SetPosition(warpData.position);
         characterData.SetRotation(warpData.rotation);
+        SpaceManager.singleton.BuildSystem(NetClient.GetGalaxyId(), NetClient.GetSystemId());
     }
     public void CheckLogin(string login, string gameStart)
     {

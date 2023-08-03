@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Sector : GameContent.Space
 {
+    public bool loaded;
     public int galaxyId;
     public int systemId;
     public static int sectorStep = 275000;

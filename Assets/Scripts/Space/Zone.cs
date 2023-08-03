@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Zone : GameContent.Space
 {
+    public bool loaded;
     public int galaxyId;
     public int systemId;
     public int sectorId;
