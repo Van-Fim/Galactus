@@ -106,7 +106,6 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         SpaceManager.Init();
-        GameStartData gsd = GameStartManager.GetGameStart(NetClient.GetGamestartTemplateName());
         MapSpaceManager.Init();
         MapSpaceManager.anotherGalaxySelected = true;
 

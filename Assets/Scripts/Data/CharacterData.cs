@@ -17,6 +17,7 @@ namespace Data
         public string login;
         public string password;
         public string gameStart;
+        public bool isGameStartDataLoaded;
         public virtual void SetPosition(Vector3 position)
         {
             this.position = new float[] { position.x, position.y, position.z };

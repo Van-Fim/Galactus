@@ -101,6 +101,8 @@ public class CharactersClientPanel : ClientPanel
                         infoText.text += $"{LangSystem.ShowText(1100, 1, 6)}: {ch.zoneId}\n";
                         infoText.text += $"{LangSystem.ShowText(1100, 1, 7)}: {ch.GetPosition()}\n";
                         infoText.text += $"{LangSystem.ShowText(1100, 1, 8)}: {ch.GetRotation()}\n";
+                        infoText.text += $"\n";
+                        infoText.text += $"{LangSystem.ShowText(1100, 1, 9)}: {ch.isGameStartDataLoaded}\n";
                         cbtn.Selected = true;
                         if (selectedButton != null)
                         {
@@ -176,6 +178,7 @@ public class CharactersClientPanel : ClientPanel
                 NetClient.singleton.characterData = selectedButton.characterData;
                 
                 GameManager.singleton.StartGame();
+                ServerDataManager.singleton.LoadGameStartObjects(NetClient.singleton.netId);
             }
         });
         UpdateText();

@@ -42,7 +42,7 @@ public class ServerDataManager : NetworkBehaviour
         if (cht != null)
         {
             NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
-            
+
             GameStartData gameStartData = serverData.gameStarts.Find(f => f.templateName == gameStart);
             for (int i = 0; i < gameStartData.resourceDatas.Count; i++)
             {
@@ -162,6 +162,38 @@ public class ServerDataManager : NetworkBehaviour
     {
         NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
         cl.UpdateAccountRpc(serverData);
+    }
+    [Command(requiresAuthority = false)]
+    public void LoadGameStartObjects(uint netId)
+    {
+        NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
+        SpaceObjectManager.LoadGameStartObjects(cl);
+    }
+    [Command(requiresAuthority = false)]
+    public void SendCharacterData(uint netId, CharacterData characterData)
+    {
+        NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
+        CharacterData chr = serverData.GetCharacterByLogin(characterData.login);
+        if (chr != null)
+        {
+            int ind = serverData.characters.IndexOf(chr);
+            serverData.characters[ind] = characterData;
+            cl.characterData = serverData.characters[ind];
+            cl.UpdateCharactersRpc(serverData);
+        }
+    }
+    [Command(requiresAuthority = false)]
+    public void SendAccountData(uint netId, AccountData accountData)
+    {
+        NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
+        AccountData acd = serverData.GetAccountByLogin(accountData.login);
+        if (acd != null)
+        {
+            int ind = serverData.accounts.IndexOf(acd);
+            serverData.accounts[ind] = acd;
+            cl.accountData = serverData.accounts[ind];
+            cl.UpdateAccountRpc(serverData);
+        }
     }
     [Command(requiresAuthority = false)]
     public void SetResourceValueCmd(string login, string name, string subtype, float value)

@@ -47,7 +47,6 @@ public class SpaceManager : MonoBehaviour
         Random.InitState((buildSeed).GetHashCode());
         ZonesBuilder.Build(this, currentSystem);
         Random.InitState((buildSeed).GetHashCode());
-        DebugConsole.Log($"{Random.Range(0,1000)} {sectors.Count}");
         Random.InitState((buildSeed).GetHashCode());
         Sector.InvokeRender();
         Zone.InvokeRender();

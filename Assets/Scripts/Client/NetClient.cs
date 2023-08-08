@@ -218,10 +218,23 @@ public class NetClient : NetworkBehaviour
         ret = SpaceManager.singleton.GetZoneByID(GetGalaxyId(), GetSystemId(), GetSectorId(), GetZoneId());
         return ret;
     }
+    public static bool GetIsGameStartDataLoaded()
+    {
+        return singleton.characterData.isGameStartDataLoaded;
+    }
+    public static void SetIsGameStartDataLoaded(bool value)
+    {
+        singleton.characterData.isGameStartDataLoaded = value;
+        ServerDataManager.singleton.SendCharacterData(singleton.characterData);
+    }
     public static string GetGamestartTemplateName()
     {
         string ret = null;
         ret = singleton.characterData.gameStart;
         return ret;
+    }
+    public static GameStartData GetGameStart()
+    {
+        return ServerDataManager.singleton.serverData.gameStarts.Find(f=>f.templateName == GetGamestartTemplateName());
     }
 }

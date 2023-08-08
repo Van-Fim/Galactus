@@ -7,6 +7,7 @@ public class GameStartData : IData
 {
     public List<ParamData> paramDatas = new List<ParamData>();
     public List<ParamData> resourceDatas = new List<ParamData>();
+    public List<SpaceObjectData> spaceObjectDatas = new List<SpaceObjectData>();
     public string name;
     public string templateName;
     public string startType;
