@@ -49,16 +49,21 @@ public class MapClientPanel : ClientPanel
         else if (layer == 1)
         {
             Galaxy currentGalaxy = MapSpaceManager.singleton.GetGalaxyByID(MapSpaceManager.selectedGalaxyId);
+            //MapSpaceManager.singleton.DestroySystems();
             GalaxyBuilder.Build(MapSpaceManager.singleton, currentGalaxy);
             CameraManager.UpdateCamBoost(CameraManager.minimapCamera, 3.5f);
         }
         else if (layer == 2)
         {
+            //MapSpaceManager.singleton.DestroySectors();
+            //MapSpaceManager.singleton.DestroyZones();
             MapSpaceManager.singleton.BuildSystem(MapSpaceManager.selectedGalaxyId, MapSpaceManager.selectedSystemId);
             CameraManager.UpdateCamBoost(CameraManager.minimapCamera, 2.0f);
         }
         else if (layer == 3)
         {
+            //MapSpaceManager.singleton.DestroySectors();
+            //MapSpaceManager.singleton.DestroyZones();
             MapSpaceManager.singleton.BuildSystem(MapSpaceManager.selectedGalaxyId, MapSpaceManager.selectedSystemId);
             CameraManager.UpdateCamBoost(CameraManager.minimapCamera, -2.5f);
         }

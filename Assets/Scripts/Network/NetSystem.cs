@@ -22,7 +22,7 @@ public class NetSystem : NetworkManager
     }
     public override void OnClientDisconnect()
     {
-
+        
     }
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {

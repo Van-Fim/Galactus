@@ -12,15 +12,35 @@ public class NetClient : NetworkBehaviour
     public AccountData accountData;
     public CharacterData characterData;
     public static NetClient singleton;
+    public static SpaceObject controlledObject;
+    private Galaxy galaxy;
+    private StarSystem system;
+    private Sector sector;
+    private int[] sectorIndexes = { 0, 0, 0 };
+    private Zone zone;
+    private int[] zoneIndexes = { 0, 0, 0 };
+
+    public Galaxy Galaxy { get => galaxy; set => galaxy = value; }
+    public StarSystem System { get => system; set => system = value; }
+    public Sector Sector { get => sector; set => sector = value; }
+    public int[] SectorIndexes { get => sectorIndexes; set => sectorIndexes = value; }
+    public Zone Zone { get => zone; set => zone = value; }
+    public int[] ZoneIndexes { get => zoneIndexes; set => zoneIndexes = value; }
+
     public override void OnStartClient()
     {
         if (isLocalPlayer)
         {
+            FixSpace();
             ConfigData cdata = GameManager.singleton.configData;
             ServerDataManager.singleton.CheckAccount(netId, cdata.login, password);
             singleton = this;
             UpdateCharacters();
         }
+    }
+    public void Update()
+    {
+        FixPos();
     }
     [TargetRpc]
     public void UpdateCharactersRpc(ServerData serverData)
@@ -167,7 +187,26 @@ public class NetClient : NetworkBehaviour
         characterData.zoneId = warpData.zoneId;
         characterData.SetPosition(warpData.position);
         characterData.SetRotation(warpData.rotation);
-        SpaceManager.singleton.BuildSystem(NetClient.GetGalaxyId(), NetClient.GetSystemId());
+        if (controlledObject)
+        {
+            controlledObject.transform.localPosition = warpData.position;
+            controlledObject.transform.localEulerAngles = warpData.rotation;
+            FixSpace();
+            FixPos(true);
+        }
+        Planet.InvokeRender();
+        Sun.InvokeRender();
+    }
+    public void FixSpace()
+    {
+        if (!SpaceManager.singleton || SpaceManager.singleton.galaxies.Count == 0)
+        {
+            return;
+        }
+        Galaxy = SpaceManager.singleton.GetGalaxyByID(characterData.galaxyId);
+        System = SpaceManager.singleton.GetSystemByID(characterData.galaxyId, characterData.systemId);
+        Sector = SpaceManager.singleton.GetSectorByID(characterData.galaxyId, characterData.systemId, characterData.sectorId);
+        Zone = SpaceManager.singleton.GetZoneByID(characterData.galaxyId, characterData.systemId, characterData.sectorId, characterData.zoneId);
     }
     public void CheckLogin(string login, string gameStart)
     {
@@ -177,6 +216,36 @@ public class NetClient : NetworkBehaviour
     public void WarpClient(WarpData warpData)
     {
         ServerDataManager.singleton.WarpClient(characterData, netId, warpData);
+    }
+    public void SetZoneIndexes(Vector3 indexes, bool characterToo = false)
+    {
+        ZoneIndexes = new int[] { (int)indexes.x, (int)indexes.y, (int)indexes.z };
+        if (characterToo)
+        {
+            if (characterData != null)
+            {
+                characterData.SetZoneIndexes(indexes);
+            }
+        }
+    }
+    public Vector3 GetZoneIndexes()
+    {
+        return new Vector3((int)this.ZoneIndexes[0], (int)this.ZoneIndexes[1], (int)this.ZoneIndexes[2]);
+    }
+    public void SetSectorIndexes(Vector3 indexes, bool characterToo = false)
+    {
+        SectorIndexes = new int[] { (int)indexes.x, (int)indexes.y, (int)indexes.z };
+        if (characterToo)
+        {
+            if (characterData != null)
+            {
+                characterData.SetSectorIndexes(indexes);
+            }
+        }
+    }
+    public Vector3 GetSectorIndexes()
+    {
+        return new Vector3((int)this.SectorIndexes[0], (int)this.SectorIndexes[1], (int)this.SectorIndexes[2]);
     }
     public static int GetGalaxyId()
     {
@@ -233,8 +302,42 @@ public class NetClient : NetworkBehaviour
         ret = singleton.characterData.gameStart;
         return ret;
     }
+    public void FixPos(bool force = false)
+    {
+        if (netIdentity != null && isLocalPlayer)
+        {
+            if (Zone == null || Sector == null)
+            {
+                return;
+            }
+            if (!controlledObject)
+            {
+                return;
+            }
+            Vector3 curSIndexes = GetSectorIndexes();
+            Vector3 curZIndexes = GetZoneIndexes();
+            Vector3 znPos = Vector3.zero;
+            Vector3 rzn = Vector3.zero;
+            znPos = Zone.GetPosition() + controlledObject.transform.localPosition;
+            znPos = GameContent.Space.RecalcPos(znPos, Zone.zoneStep) / Zone.zoneStep;
+            Vector3 secPos = Vector3.zero;
+            secPos = Sector.GetPosition();
+            secPos = GameContent.Space.RecalcPos(secPos, Sector.sectorStep) / Sector.sectorStep;
+            if (curZIndexes != znPos || force)
+            {
+                SetZoneIndexes(znPos, true);
+                if (Zone.id == 0)
+                {
+                    Zone.SetIndexes(znPos);
+                    Zone.SetPosition(znPos * Zone.zoneStep);
+                }
+                controlledObject.transform.localPosition = -(GameContent.Space.RecalcPos(controlledObject.transform.localPosition, Zone.zoneStep) - controlledObject.transform.localPosition);
+                SpaceManager.singleton.spaceContainer.transform.localPosition = -GameContent.Space.RecalcPos(secPos * Sector.sectorStep + znPos * Zone.zoneStep, Zone.zoneStep);
+            }
+        }
+    }
     public static GameStartData GetGameStart()
     {
-        return ServerDataManager.singleton.serverData.gameStarts.Find(f=>f.templateName == GetGamestartTemplateName());
+        return ServerDataManager.singleton.serverData.gameStarts.Find(f => f.templateName == GetGamestartTemplateName());
     }
 }

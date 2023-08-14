@@ -120,9 +120,15 @@ public class GameManager : MonoBehaviour
 
         SpaceManager.singleton.LoadGalaxies();
         SpaceManager.singleton.BuildSystem(NetClient.GetGalaxyId(), NetClient.GetSystemId());
+        NetClient.singleton.FixSpace();
 
         MapSpaceManager.singleton.LoadGalaxies();
         MapSpaceManager.singleton.BuildSystem(MapSpaceManager.selectedGalaxyId, MapSpaceManager.selectedSystemId);
+
+        TestCube testCube = GamePrefabsManager.singleton.LoadPrefab<TestCube>("TestCube");
+        testCube = Instantiate(testCube);
+        testCube.transform.SetParent(SpaceManager.singleton.spaceContainer.transform);
+        testCube.transform.localPosition = NetClient.singleton.Sector.GetPosition();
     }
     public void RunConfigCommands()
     {

@@ -14,10 +14,28 @@ namespace Data
         public int zoneId;
         public float[] position = new float[] { 0, 0, 0 };
         public float[] rotation = new float[] { 0, 0, 0 };
+        public int[] sectorIndexes = { 0, 0, 0 };
+        public int[] zoneIndexes = { 0, 0, 0 };
         public string login;
         public string password;
         public string gameStart;
         public bool isGameStartDataLoaded;
+        public void SetZoneIndexes(Vector3 indexes)
+        {
+            zoneIndexes = new int[] { (int)indexes.x, (int)indexes.y, (int)indexes.z };
+        }
+        public Vector3 GetZoneIndexes()
+        {
+            return new Vector3((int)this.zoneIndexes[0], (int)this.zoneIndexes[1], (int)this.zoneIndexes[2]);
+        }
+        public void SetSectorIndexes(Vector3 indexes)
+        {
+            sectorIndexes = new int[] { (int)indexes.x, (int)indexes.y, (int)indexes.z };
+        }
+        public Vector3 GetSectorIndexes()
+        {
+            return new Vector3((int)this.sectorIndexes[0], (int)this.sectorIndexes[1], (int)this.sectorIndexes[2]);
+        }
         public virtual void SetPosition(Vector3 position)
         {
             this.position = new float[] { position.x, position.y, position.z };

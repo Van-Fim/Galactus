@@ -34,11 +34,45 @@ public class SpaceManager : MonoBehaviour
         singleton.gameObject.name = "SpaceManager";
         DontDestroyOnLoad(singleton.gameObject);
     }
+    public void DestroyGalaxies()
+    {
+        for (int i = 0; i < galaxies.Count; i++)
+        {
+            galaxies[i].Destroy();
+        }
+        galaxies = new List<Galaxy>();
+    }
+    public void DestroySystems()
+    {
+        for (int i = 0; i < starSystems.Count; i++)
+        {
+            starSystems[i].Destroy();
+        }
+        starSystems = new List<StarSystem>();
+    }
+    public void DestroySectors()
+    {
+        for (int i = 0; i < sectors.Count; i++)
+        {
+            sectors[i].Destroy();
+        }
+        sectors = new List<Sector>();
+    }
+    public void DestroyZones()
+    {
+        for (int i = 0; i < zones.Count; i++)
+        {
+            zones[i].Destroy();
+        }
+        zones = new List<Zone>();
+    }
     public void BuildSystem(int galaxyId, int systemId)
     {
         Galaxy currentGalaxy = GetGalaxyByID(galaxyId);
         GalaxyBuilder.Build(this, currentGalaxy);
         StarSystem currentSystem = GetSystemByID(galaxyId, systemId);
+        NetClient.singleton.Galaxy = currentGalaxy;
+        NetClient.singleton.System = currentSystem;
         string buildSeed = (GameManager.singleton.seed + "_" + currentGalaxy.id.ToString() + "_" + currentSystem.id.ToString());
         Random.InitState((buildSeed).GetHashCode());
         PlanetsBuilder.Build(this, currentSystem);
@@ -47,12 +81,12 @@ public class SpaceManager : MonoBehaviour
         Random.InitState((buildSeed).GetHashCode());
         ZonesBuilder.Build(this, currentSystem);
         Random.InitState((buildSeed).GetHashCode());
-        Random.InitState((buildSeed).GetHashCode());
         Sector.InvokeRender();
         Zone.InvokeRender();
         Planet.InvokeRender();
         Sun.InvokeRender();
     }
+
     public void LoadGalaxies()
     {
         UniverseBuilder.Build(this);

@@ -68,6 +68,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Ship",
+            "id": "55f9abe8-bc41-427e-a308-5585dca83dc8",
+            "actions": [
+                {
+                    "name": "ChangeSpeed",
+                    "type": "PassThrough",
+                    "id": "4517825a-086b-4743-9e20-7c04d7c87a63",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "65dbba1e-23bc-49fd-96f2-3d25de250f3a",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeSpeed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

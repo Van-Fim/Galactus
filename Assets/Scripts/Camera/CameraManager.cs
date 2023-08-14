@@ -64,11 +64,12 @@ public class CameraManager : MonoBehaviour
     {
         if (mainCamera != null && planetCamera != null && SpaceManager.singleton != null)
         {
-            Sector plySector = SpaceManager.singleton.GetSectorByID(NetClient.GetGalaxyId(), NetClient.GetSystemId(), NetClient.GetSectorId());
+            Sector sec = NetClient.singleton.Sector;
+            Zone zn = NetClient.singleton.Zone;
+
             planetCamera.transform.rotation = mainCamera.transform.rotation;
-            //DebugConsole.Log($"{NetClient.GetGalaxyId()} {NetClient.GetSystemId()} {plySector}");
-            Vector3 sPos = plySector.GetPosition() / SolarObject.scaleFactor;
-            Vector3 zPos = Vector3.zero;
+            Vector3 sPos = sec.GetPosition() / SolarObject.scaleFactor;
+            Vector3 zPos = zn.GetPosition() / SolarObject.scaleFactor;
             Vector3 cPos = mainCamera.transform.position / SolarObject.scaleFactor;
             CameraManager.planetCamera.transform.localPosition = sPos + zPos + cPos;
         }

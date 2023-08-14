@@ -8,6 +8,8 @@ public class ClientInputManager : MonoBehaviour
 {
     public static ClientInputManager singleton;
     public static GameInput gameInput;
+
+    float speed;
     public static void Init()
     {
         singleton = Instantiate<ClientInputManager>(GamePrefabsManager.singleton.LoadPrefab<ClientInputManager>());
@@ -15,19 +17,25 @@ public class ClientInputManager : MonoBehaviour
         gameInput = new GameInput();
         gameInput.Enable();
         DontDestroyOnLoad(singleton.gameObject);
-        singleton.InputEnable();
+        singleton.GlobalInputEnable();
     }
-    public void InputEnable()
+    public void GlobalInputEnable()
     {
         gameInput.Global.Toggleconsole.performed += OnConsoleToggle;
         gameInput.Global.Prevconsolecommand.performed += OnConsolePrevCommand;
         gameInput.Global.Nextconsolecommand.performed += OnConsoleNextCommand;
+        gameInput.Ship.ChangeSpeed.performed += OnChangeSpeed;
     }
-    public void InputDisable()
+    public void GlobalInputDisable()
     {
         gameInput.Global.Toggleconsole.performed -= OnConsoleToggle;
         gameInput.Global.Prevconsolecommand.performed -= OnConsolePrevCommand;
         gameInput.Global.Nextconsolecommand.performed -= OnConsoleNextCommand;
+        gameInput.Ship.ChangeSpeed.performed -= OnChangeSpeed;
+    }
+    private void OnChangeSpeed(InputAction.CallbackContext context)
+    {
+        //DebugConsole.Log($"Changing speed {context.ReadValue<float>()}");
     }
     private void OnConsoleToggle(InputAction.CallbackContext context)
     {

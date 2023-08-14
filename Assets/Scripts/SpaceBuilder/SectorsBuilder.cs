@@ -10,12 +10,15 @@ public class SectorsBuilder : MonoBehaviour
     }
     public static void LoadSectors(SpaceManager spm, StarSystem system)
     {
-        for (int i = 0; i < spm.sectors.Count; i++)
+        if (spm is MapSpaceManager)
         {
-            spm.sectors[i].Destroy();
+            for (int i = 0; i < spm.sectors.Count; i++)
+            {
+                spm.sectors[i].Destroy();
+            }
+            spm.sectors = new List<Sector>();
         }
-        spm.sectors = new List<Sector>();
-        
+
         string systemTemplateName = system.templateName;
         Template currentSystemTemplate = TemplateManager.FindTemplate(systemTemplateName, "system");
         if (currentSystemTemplate == null)
@@ -81,7 +84,7 @@ public class SectorsBuilder : MonoBehaviour
 
                     if (sn != null)
                     {
-                        zPos = (-sn.scale)*3;
+                        zPos = (-sn.scale) * 3;
                     }
                 }
                 Vector3 indexes = new Vector3(xPos, yPos, zPos);

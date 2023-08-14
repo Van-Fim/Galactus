@@ -28,7 +28,11 @@ public class SpaceObjectManager
                 NetworkServer.Spawn(spaceObject.gameObject);
                 if (spaceObjectData.isStartObject)
                 {
+                    NetClient.controlledObject = spaceObject;
                     spaceObject.netIdentity.AssignClientAuthority(netClient.connectionToClient);
+                    spaceObject.isPlayerControll = true;
+                    PlayerController pc = spaceObject.gameObject.AddComponent<PlayerController>();
+                    spaceObject.LoadHardpoints();
                     spaceObject.InstallMainCamera();
                 }
             }

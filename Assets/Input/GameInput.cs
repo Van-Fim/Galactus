@@ -90,6 +90,34 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Ship"",
+            ""id"": ""55f9abe8-bc41-427e-a308-5585dca83dc8"",
+            ""actions"": [
+                {
+                    ""name"": ""ChangeSpeed"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""4517825a-086b-4743-9e20-7c04d7c87a63"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""65dbba1e-23bc-49fd-96f2-3d25de250f3a"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeSpeed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -99,6 +127,9 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         m_Global_Toggleconsole = m_Global.FindAction("Toggle console", throwIfNotFound: true);
         m_Global_Prevconsolecommand = m_Global.FindAction("Prev console command", throwIfNotFound: true);
         m_Global_Nextconsolecommand = m_Global.FindAction("Next console command", throwIfNotFound: true);
+        // Ship
+        m_Ship = asset.FindActionMap("Ship", throwIfNotFound: true);
+        m_Ship_ChangeSpeed = m_Ship.FindAction("ChangeSpeed", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -203,10 +234,47 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         }
     }
     public GlobalActions @Global => new GlobalActions(this);
+
+    // Ship
+    private readonly InputActionMap m_Ship;
+    private IShipActions m_ShipActionsCallbackInterface;
+    private readonly InputAction m_Ship_ChangeSpeed;
+    public struct ShipActions
+    {
+        private @GameInput m_Wrapper;
+        public ShipActions(@GameInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ChangeSpeed => m_Wrapper.m_Ship_ChangeSpeed;
+        public InputActionMap Get() { return m_Wrapper.m_Ship; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ShipActions set) { return set.Get(); }
+        public void SetCallbacks(IShipActions instance)
+        {
+            if (m_Wrapper.m_ShipActionsCallbackInterface != null)
+            {
+                @ChangeSpeed.started -= m_Wrapper.m_ShipActionsCallbackInterface.OnChangeSpeed;
+                @ChangeSpeed.performed -= m_Wrapper.m_ShipActionsCallbackInterface.OnChangeSpeed;
+                @ChangeSpeed.canceled -= m_Wrapper.m_ShipActionsCallbackInterface.OnChangeSpeed;
+            }
+            m_Wrapper.m_ShipActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ChangeSpeed.started += instance.OnChangeSpeed;
+                @ChangeSpeed.performed += instance.OnChangeSpeed;
+                @ChangeSpeed.canceled += instance.OnChangeSpeed;
+            }
+        }
+    }
+    public ShipActions @Ship => new ShipActions(this);
     public interface IGlobalActions
     {
         void OnToggleconsole(InputAction.CallbackContext context);
         void OnPrevconsolecommand(InputAction.CallbackContext context);
         void OnNextconsolecommand(InputAction.CallbackContext context);
+    }
+    public interface IShipActions
+    {
+        void OnChangeSpeed(InputAction.CallbackContext context);
     }
 }
