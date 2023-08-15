@@ -11,8 +11,6 @@ public class SpaceObject : NetworkBehaviour
     [SyncVar]
     public string templateName;
     [SyncVar]
-    public string type;
-    [SyncVar]
     public int galaxyId;
     [SyncVar]
     public int systemId;
@@ -41,14 +39,35 @@ public class SpaceObject : NetworkBehaviour
     public List<Hardpoint> hardpoints;
 
     public static UnityAction OnRenderAction;
+    public SpaceObject(){}
+    public SpaceObject(int galaxyId, int systemId, int sectorId, int zoneId, string templateName){
+        this.galaxyId = galaxyId;
+        this.systemId = systemId;
+        this.sectorId = sectorId;
+        this.zoneId = zoneId;
+        this.templateName = templateName;
+    }
     public override void OnStartClient()
     {
         Init();
         SpaceObject.InvokeRender();
     }
+    public string GetObjectType()
+    {
+        string ret = "object";
+        if (this is Ship)
+        {
+            ret = "ship";
+        }
+        else if (this is Pilot)
+        {
+            ret = "pilot";
+        }
+        return ret;
+    }
     public virtual void LoadValues()
     {
-        Template template = TemplateManager.FindTemplate(templateName, type);
+        Template template = TemplateManager.FindTemplate(templateName, GetObjectType());
         TemplateNode hardpointsNode = template.GetNode("hardpoints");
         if (hardpointsNode != null)
         {

@@ -3,17 +3,19 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Main
+  - Hull
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - l0
   - Water
   - UI
-  - 
-  - 
-  - 
+  - l1
+  - l2
+  - l3
   - 
   - 
   - 

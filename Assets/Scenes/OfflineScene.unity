@@ -305,6 +305,8 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 8474201048361682579, guid: 8edd2232175804a4782d4d92844db865, type: 3}
   - {fileID: 905956865883423004, guid: c4b9ac6a57c0283489cbf2b18b4f52a3, type: 3}
+  - {fileID: 4146519778069430286, guid: d4388242eb9af3a4aa584e804d06f29c, type: 3}
+  - {fileID: 4521837221242408724, guid: c71cf605f0c9f9c46a4288e785253dfc, type: 3}
   snapshotSettings:
     bufferTimeMultiplier: 2
     catchupNegativeThreshold: -1

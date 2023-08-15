@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SolarController : MonoBehaviour
+public class Ship : SpaceObject
 {
-    public SolarObject solarObject;
+
 }

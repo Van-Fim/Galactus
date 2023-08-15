@@ -16,13 +16,24 @@ public class SpaceObjectManager
             for (int i = 0; i < gm.spaceObjectDatas.Count; i++)
             {
                 Data.SpaceObjectData spaceObjectData = gm.spaceObjectDatas[i];
-                SpaceObject spaceObject = GameObject.Instantiate(GamePrefabsManager.singleton.LoadPrefab<SpaceObject>("SpaceObjectPrefab"));
+                SpaceObject spaceObject = null;
+                if (spaceObjectData.type == null || spaceObjectData.type == "object")
+                {
+                    spaceObject = GameObject.Instantiate(GamePrefabsManager.singleton.LoadPrefab<SpaceObject>("SpaceObjectPrefab"));
+                }
+                else if (spaceObjectData.type == "ship")
+                {
+                    spaceObject = GameObject.Instantiate(GamePrefabsManager.singleton.LoadPrefab<SpaceObject>("ShipPrefab"));
+                }
+                else if (spaceObjectData.type == "pilot")
+                {
+                    spaceObject = GameObject.Instantiate(GamePrefabsManager.singleton.LoadPrefab<SpaceObject>("PilotPrefab"));
+                }
                 spaceObject.galaxyId = spaceObjectData.galaxyId;
                 spaceObject.systemId = spaceObjectData.systemId;
                 spaceObject.sectorId = spaceObjectData.sectorId;
                 spaceObject.zoneId = spaceObjectData.zoneId;
                 spaceObject.templateName = spaceObjectData.templateName;
-                spaceObject.type = spaceObjectData.type;
                 spaceObject.LoadValues();
                 spaceObjects.Add(spaceObject);
                 NetworkServer.Spawn(spaceObject.gameObject);

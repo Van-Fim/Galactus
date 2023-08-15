@@ -333,7 +333,7 @@ public class Planet : SolarObject
 
     public override void RenderAct()
     {
-        if ((!(spaceManager is MapSpaceManager) && NetClient.GetGalaxyId() == galaxyId && NetClient.GetSystemId() == systemId) || (spaceManager is MapSpaceManager && MapSpaceManager.selectedGalaxyId == galaxyId && MapSpaceManager.selectedSystemId == systemId && MapClientPanel.currentLayer > 1))
+        if ((!(spaceManager is MapSpaceManager) && LocalClient.GetGalaxyId() == galaxyId && LocalClient.GetSystemId() == systemId) || (spaceManager is MapSpaceManager && MapSpaceManager.selectedGalaxyId == galaxyId && MapSpaceManager.selectedSystemId == systemId && MapClientPanel.currentLayer > 1))
         {
             if (main == null)
             {
@@ -349,6 +349,7 @@ public class Planet : SolarObject
                     solarController.transform.SetParent(parentSolarObject.solarController.transform);
                 solarController.transform.localPosition = GetPosition();
                 solarController.transform.eulerAngles = GetRotation();
+                solarController.solarObject = this;
                 GameObject sunGameobject = Resources.Load<GameObject>($"{model}/MAIN");
                 main = GameObject.Instantiate(sunGameobject, solarController.transform);
                 float fscale = scale;

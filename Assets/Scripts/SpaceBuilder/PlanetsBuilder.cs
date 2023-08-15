@@ -11,13 +11,20 @@ public class PlanetsBuilder : ISpaceBuilder
     }
     public static void LoadSuns(SpaceManager spm, StarSystem starSystem)
     {
+        if (spm is MapSpaceManager)
+        {
+            for (int i = 0; i < spm.suns.Count; i++)
+            {
+                spm.suns[i].Destroy();
+            }
+            spm.suns = new List<Sun>();
+        }
         Template template = TemplateManager.FindTemplate(starSystem.templateName, "system");
         if (template == null)
         {
             Debug.LogError("System template " + starSystem.templateName + " not found");
             return;
         }
-
         List<TemplateNode> sunNodes = template.GetNodeList("sun");
 
         if (sunNodes.Count > 0)
@@ -47,6 +54,14 @@ public class PlanetsBuilder : ISpaceBuilder
     }
     public static void LoadPlanets(SpaceManager spm, StarSystem starSystem)
     {
+        if (spm is MapSpaceManager)
+        {
+            for (int i = 0; i < spm.planets.Count; i++)
+            {
+                spm.planets[i].Destroy();
+            }
+            spm.planets = new List<Planet>();
+        }
         Template template = TemplateManager.FindTemplate(starSystem.templateName, "system");
         if (template == null)
         {

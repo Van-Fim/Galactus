@@ -32,8 +32,8 @@
 			<position x="0" y="0" z="0" />
 			<rotation x="0" y="0" z="0" />
 		</hardpoint>
-		<hardpoint id="1" type="camera_hardpoint">
-			<position x="0" y="15.7" z="-50" />
+		<hardpoint id="1" type="camera">
+			<position x="0" y="55" z="-150" />
 			<rotation x="0" y="0" z="0" />
 		</hardpoint>
 	</hardpoints>

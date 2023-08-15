@@ -86,6 +86,27 @@ public class SpaceManager : MonoBehaviour
         Planet.InvokeRender();
         Sun.InvokeRender();
     }
+    public void BuildSystems(int galaxyId)
+    {
+        Galaxy currentGalaxy = GetGalaxyByID(galaxyId);
+        GalaxyBuilder.Build(this, currentGalaxy);
+        for (int i = 0; i < starSystems.Count; i++)
+        {
+            StarSystem currentSystem = starSystems[i];
+            string buildSeed = (GameManager.singleton.seed + "_" + currentGalaxy.id.ToString() + "_" + currentSystem.id.ToString());
+            Random.InitState((buildSeed).GetHashCode());
+            PlanetsBuilder.Build(this, currentSystem);
+            Random.InitState((buildSeed).GetHashCode());
+            SectorsBuilder.Build(this, currentSystem);
+            Random.InitState((buildSeed).GetHashCode());
+            ZonesBuilder.Build(this, currentSystem);
+            Random.InitState((buildSeed).GetHashCode());
+        }
+        Sector.InvokeRender();
+        Zone.InvokeRender();
+        Planet.InvokeRender();
+        Sun.InvokeRender();
+    }
 
     public void LoadGalaxies()
     {

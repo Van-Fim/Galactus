@@ -20,19 +20,19 @@ public class MapSpaceManager : SpaceManager
     public static new void Init()
     {
         singleton = new GameObject().AddComponent<MapSpaceManager>();
-        MapSpaceManager.selectedGalaxyId = NetClient.GetGalaxyId();
-        MapSpaceManager.selectedSystemId = NetClient.GetSystemId();
-        MapSpaceManager.selectedSectorId = NetClient.GetSectorId();
-        MapSpaceManager.selectedZoneId = NetClient.GetZoneId();
+        MapSpaceManager.selectedGalaxyId = LocalClient.GetGalaxyId();
+        MapSpaceManager.selectedSystemId = LocalClient.GetSystemId();
+        MapSpaceManager.selectedSectorId = LocalClient.GetSectorId();
+        MapSpaceManager.selectedZoneId = LocalClient.GetZoneId();
 
         singleton.spaceContainer = new GameObject();
-        singleton.spaceContainer.name = "SpaceContainer";
+        singleton.spaceContainer.name = "MapSpaceContainer";
         singleton.spaceContainer.transform.position = Vector3.zero;
         singleton.spaceContainer.transform.rotation = Quaternion.identity;
         DontDestroyOnLoad(singleton.spaceContainer);
 
         singleton.solarContainer = new GameObject();
-        singleton.solarContainer.name = "SolarContainer";
+        singleton.solarContainer.name = "MapSolarContainer";
         singleton.solarContainer.transform.position = Vector3.zero;
         singleton.solarContainer.transform.rotation = Quaternion.identity;
         DontDestroyOnLoad(singleton.solarContainer);
@@ -50,13 +50,13 @@ public class MapSpaceManager : SpaceManager
             MapSpaceManager.selectedSystemId = 0;
             MapSpaceManager.selectedSectorId = 0;
             MapSpaceManager.selectedZoneId = 0;
-            if (MapSpaceManager.selectedGalaxyId == NetClient.GetGalaxyId())
+            if (MapSpaceManager.selectedGalaxyId == LocalClient.GetGalaxyId())
             {
-                MapSpaceManager.selectedSystemId = NetClient.GetSystemId();
+                MapSpaceManager.selectedSystemId = LocalClient.GetSystemId();
             }
-            if (MapSpaceManager.selectedSystemId == NetClient.GetSystemId())
+            if (MapSpaceManager.selectedSystemId == LocalClient.GetSystemId())
             {
-                MapSpaceManager.selectedSectorId = NetClient.GetSectorId();
+                MapSpaceManager.selectedSectorId = LocalClient.GetSectorId();
             }
             StarSystem sp = MapSpaceManager.singleton.GetSystemByID(space.id, MapSpaceManager.selectedSystemId);
             if (sp != null)
@@ -71,9 +71,9 @@ public class MapSpaceManager : SpaceManager
             MapSpaceManager.selectedSectorId = 0;
             MapSpaceManager.selectedZoneId = 0;
             StarSystem starSystem = (StarSystem)space;
-            if (MapSpaceManager.selectedGalaxyId == NetClient.GetGalaxyId() && MapSpaceManager.selectedSystemId == NetClient.GetSystemId())
+            if (MapSpaceManager.selectedGalaxyId == LocalClient.GetGalaxyId() && MapSpaceManager.selectedSystemId == LocalClient.GetSystemId())
             {
-                MapSpaceManager.selectedSectorId = NetClient.GetSectorId();
+                MapSpaceManager.selectedSectorId = LocalClient.GetSectorId();
             }
             Sector sp = MapSpaceManager.singleton.GetSectorByID(starSystem.galaxyId, starSystem.id, MapSpaceManager.selectedSystemId);
             if (sp != null)

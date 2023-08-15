@@ -167,7 +167,7 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
         }
         if (space.GetType() == typeof(Galaxy))
         {
-            if (NetClient.singleton != null && space.id == NetClient.GetGalaxyId())
+            if (NetClient.singleton != null && space.id == LocalClient.GetGalaxyId())
             {
                 image.color = curSysColor;
                 selected = false;
@@ -191,7 +191,7 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
         else if (space.GetType() == typeof(StarSystem))
         {
             StarSystem ssp = (StarSystem)space;
-            if (NetClient.singleton != null && ssp.galaxyId == NetClient.GetGalaxyId() && ssp.id == NetClient.GetSystemId())
+            if (NetClient.singleton != null && ssp.galaxyId == LocalClient.GetGalaxyId() && ssp.id == LocalClient.GetSystemId())
             {
                 image.color = curSysColor;
                 selected = false;
@@ -225,7 +225,7 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
                 Destroy();
                 return;
             }
-            if (NetClient.singleton != null && ssp.galaxyId == NetClient.GetGalaxyId() && ssp.systemId == NetClient.GetSystemId() && ssp.id == NetClient.GetSectorId())
+            if (NetClient.singleton != null && ssp.galaxyId == LocalClient.GetGalaxyId() && ssp.systemId == LocalClient.GetSystemId() && ssp.id == LocalClient.GetSectorId())
             {
                 image.color = curSysColor;
                 selected = false;
@@ -254,7 +254,7 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
                 Destroy();
                 return;
             }
-            if (NetClient.singleton != null && ssp.galaxyId == NetClient.GetGalaxyId() && ssp.systemId == NetClient.GetSystemId() && ssp.sectorId == NetClient.GetSectorId() && ssp.id == NetClient.GetZoneId())
+            if (NetClient.singleton != null && ssp.galaxyId == LocalClient.GetGalaxyId() && ssp.systemId == LocalClient.GetSystemId() && ssp.sectorId == LocalClient.GetSectorId() && ssp.id == LocalClient.GetZoneId())
             {
                 image.color = curSysColor;
             }

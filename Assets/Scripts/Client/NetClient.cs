@@ -41,6 +41,7 @@ public class NetClient : NetworkBehaviour
     public void Update()
     {
         FixPos();
+        Sun.InvokeFixLightDir();
     }
     [TargetRpc]
     public void UpdateCharactersRpc(ServerData serverData)
@@ -191,6 +192,34 @@ public class NetClient : NetworkBehaviour
         {
             controlledObject.transform.localPosition = warpData.position;
             controlledObject.transform.localEulerAngles = warpData.rotation;
+            for (int i = 0; i < SpaceManager.singleton.starSystems.Count; i++)
+            {
+                SpaceManager.singleton.starSystems[i].Destroy();
+            }
+            for (int i = 0; i < SpaceManager.singleton.sectors.Count; i++)
+            {
+                SpaceManager.singleton.sectors[i].Destroy();
+            }
+            for (int i = 0; i < SpaceManager.singleton.zones.Count; i++)
+            {
+                SpaceManager.singleton.zones[i].Destroy();
+            }
+            for (int i = 0; i < SpaceManager.singleton.suns.Count; i++)
+            {
+                SpaceManager.singleton.suns[i].Destroy();
+            }
+            for (int i = 0; i < SpaceManager.singleton.planets.Count; i++)
+            {
+                SpaceManager.singleton.planets[i].Destroy();
+            }
+            Galaxy = SpaceManager.singleton.GetGalaxyByID(characterData.galaxyId);
+            Galaxy.loaded = false;
+            SpaceManager.singleton.starSystems = new List<StarSystem>();
+            SpaceManager.singleton.sectors = new List<Sector>();
+            SpaceManager.singleton.zones = new List<Zone>();
+            SpaceManager.singleton.suns = new List<Sun>();
+            SpaceManager.singleton.planets = new List<Planet>();
+            SpaceManager.singleton.BuildSystem(LocalClient.GetGalaxyId(), LocalClient.GetSystemId());
             FixSpace();
             FixPos(true);
         }
@@ -247,56 +276,78 @@ public class NetClient : NetworkBehaviour
     {
         return new Vector3((int)this.SectorIndexes[0], (int)this.SectorIndexes[1], (int)this.SectorIndexes[2]);
     }
-    public static int GetGalaxyId()
+    public Vector3 GetObjectPosition()
     {
-        return singleton.characterData.galaxyId;
+        Vector3 sectorPosition = Vector3.zero;
+        Vector3 zonePosition = Vector3.zero;
+        Vector3 playerPos = Vector3.zero;
+        Vector3 ret = Vector3.zero;
+        if (Sector != null)
+        {
+            sectorPosition = Sector.GetIndexes();
+        }
+        if (Zone != null)
+        {
+            zonePosition = Zone.GetIndexes();
+        }
+        if (controlledObject)
+        {
+            playerPos = controlledObject.transform.localPosition;
+        }
+        ret = (sectorPosition + zonePosition) * Zone.zoneStep;
+        DebugConsole.Log($"{ret}");
+        return ret;
     }
-    public static int GetSystemId()
+    public int GetGalaxyId()
     {
-        return singleton.characterData.systemId;
+        return characterData.galaxyId;
     }
-    public static int GetSectorId()
+    public int GetSystemId()
     {
-        return singleton.characterData.sectorId;
+        return characterData.systemId;
     }
-    public static int GetZoneId()
+    public int GetSectorId()
     {
-        return singleton.characterData.zoneId;
+        return characterData.sectorId;
     }
-    public static Galaxy GetGalaxy()
+    public int GetZoneId()
+    {
+        return characterData.zoneId;
+    }
+    public Galaxy GetGalaxy()
     {
         Galaxy ret = null;
         ret = SpaceManager.singleton.GetGalaxyByID(GetGalaxyId());
         return ret;
     }
-    public static StarSystem GetSystem()
+    public StarSystem GetSystem()
     {
         StarSystem ret = null;
         ret = SpaceManager.singleton.GetSystemByID(GetGalaxyId(), GetSystemId());
         return ret;
     }
-    public static Sector GetSector()
+    public Sector GetSector()
     {
         Sector ret = null;
         ret = SpaceManager.singleton.GetSectorByID(GetGalaxyId(), GetSystemId(), GetSectorId());
         return ret;
     }
-    public static Zone GetZone()
+    public Zone GetZone()
     {
         Zone ret = null;
         ret = SpaceManager.singleton.GetZoneByID(GetGalaxyId(), GetSystemId(), GetSectorId(), GetZoneId());
         return ret;
     }
-    public static bool GetIsGameStartDataLoaded()
+    public bool GetIsGameStartDataLoaded()
     {
-        return singleton.characterData.isGameStartDataLoaded;
+        return characterData.isGameStartDataLoaded;
     }
-    public static void SetIsGameStartDataLoaded(bool value)
+    public void SetIsGameStartDataLoaded(bool value)
     {
-        singleton.characterData.isGameStartDataLoaded = value;
+        characterData.isGameStartDataLoaded = value;
         ServerDataManager.singleton.SendCharacterData(singleton.characterData);
     }
-    public static string GetGamestartTemplateName()
+    public string GetGamestartTemplateName()
     {
         string ret = null;
         ret = singleton.characterData.gameStart;
@@ -336,7 +387,7 @@ public class NetClient : NetworkBehaviour
             }
         }
     }
-    public static GameStartData GetGameStart()
+    public GameStartData GetGameStart()
     {
         return ServerDataManager.singleton.serverData.gameStarts.Find(f => f.templateName == GetGamestartTemplateName());
     }

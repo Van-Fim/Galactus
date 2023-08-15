@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
         NetClient.singleton.WarpClient(warpData);
 
         SpaceManager.singleton.LoadGalaxies();
-        SpaceManager.singleton.BuildSystem(NetClient.GetGalaxyId(), NetClient.GetSystemId());
+        SpaceManager.singleton.BuildSystem(LocalClient.GetGalaxyId(), LocalClient.GetSystemId());
         NetClient.singleton.FixSpace();
 
         MapSpaceManager.singleton.LoadGalaxies();

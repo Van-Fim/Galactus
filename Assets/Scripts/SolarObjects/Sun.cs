@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Experimental.GlobalIllumination;
 
 public class Sun : SolarObject
 {
     public Light sunLight;
+    public SunDirectionalLight directionalLight;
+    public static UnityAction OnFixLightDirAction;
     public Sun(SpaceManager spm, StarSystem system, string templateName, int minRange = 0, int maxRange = 0)
     {
         spaceManager = spm;
@@ -27,21 +30,22 @@ public class Sun : SolarObject
         Vector2 centerPosition = Vector3.zero;
         Vector2 sunPosition = Vector3.zero;
         bool found = true;
-
+        List<Sun> allSystemSuns = spaceManager.suns.FindAll(f => f.galaxyId == system.galaxyId && f.id == system.id);
         while (repeatCount > 0 && found)
         {
             Vector2 vPosition = UnityEngine.Random.insideUnitCircle * (range);
             Vector2 fPosition = (vPosition.normalized * minRange);
             Vector2 pos = fPosition + vPosition;
             sunPosition = new Vector3(pos.x, 0, pos.y);
-            if (spaceManager.suns.Count == 0)
+            allSystemSuns = spaceManager.suns.FindAll(f => f.galaxyId == system.galaxyId && f.id == system.id);
+            if (allSystemSuns.Count == 0)
             {
                 found = false;
                 break;
             }
-            for (int i = 0; i < spaceManager.suns.Count; i++)
+            for (int i = 0; i < allSystemSuns.Count; i++)
             {
-                Sun sn = spaceManager.suns[i];
+                Sun sn = allSystemSuns[i];
                 if (sn == this)
                 {
                     continue;
@@ -70,23 +74,46 @@ public class Sun : SolarObject
         }
         SetPosition(sunPosition);
         int findId = 0;
-        Sun fsun = spaceManager.suns.Find(f => f.id == findId);
+        Sun fsun = allSystemSuns.Find(f => f.id == findId);
         while (fsun != null)
         {
             findId++;
-            fsun = spaceManager.suns.Find(f => f.id == findId);
+            fsun = allSystemSuns.Find(f => f.id == findId);
         }
         this.id = findId;
         spaceManager.suns.Add(this);
     }
-
+    public override void Init()
+    {
+        OnFixLightDirAction += OnFixLightDir;
+        base.Init();
+    }
+    public void OnFixLightDir()
+    {
+        if (directionalLight != null)
+        {
+            Sector sec = NetClient.singleton.Sector;
+            Zone zn = NetClient.singleton.Zone;
+            Vector3 sPos = sec.GetPosition() / SolarObject.scaleFactor;
+            Vector3 zPos = zn.GetPosition() / SolarObject.scaleFactor;
+            Vector3 cPos = CameraManager.mainCamera.transform.position / SolarObject.scaleFactor;
+            Vector3 thPos = GetPosition();
+            Vector2 pos1 = new Vector3(thPos.x, 0, thPos.z);
+            Vector3 posFix = new Vector3(sPos.x, 0, sPos.z) + new Vector3(zPos.x, 0, zPos.z) + new Vector3(cPos.x, 0, cPos.z);
+            Vector2 pos2 = new Vector2(posFix.x, posFix.z);
+            Vector2 dir = (pos1 - pos2).normalized;
+            directionalLight.transform.localEulerAngles = new Vector3(0, dir.y * 180, 0);
+            DebugConsole.Log(dir);
+            //Debug.DrawLine(position01, position02, Color.green);
+        }
+    }
     public override void OnRenderMinimap()
     {
         RenderAct();
     }
     public override void RenderAct()
     {
-        if ((!(spaceManager is MapSpaceManager) && NetClient.GetGalaxyId() == galaxyId && NetClient.GetSystemId() == systemId) || (spaceManager is MapSpaceManager && MapSpaceManager.selectedGalaxyId == galaxyId && MapSpaceManager.selectedSystemId == systemId && MapClientPanel.currentLayer > 1))
+        if ((!(spaceManager is MapSpaceManager) && LocalClient.GetGalaxyId() == galaxyId && LocalClient.GetSystemId() == systemId) || (spaceManager is MapSpaceManager && MapSpaceManager.selectedGalaxyId == galaxyId && MapSpaceManager.selectedSystemId == systemId && MapClientPanel.currentLayer > 1))
         {
             if (main == null)
             {
@@ -95,12 +122,14 @@ public class Sun : SolarObject
                 solarController.transform.SetParent(spaceManager.solarContainer.transform);
                 solarController.transform.localPosition = GetPosition();
                 solarController.transform.eulerAngles = GetRotation();
+                solarController.solarObject = this;
                 GameObject sunGameobject = Resources.Load<GameObject>($"{model}/MAIN");
                 main = GameObject.Instantiate(sunGameobject, solarController.transform);
                 float fscale = scale;
                 solarController.gameObject.layer = 7;
                 GameObject hull = main.transform.Find("HULL").gameObject;
                 sunLight = GameObject.Instantiate(GamePrefabsManager.singleton.LoadPrefab<Light>("SunLightPrefab"));
+
                 if (spaceManager is MapSpaceManager)
                 {
                     spaceManager.solarContainer.gameObject.layer = 6;
@@ -109,6 +138,7 @@ public class Sun : SolarObject
                     hull.gameObject.layer = 6;
                     sunLight.gameObject.layer = 6;
                 }
+
                 main.transform.localScale = new Vector3(fscale, fscale, fscale);
 
                 Color32 col = sys.GetColor();
@@ -121,6 +151,12 @@ public class Sun : SolarObject
                 sunLight.transform.SetParent(main.transform);
                 sunLight.transform.localPosition = Vector3.zero;
                 sunLight.color = col;
+
+                if (spaceManager is not MapSpaceManager)
+                {
+                    directionalLight = GameObject.Instantiate(GamePrefabsManager.singleton.LoadPrefab<SunDirectionalLight>("SunDirectionalLightPrefab"));
+                    directionalLight.Color = col;
+                }
 
                 solarController.gameObject.name = "Sun_" + id.ToString();
 
@@ -156,10 +192,19 @@ public class Sun : SolarObject
         systemId = -1;
         id = -1;
         OnRenderAction -= OnRender;
+        OnFixLightDirAction -= OnFixLightDir;
         if (spaceManager is MapSpaceManager)
         {
             OnRenderMinimapAction -= OnRenderMinimap;
         }
+        if (directionalLight)
+        {
+            GameObject.DestroyImmediate(directionalLight.gameObject);
+        }
         base.Destroy();
+    }
+    public static void InvokeFixLightDir()
+    {
+        OnFixLightDirAction?.Invoke();
     }
 }
