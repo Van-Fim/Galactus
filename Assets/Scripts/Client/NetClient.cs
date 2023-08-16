@@ -12,7 +12,7 @@ public class NetClient : NetworkBehaviour
     public AccountData accountData;
     public CharacterData characterData;
     public static NetClient singleton;
-    public static SpaceObject controlledObject;
+    public SpaceObject controlledObject;
     private Galaxy galaxy;
     private StarSystem system;
     private Sector sector;

@@ -103,7 +103,6 @@ public class Sun : SolarObject
             Vector2 pos2 = new Vector2(posFix.x, posFix.z);
             Vector2 dir = (pos1 - pos2).normalized;
             directionalLight.transform.localEulerAngles = new Vector3(0, dir.y * 180, 0);
-            DebugConsole.Log(dir);
             //Debug.DrawLine(position01, position02, Color.green);
         }
     }

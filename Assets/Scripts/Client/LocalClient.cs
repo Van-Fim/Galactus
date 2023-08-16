@@ -62,4 +62,23 @@ public static class LocalClient
         ret = NetClient.singleton.characterData.gameStart;
         return ret;
     }
+    public static string GetCharacterLogin()
+    {
+        string ret = null;
+        ret = NetClient.singleton.characterData.login;
+        return ret;
+    }
+    public static void SetCharacterLogin(string login)
+    {
+        NetClient.singleton.characterData.login = login;
+    }
+    public static SpaceObject GetControlledObject()
+    {
+        SpaceObject ret = NetClient.singleton.controlledObject;
+        return ret;
+    }
+    public static void SetControlledObject(SpaceObject spaceObject)
+    {
+        NetClient.singleton.controlledObject = spaceObject;
+    }
 }

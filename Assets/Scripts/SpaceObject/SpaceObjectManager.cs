@@ -36,15 +36,13 @@ public class SpaceObjectManager
                 spaceObject.templateName = spaceObjectData.templateName;
                 spaceObject.LoadValues();
                 spaceObjects.Add(spaceObject);
+                spaceObject.LoadHardpoints();
                 NetworkServer.Spawn(spaceObject.gameObject);
                 if (spaceObjectData.isStartObject)
                 {
-                    NetClient.controlledObject = spaceObject;
                     spaceObject.netIdentity.AssignClientAuthority(netClient.connectionToClient);
                     spaceObject.isPlayerControll = true;
-                    PlayerController pc = spaceObject.gameObject.AddComponent<PlayerController>();
-                    spaceObject.LoadHardpoints();
-                    spaceObject.InstallMainCamera();
+                    spaceObject.characterLogin = netClient.characterData.login;
                 }
             }
         }

@@ -7,7 +7,7 @@ public class Sector : GameContent.Space
     public bool loaded;
     public int galaxyId;
     public int systemId;
-    public static int sectorStep = 275000;
+    public static int sectorStep = 27500;
     public Vector3 startPos;
     public Sector() { }
     public Sector(SpaceManager spm, string templateName) : base(templateName)

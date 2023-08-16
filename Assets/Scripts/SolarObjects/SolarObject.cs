@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SolarObject
 {
-    public static int scaleFactor = 700000;
+    public static int scaleFactor = 70000;
     public static int hyperScaleFactor = 1;
     public SolarController solarController;
     public int parentSolarObjectId;
@@ -85,6 +85,10 @@ public class SolarObject
 
     public virtual void DrawCircle()
     {
+        if (spaceManager is not MapSpaceManager)
+        {
+            return;
+        }
         ellipseRenderer = solarController.gameObject.AddComponent<EllipseRenderer>();
         ellipseRenderer.solarObject = this;
         ellipseRenderer.parentObject = parentSolarObject;

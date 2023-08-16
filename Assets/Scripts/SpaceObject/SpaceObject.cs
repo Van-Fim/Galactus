@@ -6,7 +6,10 @@ using UnityEngine.Events;
 
 public class SpaceObject : NetworkBehaviour
 {
+    [SyncVar]
     public int id;
+    [SyncVar]
+    public string characterLogin;
     public GameObject main;
     [SyncVar]
     public string templateName;
@@ -18,8 +21,9 @@ public class SpaceObject : NetworkBehaviour
     public int sectorId;
     [SyncVar]
     public int zoneId;
-
+    [SyncVar]
     public string hardpointsTemplateName;
+    [SyncVar]
     public string modelPatch;
 
     Galaxy currGalaxy;
@@ -39,8 +43,10 @@ public class SpaceObject : NetworkBehaviour
     public List<Hardpoint> hardpoints;
 
     public static UnityAction OnRenderAction;
-    public SpaceObject(){}
-    public SpaceObject(int galaxyId, int systemId, int sectorId, int zoneId, string templateName){
+    public static UnityAction OnNetStartAction;
+    public SpaceObject() { }
+    public SpaceObject(int galaxyId, int systemId, int sectorId, int zoneId, string templateName)
+    {
         this.galaxyId = galaxyId;
         this.systemId = systemId;
         this.sectorId = sectorId;
@@ -51,6 +57,19 @@ public class SpaceObject : NetworkBehaviour
     {
         Init();
         SpaceObject.InvokeRender();
+    }
+    public void OnNetStart()
+    {
+        if (NetClient.singleton == null)
+        {
+            return;
+        }
+        if (characterLogin == LocalClient.GetCharacterLogin())
+        {
+            LocalClient.SetControlledObject(this);
+            PlayerController pc = gameObject.AddComponent<PlayerController>();
+            InstallMainCamera();
+        }
     }
     public string GetObjectType()
     {
@@ -89,6 +108,7 @@ public class SpaceObject : NetworkBehaviour
     }
     public virtual void Init()
     {
+        OnNetStartAction += OnNetStart;
         OnRenderAction += OnRender;
         isInitialized = true;
         networkTransform = GetComponent<NetworkTransform>();
@@ -200,7 +220,8 @@ public class SpaceObject : NetworkBehaviour
     }
     public void OnRender()
     {
-        if (!enabled)
+        DebugConsole.Log($"{templateName} {main}");
+        if (!enabled || main != null)
         {
             return;
         }
@@ -209,15 +230,22 @@ public class SpaceObject : NetworkBehaviour
             GameObject minst = Resources.Load<GameObject>($"{modelPatch}/MAIN");
             main = Instantiate(minst, gameObject.transform);
         }
-
-        rigidbodyMain = gameObject.AddComponent<Rigidbody>();
-        rigidbodyMain.useGravity = false;
-        rigidbodyMain.mass = mass;
-        rigidbodyMain.drag = drag;
-        rigidbodyMain.angularDrag = angulardrag;
+        rigidbodyMain = gameObject.GetComponent<Rigidbody>();
+        if (rigidbodyMain == null)
+        {
+            rigidbodyMain = gameObject.AddComponent<Rigidbody>();
+            rigidbodyMain.useGravity = false;
+            rigidbodyMain.mass = mass;
+            rigidbodyMain.drag = drag;
+            rigidbodyMain.angularDrag = angulardrag;
+        }
     }
     public static void InvokeRender()
     {
         OnRenderAction?.Invoke();
+    }
+    public static void InvokeNetStart()
+    {
+        OnNetStartAction?.Invoke();
     }
 }
