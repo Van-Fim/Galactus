@@ -1,0 +1,10 @@
+<config>
+    <params>
+        <param login="Efim" />
+        <param language="RU" />
+        <param log_dir="logs" />
+    </params>
+    <commands>
+        <command value="SetPageSettings false true false false"/>
+    </commands>
+</config>

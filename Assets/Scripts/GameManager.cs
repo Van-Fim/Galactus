@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using Data;
 using System.Xml;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
@@ -53,7 +54,19 @@ public class GameManager : MonoBehaviour
     public static ConfigData LoadConfigData()
     {
         ConfigData ret = new ConfigData();
-        XmlDocument doc = XMLF.ReadFile("main.config.xml");
+        XmlDocument doc = new XmlDocument();
+        if (!File.Exists("main.config.xml"))
+        {
+            TextAsset textAsset = (TextAsset)Resources.Load("main.config");
+            if (textAsset != null)
+            {
+                doc.LoadXml(textAsset.text);
+            }
+        }
+        else
+        {
+            doc = XMLF.ReadFile("main.config.xml");
+        }
         XmlElement xRoot = doc.DocumentElement;
         XmlNodeList nodes = xRoot.SelectNodes("//" + "param");
         if (nodes == null)
@@ -117,7 +130,9 @@ public class GameManager : MonoBehaviour
         warpData.zoneId = NetClient.singleton.characterData.zoneId;
         warpData.position = NetClient.singleton.characterData.GetPosition();
         warpData.rotation = NetClient.singleton.characterData.GetRotation();
+        
         NetClient.singleton.WarpClient(warpData);
+    
         SpaceManager.singleton.LoadGalaxies();
         SpaceManager.singleton.BuildSystem(LocalClient.GetGalaxyId(), LocalClient.GetSystemId());
         NetClient.singleton.FixSpace();
@@ -127,9 +142,10 @@ public class GameManager : MonoBehaviour
 
         TestCube testCube = GamePrefabsManager.singleton.LoadPrefab<TestCube>("TestCube");
         testCube = Instantiate(testCube);
-        testCube.color = new Color32(0, 255, 0, 150);
+        testCube.Color = new Color32(0, 255, 0, 150);
         testCube.transform.SetParent(SpaceManager.singleton.spaceContainer.transform);
         testCube.transform.localPosition = NetClient.singleton.Sector.GetPosition();
+        
         SpaceObject.InvokeRender();
         SpaceObject.InvokeNetStart();
     }

@@ -254,6 +254,11 @@ public class NetClient : NetworkBehaviour
         }
         Planet.InvokeRender();
         Sun.InvokeRender();
+
+        Color32 color = system.GetBgColor();
+        color = new Color32((byte)(color.r), (byte)(color.g), (byte)(color.b), color.a);
+        RenderSettings.skybox.SetColor("_Tint", color);
+        RenderSettings.skybox.ComputeCRC();
     }
     public void FixSpace()
     {

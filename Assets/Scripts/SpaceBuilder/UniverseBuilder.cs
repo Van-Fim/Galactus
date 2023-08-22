@@ -11,7 +11,7 @@ namespace GameContent
             System.Random rndm = new System.Random(GameManager.GetSeed());
             UnityEngine.Random.InitState(GameManager.GetSeed());
             Template currentUniversetemplate = TemplateManager.FindTemplate(templateName, "universe");
-            DebugConsole.ShowErrorIsNull(currentUniversetemplate, "Universe template " + templateName + " is not found", true);
+            DebugConsole.ShowErrorIsNull(currentUniversetemplate, "Universe template " + templateName + " is not found", false);
 
             List<TemplateNode> nodes = currentUniversetemplate.GetNodeList("galaxy");
             TemplateNode nd = currentUniversetemplate.GetNode("galaxies");

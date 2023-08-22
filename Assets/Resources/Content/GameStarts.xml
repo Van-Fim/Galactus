@@ -30,7 +30,7 @@
 		<params>
 			<param name="universe" value="un01" />
 		</params>
-		<space galaxy="3" system="9" sector="1" zone="2">
+		<space galaxy="3" system="9" sector="1" zone="0">
 			<ship playerShip="1" template="Ship01" pilotTemplate="Pilot01">
 				<loadouts name="Ship01" />
 				<position x="0" y="-2000" z="0" />
