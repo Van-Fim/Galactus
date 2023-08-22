@@ -7,6 +7,7 @@ namespace Data
     public class SpaceObjectData : IData
     {
         public int id;
+        public uint netId;
         public string templateName;
         public string loadoutsTemplateName;
         public string hardpointsTemplateName;
@@ -18,6 +19,8 @@ namespace Data
         public string type;
         public float[] position = { 0, 0, 0 };
         public float[] rotation = { 0, 0, 0 };
+        public int[] sectorIndexes = { 0, 0, 0 };
+        public int[] zoneIndexes = { 0, 0, 0 };
         public virtual void SetSpace(GameContent.Space space)
         {
             if (space == null)
@@ -50,6 +53,14 @@ namespace Data
                 sectorId = sp.sectorId;
                 zoneId = sp.id;
             }
+        }
+        public void SetZoneIndexes(Vector3 value)
+        {
+            zoneIndexes = new int[] { (int)value.x, (int)value.y, (int)value.z };
+        }
+        public void SetSectorIndexes(Vector3 value)
+        {
+            sectorIndexes = new int[] { (int)value.x, (int)value.y, (int)value.z };
         }
         public void SetPosition(Vector3 position)
         {

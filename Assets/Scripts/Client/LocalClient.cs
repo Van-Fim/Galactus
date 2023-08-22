@@ -24,6 +24,14 @@ public static class LocalClient
     {
         return NetClient.singleton.GetSectorId();
     }
+    public static Vector3 GetSectorIndexes()
+    {
+        return NetClient.singleton.GetSectorIndexes();
+    }
+    public static Vector3 GetZoneIndexes()
+    {
+        return NetClient.singleton.GetZoneIndexes();
+    }
     public static Galaxy GetGalaxy()
     {
         Galaxy ret = null;
@@ -74,11 +82,12 @@ public static class LocalClient
     }
     public static SpaceObject GetControlledObject()
     {
-        SpaceObject ret = NetClient.singleton.controlledObject;
+        SpaceObject ret = NetClient.singleton.ControlledObject;
         return ret;
     }
     public static void SetControlledObject(SpaceObject spaceObject)
     {
-        NetClient.singleton.controlledObject = spaceObject;
+        NetClient.singleton.ControlledObject = spaceObject;
+        NetClient.singleton.ControlledObject.isPlayerControll = true;
     }
 }

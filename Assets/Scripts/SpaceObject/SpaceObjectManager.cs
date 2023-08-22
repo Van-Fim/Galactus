@@ -43,7 +43,10 @@ public class SpaceObjectManager
                     spaceObject.netIdentity.AssignClientAuthority(netClient.connectionToClient);
                     spaceObject.isPlayerControll = true;
                     spaceObject.characterLogin = netClient.characterData.login;
+                    spaceObjectData.netId = spaceObject.netId;
+                    netClient.RenderLocal(spaceObjectData);
                 }
+                spaceObject.ServerInit();
             }
         }
     }

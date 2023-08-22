@@ -117,7 +117,6 @@ public class GameManager : MonoBehaviour
         warpData.position = NetClient.singleton.characterData.GetPosition();
         warpData.rotation = NetClient.singleton.characterData.GetRotation();
         NetClient.singleton.WarpClient(warpData);
-
         SpaceManager.singleton.LoadGalaxies();
         SpaceManager.singleton.BuildSystem(LocalClient.GetGalaxyId(), LocalClient.GetSystemId());
         NetClient.singleton.FixSpace();
@@ -129,6 +128,8 @@ public class GameManager : MonoBehaviour
         testCube = Instantiate(testCube);
         testCube.transform.SetParent(SpaceManager.singleton.spaceContainer.transform);
         testCube.transform.localPosition = NetClient.singleton.Sector.GetPosition();
+        SpaceObject.InvokeRender();
+        SpaceObject.InvokeNetStart();
     }
     public void RunConfigCommands()
     {

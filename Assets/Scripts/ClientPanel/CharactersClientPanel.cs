@@ -176,10 +176,9 @@ public class CharactersClientPanel : ClientPanel
                 ClientPanelManager.Close<CharactersClientPanel>();
                 ClientPanelManager.Show<HudClientPanel>();
                 NetClient.singleton.characterData = selectedButton.characterData;
-                
-                GameManager.singleton.StartGame();
                 ServerDataManager.singleton.SendCharacterData(NetClient.singleton.netId, selectedButton.characterData);
                 ServerDataManager.singleton.LoadGameStartObjects(NetClient.singleton.netId);
+                GameManager.singleton.StartGame();
             }
         });
         UpdateText();

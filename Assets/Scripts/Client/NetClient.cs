@@ -12,7 +12,8 @@ public class NetClient : NetworkBehaviour
     public AccountData accountData;
     public CharacterData characterData;
     public static NetClient singleton;
-    public SpaceObject controlledObject;
+    public uint controlledObjectNetId;
+    private SpaceObject controlledObject;
     private Galaxy galaxy;
     private StarSystem system;
     private Sector sector;
@@ -26,6 +27,14 @@ public class NetClient : NetworkBehaviour
     public int[] SectorIndexes { get => sectorIndexes; set => sectorIndexes = value; }
     public Zone Zone { get => zone; set => zone = value; }
     public int[] ZoneIndexes { get => zoneIndexes; set => zoneIndexes = value; }
+    public SpaceObject ControlledObject
+    {
+        get => controlledObject; set
+        {
+            controlledObject = value;
+            controlledObjectNetId = value.netId;
+        }
+    }
 
     public override void OnStartClient()
     {
@@ -42,6 +51,26 @@ public class NetClient : NetworkBehaviour
     {
         FixPos();
         Sun.InvokeFixLightDir();
+    }
+    [TargetRpc]
+    public void RenderLocal(SpaceObjectData spaceObjectData)
+    {
+        if (NetClient.singleton == null || isServer)
+        {
+            return;
+        }
+        NetClient.singleton.controlledObjectNetId = spaceObjectData.netId;
+        SpaceObject spaceObject = NetworkClient.spawned[spaceObjectData.netId].GetComponent<SpaceObject>();
+        spaceObject.galaxyId = spaceObjectData.galaxyId;
+        spaceObject.systemId = spaceObjectData.systemId;
+        spaceObject.sectorId = spaceObjectData.sectorId;
+        spaceObject.zoneId = spaceObjectData.zoneId;
+        spaceObject.templateName = spaceObjectData.templateName;
+        spaceObject.LoadValues();
+        spaceObject.LoadHardpoints();
+        spaceObject.isPlayerControll = true;
+        SpaceObject.InvokeRender();
+        SpaceObject.InvokeNetStart();
     }
     [TargetRpc]
     public void UpdateCharactersRpc(ServerData serverData)
@@ -188,10 +217,10 @@ public class NetClient : NetworkBehaviour
         characterData.zoneId = warpData.zoneId;
         characterData.SetPosition(warpData.position);
         characterData.SetRotation(warpData.rotation);
-        if (controlledObject)
+        if (ControlledObject)
         {
-            controlledObject.transform.localPosition = warpData.position;
-            controlledObject.transform.localEulerAngles = warpData.rotation;
+            ControlledObject.transform.localPosition = warpData.position;
+            ControlledObject.transform.localEulerAngles = warpData.rotation;
             for (int i = 0; i < SpaceManager.singleton.starSystems.Count; i++)
             {
                 SpaceManager.singleton.starSystems[i].Destroy();
@@ -290,9 +319,9 @@ public class NetClient : NetworkBehaviour
         {
             zonePosition = Zone.GetIndexes();
         }
-        if (controlledObject)
+        if (ControlledObject)
         {
-            playerPos = controlledObject.transform.localPosition;
+            playerPos = ControlledObject.transform.localPosition;
         }
         ret = (sectorPosition + zonePosition) * Zone.zoneStep;
         DebugConsole.Log($"{ret}");
@@ -361,7 +390,7 @@ public class NetClient : NetworkBehaviour
             {
                 return;
             }
-            if (!controlledObject)
+            if (!ControlledObject)
             {
                 return;
             }
@@ -369,7 +398,7 @@ public class NetClient : NetworkBehaviour
             Vector3 curZIndexes = GetZoneIndexes();
             Vector3 znPos = Vector3.zero;
             Vector3 rzn = Vector3.zero;
-            znPos = Zone.GetPosition() + controlledObject.transform.localPosition;
+            znPos = Zone.GetPosition() + ControlledObject.transform.localPosition;
             znPos = GameContent.Space.RecalcPos(znPos, Zone.zoneStep) / Zone.zoneStep;
             Vector3 secPos = Vector3.zero;
             secPos = Sector.GetPosition();
@@ -382,7 +411,7 @@ public class NetClient : NetworkBehaviour
                     Zone.SetIndexes(znPos);
                     Zone.SetPosition(znPos * Zone.zoneStep);
                 }
-                controlledObject.transform.localPosition = -(GameContent.Space.RecalcPos(controlledObject.transform.localPosition, Zone.zoneStep) - controlledObject.transform.localPosition);
+                ControlledObject.transform.localPosition = -(GameContent.Space.RecalcPos(ControlledObject.transform.localPosition, Zone.zoneStep) - ControlledObject.transform.localPosition);
                 SpaceManager.singleton.spaceContainer.transform.localPosition = -GameContent.Space.RecalcPos(secPos * Sector.sectorStep + znPos * Zone.zoneStep, Zone.zoneStep);
             }
         }

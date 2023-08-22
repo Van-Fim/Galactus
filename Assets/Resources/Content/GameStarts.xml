@@ -6,7 +6,7 @@
 		<space galaxy="1" system="128" sector="0" zone="0">
 			<player template="Pilot01">
 				<loadouts name="Pilot01" />
-				<position x="0" y="3500" z="0" />
+				<position x="0" y="0" z="0" />
 				<rotation x="0" y="0" z="0" />
 			</player>
 		</space>

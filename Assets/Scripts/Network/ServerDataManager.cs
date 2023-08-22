@@ -168,6 +168,7 @@ public class ServerDataManager : NetworkBehaviour
     {
         NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
         SpaceObjectManager.LoadGameStartObjects(cl);
+        SpaceObject.InvokeRender();
     }
     [Command(requiresAuthority = false)]
     public void SendCharacterData(uint netId, CharacterData characterData)

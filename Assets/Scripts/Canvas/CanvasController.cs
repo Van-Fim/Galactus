@@ -1,18 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class CanvasController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public TMPro.TMP_Text speed;
+    public static CanvasController singleton;
+    void Awake()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        speed.text = "";
+        singleton = this;
     }
 }

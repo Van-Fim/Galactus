@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class SpaceObject : NetworkBehaviour
 {
     [SyncVar]
-    public int id;
+    public uint id;
     [SyncVar]
     public string characterLogin;
     public GameObject main;
@@ -30,6 +30,9 @@ public class SpaceObject : NetworkBehaviour
     StarSystem currSystem;
     Sector currSector;
     Zone currZone;
+
+    public int[] sectorIndexes = { 0, 0, 0 };
+    public int[] zoneIndexes = { 0, 0, 0 };
 
     public Rigidbody rigidbodyMain;
     int mass;
@@ -55,8 +58,19 @@ public class SpaceObject : NetworkBehaviour
     }
     public override void OnStartClient()
     {
-        Init();
-        SpaceObject.InvokeRender();
+        ClientInit();
+    }
+    public uint GetId()
+    {
+        /*
+        int id = 0;
+        while (SpaceObjectManager.spaceObjects.Find(f => f.id == id) != null)
+        {
+            id++;
+        }
+        */
+        this.id = this.netId;
+        return this.id;
     }
     public void OnNetStart()
     {
@@ -64,10 +78,18 @@ public class SpaceObject : NetworkBehaviour
         {
             return;
         }
+
         if (characterLogin == LocalClient.GetCharacterLogin())
         {
             LocalClient.SetControlledObject(this);
-            PlayerController pc = gameObject.AddComponent<PlayerController>();
+            if (this is Ship)
+            {
+                ShipController pc = gameObject.AddComponent<ShipController>();
+            }
+            else if (this is Pilot)
+            {
+                PilotController pc = gameObject.AddComponent<PilotController>();
+            }
             InstallMainCamera();
         }
     }
@@ -106,13 +128,27 @@ public class SpaceObject : NetworkBehaviour
             int maxhull = int.Parse(paramsNode.GetValue("maxhull"));
         }
     }
-    public virtual void Init()
+    public virtual void ServerInit()
     {
-        OnNetStartAction += OnNetStart;
-        OnRenderAction += OnRender;
-        isInitialized = true;
-        networkTransform = GetComponent<NetworkTransform>();
-        networkTransform.enabled = false;
+        if (isServer)
+        {
+            OnNetStartAction += OnNetStart;
+            OnRenderAction += OnRender;
+            isInitialized = true;
+            networkTransform = GetComponent<NetworkTransform>();
+            networkTransform.enabled = false;
+        }
+    }
+    public virtual void ClientInit()
+    {
+        if (!isServer)
+        {
+            OnNetStartAction += OnNetStart;
+            OnRenderAction += OnRender;
+            isInitialized = true;
+            networkTransform = GetComponent<NetworkTransform>();
+            networkTransform.enabled = false;
+        }
     }
     public void ReadSpace()
     {
@@ -204,6 +240,17 @@ public class SpaceObject : NetworkBehaviour
         Hardpoint retHp = hardpoints.Find(f => f.type == type);
         return retHp;
     }
+    public virtual void DeRender(bool value)
+    {
+        if (!main)
+        {
+            return;
+        }
+        gameObject.SetActive(!value);
+        main.SetActive(!value);
+        networkTransform.enabled = !value;
+        enabled = !value;
+    }
     public void InstallMainCamera()
     {
         Hardpoint hp = GetHardpointByType("camera");
@@ -220,18 +267,29 @@ public class SpaceObject : NetworkBehaviour
     }
     public void OnRender()
     {
-        DebugConsole.Log($"{templateName} {main}");
-        if (!enabled || main != null)
+        int clGalaxyId = LocalClient.GetGalaxyId();
+        int clSystemId = LocalClient.GetSystemId();
+        int clSectorId = LocalClient.GetSectorId();
+        Vector3 sIndexes = LocalClient.GetSectorIndexes();
+        if (clGalaxyId != galaxyId || clSystemId != systemId || clSectorId != sectorId || sIndexes != GetSectorIndexes())
+        {
+            DeRender(true);
+        }
+        else
+        {
+            DeRender(false);
+        }
+        if (!enabled || main)
         {
             return;
         }
-        if (modelPatch.Length > 0 && main == null)
+        if (modelPatch.Length > 0 && !main)
         {
             GameObject minst = Resources.Load<GameObject>($"{modelPatch}/MAIN");
             main = Instantiate(minst, gameObject.transform);
         }
         rigidbodyMain = gameObject.GetComponent<Rigidbody>();
-        if (rigidbodyMain == null)
+        if (!rigidbodyMain)
         {
             rigidbodyMain = gameObject.AddComponent<Rigidbody>();
             rigidbodyMain.useGravity = false;
@@ -239,7 +297,28 @@ public class SpaceObject : NetworkBehaviour
             rigidbodyMain.drag = drag;
             rigidbodyMain.angularDrag = angulardrag;
         }
+        if (main && rigidbodyMain)
+        {
+            networkTransform.enabled = true;
+        }
     }
+    public Vector3 GetZoneIndexes()
+    {
+        return new Vector3((int)this.zoneIndexes[0], (int)this.zoneIndexes[1], (int)this.zoneIndexes[2]);
+    }
+    public Vector3 GetSectorIndexes()
+    {
+        return new Vector3((int)this.sectorIndexes[0], (int)this.sectorIndexes[1], (int)this.sectorIndexes[2]);
+    }
+    public void SetZoneIndexes(Vector3 value)
+    {
+        zoneIndexes = new int[] {(int)value.x, (int)value.y, (int)value.z};
+    }
+    public void SetSectorIndexes(Vector3 value)
+    {
+        sectorIndexes = new int[] {(int)value.x, (int)value.y, (int)value.z};
+    }
+
     public static void InvokeRender()
     {
         OnRenderAction?.Invoke();
