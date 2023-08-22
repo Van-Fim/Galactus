@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class TestCube : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public MeshRenderer meshRenderer;
+    public Color32 color;
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        meshRenderer.material.SetColor("_TintColor", (Color)color);
     }
 }

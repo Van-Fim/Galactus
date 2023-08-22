@@ -127,6 +127,7 @@ public class GameManager : MonoBehaviour
 
         TestCube testCube = GamePrefabsManager.singleton.LoadPrefab<TestCube>("TestCube");
         testCube = Instantiate(testCube);
+        testCube.color = new Color32(0, 255, 0, 150);
         testCube.transform.SetParent(SpaceManager.singleton.spaceContainer.transform);
         testCube.transform.localPosition = NetClient.singleton.Sector.GetPosition();
         SpaceObject.InvokeRender();

@@ -129,6 +129,6 @@ public class Controller : MonoBehaviour
         {
             zn = "-";
         }
-        CanvasController.singleton.speed.text = $"{val2}";
+        CanvasController.singleton.speed.text = $"{(int)(maxSpeed * val2 / obj.rigidbodyMain.mass)}";
     }
 }

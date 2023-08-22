@@ -96,3 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e00433b2db7a3f341a053bed70b64509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 2570759344350112811}
+  color:
+    serializedVersion: 2
+    rgba: 2533359615
