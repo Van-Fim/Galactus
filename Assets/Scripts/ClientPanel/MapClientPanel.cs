@@ -85,12 +85,15 @@ public class MapClientPanel : ClientPanel
             GameContent.Space space = MapSpaceManager.singleton.GetGalaxyByID(MapSpaceManager.selectedGalaxyId);
             MapSpaceManager.InvokeAnotherSpaceSelected(space);
         }
+        Controller.blocked = true;
+        CanvasController.singleton.speed.text = "";
         base.Open();
     }
     public override void Close()
     {
         base.Close();
         CameraManager.SwitchByCode(0);
+        Controller.blocked = false;
     }
     public override void Init()
     {

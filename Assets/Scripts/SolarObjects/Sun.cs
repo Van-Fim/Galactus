@@ -102,8 +102,7 @@ public class Sun : SolarObject
             Vector3 posFix = new Vector3(sPos.x, 0, sPos.z) + new Vector3(zPos.x, 0, zPos.z) + new Vector3(cPos.x, 0, cPos.z);
             Vector2 pos2 = new Vector2(posFix.x, posFix.z);
             Vector2 dir = (pos1 - pos2).normalized;
-            directionalLight.transform.localEulerAngles = new Vector3(0, dir.y * 180, 0);
-            //Debug.DrawLine(position01, position02, Color.green);
+            directionalLight.transform.LookAt(posFix);
         }
     }
     public override void OnRenderMinimap()
