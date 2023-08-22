@@ -29,7 +29,7 @@ public class MainMenuPanel : ClientPanel
     }
     public override void Init()
     {
-        multiplayerGameButton.onClick.AddListener(() =>
+        newGameButton.onClick.AddListener(() =>
         {
             ClientPanelManager.GetPanel<MainMenuPanel>().Close();
             ClientPanelManager.Show<MultiplayerPanel>();
@@ -39,5 +39,6 @@ public class MainMenuPanel : ClientPanel
             saveGameButton.gameObject.SetActive(false);
         }
         UpdateText();
+        multiplayerGameButton.gameObject.SetActive(false);
     }
 }
