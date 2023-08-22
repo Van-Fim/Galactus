@@ -12,12 +12,7 @@ public class TestCube : MonoBehaviour
         get => color; set
         {
             color = value;
-            meshRenderer.material.SetColor("_Color", (Color)Color);
+            meshRenderer.material.SetColor("_TintColor", (Color)Color);
         }
-    }
-
-    void Start()
-    {
-        Color = color;
     }
 }

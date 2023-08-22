@@ -178,6 +178,14 @@ public class CharactersClientPanel : ClientPanel
                 NetClient.singleton.characterData = selectedButton.characterData;
                 ServerDataManager.singleton.SendCharacterData(NetClient.singleton.netId, selectedButton.characterData);
                 ServerDataManager.singleton.LoadGameStartObjects(NetClient.singleton.netId);
+                //Временный костыль
+                if(selectedButton.characterData.isGameStartDataLoaded)
+                {
+                    NetClient.singleton.ControlledObject.galaxyId = selectedButton.characterData.galaxyId;
+                    NetClient.singleton.ControlledObject.systemId = selectedButton.characterData.systemId;
+                    NetClient.singleton.ControlledObject.sectorId = selectedButton.characterData.sectorId;
+                    NetClient.singleton.ControlledObject.zoneId = selectedButton.characterData.zoneId;
+                }
                 GameManager.singleton.StartGame();
             }
         });

@@ -249,6 +249,10 @@ public class NetClient : NetworkBehaviour
             SpaceManager.singleton.suns = new List<Sun>();
             SpaceManager.singleton.planets = new List<Planet>();
             SpaceManager.singleton.BuildSystem(LocalClient.GetGalaxyId(), LocalClient.GetSystemId());
+            ControlledObject.galaxyId = warpData.galaxyId;
+            ControlledObject.systemId = warpData.systemId;
+            ControlledObject.sectorId = warpData.sectorId;
+            ControlledObject.zoneId = warpData.zoneId;
             FixSpace();
             FixPos(true);
         }
@@ -266,6 +270,7 @@ public class NetClient : NetworkBehaviour
         {
             return;
         }
+        
         Galaxy = SpaceManager.singleton.GetGalaxyByID(characterData.galaxyId);
         System = SpaceManager.singleton.GetSystemByID(characterData.galaxyId, characterData.systemId);
         Sector = SpaceManager.singleton.GetSectorByID(characterData.galaxyId, characterData.systemId, characterData.sectorId);
@@ -379,7 +384,7 @@ public class NetClient : NetworkBehaviour
     public void SetIsGameStartDataLoaded(bool value)
     {
         characterData.isGameStartDataLoaded = value;
-        ServerDataManager.singleton.SendCharacterData(singleton.characterData);
+        ServerDataManager.singleton.SendCharacterData(netId, singleton.characterData);
     }
     public string GetGamestartTemplateName()
     {

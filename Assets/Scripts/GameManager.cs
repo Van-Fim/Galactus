@@ -148,6 +148,7 @@ public class GameManager : MonoBehaviour
         
         SpaceObject.InvokeRender();
         SpaceObject.InvokeNetStart();
+        LocalClient.SetIsGameStartDataLoaded(true);
     }
     public void RunConfigCommands()
     {

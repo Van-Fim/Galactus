@@ -44,6 +44,7 @@ public class SpaceObjectManager
                     spaceObject.isPlayerControll = true;
                     spaceObject.characterLogin = netClient.characterData.login;
                     spaceObjectData.netId = spaceObject.netId;
+                    netClient.ControlledObject = spaceObject;
                     netClient.RenderLocal(spaceObjectData);
                 }
                 spaceObject.ServerInit();
