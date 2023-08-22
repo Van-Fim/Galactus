@@ -68,6 +68,10 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
 
     public void Destroy()
     {
+        if (!this)
+        {
+            return;
+        }
         OnRenderAction -= OnRender;
         OnDestroyAllAction -= DestroyAll;
         image.color = defcolor;
