@@ -6,9 +6,12 @@ namespace Data
     [System.Serializable]
     public class SpaceObjectData : IData
     {
-        public int id;
+        public uint id;
         public uint netId;
         public string templateName;
+        public string characterLogin;
+        public bool isPlayerControll;
+        public bool isInitialized;
         public string loadoutsTemplateName;
         public string hardpointsTemplateName;
         public bool isStartObject;
@@ -21,6 +24,7 @@ namespace Data
         public float[] rotation = { 0, 0, 0 };
         public int[] sectorIndexes = { 0, 0, 0 };
         public int[] zoneIndexes = { 0, 0, 0 };
+        public List<Hardpoint> hardpoints;
         public virtual void SetSpace(GameContent.Space space)
         {
             if (space == null)
@@ -53,6 +57,14 @@ namespace Data
                 sectorId = sp.sectorId;
                 zoneId = sp.id;
             }
+        }
+        public Vector3 GetZoneIndexes()
+        {
+            return new Vector3((int)this.zoneIndexes[0], (int)this.zoneIndexes[1], (int)this.zoneIndexes[2]);
+        }
+        public Vector3 GetSectorIndexes()
+        {
+            return new Vector3((int)this.sectorIndexes[0], (int)this.sectorIndexes[1], (int)this.sectorIndexes[2]);
         }
         public void SetZoneIndexes(Vector3 value)
         {

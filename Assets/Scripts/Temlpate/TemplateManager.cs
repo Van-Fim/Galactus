@@ -47,13 +47,14 @@ public class TemplateManager
         TextAsset textAsset = (TextAsset)Resources.Load(patch);
 
         XmlDocument xDoc = new XmlDocument();
-        if (textAsset != null)
+
+        if (!File.Exists(patch + ".xml"))
         {
             xDoc.LoadXml(textAsset.text);
         }
         else
         {
-            xDoc = XMLF.ReadFile(patch);
+            xDoc = XMLF.ReadFile(patch + ".xml");
         }
 
         if (Templates == null)

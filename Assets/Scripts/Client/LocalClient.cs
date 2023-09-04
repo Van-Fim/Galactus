@@ -32,6 +32,14 @@ public static class LocalClient
     {
         return NetClient.singleton.GetZoneIndexes();
     }
+    public static void SetSectorIndexes(Vector3 value, bool characterToo = false)
+    {
+        NetClient.singleton.SetSectorIndexes(value, characterToo);
+    }
+    public static void SetZoneIndexes(Vector3 value, bool characterToo = false)
+    {
+        NetClient.singleton.SetZoneIndexes(value, characterToo);
+    }
     public static Galaxy GetGalaxy()
     {
         Galaxy ret = null;

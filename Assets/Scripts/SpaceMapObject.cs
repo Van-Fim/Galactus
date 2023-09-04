@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.Rendering.VirtualTexturing;
 
 public class SpaceMapObject : MonoBehaviour
 {

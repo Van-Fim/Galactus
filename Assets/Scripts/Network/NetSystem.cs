@@ -22,7 +22,7 @@ public class NetSystem : NetworkManager
     }
     public override void OnClientDisconnect()
     {
-        Debug.Log($"{NetClient.singleton.netId}");
+
     }
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {

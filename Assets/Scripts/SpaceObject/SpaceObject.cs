@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Data;
 using Mirror;
 using UnityEngine;
 using UnityEngine.Events;
@@ -104,6 +105,27 @@ public class SpaceObject : NetworkBehaviour
         {
             ret = "pilot";
         }
+        return ret;
+    }
+    public SpaceObjectData GetSpaceObjectData()
+    {
+        SpaceObjectData ret = new SpaceObjectData();
+        ret.id = id;
+        ret.netId = netId;
+        ret.templateName = templateName;
+        ret.hardpointsTemplateName = hardpointsTemplateName;
+        ret.galaxyId = galaxyId;
+        ret.systemId = systemId;
+        ret.sectorId = sectorId;
+        ret.zoneId = zoneId;
+        ret.type = GetObjectType();
+        ret.characterLogin = characterLogin;
+        ret.isPlayerControll = isPlayerControll;
+        ret.SetPosition(transform.localPosition);
+        ret.SetRotation(transform.localEulerAngles);
+        ret.hardpoints = hardpoints;
+        ret.SetSectorIndexes(GetSectorIndexes());
+        ret.SetZoneIndexes(GetZoneIndexes());
         return ret;
     }
     public virtual void LoadValues()

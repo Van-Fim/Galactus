@@ -11,6 +11,7 @@ namespace Data
         public List<AccountData> accounts = new List<AccountData>();
         public List<CharacterData> characters = new List<CharacterData>();
         public List<GameStartData> gameStarts = new List<GameStartData>();
+        public List<SpaceObjectData> spaceObjectDatas = new List<SpaceObjectData>();
 
         public AccountData GetAccountById(int id)
         {
@@ -79,6 +80,7 @@ namespace Data
         public CharacterData CreateCharacterData(string login, string password, string gameStart, int accountId)
         {
             CharacterData characterData = characters.Find(f => f.login == login);
+  
             if (characterData == null)
             {
                 int curId = 0;
@@ -138,6 +140,7 @@ namespace Data
                 this.accounts = serverData.accounts;
                 this.characters = serverData.characters;
                 this.gameStarts = serverData.gameStarts;
+                this.spaceObjectDatas = serverData.spaceObjectDatas;
                 ret = this;
             }
             return ret;

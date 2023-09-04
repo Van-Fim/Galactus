@@ -132,11 +132,11 @@ public class GameStartManager
                 spaceObjectData.systemId = systemId;
                 spaceObjectData.sectorId = sectorId;
                 spaceObjectData.zoneId = zoneId;
-                spaceObjectData.id = ret.spaceObjectDatas.Count;
+                spaceObjectData.id = (uint)ret.spaceObjectDatas.Count;
                 spaceObjectData.type = ret.startType;
                 if (plyShipExist)
                 {
-                    startId = spaceObjectData.id;
+                    startId = (int)spaceObjectData.id;
                 }
                 ret.spaceObjectDatas.Add(spaceObjectData);
             }
@@ -188,9 +188,9 @@ public class GameStartManager
                     spaceObjectData.sectorId = sectorId;
                     spaceObjectData.zoneId = zoneId;
                     spaceObjectData.type = ret.startType;
-                    spaceObjectData.id = ret.spaceObjectDatas.Count;
+                    spaceObjectData.id = (uint)ret.spaceObjectDatas.Count;
                     ret.spaceObjectDatas.Add(spaceObjectData);
-                    startId = spaceObjectData.id;
+                    startId = (int)spaceObjectData.id;
                 }
             }
             if (ret.startType != null)

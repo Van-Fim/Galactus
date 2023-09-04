@@ -171,23 +171,7 @@ public class CharactersClientPanel : ClientPanel
         });
         startGameButton.onClick.AddListener(() =>
         {
-            if (selectedButton != null && selectedButton.Selected)
-            {
-                ClientPanelManager.Close<CharactersClientPanel>();
-                ClientPanelManager.Show<HudClientPanel>();
-                NetClient.singleton.characterData = selectedButton.characterData;
-                ServerDataManager.singleton.SendCharacterData(NetClient.singleton.netId, selectedButton.characterData);
-                ServerDataManager.singleton.LoadGameStartObjects(NetClient.singleton.netId);
-                //Временный костыль
-                if(selectedButton.characterData.isGameStartDataLoaded)
-                {
-                    NetClient.singleton.ControlledObject.galaxyId = selectedButton.characterData.galaxyId;
-                    NetClient.singleton.ControlledObject.systemId = selectedButton.characterData.systemId;
-                    NetClient.singleton.ControlledObject.sectorId = selectedButton.characterData.sectorId;
-                    NetClient.singleton.ControlledObject.zoneId = selectedButton.characterData.zoneId;
-                }
-                GameManager.singleton.StartGame();
-            }
+            GameManager.singleton.PreStartGame();
         });
         UpdateText();
     }

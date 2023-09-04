@@ -235,12 +235,19 @@ public class ServerDataManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void SaveServerData()
     {
+        SaveSpaceObjects();
         serverData.SaveServerData();
     }
     [Command(requiresAuthority = false)]
-    public void LoadServerData()
+    public void SaveSpaceObjects()
     {
-        serverData.SaveServerData();
+        serverData.spaceObjectDatas = new List<SpaceObjectData>();
+        for (int i = 0; i < SpaceObjectManager.spaceObjects.Count; i++)
+        {
+            SpaceObject spaceObject = SpaceObjectManager.spaceObjects[i];
+            SpaceObjectData spd = spaceObject.GetSpaceObjectData();
+            serverData.spaceObjectDatas.Add(spd);
+        }
     }
     [Command(requiresAuthority = false)]
     public void SendAccountData(AccountData accountData)

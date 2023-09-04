@@ -34,6 +34,10 @@ public class MainMenuPanel : ClientPanel
             ClientPanelManager.GetPanel<MainMenuPanel>().Close();
             ClientPanelManager.Show<MultiplayerPanel>();
         });
+        quitGameButton.onClick.AddListener(() =>
+        {
+            Application.Quit();
+        });
         if (GameManager.isInMainMenu)
         {
             saveGameButton.gameObject.SetActive(false);

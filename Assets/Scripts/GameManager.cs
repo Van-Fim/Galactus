@@ -117,6 +117,49 @@ public class GameManager : MonoBehaviour
         }
         return ret;
     }
+    public void PreStartGame()
+    {
+        CharactersClientPanel chclpn = ClientPanelManager.GetPanel<CharactersClientPanel>();
+        if (chclpn.selectedButton != null && chclpn.selectedButton.Selected)
+        {
+            ClientPanelManager.Close<CharactersClientPanel>();
+            ClientPanelManager.Show<HudClientPanel>();
+            NetClient.singleton.characterData = chclpn.selectedButton.characterData;
+            ServerDataManager.singleton.SendCharacterData(NetClient.singleton.netId, chclpn.selectedButton.characterData);
+
+            string textString = "";
+            textString += $"\n<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
+            for (int i = 0; i < ServerDataManager.singleton.serverData.spaceObjectDatas.Count; i++)
+            {
+                SpaceObjectData spd = ServerDataManager.singleton.serverData.spaceObjectDatas[i];
+                textString += $"<color=white>Type: </color><color=green>{spd.type}</color>\n";
+                textString += $"<color=white>Sector indexes: </color><color=green>{spd.GetSectorIndexes()}</color>\n";
+                textString += $"<color=white>Zone indexes: </color><color=green>{spd.GetZoneIndexes()}</color>\n";
+                textString += $"<color=white>Sector indexes: </color><color=green>{LocalClient.GetSectorIndexes()}</color>\n";
+                textString += $"<color=white>Zone indexes: </color><color=green>{LocalClient.GetZoneIndexes()}</color>\n";
+                textString += $"<color=white>Position: </color><color=green>{spd.GetPosition()}</color>\n";
+                textString += $"<color=white>Rotation: </color><color=green>{spd.GetRotation()}</color>\n";
+                textString += $"<color=blue>--------------------------------------\n</color>\n";
+            }
+            textString += $"<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
+            DebugConsole.Log(textString);
+            ServerDataManager.singleton.LoadGameStartObjects(NetClient.singleton.netId);
+            if (!chclpn.selectedButton.characterData.isGameStartDataLoaded)
+            {
+
+            }
+            else
+            {
+                //Временный костыль
+                NetClient.singleton.ControlledObject.galaxyId = chclpn.selectedButton.characterData.galaxyId;
+                NetClient.singleton.ControlledObject.systemId = chclpn.selectedButton.characterData.systemId;
+                NetClient.singleton.ControlledObject.sectorId = chclpn.selectedButton.characterData.sectorId;
+                NetClient.singleton.ControlledObject.zoneId = chclpn.selectedButton.characterData.zoneId;
+            }
+
+            StartGame();
+        }
+    }
     public void StartGame()
     {
         SpaceManager.Init();
@@ -130,9 +173,9 @@ public class GameManager : MonoBehaviour
         warpData.zoneId = NetClient.singleton.characterData.zoneId;
         warpData.position = NetClient.singleton.characterData.GetPosition();
         warpData.rotation = NetClient.singleton.characterData.GetRotation();
-        
+
         NetClient.singleton.WarpClient(warpData);
-    
+
         SpaceManager.singleton.LoadGalaxies();
         SpaceManager.singleton.BuildSystem(LocalClient.GetGalaxyId(), LocalClient.GetSystemId());
         NetClient.singleton.FixSpace();
@@ -144,10 +187,11 @@ public class GameManager : MonoBehaviour
         testCube = Instantiate(testCube);
         testCube.Color = new Color32(0, 255, 0, 150);
         testCube.transform.SetParent(SpaceManager.singleton.spaceContainer.transform);
-        testCube.transform.localPosition = NetClient.singleton.Sector.GetPosition();
-        
+        testCube.transform.localPosition = LocalClient.GetSector().GetPosition();
+
         SpaceObject.InvokeRender();
         SpaceObject.InvokeNetStart();
+
         LocalClient.SetIsGameStartDataLoaded(true);
     }
     public void RunConfigCommands()

@@ -19,6 +19,21 @@ public class Controller : MonoBehaviour
     {
         obj = gameObject.GetComponent<SpaceObject>();
     }
+    public void Start()
+    {
+        Template template = TemplateManager.FindTemplate(obj.templateName, obj.GetObjectType());
+        TemplateNode paramsNode = template.GetNode("params");
+        if (paramsNode != null)
+        {
+            int newMaxSpeed = int.Parse(paramsNode.GetValue("maxspeed"));
+            int newRotationSpeed = int.Parse(paramsNode.GetValue("rotationspeed"));
+            int newVelocity = int.Parse(paramsNode.GetValue("velocity"));
+
+            this.maxSpeed = newMaxSpeed;
+            this.rotationSpeed = newRotationSpeed;
+            this.velocity = newVelocity;
+        }
+    }
     void FixedUpdate()
     {
         if (obj.rigidbodyMain == null)

@@ -43,6 +43,12 @@ public class NetClient : NetworkBehaviour
             FixSpace();
             ConfigData cdata = GameManager.singleton.configData;
             ServerDataManager.singleton.CheckAccount(netId, cdata.login, password);
+            CharacterData chd = ServerDataManager.singleton.serverData.GetCharacterByLogin(cdata.login);
+            if (chd != null)
+            {
+
+            }
+            DebugConsole.Log(characterData.GetZoneIndexes());
             singleton = this;
             UpdateCharacters();
         }
@@ -83,6 +89,12 @@ public class NetClient : NetworkBehaviour
         if (characterData != null)
         {
             characterData = ServerDataManager.singleton.serverData.GetCharacterByLogin(characterData.login);
+            if (characterData != null)
+            {
+                NetClient.singleton.characterData = characterData;
+                NetClient.singleton.SetZoneIndexes(NetClient.singleton.characterData.GetZoneIndexes());
+                NetClient.singleton.SetSectorIndexes(NetClient.singleton.characterData.GetSectorIndexes());
+            }
         }
         CharactersClientPanel pn = ClientPanelManager.GetPanel<CharactersClientPanel>();
         pn.UpdateCharacters(ServerDataManager.singleton.serverData);
@@ -217,6 +229,7 @@ public class NetClient : NetworkBehaviour
         characterData.zoneId = warpData.zoneId;
         characterData.SetPosition(warpData.position);
         characterData.SetRotation(warpData.rotation);
+
         if (ControlledObject)
         {
             ControlledObject.transform.localPosition = warpData.position;
@@ -256,6 +269,7 @@ public class NetClient : NetworkBehaviour
             FixSpace();
             FixPos(true);
         }
+        SpaceObject.InvokeRender();
         Planet.InvokeRender();
         Sun.InvokeRender();
 
@@ -270,7 +284,7 @@ public class NetClient : NetworkBehaviour
         {
             return;
         }
-        
+
         Galaxy = SpaceManager.singleton.GetGalaxyByID(characterData.galaxyId);
         System = SpaceManager.singleton.GetSystemByID(characterData.galaxyId, characterData.systemId);
         Sector = SpaceManager.singleton.GetSectorByID(characterData.galaxyId, characterData.systemId, characterData.sectorId);
@@ -293,12 +307,20 @@ public class NetClient : NetworkBehaviour
             if (characterData != null)
             {
                 characterData.SetZoneIndexes(indexes);
+                //ServerDataManager.singleton.SendCharacterData(netId, characterData);
             }
         }
     }
     public Vector3 GetZoneIndexes()
     {
-        return new Vector3((int)this.ZoneIndexes[0], (int)this.ZoneIndexes[1], (int)this.ZoneIndexes[2]);
+        if (characterData != null)
+        {
+            return characterData.GetZoneIndexes();
+        }
+        else
+        {
+            return new Vector3((int)this.ZoneIndexes[0], (int)this.ZoneIndexes[1], (int)this.ZoneIndexes[2]);
+        }
     }
     public void SetSectorIndexes(Vector3 indexes, bool characterToo = false)
     {
@@ -308,12 +330,20 @@ public class NetClient : NetworkBehaviour
             if (characterData != null)
             {
                 characterData.SetSectorIndexes(indexes);
+                ServerDataManager.singleton.SendCharacterData(netId, characterData);
             }
         }
     }
     public Vector3 GetSectorIndexes()
     {
-        return new Vector3((int)this.SectorIndexes[0], (int)this.SectorIndexes[1], (int)this.SectorIndexes[2]);
+        if (characterData != null)
+        {
+            return characterData.GetSectorIndexes();
+        }
+        else
+        {
+            return new Vector3((int)this.SectorIndexes[0], (int)this.SectorIndexes[1], (int)this.SectorIndexes[2]);
+        }
     }
     public Vector3 GetObjectPosition()
     {
@@ -334,7 +364,6 @@ public class NetClient : NetworkBehaviour
             playerPos = ControlledObject.transform.localPosition;
         }
         ret = (sectorPosition + zonePosition) * Zone.zoneStep;
-        DebugConsole.Log($"{ret}");
         return ret;
     }
     public int GetGalaxyId()
@@ -415,7 +444,6 @@ public class NetClient : NetworkBehaviour
             secPos = GameContent.Space.RecalcPos(secPos, Sector.sectorStep) / Sector.sectorStep;
             if (curZIndexes != znPos || force)
             {
-                SetZoneIndexes(znPos, true);
                 if (Zone.id == 0)
                 {
                     Zone.SetIndexes(znPos);
@@ -423,6 +451,9 @@ public class NetClient : NetworkBehaviour
                 }
                 ControlledObject.transform.localPosition = -(GameContent.Space.RecalcPos(ControlledObject.transform.localPosition, Zone.zoneStep) - ControlledObject.transform.localPosition);
                 SpaceManager.singleton.spaceContainer.transform.localPosition = -GameContent.Space.RecalcPos(secPos * Sector.sectorStep + znPos * Zone.zoneStep, Zone.zoneStep);
+                LocalClient.SetSectorIndexes(curSIndexes, true);
+                LocalClient.SetZoneIndexes(znPos, true);
+                ControlledObject.SetZoneIndexes(znPos);
             }
         }
     }

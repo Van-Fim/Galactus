@@ -2,6 +2,6 @@
 	<ship name="Ship01">
 		<model patch="Models/Ships/FighterMedium" />
 		<hardpoints name="Ship01" />
-		<params mass="500" drag="2" angulardrag="2" maxhull="500"  />
+		<params mass="500" drag="2" angulardrag="2" maxhull="500" maxspeed="50000000" rotationspeed="150" velocity="10000000" />
 	</ship>
 </templates>

@@ -192,7 +192,11 @@ public class DebugConsole
         AddConsoleCommand("ShowClientsList", "[100,1,14]", delegate ()
         {
         });
-        AddConsoleCommand("Help", "[100,1,15]", delegate ()
+        AddConsoleCommand("Quit", "[100,1,15]", delegate ()
+        {
+            Application.Quit();
+        });
+        AddConsoleCommand("Help", "[100,1,16]", delegate ()
         {
             //NetManager.singleton.StartClient();
             DebugClientPanel panel = ClientPanelManager.GetPanel<DebugClientPanel>();
