@@ -10,10 +10,12 @@ public class Zone : GameContent.Space
     public int sectorId;
     public static int zoneStep = 25000;
     public Zone() { }
-    public Zone(SpaceManager spm, string templateName) : base(templateName)
+    public Zone(SpaceManager spm, string templateName, Sector sector) : base(templateName)
     {
+        sectorId = sector.id;
+        List<Zone> allZones = spm.zones.FindAll(f => f.sectorId == sectorId);
         int id = 0;
-        while (spm.zones.Find(f => f.id == id) != null)
+        while (allZones.Find(f => f.id == id) != null)
         {
             id++;
         }

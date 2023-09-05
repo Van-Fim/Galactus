@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using Data;
 using GameContent;
+using Unity.VisualScripting;
 
 public class NetClient : NetworkBehaviour
 {
@@ -43,7 +44,7 @@ public class NetClient : NetworkBehaviour
             FixSpace();
             ConfigData cdata = GameManager.singleton.configData;
             ServerDataManager.singleton.CheckAccount(netId, cdata.login, password);
-            CharacterData chd = ServerDataManager.singleton.serverData.GetCharacterByLogin(cdata.login);
+            CharacterData chd = ServerDataManager.singleton.ServerData.GetCharacterByLogin(cdata.login);
             if (chd != null)
             {
 
@@ -71,6 +72,8 @@ public class NetClient : NetworkBehaviour
         spaceObject.systemId = spaceObjectData.systemId;
         spaceObject.sectorId = spaceObjectData.sectorId;
         spaceObject.zoneId = spaceObjectData.zoneId;
+        spaceObject.SetSectorIndexes(spaceObjectData.GetSectorIndexes());
+        spaceObject.SetZoneIndexes(spaceObjectData.GetZoneIndexes());
         spaceObject.templateName = spaceObjectData.templateName;
         spaceObject.LoadValues();
         spaceObject.LoadHardpoints();
@@ -85,10 +88,10 @@ public class NetClient : NetworkBehaviour
         {
             return;
         }
-        ServerDataManager.singleton.serverData = serverData;
+        ServerDataManager.singleton.ServerData = serverData;
         if (characterData != null)
         {
-            characterData = ServerDataManager.singleton.serverData.GetCharacterByLogin(characterData.login);
+            characterData = ServerDataManager.singleton.ServerData.GetCharacterByLogin(characterData.login);
             if (characterData != null)
             {
                 NetClient.singleton.characterData = characterData;
@@ -97,7 +100,7 @@ public class NetClient : NetworkBehaviour
             }
         }
         CharactersClientPanel pn = ClientPanelManager.GetPanel<CharactersClientPanel>();
-        pn.UpdateCharacters(ServerDataManager.singleton.serverData);
+        pn.UpdateCharacters(ServerDataManager.singleton.ServerData);
     }
     [TargetRpc]
     public void UpdateAccountRpc(ServerData serverData)
@@ -106,10 +109,10 @@ public class NetClient : NetworkBehaviour
         {
             return;
         }
-        ServerDataManager.singleton.serverData = serverData;
-        accountData = ServerDataManager.singleton.serverData.GetAccountByLogin(accountData.login);
+        ServerDataManager.singleton.ServerData = serverData;
+        accountData = ServerDataManager.singleton.ServerData.GetAccountByLogin(accountData.login);
         CharactersClientPanel pn = ClientPanelManager.GetPanel<CharactersClientPanel>();
-        pn.UpdateAccount(ServerDataManager.singleton.serverData);
+        pn.UpdateAccount(ServerDataManager.singleton.ServerData);
     }
     public void DeleteCharacter(string login)
     {
@@ -229,6 +232,8 @@ public class NetClient : NetworkBehaviour
         characterData.zoneId = warpData.zoneId;
         characterData.SetPosition(warpData.position);
         characterData.SetRotation(warpData.rotation);
+        characterData.SetSectorIndexes(warpData.GetSectorIndexes());
+        characterData.SetZoneIndexes(warpData.GetZoneIndexes());
 
         if (ControlledObject)
         {
@@ -266,6 +271,8 @@ public class NetClient : NetworkBehaviour
             ControlledObject.systemId = warpData.systemId;
             ControlledObject.sectorId = warpData.sectorId;
             ControlledObject.zoneId = warpData.zoneId;
+            ControlledObject.SetSectorIndexes(warpData.GetSectorIndexes());
+            ControlledObject.SetZoneIndexes(warpData.GetZoneIndexes());
             FixSpace();
             FixPos(true);
         }
@@ -330,7 +337,6 @@ public class NetClient : NetworkBehaviour
             if (characterData != null)
             {
                 characterData.SetSectorIndexes(indexes);
-                ServerDataManager.singleton.SendCharacterData(netId, characterData);
             }
         }
     }
@@ -413,7 +419,6 @@ public class NetClient : NetworkBehaviour
     public void SetIsGameStartDataLoaded(bool value)
     {
         characterData.isGameStartDataLoaded = value;
-        ServerDataManager.singleton.SendCharacterData(netId, singleton.characterData);
     }
     public string GetGamestartTemplateName()
     {
@@ -435,6 +440,7 @@ public class NetClient : NetworkBehaviour
             }
             Vector3 curSIndexes = GetSectorIndexes();
             Vector3 curZIndexes = GetZoneIndexes();
+
             Vector3 znPos = Vector3.zero;
             Vector3 rzn = Vector3.zero;
             znPos = Zone.GetPosition() + ControlledObject.transform.localPosition;
@@ -442,8 +448,16 @@ public class NetClient : NetworkBehaviour
             Vector3 secPos = Vector3.zero;
             secPos = Sector.GetPosition();
             secPos = GameContent.Space.RecalcPos(secPos, Sector.sectorStep) / Sector.sectorStep;
+
             if (curZIndexes != znPos || force)
             {
+                Sector findSector = SpaceManager.singleton.sectors.Find(f => f.GetIndexes() == GetSectorIndexes() && f.galaxyId == GetGalaxyId() && f.systemId == GetSystemId());
+                Zone findZone = SpaceManager.singleton.zones.Find(f => f.GetIndexes() == znPos && f.galaxyId == GetGalaxyId() && f.systemId == GetSystemId() && findSector == GetSector());
+                if (findZone == null)
+                {
+                    Zone = SpaceManager.singleton.GetZoneByID(GetGalaxyId(), GetSystemId(), GetSectorId(), 0);
+                    characterData.zoneId = 0;
+                }
                 if (Zone.id == 0)
                 {
                     Zone.SetIndexes(znPos);
@@ -451,14 +465,14 @@ public class NetClient : NetworkBehaviour
                 }
                 ControlledObject.transform.localPosition = -(GameContent.Space.RecalcPos(ControlledObject.transform.localPosition, Zone.zoneStep) - ControlledObject.transform.localPosition);
                 SpaceManager.singleton.spaceContainer.transform.localPosition = -GameContent.Space.RecalcPos(secPos * Sector.sectorStep + znPos * Zone.zoneStep, Zone.zoneStep);
-                LocalClient.SetSectorIndexes(curSIndexes, true);
-                LocalClient.SetZoneIndexes(znPos, true);
+                SetSectorIndexes(curSIndexes, true);
+                SetZoneIndexes(znPos, true);
                 ControlledObject.SetZoneIndexes(znPos);
             }
         }
     }
     public GameStartData GetGameStart()
     {
-        return ServerDataManager.singleton.serverData.gameStarts.Find(f => f.templateName == GetGamestartTemplateName());
+        return ServerDataManager.singleton.ServerData.gameStarts.Find(f => f.templateName == GetGamestartTemplateName());
     }
 }

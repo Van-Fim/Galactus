@@ -28,7 +28,7 @@ public class NetSystem : NetworkManager
     {
         if (ServerDataManager.singleton != null)
         {
-            ServerDataManager.singleton.SaveServerData();
+            //ServerDataManager.singleton.SaveServerData();
         }
     }
     public override void OnServerReady(NetworkConnectionToClient conn)
@@ -53,8 +53,8 @@ public class NetSystem : NetworkManager
     {
         ServerDataManager.Init();
         NetworkServer.Spawn(ServerDataManager.singleton.gameObject);
-        ServerDataManager.singleton.serverData.LoadServerData();
-        ServerDataManager.singleton.serverData.gameStarts = GameStartManager.LoadGameStarts();
+        ServerDataManager.singleton.ServerData.LoadServerData();
+        ServerDataManager.singleton.ServerData.gameStarts = GameStartManager.LoadGameStarts();
         onlineSceneLoaded = true;
         yield return 1;
     }

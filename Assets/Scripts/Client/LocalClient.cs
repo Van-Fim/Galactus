@@ -1,12 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using Data;
 using UnityEngine;
 
 public static class LocalClient
 {
+    public static uint GetNetId()
+    {
+        return NetClient.singleton.netId;
+    }
+    public static CharacterData GetCharacterData()
+    {
+        return NetClient.singleton.characterData;
+    }
     public static Vector3 GetObjectPosition()
     {
         return NetClient.singleton.GetObjectPosition();
+    }
+    public static Vector3 GetPosition()
+    {
+        return NetClient.singleton.characterData.GetPosition();
+    }
+    public static Vector3 GetRotation()
+    {
+        return NetClient.singleton.characterData.GetRotation();
     }
     public static int GetGalaxyId()
     {
@@ -22,7 +39,7 @@ public static class LocalClient
     }
     public static int GetZoneId()
     {
-        return NetClient.singleton.GetSectorId();
+        return NetClient.singleton.GetZoneId();
     }
     public static Vector3 GetSectorIndexes()
     {
@@ -63,6 +80,14 @@ public static class LocalClient
         Zone ret = null;
         ret = SpaceManager.singleton.GetZoneByID(GetGalaxyId(), GetSystemId(), GetSectorId(), GetZoneId());
         return ret;
+    }
+    public static void FixSpace()
+    {
+        NetClient.singleton.FixSpace();
+    }
+    public static void FixPos()
+    {
+        NetClient.singleton.FixPos();
     }
     public static bool GetIsGameStartDataLoaded()
     {

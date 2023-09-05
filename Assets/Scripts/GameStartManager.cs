@@ -6,7 +6,7 @@ public class GameStartManager
 {
     public static List<GameStartData> LoadGameStarts()
     {
-        List<GameStartData> list = ServerDataManager.singleton.serverData.gameStarts;
+        List<GameStartData> list = ServerDataManager.singleton.ServerData.gameStarts;
         List<Template> templates = TemplateManager.FindTemplates("start");
         for (int i = 0; i < templates.Count; i++)
         {
@@ -212,7 +212,7 @@ public class GameStartManager
     }
     public static GameStartData GetGameStart(string name)
     {
-        return ServerDataManager.singleton.serverData.gameStarts.Find(f => f.templateName == name);
+        return ServerDataManager.singleton.ServerData.gameStarts.Find(f => f.templateName == name);
     }
     public static Data.ParamData GetParam(GameStartData gameStartData, string name)
     {

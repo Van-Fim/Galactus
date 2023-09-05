@@ -10,28 +10,26 @@ public class SpaceObjectManager
     public static void LoadGameStartObjects(NetClient netClient)
     {
         GameStartData gm = GameStartManager.GetGameStart(netClient.characterData.gameStart);
-        netClient.characterData.isGameStartDataLoaded = true;
+        netClient.SetIsGameStartDataLoaded(true);
         if (gm.spaceObjectDatas.Count > 0)
         {
             for (int i = 0; i < gm.spaceObjectDatas.Count; i++)
             {
                 Data.SpaceObjectData spaceObjectData = gm.spaceObjectDatas[i];
-                SpaceObject spaceObject = null;
-                if (spaceObjectData.type == null || spaceObjectData.type == "object")
+                SpaceObject spaceObject = spaceObjectData.CreateByType();
+                if (spaceObjectData.galaxyId == netClient.GetGalaxyId() && spaceObjectData.sectorId == netClient.GetSectorId())
                 {
-                    spaceObject = GameObject.Instantiate(GamePrefabsManager.singleton.LoadPrefab<SpaceObject>("SpaceObjectPrefab"));
-                }
-                else if (spaceObjectData.type == "ship")
-                {
-                    spaceObject = GameObject.Instantiate(GamePrefabsManager.singleton.LoadPrefab<SpaceObject>("ShipPrefab"));
-                }
-                else if (spaceObjectData.type == "pilot")
-                {
-                    spaceObject = GameObject.Instantiate(GamePrefabsManager.singleton.LoadPrefab<SpaceObject>("PilotPrefab"));
+                    spaceObjectData.SetSectorIndexes(netClient.GetSectorIndexes());
+                    if (spaceObjectData.zoneId == netClient.GetZoneId())
+                    {
+                        spaceObjectData.SetZoneIndexes(netClient.GetZoneIndexes());
+                    }
                 }
                 spaceObject.galaxyId = spaceObjectData.galaxyId;
                 spaceObject.systemId = spaceObjectData.systemId;
                 spaceObject.sectorId = spaceObjectData.sectorId;
+                spaceObject.sectorIndexes = spaceObjectData.sectorIndexes;
+                spaceObject.zoneIndexes = spaceObjectData.zoneIndexes;
                 spaceObject.zoneId = spaceObjectData.zoneId;
                 spaceObject.templateName = spaceObjectData.templateName;
                 spaceObject.LoadValues();

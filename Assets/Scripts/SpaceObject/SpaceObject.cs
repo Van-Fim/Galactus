@@ -36,9 +36,9 @@ public class SpaceObject : NetworkBehaviour
     public int[] zoneIndexes = { 0, 0, 0 };
 
     public Rigidbody rigidbodyMain;
-    int mass;
-    float drag;
-    float angulardrag;
+    public int mass;
+    public float drag;
+    public float angulardrag;
 
     NetworkTransform networkTransform;
     public bool isPlayerControll;
@@ -82,6 +82,7 @@ public class SpaceObject : NetworkBehaviour
 
         if (characterLogin == LocalClient.GetCharacterLogin())
         {
+            netIdentity.AssignClientAuthority(NetClient.singleton.connectionToClient);
             LocalClient.SetControlledObject(this);
             if (this is Ship)
             {
@@ -91,6 +92,8 @@ public class SpaceObject : NetworkBehaviour
             {
                 PilotController pc = gameObject.AddComponent<PilotController>();
             }
+            DebugConsole.Log($"{LocalClient.GetSectorIndexes()} {LocalClient.GetZoneIndexes()}");
+            transform.SetParent(null);
             InstallMainCamera();
         }
     }
@@ -127,6 +130,21 @@ public class SpaceObject : NetworkBehaviour
         ret.SetSectorIndexes(GetSectorIndexes());
         ret.SetZoneIndexes(GetZoneIndexes());
         return ret;
+    }
+    public void ReadSpaceObjectData(SpaceObjectData spaceObjectData)
+    {
+        id = spaceObjectData.id;
+        templateName = spaceObjectData.templateName;
+        hardpointsTemplateName = spaceObjectData.hardpointsTemplateName;
+        galaxyId = spaceObjectData.galaxyId;
+        systemId = spaceObjectData.systemId;
+        sectorId = spaceObjectData.sectorId;
+        zoneId = spaceObjectData.zoneId;
+        characterLogin = spaceObjectData.characterLogin;
+        isPlayerControll = spaceObjectData.isPlayerControll;
+        sectorIndexes = spaceObjectData.sectorIndexes;
+        zoneIndexes = spaceObjectData.zoneIndexes;
+        //hardpoints = spaceObjectData.hardpoints;
     }
     public virtual void LoadValues()
     {
@@ -292,6 +310,7 @@ public class SpaceObject : NetworkBehaviour
         int clGalaxyId = LocalClient.GetGalaxyId();
         int clSystemId = LocalClient.GetSystemId();
         int clSectorId = LocalClient.GetSectorId();
+
         Vector3 sIndexes = LocalClient.GetSectorIndexes();
         if (clGalaxyId != galaxyId || clSystemId != systemId || clSectorId != sectorId || sIndexes != GetSectorIndexes())
         {
@@ -334,11 +353,11 @@ public class SpaceObject : NetworkBehaviour
     }
     public void SetZoneIndexes(Vector3 value)
     {
-        zoneIndexes = new int[] {(int)value.x, (int)value.y, (int)value.z};
+        zoneIndexes = new int[] { (int)value.x, (int)value.y, (int)value.z };
     }
     public void SetSectorIndexes(Vector3 value)
     {
-        sectorIndexes = new int[] {(int)value.x, (int)value.y, (int)value.z};
+        sectorIndexes = new int[] { (int)value.x, (int)value.y, (int)value.z };
     }
 
     public static void InvokeRender()

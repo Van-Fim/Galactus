@@ -36,7 +36,7 @@ public class NewCharacterClientPanel : ClientPanel
     }
     public void GetGameStarts()
     {
-        ServerData serverData = ServerDataManager.singleton.serverData;
+        ServerData serverData = ServerDataManager.singleton.ServerData;
         gameStartDropdown.options.Clear();
         for (int i = 0; i < serverData.gameStarts.Count; i++)
         {
@@ -49,7 +49,7 @@ public class NewCharacterClientPanel : ClientPanel
         }
         gameStartDropdown.onValueChanged.AddListener((int num) =>
         {
-            ServerData serverData = ServerDataManager.singleton.serverData;
+            ServerData serverData = ServerDataManager.singleton.ServerData;
             gameStart = serverData.gameStarts[num].templateName;
         });
     }
@@ -58,7 +58,7 @@ public class NewCharacterClientPanel : ClientPanel
         base.Open();
         GetGameStarts();
         int num = gameStartDropdown.value;
-        ServerData serverData = ServerDataManager.singleton.serverData;
+        ServerData serverData = ServerDataManager.singleton.ServerData;
         gameStart = serverData.gameStarts[num].templateName;
         UpdateText();
     }

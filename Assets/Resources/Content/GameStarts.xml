@@ -3,12 +3,12 @@
 		<resources>
 			<resource name="money" value="1250" />
 		</resources>
-		<space galaxy="1" system="128" sector="0" zone="0">
-			<player template="Pilot01">
-				<loadouts name="Pilot01" />
-				<position x="0" y="0" z="0" />
+		<space galaxy="3" system="11" sector="0" zone="3">
+			<ship playerShip="1" template="Ship01" pilotTemplate="Pilot01">
+				<loadouts name="Ship01" />
+				<position x="0" y="-2000" z="0" />
 				<rotation x="0" y="0" z="0" />
-			</player>
+			</ship>
 		</space>
 	</start>
 	<start name="Start02" text="[1000,6,2]">
@@ -16,11 +16,11 @@
 			<resource name="money" value="3000" />
 		</resources>
 		<space galaxy="2" system="128" sector="0" zone="0">
-			<ship playerShip="1" template="Ship01" pilotTemplate="Pilot01">
-				<loadouts name="Ship01" />
-				<position x="0" y="500" z="0" />
+			<player template="Pilot01">
+				<loadouts name="Pilot01" />
+				<position x="0" y="0" z="0" />
 				<rotation x="0" y="0" z="0" />
-			</ship>
+			</player>
 		</space>
 	</start>
 	<start name="Start03" text="[1000,6,3]">
@@ -30,7 +30,7 @@
 		<params>
 			<param name="universe" value="un01" />
 		</params>
-		<space galaxy="3" system="9" sector="1" zone="0">
+		<space galaxy="3" system="9" sector="1" zone="3">
 			<ship playerShip="1" template="Ship01" pilotTemplate="Pilot01">
 				<loadouts name="Ship01" />
 				<position x="0" y="-2000" z="0" />

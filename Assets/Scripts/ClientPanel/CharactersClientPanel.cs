@@ -23,7 +23,7 @@ public class CharactersClientPanel : ClientPanel
             return;
         }
         GamePrefabsManager gmpr = GamePrefabsManager.singleton;
-        ServerDataManager.singleton.serverData = serverData;
+        ServerDataManager.singleton.ServerData = serverData;
     }
     public void UpdateCharacters(ServerData serverData)
     {
@@ -69,7 +69,7 @@ public class CharactersClientPanel : ClientPanel
                         List<Template> rtemps = TemplateManager.FindTemplates("resource_type");
                         infoText.text = $"{LangSystem.ShowText(1100, 1, 1)}: {ch.login}\n";
                         infoText.text += $"{LangSystem.ShowText(1100, 1, 2)}: {LangSystem.ShowText(gameStartData.name)}\n";
-                        AccountData account = ServerDataManager.singleton.serverData.GetAccountById(ch.accountId);
+                        AccountData account = ServerDataManager.singleton.ServerData.GetAccountById(ch.accountId);
                         for (int i2 = 0; i2 < rtemps.Count; i2++)
                         {
                             Template tm = rtemps[i2];

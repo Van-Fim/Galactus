@@ -58,6 +58,23 @@ namespace Data
                 zoneId = sp.id;
             }
         }
+        public SpaceObject CreateByType()
+        {
+            SpaceObject ret = null;
+            if (type == null || type == "object")
+            {
+                ret = GameObject.Instantiate(GamePrefabsManager.singleton.LoadPrefab<SpaceObject>("SpaceObjectPrefab"));
+            }
+            if (type == "ship")
+            {
+                ret = GameObject.Instantiate(GamePrefabsManager.singleton.LoadPrefab<SpaceObject>("ShipPrefab"));
+            }
+            else if (type == "pilot")
+            {
+                ret = GameObject.Instantiate(GamePrefabsManager.singleton.LoadPrefab<SpaceObject>("PilotPrefab"));
+            }
+            return ret;
+        }
         public Vector3 GetZoneIndexes()
         {
             return new Vector3((int)this.zoneIndexes[0], (int)this.zoneIndexes[1], (int)this.zoneIndexes[2]);
