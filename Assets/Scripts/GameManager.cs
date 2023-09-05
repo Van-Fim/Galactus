@@ -188,7 +188,7 @@ public class GameManager : MonoBehaviour
         testCube.Color = new Color32(0, 255, 0, 150);
         testCube.transform.SetParent(SpaceManager.singleton.spaceContainer.transform);
         testCube.transform.localPosition = LocalClient.GetSector().GetPosition();
-
+        LocalClient.SetSectorIndexes(LocalClient.GetSector().GetIndexes());
         SpaceObject.InvokeRender();
         SpaceObject.InvokeNetStart();
 
