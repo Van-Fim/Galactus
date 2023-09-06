@@ -94,6 +94,7 @@ public class SpaceObject : NetworkBehaviour
             }
             DebugConsole.Log($"{LocalClient.GetSectorIndexes()} {LocalClient.GetZoneIndexes()}");
             transform.SetParent(null);
+
             InstallMainCamera();
         }
     }
@@ -312,6 +313,7 @@ public class SpaceObject : NetworkBehaviour
         int clSectorId = LocalClient.GetSectorId();
 
         Vector3 sIndexes = LocalClient.GetSectorIndexes();
+        
         if (clGalaxyId != galaxyId || clSystemId != systemId || clSectorId != sectorId || sIndexes != GetSectorIndexes())
         {
             DeRender(true);

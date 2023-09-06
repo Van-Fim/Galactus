@@ -25,6 +25,14 @@ public static class LocalClient
     {
         return NetClient.singleton.characterData.GetRotation();
     }
+    public static void SetPosition(Vector3 position)
+    {
+        NetClient.singleton.characterData.SetPosition(position);
+    }
+    public static void SetRotation(Vector3 rotation)
+    {
+        NetClient.singleton.characterData.SetRotation(rotation);
+    }
     public static int GetGalaxyId()
     {
         return NetClient.singleton.GetGalaxyId();

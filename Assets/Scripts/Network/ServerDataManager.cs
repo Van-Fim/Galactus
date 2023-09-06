@@ -263,7 +263,7 @@ public class ServerDataManager : NetworkBehaviour
     {
         string textString = "";
 
-        textString += $"\n<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
+        textString += $"Count {singleton.ServerData.spaceObjectDatas.Count} \n<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
         for (int i = 0; i < singleton.ServerData.spaceObjectDatas.Count; i++)
         {
             SpaceObjectData spd = ServerDataManager.singleton.ServerData.spaceObjectDatas[i];
@@ -281,24 +281,24 @@ public class ServerDataManager : NetworkBehaviour
 
             SpaceObject spaceObject = spd.CreateByType();
             spaceObject.ReadSpaceObjectData(spd);
-            Template template = TemplateManager.FindTemplate(spaceObject.templateName, spd.type);
-            TemplateNode paramsNode = template.GetNode("params");
-            if (paramsNode != null)
-            {
-                spaceObject.mass = int.Parse(paramsNode.GetValue("mass"));
-                spaceObject.drag = XMLF.FloatVal(paramsNode.GetValue("drag"));
-                spaceObject.angulardrag = XMLF.FloatVal(paramsNode.GetValue("angulardrag"));
-            }
+            spaceObject.LoadValues();
             SpaceObjectManager.spaceObjects.Add(spaceObject);
             spaceObject.LoadHardpoints();
             spaceObject.transform.SetParent(SpaceManager.singleton.spaceContainer.transform);
-            spaceObject.transform.localPosition = GameContent.Space.RecalcPos(spaceObject.GetSectorIndexes() * Sector.sectorStep + spaceObject.GetZoneIndexes() * Zone.zoneStep, Zone.zoneStep);
+            spaceObject.transform.localPosition = GameContent.Space.RecalcPos(spaceObject.GetSectorIndexes() * Sector.sectorStep + spaceObject.GetZoneIndexes() * Zone.zoneStep, Zone.zoneStep) + spd.GetPosition();
             spaceObject.transform.localEulerAngles = spd.GetRotation();
+
+            if (spd.characterLogin == LocalClient.GetCharacterLogin() && spd.isPlayerControll)
+            {
+                LocalClient.SetPosition(spd.GetPosition());
+                LocalClient.SetRotation(spd.GetRotation());
+            }
+            
             NetworkServer.Spawn(spaceObject.gameObject);
             spaceObject.ServerInit();
         }
         textString += $"<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
-        //DebugConsole.Log(textString);
+        DebugConsole.Log(textString);
 
     }
     [Command(requiresAuthority = false)]

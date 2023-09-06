@@ -135,16 +135,7 @@ public class GameManager : MonoBehaviour
                 LocalClient.SetSectorIndexes(LocalClient.GetSector().GetIndexes(), true);
                 LocalClient.SetZoneIndexes(LocalClient.GetZone().GetIndexes(), true);
             }
-            WarpData warpData = new WarpData();
-            warpData.galaxyId = LocalClient.GetGalaxyId();
-            warpData.systemId = LocalClient.GetSystemId();
-            warpData.sectorId = LocalClient.GetSectorId();
-            warpData.zoneId = LocalClient.GetZoneId();
-            warpData.position = LocalClient.GetPosition();
-            warpData.rotation = LocalClient.GetRotation();
-            warpData.SetSectorIndexes(LocalClient.GetSectorIndexes());
-            warpData.SetZoneIndexes(LocalClient.GetZoneIndexes());
-            NetClient.singleton.WarpClient(warpData);
+
             /*
             textString += $"\n<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
             textString += $"<color=white>Galaxy id: </color><color=green>{LocalClient.GetGalaxyId()}</color>\n";
@@ -157,12 +148,24 @@ public class GameManager : MonoBehaviour
             textString += $"\n<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
             */
             ServerDataManager.singleton.LoadSpaceObjects();
+            WarpData warpData = new WarpData();
+            warpData.galaxyId = LocalClient.GetGalaxyId();
+            warpData.systemId = LocalClient.GetSystemId();
+            warpData.sectorId = LocalClient.GetSectorId();
+            warpData.zoneId = LocalClient.GetZoneId();
+            warpData.position = LocalClient.GetPosition();
+            warpData.rotation = LocalClient.GetRotation();
+            warpData.SetSectorIndexes(LocalClient.GetSectorIndexes());
+            warpData.SetZoneIndexes(LocalClient.GetZoneIndexes());
+            NetClient.singleton.WarpClient(warpData);
             if (!LocalClient.GetIsGameStartDataLoaded())
             {
                 ServerDataManager.singleton.LoadGameStartObjects(NetClient.singleton.netId);
                 LocalClient.SetIsGameStartDataLoaded(true);
             }
+            SpaceObject.InvokeRender();
             SpaceObject.InvokeNetStart();
+
             TestCube testCube = GamePrefabsManager.singleton.LoadPrefab<TestCube>("TestCube");
             testCube = Instantiate(testCube);
             testCube.Color = new Color32(0, 255, 0, 150);

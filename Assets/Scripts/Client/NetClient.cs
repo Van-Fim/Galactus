@@ -274,6 +274,10 @@ public class NetClient : NetworkBehaviour
             ControlledObject.SetSectorIndexes(warpData.GetSectorIndexes());
             ControlledObject.SetZoneIndexes(warpData.GetZoneIndexes());
             FixSpace();
+            if (Zone.id == 0)
+            {
+                Zone.SetPosition(warpData.GetZoneIndexes() * Zone.zoneStep);
+            }
             FixPos(true);
         }
         SpaceObject.InvokeRender();
@@ -463,6 +467,7 @@ public class NetClient : NetworkBehaviour
                     Zone.SetIndexes(znPos);
                     Zone.SetPosition(znPos * Zone.zoneStep);
                 }
+                DebugConsole.Log(LocalClient.GetControlledObject().transform.localEulerAngles);
                 ControlledObject.transform.localPosition = -(GameContent.Space.RecalcPos(ControlledObject.transform.localPosition, Zone.zoneStep) - ControlledObject.transform.localPosition);
                 SpaceManager.singleton.spaceContainer.transform.localPosition = -GameContent.Space.RecalcPos(secPos * Sector.sectorStep + znPos * Zone.zoneStep, Zone.zoneStep);
                 SetSectorIndexes(curSIndexes, true);

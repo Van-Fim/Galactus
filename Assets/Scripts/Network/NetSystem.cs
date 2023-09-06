@@ -28,7 +28,7 @@ public class NetSystem : NetworkManager
     {
         if (ServerDataManager.singleton != null)
         {
-            //ServerDataManager.singleton.SaveServerData();
+            ServerDataManager.singleton.SaveServerData();
         }
     }
     public override void OnServerReady(NetworkConnectionToClient conn)

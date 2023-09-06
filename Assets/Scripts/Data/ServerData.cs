@@ -118,6 +118,7 @@ namespace Data
             BinaryFormatter bf = new BinaryFormatter();
             file = File.Create(dir + "/" + fileName);
             ServerData sv = new ServerData();
+            DebugConsole.Log(spaceObjectDatas.Count);
             bf.Serialize(file, this);
             ret = true;
             return ret;
