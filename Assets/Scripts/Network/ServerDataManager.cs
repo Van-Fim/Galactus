@@ -245,7 +245,7 @@ public class ServerDataManager : NetworkBehaviour
     public void SaveServerData()
     {
         SaveSpaceObjects();
-        ServerData.SaveServerData();
+        //ServerData.SaveServerData();
     }
     [Command(requiresAuthority = false)]
     public void SaveSpaceObjects()
@@ -255,7 +255,20 @@ public class ServerDataManager : NetworkBehaviour
         {
             SpaceObject spaceObject = SpaceObjectManager.spaceObjects[i];
             SpaceObjectData spd = spaceObject.GetSpaceObjectData();
-            ServerData.spaceObjectDatas.Add(spd);
+            string textString = "";
+            textString += $"Count {singleton.ServerData.spaceObjectDatas.Count} \n<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
+            textString += $"<color=white>Type: </color><color=green>{spd.type}</color>\n";
+            textString += $"<color=white>Galaxy id: </color><color=green>{spd.GetGalaxyId()}</color>\n";
+            textString += $"<color=white>System id: </color><color=green>{spd.GetSystemId()}</color>\n";
+            textString += $"<color=white>Sector id: </color><color=green>{spd.GetSectorId()}</color>\n";
+            textString += $"<color=white>Zone id: </color><color=green>{spd.GetZoneId()}</color>\n";
+            textString += $"<color=white>Sector indexes: </color><color=green>{spd.GetSectorIndexes()}</color>\n";
+            textString += $"<color=white>Zone indexes: </color><color=green>{spd.GetZoneIndexes()}</color>\n";
+            textString += $"<color=white>Position: </color><color=green>{spd.GetPosition()}</color>\n";
+            textString += $"<color=white>Rotation: </color><color=green>{spd.GetRotation()}</color>\n";
+            textString += $"Count {singleton.ServerData.spaceObjectDatas.Count} \n<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
+            DebugConsole.Log(textString);
+            //ServerData.spaceObjectDatas.Add(spd);
         }
     }
     [Command(requiresAuthority = false)]
@@ -268,15 +281,19 @@ public class ServerDataManager : NetworkBehaviour
         {
             SpaceObjectData spd = ServerDataManager.singleton.ServerData.spaceObjectDatas[i];
             textString += $"<color=white>Type: </color><color=green>{spd.type}</color>\n";
+            textString += $"<color=white>Galaxy id: </color><color=green>{spd.GetGalaxyId()}</color>\n";
+            textString += $"<color=white>System id: </color><color=green>{spd.GetSystemId()}</color>\n";
+            textString += $"<color=white>Sector id: </color><color=green>{spd.GetSectorId()}</color>\n";
+            textString += $"<color=white>Zone id: </color><color=green>{spd.GetZoneId()}</color>\n";
             textString += $"<color=white>Sector indexes: </color><color=green>{spd.GetSectorIndexes()}</color>\n";
             textString += $"<color=white>Zone indexes: </color><color=green>{spd.GetZoneIndexes()}</color>\n";
-            textString += $"<color=white>Local Sector indexes: </color><color=green>{LocalClient.GetSectorIndexes()}</color>\n";
-            textString += $"<color=white>Local Zone indexes: </color><color=green>{LocalClient.GetZoneIndexes()}</color>\n";
             textString += $"<color=white>Position: </color><color=green>{spd.GetPosition()}</color>\n";
             textString += $"<color=white>Rotation: </color><color=green>{spd.GetRotation()}</color>\n";
-            textString += $"<color=white>Galaxy id: </color><color=green>{LocalClient.GetGalaxyId()}</color>\n";
-            textString += $"<color=white>System id: </color><color=green>{LocalClient.GetSystemId()}</color>\n";
-            textString += $"<color=white>Sector id: </color><color=green>{LocalClient.GetSectorId()}</color>\n";
+            textString += $"<color=white>Local Sector indexes: </color><color=green>{LocalClient.GetSectorIndexes()}</color>\n";
+            textString += $"<color=white>Local Zone indexes: </color><color=green>{LocalClient.GetZoneIndexes()}</color>\n";
+            textString += $"<color=white>Local Galaxy id: </color><color=green>{LocalClient.GetGalaxyId()}</color>\n";
+            textString += $"<color=white>Local System id: </color><color=green>{LocalClient.GetSystemId()}</color>\n";
+            textString += $"<color=white>Local Sector id: </color><color=green>{LocalClient.GetSectorId()}</color>\n";
             textString += $"<color=blue>--------------------------------------\n</color>\n";
 
             SpaceObject spaceObject = spd.CreateByType();
@@ -293,7 +310,7 @@ public class ServerDataManager : NetworkBehaviour
                 LocalClient.SetPosition(spd.GetPosition());
                 LocalClient.SetRotation(spd.GetRotation());
             }
-            
+
             NetworkServer.Spawn(spaceObject.gameObject);
             spaceObject.ServerInit();
         }

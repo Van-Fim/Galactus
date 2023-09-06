@@ -75,6 +75,22 @@ namespace Data
             }
             return ret;
         }
+        public int GetGalaxyId()
+        {
+            return galaxyId;
+        }
+        public int GetSystemId()
+        {
+            return systemId;
+        }
+        public int GetSectorId()
+        {
+            return sectorId;
+        }
+        public int GetZoneId()
+        {
+            return zoneId;
+        }
         public Vector3 GetZoneIndexes()
         {
             return new Vector3((int)this.zoneIndexes[0], (int)this.zoneIndexes[1], (int)this.zoneIndexes[2]);

@@ -467,9 +467,10 @@ public class NetClient : NetworkBehaviour
                     Zone.SetIndexes(znPos);
                     Zone.SetPosition(znPos * Zone.zoneStep);
                 }
-                DebugConsole.Log(LocalClient.GetControlledObject().transform.localEulerAngles);
+                
                 ControlledObject.transform.localPosition = -(GameContent.Space.RecalcPos(ControlledObject.transform.localPosition, Zone.zoneStep) - ControlledObject.transform.localPosition);
                 SpaceManager.singleton.spaceContainer.transform.localPosition = -GameContent.Space.RecalcPos(secPos * Sector.sectorStep + znPos * Zone.zoneStep, Zone.zoneStep);
+                DebugConsole.Log($"{secPos} {znPos} {SpaceManager.singleton.spaceContainer.transform.localPosition}");
                 SetSectorIndexes(curSIndexes, true);
                 SetZoneIndexes(znPos, true);
                 ControlledObject.SetZoneIndexes(znPos);

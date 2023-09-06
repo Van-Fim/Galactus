@@ -172,6 +172,7 @@ public class GameManager : MonoBehaviour
             testCube.transform.SetParent(SpaceManager.singleton.spaceContainer.transform);
             testCube.transform.localPosition = LocalClient.GetSector().GetPosition();
             testCube.name = "GreenTestCube";
+            DebugConsole.Log($"{LocalClient.GetSector().GetIndexes()} {SpaceManager.singleton.spaceContainer.transform.localPosition}");
         }
     }
     public void StartGame()

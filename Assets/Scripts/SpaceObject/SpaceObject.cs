@@ -125,7 +125,7 @@ public class SpaceObject : NetworkBehaviour
         ret.type = GetObjectType();
         ret.characterLogin = characterLogin;
         ret.isPlayerControll = isPlayerControll;
-        ret.SetPosition(transform.localPosition);
+        ret.SetPosition(transform.localPosition - ((GetSectorIndexes() * Sector.sectorStep) + (GetZoneIndexes() * Zone.zoneStep)));
         ret.SetRotation(transform.localEulerAngles);
         ret.hardpoints = hardpoints;
         ret.SetSectorIndexes(GetSectorIndexes());
