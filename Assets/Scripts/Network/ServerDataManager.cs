@@ -68,6 +68,13 @@ public class ServerDataManager : NetworkBehaviour
         }
     }
     [Command(requiresAuthority = false)]
+    public void AssignClient(uint netId, uint clientId)
+    {
+        NetClient cl = NetworkServer.spawned[clientId].GetComponent<NetClient>();
+        SpaceObject sp = NetworkServer.spawned[netId].GetComponent<SpaceObject>();
+        sp.netIdentity.AssignClientAuthority(cl.connectionToClient);
+    }
+    [Command(requiresAuthority = false)]
     public void WarpClient(CharacterData character, uint netId, WarpData warpData)
     {
         NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
@@ -78,6 +85,12 @@ public class ServerDataManager : NetworkBehaviour
         character.SetPosition(warpData.position);
         character.SetRotation(warpData.rotation);
         cl.CompleteWarp(warpData);
+    }
+    [Command(requiresAuthority = false)]
+    public void PreStartGame(uint netId, string login) {
+        NetClient cl = NetworkServer.spawned[netId].GetComponent<NetClient>();
+        cl.characterData = serverData.GetCharacterByLogin(login);
+        cl.PreStartGame(cl.characterData);
     }
     [Command(requiresAuthority = false)]
     public void CheckAccount(uint netId, string login, string password)
@@ -245,7 +258,7 @@ public class ServerDataManager : NetworkBehaviour
     public void SaveServerData()
     {
         SaveSpaceObjects();
-        //ServerData.SaveServerData();
+        ServerData.SaveServerData();
     }
     [Command(requiresAuthority = false)]
     public void SaveSpaceObjects()
@@ -268,7 +281,7 @@ public class ServerDataManager : NetworkBehaviour
             textString += $"<color=white>Rotation: </color><color=green>{spd.GetRotation()}</color>\n";
             textString += $"Count {singleton.ServerData.spaceObjectDatas.Count} \n<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
             DebugConsole.Log(textString);
-            //ServerData.spaceObjectDatas.Add(spd);
+            ServerData.spaceObjectDatas.Add(spd);
         }
     }
     [Command(requiresAuthority = false)]
@@ -305,10 +318,11 @@ public class ServerDataManager : NetworkBehaviour
             spaceObject.transform.localPosition = GameContent.Space.RecalcPos(spaceObject.GetSectorIndexes() * Sector.sectorStep + spaceObject.GetZoneIndexes() * Zone.zoneStep, Zone.zoneStep) + spd.GetPosition();
             spaceObject.transform.localEulerAngles = spd.GetRotation();
 
-            if (spd.characterLogin == LocalClient.GetCharacterLogin() && spd.isPlayerControll)
+            if ((spd.characterLogin.Length > 0) && spd.isPlayerControll)
             {
-                LocalClient.SetPosition(spd.GetPosition());
-                LocalClient.SetRotation(spd.GetRotation());
+                CharacterData chr = singleton.serverData.GetCharacterByLogin(spd.characterLogin);
+                chr.SetPosition(spd.GetPosition());
+                chr.SetRotation(spd.GetRotation());
             }
 
             NetworkServer.Spawn(spaceObject.gameObject);
@@ -327,5 +341,12 @@ public class ServerDataManager : NetworkBehaviour
     public void SendCharacterData(CharacterData characterData)
     {
 
+    }
+    public void ClearGameData()
+    {
+        if (NetClient.singleton.isServer)
+        {
+            ServerData.ClearGameData();
+        }
     }
 }

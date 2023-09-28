@@ -71,9 +71,10 @@ public class DebugConsole
         });
         AddConsoleCommand("ClearPage", "[100,1,4]", delegate ()
         {
-            LogPage page = pages.Find(f => f.name == DebugConsoleCommand.args[0]);
-            DebugConsole.ShowErrorIsNull(page, $"Page {currentPage} not found");
-            page.list = new List<string>();
+            if (ServerDataManager.singleton)
+            {
+                ServerDataManager.singleton.ClearGameData();
+            }
         });
         AddConsoleCommand("SetAccountResource", "[100,1,5]", delegate ()
         {
@@ -212,6 +213,10 @@ public class DebugConsole
             }
             textString += $"<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
             DebugConsole.Log(textString, null);
+        });
+        AddConsoleCommand("ClearGameData", "[100,1,17]", delegate ()
+        {
+            GameManager.singleton.ClearGameData();
         });
     }
     public static void ShowErrorIsNull(System.Object checkobject, string message, bool stop = false)

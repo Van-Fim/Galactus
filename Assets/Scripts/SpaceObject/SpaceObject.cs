@@ -63,14 +63,13 @@ public class SpaceObject : NetworkBehaviour
     }
     public uint GetId()
     {
-        /*
-        int id = 0;
+        uint id = 0;
         while (SpaceObjectManager.spaceObjects.Find(f => f.id == id) != null)
         {
             id++;
         }
-        */
-        this.id = this.netId;
+
+        this.id = id;
         return this.id;
     }
     public void OnNetStart()
@@ -82,7 +81,14 @@ public class SpaceObject : NetworkBehaviour
 
         if (characterLogin == LocalClient.GetCharacterLogin())
         {
-            netIdentity.AssignClientAuthority(NetClient.singleton.connectionToClient);
+            if (LocalClient.IsServer())
+            {
+                netIdentity.AssignClientAuthority(NetClient.singleton.connectionToClient);
+            }
+            else
+            {
+                ServerDataManager.singleton.AssignClient(netId, LocalClient.GetNetId());
+            }
             LocalClient.SetControlledObject(this);
             if (this is Ship)
             {
@@ -92,10 +98,13 @@ public class SpaceObject : NetworkBehaviour
             {
                 PilotController pc = gameObject.AddComponent<PilotController>();
             }
-            DebugConsole.Log($"{LocalClient.GetSectorIndexes()} {LocalClient.GetZoneIndexes()}");
             transform.SetParent(null);
 
             InstallMainCamera();
+        }
+        else
+        {
+            //DebugConsole.Log($"{ServerDataManager.singleton.ServerData.characters[0].controlledObjectId} {characterLogin} {id} {netId} {isClient}");
         }
     }
     public string GetObjectType()
@@ -116,6 +125,7 @@ public class SpaceObject : NetworkBehaviour
         SpaceObjectData ret = new SpaceObjectData();
         ret.id = id;
         ret.netId = netId;
+        ret.spaceObjectId = id;
         ret.templateName = templateName;
         ret.hardpointsTemplateName = hardpointsTemplateName;
         ret.galaxyId = galaxyId;
@@ -125,7 +135,14 @@ public class SpaceObject : NetworkBehaviour
         ret.type = GetObjectType();
         ret.characterLogin = characterLogin;
         ret.isPlayerControll = isPlayerControll;
-        ret.SetPosition(transform.localPosition - ((GetSectorIndexes() * Sector.sectorStep) + (GetZoneIndexes() * Zone.zoneStep)));
+        if (LocalClient.IsServer() && LocalClient.GetGalaxyId() == galaxyId && LocalClient.GetSystemId() == systemId && LocalClient.GetSectorId() == sectorId && LocalClient.GetZoneId() == zoneId)
+        {
+            ret.SetPosition(transform.localPosition);
+        }
+        else
+        {
+            ret.SetPosition(transform.localPosition - ((GetSectorIndexes() * Sector.sectorStep) + (GetZoneIndexes() * Zone.zoneStep)));
+        }
         ret.SetRotation(transform.localEulerAngles);
         ret.hardpoints = hardpoints;
         ret.SetSectorIndexes(GetSectorIndexes());
@@ -313,7 +330,6 @@ public class SpaceObject : NetworkBehaviour
         int clSectorId = LocalClient.GetSectorId();
 
         Vector3 sIndexes = LocalClient.GetSectorIndexes();
-        
         if (clGalaxyId != galaxyId || clSystemId != systemId || clSectorId != sectorId || sIndexes != GetSectorIndexes())
         {
             DeRender(true);
@@ -331,6 +347,7 @@ public class SpaceObject : NetworkBehaviour
             GameObject minst = Resources.Load<GameObject>($"{modelPatch}/MAIN");
             main = Instantiate(minst, gameObject.transform);
         }
+
         rigidbodyMain = gameObject.GetComponent<Rigidbody>();
         if (!rigidbodyMain)
         {

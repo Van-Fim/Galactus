@@ -13,30 +13,82 @@ public class NetClient : NetworkBehaviour
     public AccountData accountData;
     public CharacterData characterData;
     public static NetClient singleton;
-    public uint controlledObjectNetId;
+    public uint controlledObjectId;
     private SpaceObject controlledObject;
     private Galaxy galaxy;
     private StarSystem system;
     private Sector sector;
-    private int[] sectorIndexes = { 0, 0, 0 };
     private Zone zone;
-    private int[] zoneIndexes = { 0, 0, 0 };
+    public SyncList<int> containerIndexes = new SyncList<int>() { 0, 0, 0 };
 
     public Galaxy Galaxy { get => galaxy; set => galaxy = value; }
     public StarSystem System { get => system; set => system = value; }
     public Sector Sector { get => sector; set => sector = value; }
-    public int[] SectorIndexes { get => sectorIndexes; set => sectorIndexes = value; }
     public Zone Zone { get => zone; set => zone = value; }
-    public int[] ZoneIndexes { get => zoneIndexes; set => zoneIndexes = value; }
     public SpaceObject ControlledObject
     {
         get => controlledObject; set
         {
             controlledObject = value;
-            controlledObjectNetId = value.netId;
+            controlledObjectId = value.id;
         }
     }
+    [TargetRpc]
+    public void PreStartGame(CharacterData characterData)
+    {
+        ClientPanelManager.Close<CharactersClientPanel>();
+        ClientPanelManager.Show<HudClientPanel>();
+        NetClient.singleton.characterData = characterData;
+        //ServerDataManager.singleton.LoadGameStartObjects(NetClient.singleton.netId);
+        SpaceManager.Init();
+        SpaceManager.singleton.LoadGalaxies();
+        SpaceManager.singleton.BuildSystem(LocalClient.GetGalaxyId(), LocalClient.GetSystemId());
+        LocalClient.FixSpace();
+        if (!LocalClient.GetIsGameStartDataLoaded())
+        {
+            LocalClient.SetSectorIndexes(LocalClient.GetSector().GetIndexes(), true);
+            LocalClient.SetZoneIndexes(LocalClient.GetZone().GetIndexes(), true);
+        }
 
+        /*
+        textString += $"\n<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
+        textString += $"<color=white>Galaxy id: </color><color=green>{LocalClient.GetGalaxyId()}</color>\n";
+        textString += $"<color=white>System id: </color><color=green>{LocalClient.GetSystemId()}</color>\n";
+        textString += $"<color=white>Sector id: </color><color=green>{LocalClient.GetSectorId()}</color>\n";
+        textString += $"<color=white>Zone id: </color><color=green>{LocalClient.GetZoneId()}</color>\n";
+        textString += $"<color=white>Sector indexes: </color><color=green>{LocalClient.GetSectorIndexes()}</color>\n";
+        textString += $"<color=white>Zone indexes: </color><color=green>{LocalClient.GetZoneIndexes()}</color>\n";
+        textString += $"<color=white>Zones count: </color><color=green>{SpaceManager.singleton.zones.Count}</color>\n";
+        textString += $"\n<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
+        */
+        ServerDataManager.singleton.LoadSpaceObjects();
+        WarpData warpData = new WarpData();
+        warpData.galaxyId = LocalClient.GetGalaxyId();
+        warpData.systemId = LocalClient.GetSystemId();
+        warpData.sectorId = LocalClient.GetSectorId();
+        warpData.zoneId = LocalClient.GetZoneId();
+        warpData.position = LocalClient.GetPosition();
+        warpData.rotation = LocalClient.GetRotation();
+        warpData.SetSectorIndexes(LocalClient.GetSectorIndexes());
+        warpData.SetZoneIndexes(LocalClient.GetZoneIndexes());
+        NetClient.singleton.WarpClient(warpData);
+        if (!LocalClient.GetIsGameStartDataLoaded())
+        {
+            ServerDataManager.singleton.LoadGameStartObjects(NetClient.singleton.netId);
+            LocalClient.SetIsGameStartDataLoaded(true);
+        }
+
+        SpaceObject.InvokeRender();
+        SpaceObject.InvokeNetStart();
+
+        TestCube testCube = GamePrefabsManager.singleton.LoadPrefab<TestCube>("TestCube");
+        testCube = Instantiate(testCube);
+        testCube.Color = new Color32(0, 255, 0, 150);
+        testCube.transform.SetParent(SpaceManager.singleton.spaceContainer.transform);
+        testCube.transform.localPosition = LocalClient.GetSector().GetPosition();
+        testCube.name = "GreenTestCube";
+        DebugConsole.Log($"{LocalClient.GetSector().GetIndexes()} {SpaceManager.singleton.spaceContainer.transform.localPosition}");
+    }
     public override void OnStartClient()
     {
         if (isLocalPlayer)
@@ -44,14 +96,13 @@ public class NetClient : NetworkBehaviour
             FixSpace();
             ConfigData cdata = GameManager.singleton.configData;
             ServerDataManager.singleton.CheckAccount(netId, cdata.login, password);
-            CharacterData chd = ServerDataManager.singleton.ServerData.GetCharacterByLogin(cdata.login);
-            if (chd != null)
-            {
-
-            }
             DebugConsole.Log(characterData.GetZoneIndexes());
             singleton = this;
             UpdateCharacters();
+        }
+        else
+        {
+            
         }
     }
     public void Update()
@@ -66,14 +117,16 @@ public class NetClient : NetworkBehaviour
         {
             return;
         }
-        NetClient.singleton.controlledObjectNetId = spaceObjectData.netId;
+        NetClient.singleton.controlledObjectId = spaceObjectData.id;
         SpaceObject spaceObject = NetworkClient.spawned[spaceObjectData.netId].GetComponent<SpaceObject>();
         spaceObject.galaxyId = spaceObjectData.galaxyId;
         spaceObject.systemId = spaceObjectData.systemId;
         spaceObject.sectorId = spaceObjectData.sectorId;
         spaceObject.zoneId = spaceObjectData.zoneId;
+        spaceObject.characterLogin = spaceObjectData.characterLogin;
         spaceObject.SetSectorIndexes(spaceObjectData.GetSectorIndexes());
         spaceObject.SetZoneIndexes(spaceObjectData.GetZoneIndexes());
+        DebugConsole.Log(spaceObjectData.GetSectorIndexes());
         spaceObject.templateName = spaceObjectData.templateName;
         spaceObject.LoadValues();
         spaceObject.LoadHardpoints();
@@ -312,48 +365,19 @@ public class NetClient : NetworkBehaviour
     }
     public void SetZoneIndexes(Vector3 indexes, bool characterToo = false)
     {
-        ZoneIndexes = new int[] { (int)indexes.x, (int)indexes.y, (int)indexes.z };
-        if (characterToo)
-        {
-            if (characterData != null)
-            {
-                characterData.SetZoneIndexes(indexes);
-                //ServerDataManager.singleton.SendCharacterData(netId, characterData);
-            }
-        }
+        characterData.SetZoneIndexes(indexes);
     }
     public Vector3 GetZoneIndexes()
     {
-        if (characterData != null)
-        {
-            return characterData.GetZoneIndexes();
-        }
-        else
-        {
-            return new Vector3((int)this.ZoneIndexes[0], (int)this.ZoneIndexes[1], (int)this.ZoneIndexes[2]);
-        }
+        return characterData.GetZoneIndexes();
     }
     public void SetSectorIndexes(Vector3 indexes, bool characterToo = false)
     {
-        SectorIndexes = new int[] { (int)indexes.x, (int)indexes.y, (int)indexes.z };
-        if (characterToo)
-        {
-            if (characterData != null)
-            {
-                characterData.SetSectorIndexes(indexes);
-            }
-        }
+        characterData.SetSectorIndexes(indexes);
     }
     public Vector3 GetSectorIndexes()
     {
-        if (characterData != null)
-        {
-            return characterData.GetSectorIndexes();
-        }
-        else
-        {
-            return new Vector3((int)this.SectorIndexes[0], (int)this.SectorIndexes[1], (int)this.SectorIndexes[2]);
-        }
+        return characterData.GetSectorIndexes();
     }
     public Vector3 GetObjectPosition()
     {
@@ -467,13 +491,14 @@ public class NetClient : NetworkBehaviour
                     Zone.SetIndexes(znPos);
                     Zone.SetPosition(znPos * Zone.zoneStep);
                 }
-                
+
                 ControlledObject.transform.localPosition = -(GameContent.Space.RecalcPos(ControlledObject.transform.localPosition, Zone.zoneStep) - ControlledObject.transform.localPosition);
                 SpaceManager.singleton.spaceContainer.transform.localPosition = -GameContent.Space.RecalcPos(secPos * Sector.sectorStep + znPos * Zone.zoneStep, Zone.zoneStep);
-                DebugConsole.Log($"{secPos} {znPos} {SpaceManager.singleton.spaceContainer.transform.localPosition}");
                 SetSectorIndexes(curSIndexes, true);
                 SetZoneIndexes(znPos, true);
                 ControlledObject.SetZoneIndexes(znPos);
+                Vector3 sumPosIndexes = secPos + znPos;
+                containerIndexes = new SyncList<int> { (int)sumPosIndexes.x, (int)sumPosIndexes.y, (int)sumPosIndexes.z };
             }
         }
     }

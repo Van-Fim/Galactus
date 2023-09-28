@@ -8,6 +8,7 @@ namespace Data
     [System.Serializable]
     public class ServerData : IData
     {
+        string fileName = "server.data";
         public List<AccountData> accounts = new List<AccountData>();
         public List<CharacterData> characters = new List<CharacterData>();
         public List<GameStartData> gameStarts = new List<GameStartData>();
@@ -32,6 +33,15 @@ namespace Data
         {
             CharacterData ret = characters.Find(f => f.login == login);
             return ret;
+        }
+        public void UpdateCharacterByLogin(string login, CharacterData characterData)
+        {
+            CharacterData ret = characters.Find(f => f.login == login);
+            int ind = characters.IndexOf(ret);
+            if (ind >= 0)
+            {
+                characters[ind] = characterData;
+            }
         }
         public bool CheckLogin(string login, bool accountCheck = false)
         {
@@ -127,7 +137,6 @@ namespace Data
         {
             ServerData ret = null;
             string dir = XMLF.GetDirPatch();
-            string fileName = "server.data";
             FileStream file = null;
             if (!Directory.Exists(dir))
             {
@@ -145,6 +154,14 @@ namespace Data
                 ret = this;
             }
             return ret;
+        }
+        public void ClearGameData()
+        {
+            string dir = XMLF.GetDirPatch();
+            if (Directory.Exists(dir))
+            {
+                Directory.Delete(dir, true);
+            }
         }
     }
 }

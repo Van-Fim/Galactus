@@ -7,6 +7,7 @@ namespace Data
     public class SpaceObjectData : IData
     {
         public uint id;
+        public uint spaceObjectId;
         public uint netId;
         public string templateName;
         public string characterLogin;
@@ -73,6 +74,7 @@ namespace Data
             {
                 ret = GameObject.Instantiate(GamePrefabsManager.singleton.LoadPrefab<SpaceObject>("PilotPrefab"));
             }
+            ret.GetId();
             return ret;
         }
         public int GetGalaxyId()

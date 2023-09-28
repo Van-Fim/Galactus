@@ -10,6 +10,7 @@ public class SpaceObjectManager
     public static void LoadGameStartObjects(NetClient netClient)
     {
         GameStartData gm = GameStartManager.GetGameStart(netClient.characterData.gameStart);
+        
         netClient.SetIsGameStartDataLoaded(true);
         if (gm.spaceObjectDatas.Count > 0)
         {
@@ -41,8 +42,10 @@ public class SpaceObjectManager
                     spaceObject.netIdentity.AssignClientAuthority(netClient.connectionToClient);
                     spaceObject.isPlayerControll = true;
                     spaceObject.characterLogin = netClient.characterData.login;
+                    spaceObjectData.characterLogin = netClient.characterData.login;
                     spaceObjectData.netId = spaceObject.netId;
                     netClient.ControlledObject = spaceObject;
+                    netClient.controlledObjectId = spaceObject.id;
                     netClient.RenderLocal(spaceObjectData);
                 }
                 spaceObject.ServerInit();

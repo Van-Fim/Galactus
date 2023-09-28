@@ -20,6 +20,7 @@ namespace Data
         public string password;
         public string gameStart;
         public bool isGameStartDataLoaded;
+        public int controlledObjectId;
         public void SetZoneIndexes(Vector3 indexes)
         {
             zoneIndexes = new int[] { (int)indexes.x, (int)indexes.y, (int)indexes.z };

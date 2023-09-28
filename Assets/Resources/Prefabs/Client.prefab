@@ -62,15 +62,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d7f9af119093644c9e5d0b8f2f274ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
+  syncDirection: 1
   syncMode: 0
   syncInterval: 0
+  login: 
   accountData:
+    resources: []
     id: 0
     login: 
     password: 
   characterData:
+    resources: []
     id: 0
     accountId: 0
+    galaxyId: 0
+    systemId: 0
+    sectorId: 0
+    zoneId: 0
+    position:
+    - 0
+    - 0
+    - 0
+    rotation:
+    - 0
+    - 0
+    - 0
+    sectorIndexes: 000000000000000000000000
+    zoneIndexes: 000000000000000000000000
     login: 
     password: 
+    gameStart: 
+    isGameStartDataLoaded: 0
+    controlledObjectId: 0
+  controlledObjectId: 0

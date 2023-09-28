@@ -117,62 +117,12 @@ public class GameManager : MonoBehaviour
         }
         return ret;
     }
-    public void PreStartGame()
+    public void ClearGameData()
     {
-        CharactersClientPanel chclpn = ClientPanelManager.GetPanel<CharactersClientPanel>();
-        if (chclpn.selectedButton != null && chclpn.selectedButton.Selected)
+        string dir = XMLF.GetDirPatch();
+        if (Directory.Exists(dir))
         {
-            ClientPanelManager.Close<CharactersClientPanel>();
-            ClientPanelManager.Show<HudClientPanel>();
-            NetClient.singleton.characterData = chclpn.selectedButton.characterData;
-            //ServerDataManager.singleton.LoadGameStartObjects(NetClient.singleton.netId);
-            SpaceManager.Init();
-            SpaceManager.singleton.LoadGalaxies();
-            SpaceManager.singleton.BuildSystem(LocalClient.GetGalaxyId(), LocalClient.GetSystemId());
-            LocalClient.FixSpace();
-            if (!LocalClient.GetIsGameStartDataLoaded())
-            {
-                LocalClient.SetSectorIndexes(LocalClient.GetSector().GetIndexes(), true);
-                LocalClient.SetZoneIndexes(LocalClient.GetZone().GetIndexes(), true);
-            }
-
-            /*
-            textString += $"\n<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
-            textString += $"<color=white>Galaxy id: </color><color=green>{LocalClient.GetGalaxyId()}</color>\n";
-            textString += $"<color=white>System id: </color><color=green>{LocalClient.GetSystemId()}</color>\n";
-            textString += $"<color=white>Sector id: </color><color=green>{LocalClient.GetSectorId()}</color>\n";
-            textString += $"<color=white>Zone id: </color><color=green>{LocalClient.GetZoneId()}</color>\n";
-            textString += $"<color=white>Sector indexes: </color><color=green>{LocalClient.GetSectorIndexes()}</color>\n";
-            textString += $"<color=white>Zone indexes: </color><color=green>{LocalClient.GetZoneIndexes()}</color>\n";
-            textString += $"<color=white>Zones count: </color><color=green>{SpaceManager.singleton.zones.Count}</color>\n";
-            textString += $"\n<color=green>||||||||||||||||||||||||||||||||||||||</color>\n\n";
-            */
-            ServerDataManager.singleton.LoadSpaceObjects();
-            WarpData warpData = new WarpData();
-            warpData.galaxyId = LocalClient.GetGalaxyId();
-            warpData.systemId = LocalClient.GetSystemId();
-            warpData.sectorId = LocalClient.GetSectorId();
-            warpData.zoneId = LocalClient.GetZoneId();
-            warpData.position = LocalClient.GetPosition();
-            warpData.rotation = LocalClient.GetRotation();
-            warpData.SetSectorIndexes(LocalClient.GetSectorIndexes());
-            warpData.SetZoneIndexes(LocalClient.GetZoneIndexes());
-            NetClient.singleton.WarpClient(warpData);
-            if (!LocalClient.GetIsGameStartDataLoaded())
-            {
-                ServerDataManager.singleton.LoadGameStartObjects(NetClient.singleton.netId);
-                LocalClient.SetIsGameStartDataLoaded(true);
-            }
-            SpaceObject.InvokeRender();
-            SpaceObject.InvokeNetStart();
-
-            TestCube testCube = GamePrefabsManager.singleton.LoadPrefab<TestCube>("TestCube");
-            testCube = Instantiate(testCube);
-            testCube.Color = new Color32(0, 255, 0, 150);
-            testCube.transform.SetParent(SpaceManager.singleton.spaceContainer.transform);
-            testCube.transform.localPosition = LocalClient.GetSector().GetPosition();
-            testCube.name = "GreenTestCube";
-            DebugConsole.Log($"{LocalClient.GetSector().GetIndexes()} {SpaceManager.singleton.spaceContainer.transform.localPosition}");
+            Directory.Delete(dir, true);
         }
     }
     public void StartGame()

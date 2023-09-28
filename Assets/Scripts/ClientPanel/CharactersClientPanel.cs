@@ -171,7 +171,8 @@ public class CharactersClientPanel : ClientPanel
         });
         startGameButton.onClick.AddListener(() =>
         {
-            GameManager.singleton.PreStartGame();
+            LocalClient.SetCharacterData(selectedButton.characterData);
+            ServerDataManager.singleton.PreStartGame(LocalClient.GetNetId(), LocalClient.GetCharacterLogin());
         });
         UpdateText();
     }

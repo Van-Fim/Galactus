@@ -9,9 +9,17 @@ public static class LocalClient
     {
         return NetClient.singleton.netId;
     }
+    public static bool IsServer()
+    {
+        return NetClient.singleton.isServer;
+    }
     public static CharacterData GetCharacterData()
     {
         return NetClient.singleton.characterData;
+    }
+    public static void SetCharacterData(CharacterData characterData)
+    {
+        NetClient.singleton.characterData = characterData;
     }
     public static Vector3 GetObjectPosition()
     {
