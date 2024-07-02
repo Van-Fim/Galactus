@@ -1,0 +1,38 @@
+<templates>
+	<system name="System01" sizeMin="100000" sizeMax="100000">
+		<colors>
+			<bg_color rmin="50" gmin="50" bmin="50" amin="255" rmax="130" gmax="130" bmax="130"
+				amax="255" />
+			<color r="255" g="255" b="255" a="255" />
+		</colors>
+		<skyboxes>
+			<skybox name="Skybox01" />
+		</skyboxes>
+		<music musicList="musicList01" />
+		<space>
+			<object template="Station01">
+				<position x="0" y="50000" z="0" />
+				<rotation x="0" y="0" z="0" />
+			</object>
+		</space>
+	</system>
+	<system name="System02" sizeMin="100000" sizeMax="100000">
+		<colors>
+			<bg_color rmin="50" gmin="50" bmin="50" amin="255" rmax="90" gmax="90" bmax="90"
+				amax="255" />
+			<color r="255" g="255" b="255" a="255" />
+		</colors>
+		<skyboxes>
+			<skybox name="Skybox02" />
+			<skybox name="Skybox03" />
+			<skybox name="Skybox04" />
+		</skyboxes>
+		<music musicList="musicList01" />
+		<space>
+			<object template="Station01">
+				<position x="0" y="-100000" z="0" />
+				<rotation x="0" y="0" z="0" />
+			</object>
+		</space>
+	</system>
+</templates>

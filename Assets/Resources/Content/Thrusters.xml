@@ -1,0 +1,22 @@
+<templates>
+	<thruster name="thrustur_mk1" type="1">
+		<params mass="50" volume="20" thruster_capacity="500" thruster_recharge_delay="1" thruster_regeneration_step_value="4" thruster_regeneration_step_delay="0.05" thruster_generator_type="2" thruster_velocity="300000" thruster_max_speed="500000" thruster_regeneration_pause_delay="1" />
+		<sounds sound1="thrustur_mk1" />
+		<price value="100000" />
+	</thruster>
+	<thruster name="thrustur_mk1000" type="1">
+		<params mass="50" volume="20" thruster_capacity="1000" thruster_recharge_delay="1" thruster_regeneration_step_value="5" thruster_regeneration_step_delay="0.05" thruster_generator_type="2" thruster_velocity="300" thruster_max_speed="100000000" thruster_regeneration_pause_delay="1" />
+		<sounds sound1="thrustur_mk1" />
+		<price value="100000" />
+	</thruster>
+	<thruster name="thrustur_inf_mk1000" type="1">
+		<params mass="50" volume="20" thruster_capacity="10000000" thruster_recharge_delay="1" thruster_regeneration_step_value="500" thruster_regeneration_step_delay="1" thruster_generator_type="2" thruster_velocity="300" thruster_max_speed="100000000" thruster_regeneration_pause_delay="1" />
+		<sounds sound1="thrustur_mk1" />
+		<price value="100000" />
+	</thruster>
+	<thruster name="thrustur_mk1000000" type="1">
+		<params mass="50" volume="20" thruster_capacity="10000" thruster_recharge_delay="1" thruster_regeneration_step_value="400" thruster_regeneration_step_delay="0.05" thruster_generator_type="2" thruster_velocity="100" thruster_max_speed="50000000000" thruster_regeneration_pause_delay="1" />
+		<sounds sound1="thrustur_mk1" />
+		<price value="100000" />
+	</thruster>
+</templates>

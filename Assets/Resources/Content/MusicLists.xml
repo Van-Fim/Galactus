@@ -1,0 +1,9 @@
+<templates>
+	<muslist name="musicList01" startTimerMin="5" startTimerMax="10">
+		<music name="music01"/>
+		<music name="music03"/>
+		<music name="music04"/>
+		<music name="music05"/>
+		<music name="music06"/>
+	</muslist>
+</templates>

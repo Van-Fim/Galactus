@@ -1,0 +1,71 @@
+<templates>
+	<menu name="MainMenu">
+		<main name="MainMenu" flags="100 200" item="panel01" height="100%" width="100%">
+			<panel name="Menu" item="panel02" height="100%" width="50" align-self="left"
+				align-items="vertical" bg_color="0 130 0 100">
+				<button height="50" width="50" name="Resume"
+					action="swich_item MainMenu msw01 SwitchMenu01"
+					item="icon_button01" bg_color="0 0 0 0" btn_icon="resume">
+				</button>
+				<button height="50" width="50" name="Save game"
+					action="swich_item MainMenu msw01 SwitchMenu02"
+					item="icon_button01" bg_color="0 0 0 0" btn_icon="save">
+				</button>
+				<button height="50" width="50" name="Load game"
+					action="swich_item MainMenu msw01 SwitchMenu03"
+					item="icon_button01" bg_color="0 0 0 0" btn_icon="load">
+				</button>
+				<params />
+			</panel>
+			<panel name="PanelBlock" item="panel02" height="100%" width="100%" bg_color="0 0 0 0"
+				margin="0 0 0 50">
+				<panel active="true" name="SwitchMenu01" swich-group="msw01" item="panel02"
+					height="100%" width="100%" bg_color="0 0 0 0">
+					<label height="50" width="200" name="Text01" data-value="galaxy.id">
+					</label>
+					<panel item="panel02" height="50" width="100%"
+						align-self="down"
+						align-items="horizontal" bg_color="0 0 0 100">
+						<button height="50" width="50" name="Resume"
+							action="swich_camera MainCamera;show_menu MainHudMenu;block_player_control false"
+							item="icon_button01" bg_color="0 0 0 0" btn_icon="resume">
+						</button>
+					</panel>
+				</panel>
+				<panel name="SwitchMenu02" swich-group="msw01" item="panel02" height="100%"
+					width="100%" bg_color="100 0 0 100">
+				</panel>
+				<panel name="SwitchMenu03" swich-group="msw01" item="panel02" height="100%"
+					width="100%" bg_color="0 0 100 100">
+				</panel>
+			</panel>
+		</main>
+	</menu>
+	<menu name="MainHudMenu">
+		<main name="MainHudMenu" item="panel02" height="50" width="100%" align-self="up"
+			align-items="horizontal" bg_color="0 130 0 100">
+			<button height="50" width="50" name="Map"
+				action="swich_camera MapCamera;show_menu MapHudMenu"
+				item="icon_button01" bg_color="0 0 0 0" btn_icon="galaxy">
+			</button>
+			<button height="50" width="50" name="Warp" action="warp_player" item="icon_button01"
+				bg_color="0 0 0 0"
+				btn_icon="warp">
+			</button>
+			<button height="50" width="50" name="MainMenu"
+				action="show_menu MainMenu;block_player_control true" item="icon_button01"
+				bg_color="0 0 0 0"
+				btn_icon="pause">
+			</button>
+		</main>
+	</menu>
+	<menu name="MapHudMenu">
+		<main name="MapHudMenu" flags="100" item="panel02" height="50" width="100%" align-self="up"
+			align-items="horizontal" bg_color="0 130 0 100">
+			<button height="50" width="50" name="Map"
+				action="swich_camera MainCamera;show_menu MainHudMenu"
+				item="icon_button01" bg_color="0 0 0 0" btn_icon="galaxy">
+			</button>
+		</main>
+	</menu>
+</templates>

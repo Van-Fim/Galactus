@@ -1,0 +1,10 @@
+<templates>
+	<object name="Station01">
+		<model patch="Models/Stations/Station01" />
+		<params mass="1000" drag="0" angulardrag="0" maxhull="100" />
+	</object>
+	<object name="Station02">
+		<model patch="Models/Stations/Station02" />
+		<params mass="1000" drag="0" angulardrag="0" maxhull="100" scale="10000000" />
+	</object>
+</templates>

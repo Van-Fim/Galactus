@@ -1,0 +1,12 @@
+<factions>
+	<faction name="fct01">
+		<relations>
+			<relation faction="fct02" value="-100000" />
+		</relations>
+	</faction>
+	<faction name="fct02">
+		<relations>
+			<relation faction="fct01" value="-150000" />
+		</relations>
+	</faction>
+</factions>

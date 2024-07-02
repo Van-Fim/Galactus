@@ -1,0 +1,6 @@
+<templates>
+	<resource_type name="gmoney" text="[1100,2,1]" subtype="0">
+	</resource_type>
+	<resource_type name="money" text="[1100,2,2]" subtype="1">
+	</resource_type>
+</templates>

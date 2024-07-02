@@ -1,0 +1,6 @@
+<upgrades>
+	<upgrade name="upgrade_mk1" type="1">
+		<params mass="50" shield_capacity="500" shield_recharge_delay="1" shield_regeneration_step_value="5" shield_regeneration_step_delay="0.1" shield_generator_type="3" shield_regeneration_pause_delay="5" />
+		<price value="2500" />
+	</upgrade>
+</upgrades>

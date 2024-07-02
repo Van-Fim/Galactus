@@ -1,0 +1,6 @@
+<templates>
+	<asteroid name="Aster01">
+		<model patch="Models/Asteroids/Aster01" />
+		<params mass="500" drag="2" angulardrag="2" maxhull="500" scaleMin="150" scaleMax="160" scaleMass="1"  />
+	</asteroid>
+</templates>

@@ -1,0 +1,7 @@
+<spawner>
+	<spawn name="sp01" region="Reg01">
+		<objects>
+			<station template="Station01" faction="fct01" system_min="3" system_max="8" sector_min="2" sector_max="4" zone_min="1" zone_max="1" respawn_time="20000" />
+		</objects>
+	</spawn>
+</spawner>

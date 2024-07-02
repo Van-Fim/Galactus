@@ -1,0 +1,26 @@
+<templates>
+	<start name="Start01">
+		<space galaxy="0" system="0">
+			<ship playerShip="1" template="Ship01" pilotTemplate="Pilot01">
+				<position x="0" y="-2000" z="0" />
+				<rotation x="0" y="0" z="0" />
+			</ship>
+			<gate template="Gate01">
+				<destinationGate galaxy="1" system="1" gate="0" />
+				<position x="0" y="0" z="170000" />
+				<rotation x="0" y="180" z="0" />
+			</gate>
+		</space>
+		<space galaxy="1" system="0">
+			<gate template="Gate01">
+				<destinationGate galaxy="0" system="0" gate="0" />
+				<position x="0" y="0" z="-170000" />
+				<rotation x="0" y="0" z="0" />
+			</gate>
+			<object template="Station02">
+				<position x="-20000000" y="0" z="10000000" />
+				<rotation x="0" y="0" z="0" />
+			</object>
+		</space>
+	</start>
+</templates>
