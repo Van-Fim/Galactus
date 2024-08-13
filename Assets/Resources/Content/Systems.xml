@@ -11,7 +11,7 @@
 		<music musicList="musicList01" />
 		<space>
 			<spaceobject template="Station01">
-				<position x="0" y="130000" z="0" />
+				<position x="0" y="1300" z="0" />
 				<rotation x="0" y="0" z="0" />
 			</spaceobject>
 		</space>
@@ -30,7 +30,7 @@
 		<music musicList="musicList01" />
 		<space>
 			<spaceobject template="Station01">
-				<position x="0" y="130000" z="0" />
+				<position x="0" y="1300" z="0" />
 				<rotation x="0" y="0" z="0" />
 			</spaceobject>
 		</space>

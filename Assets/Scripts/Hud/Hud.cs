@@ -76,6 +76,7 @@ public class Hud : MonoBehaviour
         {
             Time.timeScale = 1;
         }
+        UiTextController.InvokeUpdate();
     }
     public void ShowSingle()
     {

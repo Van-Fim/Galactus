@@ -1,8 +1,8 @@
 <templates>
 	<start name="Start01" universe="default">
-		<space galaxy="0" system="1">
+		<space galaxy="0" system="1" sector="1">
 			<ship playerShip="1" template="Ship01" pilotTemplate="Pilot01">
-				<position x="0" y="-20000" z="0" />
+				<position x="0" y="0" z="0" />
 				<rotation x="0" y="0" z="0" />
 			</ship>
 		</space>

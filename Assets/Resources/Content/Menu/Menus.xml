@@ -1,19 +1,23 @@
 <templates>
 	<menu name="MainMenu">
-		<main name="MainMenu" flags="100 200" item="panel01" height="100%" width="100%">
+		<main name="MainMenu" flags="100 200" item="panel01" height="100%" width="100%"
+			bg_color="0 0 0 255">
 			<panel name="Menu" item="panel02" height="100%" width="50" align-self="left"
 				align-items="vertical" bg_color="0 130 0 100">
-				<button height="50" width="50" name="Resume"
+				<button group="grp01" height="50" width="50" name="Resume"
 					action="swich_item MainMenu msw01 SwitchMenu01"
-					item="icon_button01" bg_color="0 0 0 0" btn_icon="resume">
+					item="icon_button01" bg_color="0 0 0 0" selected_bg_color="0 0 0 255"
+					btn_icon="resume">
 				</button>
-				<button height="50" width="50" name="Save game"
+				<button group="grp01" height="50" width="50" name="Save game"
 					action="swich_item MainMenu msw01 SwitchMenu02"
-					item="icon_button01" bg_color="0 0 0 0" btn_icon="save">
+					item="icon_button01" bg_color="0 0 0 0" selected_bg_color="0 0 0 255"
+					btn_icon="save">
 				</button>
-				<button height="50" width="50" name="Load game"
+				<button group="grp01" height="50" width="50" name="Load game"
 					action="swich_item MainMenu msw01 SwitchMenu03"
-					item="icon_button01" bg_color="0 0 0 0" btn_icon="load">
+					item="icon_button01" bg_color="0 0 0 0" selected_bg_color="0 0 0 255"
+					btn_icon="load">
 				</button>
 				<params />
 			</panel>
@@ -21,10 +25,32 @@
 				margin="0 0 0 50">
 				<panel active="true" name="SwitchMenu01" swich-group="msw01" item="panel02"
 					height="100%" width="100%" bg_color="0 0 0 0">
-					<label height="50" width="200" name="Text01" data-value="galaxy.id">
-					</label>
+					<panel item="panel02" height="50"
+						width="100%" bg_color="100 0 0 100" align-self="top">
+						<label item="ui_label" height="50" width="100%" name="Text01"
+							aligment="middlecenter"
+							data-value="Pause" />
+					</panel>
+					<panel item="panel02"
+						height="100%" width="100%" margin="50 0 50 0">
+						<label item="ui_label" height="50" width="200" name="Text01" aligment="left"
+							data-value="Galaxy id:" position="120 0 0" align-self="topleft" />
+						<label item="ui_label" height="50" width="200" name="Text02"
+							aligment="center"
+							data-value="player.galaxy.id" position="320 0 0" align-self="topleft" />
+						<label item="ui_label" height="50" width="200" name="Text03" aligment="left"
+							data-value="System id:" position="120 -50 0" align-self="topleft" />
+						<label item="ui_label" height="50" width="200" name="Text04"
+							aligment="center"
+							data-value="player.system.id" position="320 -50 0" align-self="topleft" />
+						<label item="ui_label" height="50" width="200" name="Text05" aligment="left"
+							data-value="Sector id:" position="120 -100 0" align-self="topleft" />
+						<label item="ui_label" height="50" width="200" name="Text06"
+							aligment="center"
+							data-value="player.sector.id" position="320 -100 0" align-self="topleft" />
+					</panel>
 					<panel item="panel02" height="50" width="100%"
-						align-self="down"
+						align-self="bottom"
 						align-items="horizontal" bg_color="0 0 0 100">
 						<button height="50" width="50" name="Resume"
 							action="swich_camera MainCamera;show_menu MainHudMenu;block_player_control false"
@@ -33,7 +59,29 @@
 					</panel>
 				</panel>
 				<panel name="SwitchMenu02" swich-group="msw01" item="panel02" height="100%"
-					width="100%" bg_color="100 0 0 100">
+					width="100%">
+					<panel item="panel02" height="50"
+						width="100%" bg_color="100 0 0 100" align-self="top">
+						<label item="ui_label" height="50" width="100%" name="Text01"
+							aligment="middlecenter"
+							data-value="Save game" />
+					</panel>
+					<panel item="panel02"
+						height="100%" width="100%" margin="50 0 50 0">
+						<panel name="MainHudMenuPanel01" item="scroll01" height="100%" width="100%" bg_color="0 100 0 100">
+							<content count="save.slot.count">
+
+							</content>
+						</panel>
+					</panel>
+					<panel item="panel02" height="50" width="100%"
+						align-self="bottom"
+						align-items="horizontal" bg_color="0 0 0 100">
+						<button height="50" width="50" name="Resume"
+							action="swich_camera MainCamera;show_menu MainHudMenu;block_player_control false"
+							item="icon_button01" bg_color="0 0 0 0" btn_icon="resume">
+						</button>
+					</panel>
 				</panel>
 				<panel name="SwitchMenu03" swich-group="msw01" item="panel02" height="100%"
 					width="100%" bg_color="0 0 100 100">
@@ -42,25 +90,39 @@
 		</main>
 	</menu>
 	<menu name="MainHudMenu">
-		<main name="MainHudMenu" item="panel02" height="50" width="100%" align-self="up"
-			align-items="horizontal" bg_color="0 130 0 100">
-			<button height="50" width="50" name="Map"
-				action="swich_camera MapCamera;show_menu MapHudMenu"
-				item="icon_button01" bg_color="0 0 0 0" btn_icon="galaxy">
-			</button>
-			<button height="50" width="50" name="Warp" action="warp_player" item="icon_button01"
-				bg_color="0 0 0 0"
-				btn_icon="warp">
-			</button>
-			<button height="50" width="50" name="MainMenu"
-				action="show_menu MainMenu;block_player_control true" item="icon_button01"
-				bg_color="0 0 0 0"
-				btn_icon="pause">
-			</button>
+		<main name="MainHudMenu" item="panel00" height="100%" width="100%">
+			<panel name="MainHudMenuPanel01" item="panel02" height="50" width="100%"
+				align-self="top"
+				align-items="horizontal" bg_color="0 130 0 100">
+				<button height="50" width="50" name="Map"
+					action="swich_camera MapCamera;show_menu MapHudMenu"
+					item="icon_button01" bg_color="0 0 0 0" btn_icon="galaxy">
+				</button>
+				<button height="50" width="50" name="Warp" action="warp_player" item="icon_button01"
+					bg_color="0 0 0 0"
+					btn_icon="warp">
+				</button>
+				<button height="50" width="50" name="MainMenu"
+					action="show_menu MainMenu;block_player_control true" item="icon_button01"
+					bg_color="0 0 0 0"
+					btn_icon="pause">
+				</button>
+			</panel>
+			<panel name="MainHudMenuPanel02" item="panel00" height="100%" width="100%"
+				margin="50 0 0 0">
+				<label item="ui_label" height="25" width="100" name="Text01" fontsize="16"
+					aligment="left"
+					data-value="Speed:" position="-50 -80 0" color="255 255 255 100"
+					align-self="middlecenter" />
+				<label item="ui_label" height="25" width="100" name="Text02" fontsize="16"
+					aligment="right"
+					data-value="player.speed" position="50 -80 0" color="255 255 255 100"
+					align-self="middlecenter" />
+			</panel>
 		</main>
 	</menu>
 	<menu name="MapHudMenu">
-		<main name="MapHudMenu" flags="100" item="panel02" height="50" width="100%" align-self="up"
+		<main name="MapHudMenu" flags="100" item="panel02" height="50" width="100%" align-self="top"
 			align-items="horizontal" bg_color="0 130 0 100">
 			<button height="50" width="50" name="Map"
 				action="swich_camera MainCamera;show_menu MainHudMenu"

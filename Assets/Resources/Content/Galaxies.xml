@@ -1,8 +1,6 @@
 <templates>
-	<galaxy name="Gal1" type="default" systems_min="3" systems_max="3">
+	<galaxy name="Gal1" type="default" systems_min="30" systems_max="30">
 		<systems>
-			<system template="System01" weight="100" minRange="0" maxRange="300" size="10"
-				Ymin="0" Ymax="20"></system>
 			<system template="System02" weight="100" minRange="0" maxRange="300" size="10"
 				Ymin="0" Ymax="20"></system>
 		</systems>

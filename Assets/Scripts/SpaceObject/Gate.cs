@@ -17,7 +17,7 @@ public class Gate : SpaceObject
                 warped = destinationGate.warped = true;
                 Galaxy galaxy = SpaceManager.galaxies.Find(g => g.id == destinationSystem.galaxyId);
                 LocalClient.galaxyId = galaxy.id;
-                LocalClient.controlledObject.Warp(destinationSystem, destinationGate.transform.localPosition, destinationGate.transform.localEulerAngles);
+                LocalClient.controlledObject.Warp(destinationSystem, 1, destinationGate.transform.localPosition, destinationGate.transform.localEulerAngles);
             }
             else
             {

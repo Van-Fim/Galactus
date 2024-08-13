@@ -159,6 +159,10 @@ public class SpaceManager : MonoBehaviour
                     system.skyboxName = skyboxNode.GetValue("name");
                 }
                 system.size = size;
+
+                Sector sector = new Sector(system, "Sector00");
+                sector.SetPosition(new Vector3(0,0,0));
+
                 system.Init();
             }
             galaxy.spaceSystems = SpaceManager.spaceSystems.FindAll(x => x.galaxyId == galaxy.id);

@@ -54,13 +54,14 @@ public class GameManager : MonoBehaviour
         SpaceManager.LoadSystem(LocalClient.SpaceSystem);
         SpaceObject.InvokeRender();
 
-        LocalClient.controlledObject.WarpSystem(LocalClient.SpaceSystem);
+        LocalClient.controlledObject.WarpSystem(LocalClient.SpaceSystem, LocalClient.Sector.id);
 
         if (LocalClient.controlledObject != null)
         {
             SpaceObject cobj = LocalClient.controlledObject;
             LocalClient.controlledObject.isInitialized = true;
             LocalClient.controlledObject.isPlayerControll = true;
+
             Hardpoint camHP = cobj.GetHardpointByType("camera");
             CameraManager.mainCamera.IsCamEnabled = false;
             CameraManager.mainCamera.transform.SetParent(cobj.main.transform);

@@ -9,6 +9,7 @@ public class HudData : IData
     public string name;
     public string swichGroup;
     public string type;
+    public string group;
     public bool isActive;
     public int id;
     public int depth;
@@ -17,7 +18,11 @@ public class HudData : IData
     public string parentHudName;
     public List<HudData> childList = new List<HudData>();
     public List<ParamData> paramsData = new List<ParamData>();
-    public Color32 bgColor = new Color32(0, 0, 0, 255);
+    public Color32 bgColor1 = new Color32(0, 0, 0, 0);
+    public Color32 bgColor2 = new Color32(0, 0, 0, 0);
+    public bool bgColor2isActive;
+    public bool customPos;
+    public Vector3 position;
     public bool isHideInds;
     public bool freezeTime;
 }

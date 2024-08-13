@@ -96,6 +96,7 @@ public class SpaceObjectManager : MonoBehaviour
                 spaceObjectData.SetRotation(rotation);
                 spaceObjectData.galaxyId = galaxyId;
                 spaceObjectData.systemId = systemId;
+                spaceObjectData.sectorId = sectorId;
                 uint id = 0;
                 while ((ret.Find(f => f.id == id) != null) || (SpaceObjectManager.spaceObjects.Find(f => f.id == id) != null))
                 {
@@ -133,11 +134,13 @@ public class SpaceObjectManager : MonoBehaviour
                 }
                 int galaxyId = int.Parse(spaceNode.GetValue("galaxy"));
                 int systemId = int.Parse(spaceNode.GetValue("system"));
+                int sectorId = int.Parse(spaceNode.GetValue("sector"));
                 plyShipExist = System.Convert.ToBoolean(byte.Parse(objectNode.GetValue("playerShip")));
                 if (plyShipExist)
                 {
                     LocalClient.galaxyId = galaxyId;
                     LocalClient.systemId = systemId;
+                    LocalClient.sectorId = sectorId;
                 }
                 string templateStringName = objectNode.GetValue("template");
                 TemplateNode positionNode = objectNode.GetChildNode("position");

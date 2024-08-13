@@ -9,7 +9,7 @@ public class IND_target : MonoBehaviour, IPointerClickHandler
     public static IND_target selectedTarget;
     public static Color32 defColor = Color.white;
     public static Color32 selectedColor = Color.green;
-    public static int defaultScale = 30;
+    public static int defaultScale = 1;
     public Image selfImage;
     public float scaleFactor = 1;
     public SpaceObject spaceObject;
@@ -39,7 +39,7 @@ public class IND_target : MonoBehaviour, IPointerClickHandler
     }
     public void FixObject()
     {
-        float sc = defaultScale * scaleFactor;
+        float sc = defaultScale * 40;
         float sc2 = sc * 2 + defaultScale * 2;
         colliderImage.rectTransform.sizeDelta = new Vector2(sc2, sc2);
         topLeftBorder.transform.localPosition = new Vector3(-sc, sc, 0);

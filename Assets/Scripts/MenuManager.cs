@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Events;
 using System;
+using Unity.VisualScripting;
 [System.Serializable]
 public class MenuManagerEvent : UnityEvent<List<string>, List<List<string>>>
 {
@@ -14,13 +15,17 @@ public class MenuManager : MonoBehaviour
 {
     public static MenuManager singleton;
     public static List<Hud> huds = new List<Hud>();
-    List<HudData> hudDataList = new List<HudData>();
+    public static List<HudData> hudDataList = new List<HudData>();
     public static MenuManagerEvent OnSendActionAction;
     void Awake()
     {
         singleton = this;
         OnSendActionAction = new MenuManagerEvent();
         OnSendActionAction.AddListener(OnSendAction);
+    }
+    void Update()
+    {
+        UiTextController.InvokeUpdate();
     }
     public static void OnSendAction(List<string> actions, List<List<string>> args)
     {
@@ -56,7 +61,7 @@ public class MenuManager : MonoBehaviour
             }
         }
     }
-    public void ButtonAction(string action)
+    public void ButtonAction(Button btn, string action)
     {
         List<string> commands = new List<string>();
         List<List<string>> allargs = new List<List<string>>();
@@ -78,6 +83,36 @@ public class MenuManager : MonoBehaviour
             }
             allargs.Add(args);
         }
+
+
+        if (btn != null)
+        {
+            HudData hudData = hudDataList.Find(x => x.GMObject.gameObject == btn.gameObject);
+            Image img0 = hudData.GMObject.GetComponent<Image>();
+
+            if (hudData != null && hudData.group != null)
+            {
+                List<HudData> hds = hudDataList.FindAll(x => x.group == hudData.group);
+                for (int i = 0; i < hds.Count; i++)
+                {
+                    if (hds[i].GMObject == null)
+                    {
+                        continue;
+                    }
+                    Image img = hds[i].GMObject.GetComponent<Image>();
+                    if (img == null)
+                    {
+                        continue;
+                    }
+                    img.color = hds[i].bgColor1;
+                }
+            }
+            if (img0 != null && hudData.bgColor2isActive)
+            {
+                img0.color = hudData.bgColor2;
+            }
+        }
+
         OnSendActionAction.Invoke(commands, allargs);
     }
     public void BuildAll()
@@ -98,21 +133,22 @@ public class MenuManager : MonoBehaviour
             HudData hudData = hudDataList[i];
             if (hudData.name != null && hudData.type == "main")
             {
-                hudData.GMObject.name = hudData.name;
+                hudData.GMObject.name = $"{hudData.name}_{hudData.id}";
                 hud = hudData.GMObject.AddComponent<Hud>();
                 hud.hudName = hudData.name;
                 hud.isHideInds = hudData.isHideInds;
                 hud.freezeTime = hudData.freezeTime;
-                hud.gameObject.SetActive(hudData.isActive);
                 huds.Add(hud);
             }
-            else
+            hudData.GMObject.SetActive(hudData.isActive);
+            if (hudData.swichGroup != null)
             {
-                hudData.GMObject.SetActive(hudData.isActive);
-                if (hudData.swichGroup != null)
-                {
-                    Hud.AddHudSwichGroupData(hud.hudName, hudData);
-                }
+                Hud.AddHudSwichGroupData(hud.hudName, hudData);
+            }
+            if (hudData.customPos)
+            {
+                RectTransform rt = hudData.GMObject.GetComponent<RectTransform>();
+                rt.localPosition = rt.localPosition + hudData.position;
             }
         }
     }
@@ -147,7 +183,13 @@ public class MenuManager : MonoBehaviour
                         if (templateItem.ValueName == "bg_color" && templateItem.Value != null)
                         {
                             string[] exp1 = templateItem.Value.Split(' ');
-                            hudData.bgColor = new Color32(byte.Parse(exp1[0]), byte.Parse(exp1[1]), byte.Parse(exp1[2]), byte.Parse(exp1[3]));
+                            hudData.bgColor1 = new Color32(byte.Parse(exp1[0]), byte.Parse(exp1[1]), byte.Parse(exp1[2]), byte.Parse(exp1[3]));
+                        }
+                        if (templateItem.ValueName == "selected_bg_color" && templateItem.Value != null)
+                        {
+                            string[] exp1 = templateItem.Value.Split(' ');
+                            hudData.bgColor2 = new Color32(byte.Parse(exp1[0]), byte.Parse(exp1[1]), byte.Parse(exp1[2]), byte.Parse(exp1[3]));
+                            hudData.bgColor2isActive = true;
                         }
                     }
                 }
@@ -242,16 +284,22 @@ public class MenuManager : MonoBehaviour
                         obj = hudDataList[i].GMObject.transform;
                         obj.SetParent(parentTransform);
                         hudDataList[i].GMObject.AddComponent<RectTransform>();
-                        hudDataList[i].GMObject.name = hudDataList[i].type;
                     }
-                    
-                    hudDataList[i].GMObject.name = hudDataList[i].item;
+                    if (hudDataList[i].name == null)
+                    {
+                        hudDataList[i].GMObject.name = $"{hudDataList[i].type}_{hudDataList[i].id}";
+                    }
+                    else
+                    {
+                        hudDataList[i].GMObject.name = hudDataList[i].name;
+                    }
+
                     hudDataList[i].isActive = false;
 
                     Image image = hudDataList[i].GMObject.GetComponent<Image>();
                     if (image != null)
                     {
-                        image.color = hudDataList[i].bgColor;
+                        image.color = hudDataList[i].bgColor1;
                     }
                     Transform gmSh = hudDataList[i].GMObject.transform.Find("ICON");
                     Image btnImg = null;
@@ -369,43 +417,64 @@ public class MenuManager : MonoBehaviour
                                 if (paramData.name == "height")
                                 {
                                     rctr.sizeDelta = new Vector2(rctr.sizeDelta.x, v);
-                                    if (alignSelf == "up")
+                                    if (alignSelf == "top")
                                     {
                                         rctr.anchoredPosition = new Vector2(rctr.anchoredPosition.x, -v / 2);
-                                        if (anchorMin.y == 0 && anchorMax.y == 1)
-                                        {
-                                            rctr.anchorMin = new Vector2(rctr.anchorMin.x, 1);
-                                            rctr.anchorMax = new Vector2(rctr.anchorMax.x, 1);
-                                        }
+                                        rctr.anchorMin = new Vector2(rctr.anchorMin.x, 1);
+                                        rctr.anchorMax = new Vector2(rctr.anchorMax.x, 1);
                                     }
-                                    else if (alignSelf == "down")
+                                    else if (alignSelf == "middlecenter")
+                                    {
+                                        rctr.anchoredPosition = new Vector2(rctr.anchoredPosition.x, 0);
+                                        rctr.anchorMin = new Vector2(rctr.anchorMin.x, 0.5f);
+                                        rctr.anchorMax = new Vector2(rctr.anchorMax.x, 0.5f);
+                                    }
+                                    else if (alignSelf == "topleft")
+                                    {
+                                        rctr.anchoredPosition = new Vector2(rctr.anchoredPosition.x, -v / 2);
+                                        rctr.anchorMin = new Vector2(0, 1);
+                                        rctr.anchorMax = new Vector2(0, 1);
+                                    }
+                                    else if (alignSelf == "topright")
+                                    {
+                                        rctr.anchoredPosition = new Vector2(rctr.anchoredPosition.x, -v / 2);
+                                        rctr.anchorMin = new Vector2(1, 1);
+                                        rctr.anchorMax = new Vector2(1, 1);
+                                    }
+                                    else if (alignSelf == "bottomleft")
+                                    {
+                                        rctr.anchoredPosition = new Vector2(rctr.anchoredPosition.x, -v / 2);
+                                        rctr.anchorMin = new Vector2(0, 0);
+                                        rctr.anchorMax = new Vector2(0, 0);
+                                    }
+                                    else if (alignSelf == "bottomright")
+                                    {
+                                        rctr.anchoredPosition = new Vector2(rctr.anchoredPosition.x, -v / 2);
+                                        rctr.anchorMin = new Vector2(1, 0);
+                                        rctr.anchorMax = new Vector2(1, 0);
+                                    }
+                                    else if (alignSelf == "bottom")
                                     {
                                         rctr.anchoredPosition = new Vector2(rctr.anchoredPosition.x, v / 2);
-                                        if (anchorMin.y == 0 && anchorMax.y == 1)
-                                        {
-                                            rctr.anchorMin = new Vector2(rctr.anchorMin.x, 0);
-                                            rctr.anchorMax = new Vector2(rctr.anchorMax.x, 0);
-                                        }
+                                        rctr.anchorMin = new Vector2(rctr.anchorMin.x, 0);
+                                        rctr.anchorMax = new Vector2(rctr.anchorMax.x, 0);
                                     }
                                 }
                                 else if (paramData.name == "width")
                                 {
                                     rctr.sizeDelta = new Vector2(v, rctr.sizeDelta.y);
 
-                                    if (anchorMin.x == 0 && anchorMax.x == 1)
+                                    if (alignSelf == "left")
                                     {
-                                        if (alignSelf == "left")
-                                        {
-                                            rctr.anchoredPosition = new Vector2(v / 2, rctr.anchoredPosition.y);
-                                            rctr.anchorMin = new Vector2(0, rctr.anchorMin.y);
-                                            rctr.anchorMax = new Vector2(0, rctr.anchorMax.y);
-                                        }
-                                        else if (alignSelf == "right")
-                                        {
-                                            rctr.anchoredPosition = new Vector2(-v / 2, rctr.anchoredPosition.y);
-                                            rctr.anchorMin = new Vector2(1, rctr.anchorMin.y);
-                                            rctr.anchorMax = new Vector2(1, rctr.anchorMax.y);
-                                        }
+                                        rctr.anchoredPosition = new Vector2(v / 2, rctr.anchoredPosition.y);
+                                        rctr.anchorMin = new Vector2(0, rctr.anchorMin.y);
+                                        rctr.anchorMax = new Vector2(0, rctr.anchorMax.y);
+                                    }
+                                    else if (alignSelf == "right")
+                                    {
+                                        rctr.anchoredPosition = new Vector2(-v / 2, rctr.anchoredPosition.y);
+                                        rctr.anchorMin = new Vector2(1, rctr.anchorMin.y);
+                                        rctr.anchorMax = new Vector2(1, rctr.anchorMax.y);
                                     }
                                 }
                             }
@@ -416,12 +485,47 @@ public class MenuManager : MonoBehaviour
                             {
                                 btnImg.sprite = Resources.Load<Sprite>("Icons/" + paramData.value);
                             }
+                            else if (paramData.name == "data-value" && paramData.value != null && hudDataList[i].type == "label")
+                            {
+                                if (hudDataList[i].GMObject.TryGetComponent<UiTextController>(out UiTextController uiText))
+                                {
+                                    uiText.SetLabel(paramData.value);
+                                }
+                            }
+                            else if (paramData.name == "aligment" && paramData.value != null && hudDataList[i].type == "label")
+                            {
+                                if (hudDataList[i].GMObject.TryGetComponent<UiTextController>(out UiTextController uiText))
+                                {
+                                    uiText.AlignText(paramData.value);
+                                }
+                            }
+                            else if (paramData.name == "fontsize" && paramData.value != null && hudDataList[i].type == "label")
+                            {
+                                if (hudDataList[i].GMObject.TryGetComponent<UiTextController>(out UiTextController uiText))
+                                {
+                                    uiText.SetFontSize(int.Parse(paramData.value));
+                                }
+                            }
+                            else if (paramData.name == "color" && paramData.value != null && hudDataList[i].type == "label")
+                            {
+                                if (hudDataList[i].GMObject.TryGetComponent<UiTextController>(out UiTextController uiText))
+                                {
+                                    uiText.SetColor(paramData.value);
+                                }
+                            }
                             else if (paramData.name == "action" && paramData.value != null)
                             {
                                 Button btn = hudDataList[i].GMObject.GetComponent<Button>();
                                 if (btn != null)
                                 {
-                                    btn.onClick.AddListener(() => ButtonAction(paramData.value));
+                                    List<HudData> hds = hudDataList.FindAll(x => x.group == hudDataList[i].group);
+                                    if (hds.Count == 1)
+                                    {
+                                        hudDataList[i].bgColor2isActive = true;
+                                        Image iii = hudDataList[i].GMObject.GetComponent<Image>();
+                                        iii.color = hudDataList[i].bgColor2;
+                                    }
+                                    btn.onClick.AddListener(() => ButtonAction(btn, paramData.value));
                                 }
                             }
                             else if (paramData.name == "margin" && paramData.value != null)
@@ -445,6 +549,10 @@ public class MenuManager : MonoBehaviour
                                     }
                                 }
                             }
+                            else if (paramData.name == "group" && paramData.value != null)
+                            {
+                                hudDataList[i].group = paramData.value;
+                            }
                             else if (paramData.name == "swich-group" && paramData.value != null)
                             {
                                 hudDataList[i].swichGroup = paramData.value;
@@ -453,6 +561,12 @@ public class MenuManager : MonoBehaviour
                             {
                                 hudDataList[i].isActive = bool.Parse(paramData.value);
                                 customActive = true;
+                            }
+                            else if (paramData.name == "position" && paramData.value != null)
+                            {
+                                string[] exp = paramData.value.Split(' ');
+                                hudDataList[i].customPos = true;
+                                hudDataList[i].position = new Vector3(float.Parse(exp[0]), float.Parse(exp[1]), float.Parse(exp[2]));
                             }
                         }
                     }
@@ -479,7 +593,7 @@ public class MenuManager : MonoBehaviour
             SpaceSystem spaceSystem = (SpaceSystem)SpaceUiObj.selectedObj.space;
             LocalClient.galaxyId = spaceSystem.galaxyId;
             LocalClient.systemId = spaceSystem.id;
-            LocalClient.controlledObject.WarpSystem(spaceSystem);
+            LocalClient.controlledObject.WarpSystem(spaceSystem, 1);
             SpaceManager.LoadSystem(LocalClient.SpaceSystem);
             LocalClient.SetSectorIndexes(Vector3.zero);
             SpaceObject.InvokeRender();

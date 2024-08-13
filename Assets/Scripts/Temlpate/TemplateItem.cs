@@ -14,7 +14,6 @@ public class TemplateItem
     public TemplateItem(TemplateNode templateNode, string valueName, string value, string text)
     {
         this.ValueName = valueName;
-        value = value.Replace('.', ',');
         this.Value = value;
         this.Text = text;
 

@@ -16,7 +16,7 @@ public class PositionFixer : MonoBehaviour
     {
         zoneIndexes = currentZoneIndexes;
         SpaceManager.spaceContainer.transform.localPosition = -(zoneIndexes * stepSize);
-        LocalClient.controlledObject.transform.localPosition = -(PositionFixer.RecalcPos(LocalClient.controlledObject.transform.localPosition) - LocalClient.controlledObject.transform.localPosition);
+        LocalClient.controlledObject.transform.localPosition = -(PositionFixer.RecalcPos(LocalClient.controlledObject.transform.localPosition, stepSize) - LocalClient.controlledObject.transform.localPosition);
     }
     public static void Init()
     {
@@ -28,7 +28,7 @@ public class PositionFixer : MonoBehaviour
         if (LocalClient.controlledObject)
         {
             
-            currentZoneIndexes = PositionFixer.RecalcPos(LocalClient.controlledObject.transform.localPosition + zoneIndexes * stepSize);
+            currentZoneIndexes = PositionFixer.RecalcPos(LocalClient.controlledObject.transform.localPosition + zoneIndexes * stepSize, stepSize);
             if (!isStoppedAutoUpdate)
             {
                 currentZoneIndexes = new Vector3((int)(currentZoneIndexes.x / stepSize), (int)(currentZoneIndexes.y / stepSize), (int)(currentZoneIndexes.z / stepSize));
@@ -43,7 +43,7 @@ public class PositionFixer : MonoBehaviour
             }
         }
     }
-    public static Vector3 RecalcPos(Vector3 position, bool recl = false)
+    public static Vector3 RecalcPos(Vector3 position, int stepSize, bool recl = false)
     {
         Vector3 ret = new Vector3();
         Vector3 c1 = position;

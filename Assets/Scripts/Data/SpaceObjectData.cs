@@ -17,6 +17,7 @@ public class SpaceObjectData : IData
     public bool isStartObject;
     public int galaxyId;
     public int systemId;
+    public int sectorId;
     public int targetGalaxyId;
     public int targetSystemId;
     public int targetGateId;

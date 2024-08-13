@@ -16,6 +16,7 @@ public class SpaceObject : MonoBehaviour
     public string templateName;
     public int galaxyId;
     public int systemId;
+    public int sectorId;
     public string hardpointsTemplateName;
     public string modelPatch;
 
@@ -77,6 +78,7 @@ public class SpaceObject : MonoBehaviour
         hardpointsTemplateName = spaceObjectData.hardpointsTemplateName;
         galaxyId = spaceObjectData.galaxyId;
         systemId = spaceObjectData.systemId;
+        sectorId = spaceObjectData.sectorId;
         isPlayerControll = spaceObjectData.isPlayerControll;
         sectorIndexes = spaceObjectData.sectorIndexes;
         zoneIndexes = spaceObjectData.zoneIndexes;
@@ -155,9 +157,9 @@ public class SpaceObject : MonoBehaviour
         SpaceObjectManager.spaceObjects.Add(ret);
         return ret;
     }
-    public virtual void Warp(SpaceSystem spaceSystem, Vector3 position, Vector3 rotation)
+    public virtual void Warp(SpaceSystem spaceSystem, int sectorId, Vector3 position, Vector3 rotation)
     {
-        WarpSystem(spaceSystem);
+        WarpSystem(spaceSystem, sectorId);
         SpaceManager.spaceContainer.transform.localPosition = Vector3.zero;
 
         if (rigidbodyMain != null)
@@ -168,10 +170,14 @@ public class SpaceObject : MonoBehaviour
         transform.localPosition = position;
         transform.localEulerAngles = rotation;
     }
-    public virtual void WarpSystem(SpaceSystem spaceSystem)
+    public virtual void WarpSystem(SpaceSystem spaceSystem, int sectorId)
     {
         galaxyId = spaceSystem.galaxyId;
         systemId = spaceSystem.id;
+        Sector sector = SpaceManager.sectors.Find(x => x.id == sectorId && x.galaxyId == galaxyId && x.systemId == systemId);
+        Vector3 sPos = sector.GetPosition() + transform.localPosition;
+        Vector3 sectorIndexes = new Vector3((int)(sPos.x / (PositionFixer.stepSize * 2)), (int)(sPos.y / (PositionFixer.stepSize * 2)), (int)(sPos.z / (PositionFixer.stepSize * 2)));
+        SetSectorIndexes(sectorIndexes);
     }
 
     public virtual void LoadHardpoints()
@@ -317,10 +323,11 @@ public class SpaceObject : MonoBehaviour
             hull = main.transform.Find("HULL").gameObject;
         }
     }
-    public SpaceObject(int galaxyId, int systemId, string templateName)
+    public SpaceObject(int galaxyId, int systemId, int sectorId, string templateName)
     {
         this.galaxyId = galaxyId;
         this.systemId = systemId;
+        this.sectorId = sectorId;
         this.templateName = templateName;
     }
     public uint GetId()

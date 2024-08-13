@@ -6,15 +6,17 @@ public class SOController : MonoBehaviour
 {
     public SpaceObject obj;
 
-    float val = 0;
-    float val2 = 0;
+    private float val = 0;
+    private float val2 = 0;
 
-    public int maxSpeed = 300;
-    public int rotationSpeed = 150;
-    public float velocity = 100;
-    public bool isHyperMode = false;
+    private int maxSpeed = 300;
+    private int rotationSpeed = 150;
+    private float velocity = 100;
+    private bool isHyperMode = false;
 
     public static bool blocked = false;
+    public static int currentSpeed = 0;
+    public static int currentMaxSpeed = 0;
     void Awake()
     {
         obj = gameObject.GetComponent<SpaceObject>();
@@ -145,6 +147,6 @@ public class SOController : MonoBehaviour
             zn = "-";
         }
         // MainHud mainHud = GameManager.canvasController.mainHud;
-        // mainHud.speed.text = $"{(int)(maxSpeed * val2 / obj.rigidbodyMain.mass)}";
+        currentSpeed = (int)(obj.rigidbodyMain.velocity.magnitude);
     }
 }
