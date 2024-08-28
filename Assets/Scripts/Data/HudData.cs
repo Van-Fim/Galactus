@@ -9,11 +9,12 @@ public class HudData : IData
     public string name;
     public string swichGroup;
     public string type;
+    public string adv_hud_type;
     public string group;
     public bool isActive;
     public int id;
     public int depth;
-    public GameObject GMObject;
+    public HudController GMObject;
     public HudData parent;
     public string parentHudName;
     public List<HudData> childList = new List<HudData>();

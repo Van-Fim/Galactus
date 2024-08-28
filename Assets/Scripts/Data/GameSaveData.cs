@@ -22,8 +22,8 @@ namespace Data
         public int[] PosFixerCurrentZoneIndexes = { 0, 0, 0 };
 
         public List<SpaceObjectData> spaceObjectDatas = new List<SpaceObjectData>();
-        public static List<Galaxy> galaxies = new List<Galaxy>();
-        public static List<SpaceSystem> spaceSystems = new List<SpaceSystem>();
-        public static List<Sector> sectors = new List<Sector>();
+        // public List<Galaxy> galaxies = new List<Galaxy>();
+        // public List<SpaceSystem> spaceSystems = new List<SpaceSystem>();
+        // public List<Sector> sectors = new List<Sector>();
     }
 }

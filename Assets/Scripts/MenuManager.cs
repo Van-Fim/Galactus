@@ -140,7 +140,7 @@ public class MenuManager : MonoBehaviour
                 hud.freezeTime = hudData.freezeTime;
                 huds.Add(hud);
             }
-            hudData.GMObject.SetActive(hudData.isActive);
+            hudData.GMObject.gameObject.SetActive(hudData.isActive);
             if (hudData.swichGroup != null)
             {
                 Hud.AddHudSwichGroupData(hud.hudName, hudData);
@@ -171,6 +171,7 @@ public class MenuManager : MonoBehaviour
                 hudData.type = tempNodes[i].Node;
                 hudData.id = tempNodes[i].Id;
                 hudData.depth = depth;
+                
                 for (int t = 0; t < tempNodes[i].TemplateItems.Count; t++)
                 {
                     TemplateItem templateItem = tempNodes[i].TemplateItems[t];
@@ -254,6 +255,7 @@ public class MenuManager : MonoBehaviour
                         }
                     }
                 }
+                
                 hudDataList.Add(hudData);
             }
             depth++;
@@ -276,11 +278,13 @@ public class MenuManager : MonoBehaviour
                     if (hudDataList[i].item != null)
                     {
                         obj = GamePrefabsManager.LoadPrefab<Transform>(hudDataList[i].item);
-                        hudDataList[i].GMObject = GameObject.Instantiate(obj, parentTransform).gameObject;
+                        hudDataList[i].GMObject = GameObject.Instantiate(obj, parentTransform).AddComponent<HudController>();
+                        hudDataList[i].GMObject.hudData = hudDataList[i];
                     }
                     else
                     {
-                        hudDataList[i].GMObject = new GameObject();
+                        hudDataList[i].GMObject = new GameObject().AddComponent<HudController>();
+                        hudDataList[i].GMObject.hudData = hudDataList[i];
                         obj = hudDataList[i].GMObject.transform;
                         obj.SetParent(parentTransform);
                         hudDataList[i].GMObject.AddComponent<RectTransform>();
@@ -568,8 +572,18 @@ public class MenuManager : MonoBehaviour
                                 hudDataList[i].customPos = true;
                                 hudDataList[i].position = new Vector3(float.Parse(exp[0]), float.Parse(exp[1]), float.Parse(exp[2]));
                             }
+                            else if (paramData.name == "hud_adv_type" && paramData.value != null)
+                            {
+                                hudDataList[i].adv_hud_type = paramData.value;
+                                Transform vp = hudDataList[i].GMObject.transform.Find("Viewport");
+                                SaveSlotManager ct = vp.transform.Find("Content").GetComponent<SaveSlotManager>();
+                                if(ct){
+                                    ct.hud = hudDataList[i].GMObject;
+                                }
+                            }
                         }
                     }
+                    
                     if (hudDataList[i].swichGroup == null && !customActive)
                     {
                         hudDataList[i].isActive = true;

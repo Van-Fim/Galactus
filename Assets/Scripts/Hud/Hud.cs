@@ -48,10 +48,10 @@ public class Hud : MonoBehaviour
             if (hhd != h && h != null)
             {
                 hhd.isActive = false;
-                hhd.GMObject.SetActive(false);
+                hhd.GMObject.gameObject.SetActive(false);
 
                 h.isActive = true;
-                h.GMObject.SetActive(true);
+                h.GMObject.gameObject.SetActive(true);
             }
         }
     }

@@ -68,11 +68,8 @@
 					</panel>
 					<panel item="panel02"
 						height="100%" width="100%" margin="50 0 50 0">
-						<panel name="MainHudMenuPanel01" item="scroll01" height="100%" width="100%" bg_color="0 100 0 100">
-							<content count="save.slot.count">
-
-							</content>
-						</panel>
+						<panel name="MainHudMenuPanel01" item="scroll01" hud_adv_type="save" height="100%" width="100%"
+							bg_color="0 0 0 0" />
 					</panel>
 					<panel item="panel02" height="50" width="100%"
 						align-self="bottom"
@@ -84,7 +81,26 @@
 					</panel>
 				</panel>
 				<panel name="SwitchMenu03" swich-group="msw01" item="panel02" height="100%"
-					width="100%" bg_color="0 0 100 100">
+					width="100%">
+					<panel item="panel02" height="50"
+						width="100%" bg_color="100 0 0 100" align-self="top">
+						<label item="ui_label" height="50" width="100%" name="Text01"
+							aligment="middlecenter"
+							data-value="Load game" />
+					</panel>
+					<panel item="panel02"
+						height="100%" width="100%" margin="50 0 50 0">
+						<panel name="MainHudMenuPanel01" item="scroll01" hud_adv_type="load" height="100%" width="100%"
+							bg_color="0 0 0 0" />
+					</panel>
+					<panel item="panel02" height="50" width="100%"
+						align-self="bottom"
+						align-items="horizontal" bg_color="0 0 0 100">
+						<button height="50" width="50" name="Resume"
+							action="swich_camera MainCamera;show_menu MainHudMenu;block_player_control false"
+							item="icon_button01" bg_color="0 0 0 0" btn_icon="resume">
+						</button>
+					</panel>
 				</panel>
 			</panel>
 		</main>
