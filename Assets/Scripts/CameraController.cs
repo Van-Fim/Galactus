@@ -83,7 +83,10 @@ public class CameraController : MonoBehaviour
         m_TargetCameraState.SetFromTransform(transform);
         m_InterpolatingCameraState.SetFromTransform(transform);
     }
-
+    public void SaveCameraView(string filePath)
+    {
+        ScreenCapture.CaptureScreenshot(filePath);
+    }
     Vector3 GetInputTranslationDirection()
     {
         direction = new Vector3();

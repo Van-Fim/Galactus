@@ -579,6 +579,15 @@ public class MenuManager : MonoBehaviour
                                 SaveSlotManager ct = vp.transform.Find("Content").GetComponent<SaveSlotManager>();
                                 if(ct){
                                     ct.hud = hudDataList[i].GMObject;
+                                    if (paramData.value == "save")
+                                    {
+                                        SaveSlotManager.saves = ct;
+                                    }
+                                    else if (paramData.value == "load")
+                                    {
+                                        SaveSlotManager.loads = ct;
+                                    }
+                                    ct.ReloadSaves();
                                 }
                             }
                         }

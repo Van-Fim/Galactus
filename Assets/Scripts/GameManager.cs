@@ -35,16 +35,17 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
         singleton = this;
         GamePrefabsManager.Init();
-        PositionFixer.Init();
         CanvasController canvasController = GamePrefabsManager.LoadPrefab<CanvasController>("Canvas");
         canvasController = Instantiate(canvasController);
         CameraManager.Init();
+        return;
         GameStartData gameStartData = GameStartManager.LoadGameStart("Start01");
 
         CameraManager.SwitchCamera(CameraManager.mainCamera);
         SpaceManager.Init();
         SpaceObjectManager.Init();
         IND_targetManager.Init();
+
         SpaceManager.BuildGalaxies();
         SpaceManager.BuildSystems();
         SpaceManager.BuildSystemsContent();

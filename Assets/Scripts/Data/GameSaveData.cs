@@ -12,6 +12,7 @@ namespace Data
         public string date;
         public string gamestartTemplateName;
         public bool is_gamestart_started;
+        public bool lastSave;
         public int galaxyId;
         public int systemId;
 
@@ -22,6 +23,7 @@ namespace Data
         public int[] PosFixerCurrentZoneIndexes = { 0, 0, 0 };
 
         public List<SpaceObjectData> spaceObjectDatas = new List<SpaceObjectData>();
+        
         // public List<Galaxy> galaxies = new List<Galaxy>();
         // public List<SpaceSystem> spaceSystems = new List<SpaceSystem>();
         // public List<Sector> sectors = new List<Sector>();
