@@ -623,12 +623,4 @@ public class MenuManager : MonoBehaviour
             SpaceObject.InvokeRender();
         }
     }
-    public void StartHost()
-    {
-        MenuActions.StartHost();
-    }
-    public void StartClient()
-    {
-        MenuActions.StartClient();
-    }
 }

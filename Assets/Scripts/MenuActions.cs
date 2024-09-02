@@ -13,12 +13,4 @@ public class MenuActions : MonoBehaviour
     {
         SaveManager.LoadGame(id);
     }
-    public static void StartHost()
-    {
-        NetworkManager.Singleton.StartServer();
-    }
-    public static void StartClient()
-    {
-        NetworkManager.Singleton.StartClient();
-    }
 }
