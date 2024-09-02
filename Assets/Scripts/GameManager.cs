@@ -38,14 +38,14 @@ public class GameManager : MonoBehaviour
         CanvasController canvasController = GamePrefabsManager.LoadPrefab<CanvasController>("Canvas");
         canvasController = Instantiate(canvasController);
         CameraManager.Init();
-        return;
+
+        PositionFixer.Init();
         GameStartData gameStartData = GameStartManager.LoadGameStart("Start01");
 
         CameraManager.SwitchCamera(CameraManager.mainCamera);
         SpaceManager.Init();
         SpaceObjectManager.Init();
         IND_targetManager.Init();
-
         SpaceManager.BuildGalaxies();
         SpaceManager.BuildSystems();
         SpaceManager.BuildSystemsContent();

@@ -15,10 +15,10 @@ public class MenuActions : MonoBehaviour
     }
     public static void StartHost()
     {
-        NetworkManager.Singleton.StartHost();
+        NetworkManager.Singleton.StartServer();
     }
     public static void StartClient()
     {
-        NetworkManager.Singleton.StartHost();
+        NetworkManager.Singleton.StartClient();
     }
 }
