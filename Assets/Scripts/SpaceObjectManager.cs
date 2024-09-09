@@ -9,7 +9,7 @@ public class SpaceObjectManager : MonoBehaviour
 
     public void LateUpdate()
     {
-        SpaceObject.InvokeIndRender();
+        //SpaceObject.InvokeIndRender();
     }
     public static void Init()
     {
@@ -197,13 +197,18 @@ public class SpaceObjectManager : MonoBehaviour
         for (int i = 0; i < dataList.Count; i++)
         {
             SpaceObjectData data = dataList[i];
-            SpaceObject obj = SpaceObject.Create(data);
-            obj.Init();
-            obj.LoadHardpoints();
+            SpaceObject obj = null;
             if (data.isPlayerControll)
             {
-                LocalClient.controlledObject = obj;
+                obj = LocalClient.controlledObject;
+                obj = SpaceObject.Create(data, obj);
             }
+            else
+            {
+                obj = SpaceObject.Create(data);
+            }
+            obj.Init();
+            obj.LoadHardpoints();
         }
     }
     public static void BuildTemplateData(Space space, string templateType)

@@ -1,6 +1,0 @@
-<templates>
-	<gate name="Gate01">
-		<model patch="Models/Gates/Gate01" />
-		<params mass="100000000" drag="2" angulardrag="2" maxhull="100000000" />
-	</gate>
-</templates>

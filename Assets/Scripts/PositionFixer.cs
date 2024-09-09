@@ -9,7 +9,7 @@ public class PositionFixer : MonoBehaviour
     public static Vector3 sectorIndexes = Vector3.zero;
     public static Vector3 zoneIndexes = Vector3.zero;
     public static Vector3 currentZoneIndexes = Vector3.zero;
-    public static int stepSize = 50000;
+    public static int stepSize = 5000;
     public static UnityAction OnFixZonePositionAction;
     public static bool isStoppedAutoUpdate = false;
     public static void OnFixZonePosition()
@@ -17,6 +17,7 @@ public class PositionFixer : MonoBehaviour
         zoneIndexes = currentZoneIndexes;
         SpaceManager.spaceContainer.transform.localPosition = -(zoneIndexes * stepSize);
         LocalClient.controlledObject.transform.localPosition = -(PositionFixer.RecalcPos(LocalClient.controlledObject.transform.localPosition, stepSize) - LocalClient.controlledObject.transform.localPosition);
+        SpaceObject.InvokeFixZonePosition();
     }
     public static void Init()
     {

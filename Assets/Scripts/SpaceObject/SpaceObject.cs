@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Data;
-using Unity.Netcode;
+using Mirror;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -44,13 +44,24 @@ public class SpaceObject : MonoBehaviour
 
     public static UnityAction OnRenderAction;
     public static UnityAction OnRenderINDAction;
+    public static UnityAction OnFixZonePositionAction;
     public SpaceObject() { }
 
     public virtual void Init()
     {
         objectName = $"{GetType()}_{id}";
+        NetObj net = GetComponent<NetObj>();
+        if (net != null)
+        {
+            net.spaceObject = this;
+        }
+        if (!isPlayerControll)
+        {
+            transform.SetParent(SpaceManager.spaceContainer.transform);
+        }
         OnRenderAction += OnRender;
         OnRenderINDAction += OnRenderInd;
+        OnFixZonePositionAction += OnFixZonePosition;
     }
     public virtual void Destroy()
     {
@@ -93,7 +104,6 @@ public class SpaceObject : MonoBehaviour
     {
         SpaceObjectData ret = new SpaceObjectData();
         ret.id = id;
-        ret.spaceObjectId = id;
         ret.templateName = templateName;
         ret.hardpointsTemplateName = hardpointsTemplateName;
         ret.galaxyId = galaxyId;
@@ -126,9 +136,12 @@ public class SpaceObject : MonoBehaviour
     {
         sectorIndexes = new int[] { (int)value.x, (int)value.y, (int)value.z };
     }
-    public static SpaceObject Create(SpaceObjectData spaceObjectData)
+    public static SpaceObject Create(SpaceObjectData spaceObjectData, SpaceObject ret = null)
     {
-        SpaceObject ret = spaceObjectData.CreateByType();
+        if (ret == null)
+        {
+            ret = spaceObjectData.CreateByType();
+        }
         ret.templateName = spaceObjectData.templateName;
         ret.galaxyId = spaceObjectData.galaxyId;
         ret.systemId = spaceObjectData.systemId;
@@ -284,12 +297,12 @@ public class SpaceObject : MonoBehaviour
             }
         }
     }
+    public void OnFixZonePosition()
+    {
+
+    }
     public virtual void OnRender()
     {
-        if (!isPlayerControll)
-        {
-            transform.SetParent(SpaceManager.spaceContainer.transform);
-        }
         if (modelPatch.Length > 0 && !main)
         {
             GameObject minst = Resources.Load<GameObject>($"{modelPatch}/MAIN");
@@ -332,7 +345,7 @@ public class SpaceObject : MonoBehaviour
     }
     public uint GetId()
     {
-        uint id = 0;
+        uint id = 1;
         while (SpaceObjectManager.spaceObjects.Find(f => f.id == id) != null)
         {
             id++;
@@ -340,6 +353,10 @@ public class SpaceObject : MonoBehaviour
 
         this.id = id;
         return this.id;
+    }
+    public static void InvokeFixZonePosition()
+    {
+        OnFixZonePositionAction?.Invoke();
     }
     public static void InvokeRender()
     {
