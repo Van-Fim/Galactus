@@ -9,7 +9,10 @@ public class SpaceObjectManager : MonoBehaviour
 
     public void LateUpdate()
     {
-        SpaceObject.InvokeIndRender();
+        if (LocalClient.ControlledObject != null)
+        {
+            SpaceObject.InvokeIndRender();
+        }
     }
     public static void Init()
     {
@@ -97,6 +100,18 @@ public class SpaceObjectManager : MonoBehaviour
                 spaceObjectData.galaxyId = galaxyId;
                 spaceObjectData.systemId = systemId;
                 spaceObjectData.sectorId = sectorId;
+
+                Template fTemplate = TemplateManager.FindTemplate(templateStringName, spaceObjectData.type);
+                spaceObjectData.hardpointsTemplateName = fTemplate.GetValue("hardpoints", "name");
+                spaceObjectData.mass = int.Parse(fTemplate.GetValue("params", "mass"));
+                spaceObjectData.drag = int.Parse(fTemplate.GetValue("params", "drag"));
+                spaceObjectData.scaleFactor = XMLF.FloatVal(fTemplate.GetValue("params", "scale"));
+                if (spaceObjectData.scaleFactor == 0)
+                {
+                    spaceObjectData.scaleFactor = 1;
+                }
+                spaceObjectData.angulardrag = int.Parse(fTemplate.GetValue("params", "angulardrag"));
+                spaceObjectData.modelPatch = fTemplate.GetValue("model", "patch");
                 uint id = 0;
                 while ((ret.Find(f => f.id == id) != null) || (SpaceObjectManager.spaceObjects.Find(f => f.id == id) != null))
                 {
@@ -180,6 +195,20 @@ public class SpaceObjectManager : MonoBehaviour
                 spaceObjectData.SetRotation(rotation);
                 spaceObjectData.galaxyId = galaxyId;
                 spaceObjectData.systemId = systemId;
+                spaceObjectData.sectorId = sectorId;
+
+                Template fTemplate = TemplateManager.FindTemplate(templateStringName, spaceObjectData.type);
+                spaceObjectData.hardpointsTemplateName = fTemplate.GetValue("hardpoints", "name");
+                spaceObjectData.mass = int.Parse(fTemplate.GetValue("params", "mass"));
+                spaceObjectData.drag = int.Parse(fTemplate.GetValue("params", "drag"));
+                spaceObjectData.scaleFactor = XMLF.FloatVal(fTemplate.GetValue("params", "scale"));
+                if (spaceObjectData.scaleFactor == 0)
+                {
+                    spaceObjectData.scaleFactor = 1;
+                }
+                spaceObjectData.angulardrag = int.Parse(fTemplate.GetValue("params", "angulardrag"));
+                spaceObjectData.modelPatch = fTemplate.GetValue("model", "patch");
+
                 uint id = 0;
                 while ((ret.Find(f => f.id == id) != null) || (SpaceObjectManager.spaceObjects.Find(f => f.id == id) != null))
                 {
@@ -192,17 +221,27 @@ public class SpaceObjectManager : MonoBehaviour
         }
         return ret;
     }
-    public static void BuildObjectsByData(List<SpaceObjectData> dataList)
+    public static void BuildObjectsByData(List<SpaceObjectData> dataList, GameObject gmobj = null)
     {
         for (int i = 0; i < dataList.Count; i++)
         {
             SpaceObjectData data = dataList[i];
-            SpaceObject obj = SpaceObject.Create(data);
+            SpaceObject obj = SpaceObject.Create(data, gmobj);
             obj.Init();
             obj.LoadHardpoints();
+            obj.gameObject.name = $"{obj.templateName}_{obj.id}";
             if (data.isPlayerControll)
             {
-                LocalClient.controlledObject = obj;
+                if (!LocalClient.skipFuckingControlledObjAndDie)
+                {
+                    LocalClient.ControlledObject = obj;
+                    LocalClient.skipFuckingControlledObjAndDie = true;
+                }
+                if (gmobj != null)
+                {
+                    NetSpaceObject net = gmobj.GetComponent<NetSpaceObject>();
+                    net.data = data;
+                }
             }
         }
     }
@@ -220,7 +259,7 @@ public class SpaceObjectManager : MonoBehaviour
             obj.LoadHardpoints();
             if (data.isPlayerControll)
             {
-                LocalClient.controlledObject = obj;
+                LocalClient.ControlledObject = obj;
             }
         }
     }

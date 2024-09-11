@@ -39,7 +39,7 @@ public class IND_target : MonoBehaviour, IPointerClickHandler
     }
     public void FixObject()
     {
-        float sc = defaultScale * 40;
+        float sc = defaultScale * 30;
         float sc2 = sc * 2 + defaultScale * 2;
         colliderImage.rectTransform.sizeDelta = new Vector2(sc2, sc2);
         topLeftBorder.transform.localPosition = new Vector3(-sc, sc, 0);

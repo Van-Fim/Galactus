@@ -40,6 +40,30 @@ public class UiTextController : MonoBehaviour
         {
             text.text = $"{SOController.currentSpeed}";
         }
+        else if (label == "player.target.distance.text")
+        {
+            if (SOController.distanceToTarget <= 0)
+            {
+                text.enabled = false;
+            }
+            else
+            {
+                text.enabled = true;
+            }
+            text.text = $"Distance:";
+        }
+        else if (label == "player.target.distance")
+        {
+            if (SOController.distanceToTarget <= 0)
+            {
+                text.enabled = false;
+            }
+            else
+            {
+                text.enabled = true;
+            }
+            text.text = $"{SOController.distanceToTarget.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)} km";
+        }
         else
         {
             text.text = $"{label}";

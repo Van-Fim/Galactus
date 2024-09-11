@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
         }
         return ret;
     }
-    public void Start()
+    public void Awake()
     {
         Application.targetFrameRate = 60;
         singleton = this;
@@ -38,30 +38,51 @@ public class GameManager : MonoBehaviour
         CanvasController canvasController = GamePrefabsManager.LoadPrefab<CanvasController>("Canvas");
         canvasController = Instantiate(canvasController);
         CameraManager.Init();
-
-        PositionFixer.Init();
-        GameStartData gameStartData = GameStartManager.LoadGameStart("Start01");
-
         CameraManager.SwitchCamera(CameraManager.mainCamera);
         SpaceManager.Init();
+        SpaceManager.SetRandomSkybox();
+
+        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(canvasController.gameObject);
+        DontDestroyOnLoad(GamePrefabsManager.singleton.gameObject);
+        DontDestroyOnLoad(CameraManager.mainCamera.gameObject);
+        DontDestroyOnLoad(CameraManager.mapCamera.gameObject);
+        DontDestroyOnLoad(CameraManager.skyBoxCamera.gameObject);
+        DontDestroyOnLoad(SpaceManager.singleton.gameObject);
+
+        MenuManager.singleton.BuildAll();
+        for (int i = 0; i < MenuManager.huds.Count; i++)
+        {
+            Hud h = MenuManager.huds[i];
+            h.Hide();
+        }
+        MultiplayerPanel.Init();
+        // PositionFixer.Init();
+        // SpaceObjectManager.Init();
+    }
+    public void LoadContent()
+    {
+        LocalClient.isServer = true;
         SpaceObjectManager.Init();
         IND_targetManager.Init();
         SpaceManager.BuildGalaxies();
         SpaceManager.BuildSystems();
         SpaceManager.BuildSystemsContent();
-
-        gameStartData.spaceObjectDatas = SpaceObjectManager.ReadSpaceContent("Start01", "start");
-        SpaceObjectManager.BuildObjectsByData(gameStartData.spaceObjectDatas);
+    }
+    public void StartGame(GameStartData gameStartData)
+    {
+        CameraManager.SwitchCamera(CameraManager.mainCamera);
+        gameStartData.spaceObjectDatas = SpaceObjectManager.ReadSpaceContent(gameStartData.templateName, "start");
+        SpaceObjectManager.BuildObjectsByData(gameStartData.spaceObjectDatas, LocalClient.netSpaceObject.gameObject);
         SpaceManager.LoadSystem(LocalClient.SpaceSystem);
         SpaceObject.InvokeRender();
 
-        LocalClient.controlledObject.WarpSystem(LocalClient.SpaceSystem, LocalClient.Sector.id);
-
-        if (LocalClient.controlledObject != null)
+        LocalClient.ControlledObject.WarpSystem(LocalClient.SpaceSystem, LocalClient.Sector.id);
+        if (LocalClient.ControlledObject != null)
         {
-            SpaceObject cobj = LocalClient.controlledObject;
-            LocalClient.controlledObject.isInitialized = true;
-            LocalClient.controlledObject.isPlayerControll = true;
+            SpaceObject cobj = LocalClient.ControlledObject;
+            LocalClient.ControlledObject.isInitialized = true;
+            LocalClient.ControlledObject.isPlayerControll = true;
 
             Hardpoint camHP = cobj.GetHardpointByType("camera");
             CameraManager.mainCamera.IsCamEnabled = false;
@@ -74,12 +95,6 @@ public class GameManager : MonoBehaviour
             cobj.transform.SetParent(null);
         }
         Space.InvokeMinimapRender();
-        MenuManager.singleton.BuildAll();
-        for (int i = 0; i < MenuManager.huds.Count; i++)
-        {
-            Hud h = MenuManager.huds[i];
-            h.Hide();
-        }
         Hud hud = MenuManager.GetHud("MainHudMenu");
         hud.ShowSingle();
     }

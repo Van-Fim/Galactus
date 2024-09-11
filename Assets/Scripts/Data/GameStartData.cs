@@ -12,7 +12,6 @@ public class GameStartData : IData
     public int systemId;
     public string name;
     public string templateName;
-    public string startType;
     public float[] position = { 0, 0, 0 };
     public float[] rotation = { 0, 0, 0 };
     public string GetParam(string name)

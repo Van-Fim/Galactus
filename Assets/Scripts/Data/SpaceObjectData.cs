@@ -52,20 +52,40 @@ public class SpaceObjectData : IData
     }
     public SpaceObject CreateByType()
     {
+        Transform tr = GamePrefabsManager.LoadPrefab<Transform>("SpaceObjectPrefab");
+        tr = GameObject.Instantiate(tr);
         SpaceObject ret = null;
         if (type == null || type == "spaceobject" || type == "gate")
         {
-            ret = GameObject.Instantiate(GamePrefabsManager.LoadPrefab<SpaceObject>("SpaceObjectPrefab"));
+            ret = tr.gameObject.AddComponent<SpaceObject>();
         }
         if (type == "ship")
         {
-            ret = GameObject.Instantiate(GamePrefabsManager.LoadPrefab<SpaceObject>("ShipPrefab"));
+            ret = tr.gameObject.AddComponent<Ship>();
         }
         else if (type == "pilot")
         {
-            ret = GameObject.Instantiate(GamePrefabsManager.LoadPrefab<SpaceObject>("PilotPrefab"));
+            ret = tr.gameObject.AddComponent<Pilot>();
         }
-        ret.GetId();
+        ret.id = SpaceObject.GetId();
+        return ret;
+    }
+    public SpaceObject AddByType(GameObject gameObject)
+    {
+        SpaceObject ret = null;
+        if (type == null || type == "spaceobject" || type == "gate")
+        {
+            ret = gameObject.AddComponent<SpaceObject>();
+        }
+        if (type == "ship")
+        {
+            ret = gameObject.AddComponent<Ship>();
+        }
+        else if (type == "pilot")
+        {
+            ret = gameObject.AddComponent<Pilot>();
+        }
+        ret.id = SpaceObject.GetId();
         return ret;
     }
     public int GetGalaxyId()

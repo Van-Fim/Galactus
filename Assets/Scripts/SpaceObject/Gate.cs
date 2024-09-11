@@ -10,14 +10,14 @@ public class Gate : SpaceObject
     public bool warped;
     private void OnTriggerEnter(Collider other)
     {
-        if (LocalClient.controlledObject.hull == other.gameObject)
+        if (LocalClient.ControlledObject.hull == other.gameObject)
         {
             if (!warped)
             {
                 warped = destinationGate.warped = true;
                 Galaxy galaxy = SpaceManager.galaxies.Find(g => g.id == destinationSystem.galaxyId);
                 LocalClient.galaxyId = galaxy.id;
-                LocalClient.controlledObject.Warp(destinationSystem, 1, destinationGate.transform.localPosition, destinationGate.transform.localEulerAngles);
+                LocalClient.ControlledObject.Warp(destinationSystem, 1, destinationGate.transform.localPosition, destinationGate.transform.localEulerAngles);
             }
             else
             {

@@ -58,3 +58,637 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+Assets0/DefaultNetworkPrefabs.asset
+Assets0/DefaultNetworkPrefabs.asset.meta
+Assets0/Pixel Play.meta
+Assets0/Resources.meta
+Assets0/Scenes.meta
+Assets0/Scripts.meta
+Assets0/SpaceSkies Free.meta
+Assets0/TextMesh Pro.meta
+Assets0/UI Toolkit.meta
+Assets0/Pixel Play/_Scenes.meta
+Assets0/Pixel Play/Documentation.meta
+Assets0/Pixel Play/Prefabs.meta
+Assets0/Pixel Play/Scripts.meta
+Assets0/Pixel Play/Sprites.meta
+Assets0/Pixel Play/Documentation/Setup Guide 3.0.pdf
+Assets0/Pixel Play/Documentation/Setup Guide 3.0.pdf.meta
+Assets0/Pixel Play/Prefabs/ArrowIndicator.prefab
+Assets0/Pixel Play/Prefabs/ArrowIndicator.prefab.meta
+Assets0/Pixel Play/Prefabs/BoxIndicator.prefab
+Assets0/Pixel Play/Prefabs/BoxIndicator.prefab.meta
+Assets0/Pixel Play/Scripts/ExtendedFlycam.cs
+Assets0/Pixel Play/Scripts/ExtendedFlycam.cs.meta
+Assets0/Pixel Play/Scripts/OffScreenIndicator.meta
+Assets0/Pixel Play/Scripts/OffScreenIndicator/ArrowObjectPool.cs
+Assets0/Pixel Play/Scripts/OffScreenIndicator/ArrowObjectPool.cs.meta
+Assets0/Pixel Play/Scripts/OffScreenIndicator/BoxObjectPool.cs
+Assets0/Pixel Play/Scripts/OffScreenIndicator/BoxObjectPool.cs.meta
+Assets0/Pixel Play/Scripts/OffScreenIndicator/Indicator.cs
+Assets0/Pixel Play/Scripts/OffScreenIndicator/Indicator.cs.meta
+Assets0/Pixel Play/Scripts/OffScreenIndicator/OffScreenIndicator.cs
+Assets0/Pixel Play/Scripts/OffScreenIndicator/OffScreenIndicator.cs.meta
+Assets0/Pixel Play/Scripts/OffScreenIndicator/OffScreenIndicatorCore.cs
+Assets0/Pixel Play/Scripts/OffScreenIndicator/OffScreenIndicatorCore.cs.meta
+Assets0/Pixel Play/Scripts/OffScreenIndicator/Target.cs
+Assets0/Pixel Play/Scripts/OffScreenIndicator/Target.cs.meta
+Assets0/Pixel Play/Sprites/WhiteArrow.png
+Assets0/Pixel Play/Sprites/WhiteArrow.png.meta
+Assets0/Pixel Play/Sprites/WhiteBox.png
+Assets0/Pixel Play/Sprites/WhiteBox.png.meta
+Assets0/Pixel Play/_Scenes/_main.unity
+Assets0/Pixel Play/_Scenes/_main.unity.meta
+Assets0/Resources/Content.meta
+Assets0/Resources/Materials.meta
+Assets0/Resources/Models.meta
+Assets0/Resources/Prefabs.meta
+Assets0/Resources/Textures.meta
+Assets0/Resources/Content/Asteroids.xml
+Assets0/Resources/Content/Asteroids.xml.meta
+Assets0/Resources/Content/Engines.xml
+Assets0/Resources/Content/Engines.xml.meta
+Assets0/Resources/Content/Factions.xml
+Assets0/Resources/Content/Factions.xml.meta
+Assets0/Resources/Content/FxSounds.xml
+Assets0/Resources/Content/FxSounds.xml.meta
+Assets0/Resources/Content/Galaxies.xml
+Assets0/Resources/Content/Galaxies.xml.meta
+Assets0/Resources/Content/GameStarts.xml
+Assets0/Resources/Content/GameStarts.xml.meta
+Assets0/Resources/Content/Gates.xml
+Assets0/Resources/Content/Gates.xml.meta
+Assets0/Resources/Content/Hardpoints.xml
+Assets0/Resources/Content/Hardpoints.xml.meta
+Assets0/Resources/Content/HardpointTypes.xml
+Assets0/Resources/Content/HardpointTypes.xml.meta
+Assets0/Resources/Content/Languages.meta
+Assets0/Resources/Content/Languages.xml
+Assets0/Resources/Content/Languages.xml.meta
+Assets0/Resources/Content/Loadouts.xml
+Assets0/Resources/Content/Loadouts.xml.meta
+Assets0/Resources/Content/Markets.xml
+Assets0/Resources/Content/Markets.xml.meta
+Assets0/Resources/Content/Models.meta
+Assets0/Resources/Content/Music.xml
+Assets0/Resources/Content/Music.xml.meta
+Assets0/Resources/Content/MusicLists.xml
+Assets0/Resources/Content/MusicLists.xml.meta
+Assets0/Resources/Content/Objects.xml
+Assets0/Resources/Content/Objects.xml.meta
+Assets0/Resources/Content/Pilots.xml
+Assets0/Resources/Content/Pilots.xml.meta
+Assets0/Resources/Content/Planets.xml
+Assets0/Resources/Content/Planets.xml.meta
+Assets0/Resources/Content/PowerGenerators.xml
+Assets0/Resources/Content/PowerGenerators.xml.meta
+Assets0/Resources/Content/Projectiles.xml
+Assets0/Resources/Content/Projectiles.xml.meta
+Assets0/Resources/Content/ResourceTypes.xml
+Assets0/Resources/Content/ResourceTypes.xml.meta
+Assets0/Resources/Content/Scripts.meta
+Assets0/Resources/Content/Sectors.xml
+Assets0/Resources/Content/Sectors.xml.meta
+Assets0/Resources/Content/Shields.xml
+Assets0/Resources/Content/Shields.xml.meta
+Assets0/Resources/Content/Ships.meta
+Assets0/Resources/Content/Ships.xml
+Assets0/Resources/Content/Ships.xml.meta
+Assets0/Resources/Content/Sounds.meta
+Assets0/Resources/Content/Spawner.xml
+Assets0/Resources/Content/Spawner.xml.meta
+Assets0/Resources/Content/Stations.meta
+Assets0/Resources/Content/Suns.xml
+Assets0/Resources/Content/Suns.xml.meta
+Assets0/Resources/Content/Systems.xml
+Assets0/Resources/Content/Systems.xml.meta
+Assets0/Resources/Content/Thrusters.xml
+Assets0/Resources/Content/Thrusters.xml.meta
+Assets0/Resources/Content/Universe.meta
+Assets0/Resources/Content/Universe.xml
+Assets0/Resources/Content/Universe.xml.meta
+Assets0/Resources/Content/Upgrades.xml
+Assets0/Resources/Content/Upgrades.xml.meta
+Assets0/Resources/Content/Wares.xml
+Assets0/Resources/Content/Wares.xml.meta
+Assets0/Resources/Content/Weapons.xml
+Assets0/Resources/Content/Weapons.xml.meta
+Assets0/Resources/Content/Zones.xml
+Assets0/Resources/Content/Zones.xml.meta
+Assets0/Resources/Content/Languages/EN.meta
+Assets0/Resources/Content/Languages/RU.meta
+Assets0/Resources/Content/Languages/EN/900.xml
+Assets0/Resources/Content/Languages/EN/900.xml.meta
+Assets0/Resources/Content/Languages/EN/1000.xml
+Assets0/Resources/Content/Languages/EN/1000.xml.meta
+Assets0/Resources/Content/Languages/EN/1100.xml
+Assets0/Resources/Content/Languages/EN/1100.xml.meta
+Assets0/Resources/Content/Languages/RU/100.xml
+Assets0/Resources/Content/Languages/RU/100.xml.meta
+Assets0/Resources/Content/Languages/RU/900.xml
+Assets0/Resources/Content/Languages/RU/900.xml.meta
+Assets0/Resources/Content/Languages/RU/1000.xml
+Assets0/Resources/Content/Languages/RU/1000.xml.meta
+Assets0/Resources/Content/Languages/RU/1100.xml
+Assets0/Resources/Content/Languages/RU/1100.xml.meta
+Assets0/Resources/Materials/GatePortal.mat
+Assets0/Resources/Materials/GatePortal.mat.meta
+Assets0/Resources/Materials/GPU.mat
+Assets0/Resources/Materials/GPU.mat.meta
+Assets0/Resources/Materials/Minimap.meta
+Assets0/Resources/Materials/New Material.mat
+Assets0/Resources/Materials/New Material.mat.meta
+Assets0/Resources/Materials/Planet01.mat
+Assets0/Resources/Materials/Planet01.mat.meta
+Assets0/Resources/Materials/PlanetAsteroidRing.mat
+Assets0/Resources/Materials/PlanetAsteroidRing.mat.meta
+Assets0/Resources/Materials/Skybox.meta
+Assets0/Resources/Materials/SolarObjectOrbit.mat
+Assets0/Resources/Materials/SolarObjectOrbit.mat.meta
+Assets0/Resources/Materials/star.mat
+Assets0/Resources/Materials/star.mat.meta
+Assets0/Resources/Materials/StarSelector.mat
+Assets0/Resources/Materials/StarSelector.mat.meta
+Assets0/Resources/Materials/Station.mat
+Assets0/Resources/Materials/Station.mat.meta
+Assets0/Resources/Materials/Sun01.mat
+Assets0/Resources/Materials/Sun01.mat.meta
+Assets0/Resources/Materials/Sun01Corona.mat
+Assets0/Resources/Materials/Sun01Corona.mat.meta
+Assets0/Resources/Materials/SunSurface.mat
+Assets0/Resources/Materials/SunSurface.mat.meta
+Assets0/Resources/Materials/SystemGal.mat
+Assets0/Resources/Materials/SystemGal.mat.meta
+Assets0/Resources/Materials/Minimap/SystemGate.mat
+Assets0/Resources/Materials/Minimap/SystemGate.mat.meta
+Assets0/Resources/Materials/Minimap/SystemMain.mat
+Assets0/Resources/Materials/Minimap/SystemMain.mat.meta
+Assets0/Resources/Materials/Minimap/SystemPart01.mat
+Assets0/Resources/Materials/Minimap/SystemPart01.mat.meta
+Assets0/Resources/Materials/Skybox/Skybox01.mat
+Assets0/Resources/Materials/Skybox/Skybox01.mat.meta
+Assets0/Resources/Materials/Skybox/Skybox02.mat
+Assets0/Resources/Materials/Skybox/Skybox02.mat.meta
+Assets0/Resources/Materials/Skybox/Skybox03.mat
+Assets0/Resources/Materials/Skybox/Skybox03.mat.meta
+Assets0/Resources/Materials/Skybox/Skybox04.mat
+Assets0/Resources/Materials/Skybox/Skybox04.mat.meta
+Assets0/Resources/Models/Art Assets.meta
+Assets0/Resources/Models/Gates.meta
+Assets0/Resources/Models/Pilots.meta
+Assets0/Resources/Models/Ships.meta
+Assets0/Resources/Models/Stations.meta
+Assets0/Resources/Models/Art Assets/CannonLow_FBX.fbx
+Assets0/Resources/Models/Art Assets/CannonLow_FBX.fbx.meta
+Assets0/Resources/Models/Art Assets/CannonMedium_FBX.fbx
+Assets0/Resources/Models/Art Assets/CannonMedium_FBX.fbx.meta
+Assets0/Resources/Models/Art Assets/EngineTrails_FBX.fbx
+Assets0/Resources/Models/Art Assets/EngineTrails_FBX.fbx.meta
+Assets0/Resources/Models/Art Assets/FighterLow_FBX.fbx
+Assets0/Resources/Models/Art Assets/FighterLow_FBX.fbx.meta
+Assets0/Resources/Models/Art Assets/FighterMedium_FBX.fbx
+Assets0/Resources/Models/Art Assets/FighterMedium_FBX.fbx.meta
+Assets0/Resources/Models/Art Assets/Materials.meta
+Assets0/Resources/Models/Art Assets/Textures.meta
+Assets0/Resources/Models/Art Assets/Materials/CannonLow.mat
+Assets0/Resources/Models/Art Assets/Materials/CannonLow.mat.meta
+Assets0/Resources/Models/Art Assets/Materials/cannonmedium_fbx-none__cannon.png.001.mat
+Assets0/Resources/Models/Art Assets/Materials/cannonmedium_fbx-none__cannon.png.001.mat.meta
+Assets0/Resources/Models/Art Assets/Materials/CannonMedium.mat
+Assets0/Resources/Models/Art Assets/Materials/CannonMedium.mat.meta
+Assets0/Resources/Models/Art Assets/Materials/EngineTrail.mat
+Assets0/Resources/Models/Art Assets/Materials/EngineTrail.mat.meta
+Assets0/Resources/Models/Art Assets/Materials/FighterLow 1.mat
+Assets0/Resources/Models/Art Assets/Materials/FighterLow 1.mat.meta
+Assets0/Resources/Models/Art Assets/Materials/FighterLow.mat
+Assets0/Resources/Models/Art Assets/Materials/FighterLow.mat.meta
+Assets0/Resources/Models/Art Assets/Materials/FighterMedium.mat
+Assets0/Resources/Models/Art Assets/Materials/FighterMedium.mat.meta
+Assets0/Resources/Models/Art Assets/Textures/CannonLow.png
+Assets0/Resources/Models/Art Assets/Textures/CannonLow.png.meta
+Assets0/Resources/Models/Art Assets/Textures/CannonMedium.png
+Assets0/Resources/Models/Art Assets/Textures/CannonMedium.png.meta
+Assets0/Resources/Models/Art Assets/Textures/EngineTrail.psd
+Assets0/Resources/Models/Art Assets/Textures/EngineTrail.psd.meta
+Assets0/Resources/Models/Art Assets/Textures/FighterLow.png
+Assets0/Resources/Models/Art Assets/Textures/FighterLow.png.meta
+Assets0/Resources/Models/Art Assets/Textures/FighterMedium.png
+Assets0/Resources/Models/Art Assets/Textures/FighterMedium.png.meta
+Assets0/Resources/Models/Gates/Gate01.meta
+Assets0/Resources/Models/Gates/Gate01/MAIN.prefab
+Assets0/Resources/Models/Gates/Gate01/MAIN.prefab.meta
+Assets0/Resources/Models/Pilots/Pilot01.meta
+Assets0/Resources/Models/Pilots/Pilot01/MAIN.prefab
+Assets0/Resources/Models/Pilots/Pilot01/MAIN.prefab.meta
+Assets0/Resources/Models/Ships/FighterMedium.meta
+Assets0/Resources/Models/Ships/FighterMedium/MAIN.prefab
+Assets0/Resources/Models/Ships/FighterMedium/MAIN.prefab.meta
+Assets0/Resources/Models/Ships/FighterMedium/Ship.mat
+Assets0/Resources/Models/Ships/FighterMedium/Ship.mat.meta
+Assets0/Resources/Models/Stations/Station01.meta
+Assets0/Resources/Models/Stations/Station02.meta
+Assets0/Resources/Models/Stations/Station01/MAIN.prefab
+Assets0/Resources/Models/Stations/Station01/MAIN.prefab.meta
+Assets0/Resources/Models/Stations/Station02/MAIN.prefab
+Assets0/Resources/Models/Stations/Station02/MAIN.prefab.meta
+Assets0/Resources/Prefabs/Cameras.meta
+Assets0/Resources/Prefabs/Canvas.prefab
+Assets0/Resources/Prefabs/Canvas.prefab.meta
+Assets0/Resources/Prefabs/GamePrefabsManager.prefab
+Assets0/Resources/Prefabs/GamePrefabsManager.prefab.meta
+Assets0/Resources/Prefabs/Map.meta
+Assets0/Resources/Prefabs/Network.meta
+Assets0/Resources/Prefabs/OffScreenIndicator Panel.prefab
+Assets0/Resources/Prefabs/OffScreenIndicator Panel.prefab.meta
+Assets0/Resources/Prefabs/Panel.prefab
+Assets0/Resources/Prefabs/Panel.prefab.meta
+Assets0/Resources/Prefabs/SpaceContainer.prefab
+Assets0/Resources/Prefabs/SpaceContainer.prefab.meta
+Assets0/Resources/Prefabs/SpaceObjectManager.prefab
+Assets0/Resources/Prefabs/SpaceObjectManager.prefab.meta
+Assets0/Resources/Prefabs/SpaceObjects.meta
+Assets0/Resources/Prefabs/SpaceUiObj.prefab
+Assets0/Resources/Prefabs/SpaceUiObj.prefab.meta
+Assets0/Resources/Prefabs/UI.meta
+Assets0/Resources/Prefabs/Cameras/MainCamera.prefab
+Assets0/Resources/Prefabs/Cameras/MainCamera.prefab.meta
+Assets0/Resources/Prefabs/Cameras/MapCamera.prefab
+Assets0/Resources/Prefabs/Cameras/MapCamera.prefab.meta
+Assets0/Resources/Prefabs/Cameras/SkyboxCamera.prefab
+Assets0/Resources/Prefabs/Cameras/SkyboxCamera.prefab.meta
+Assets0/Resources/Prefabs/Map/Mp_System.prefab
+Assets0/Resources/Prefabs/Map/Mp_System.prefab.meta
+Assets0/Resources/Prefabs/Network/Client.meta
+Assets0/Resources/Prefabs/Network/Server.meta
+Assets0/Resources/Prefabs/Network/Client/ClientManager.prefab
+Assets0/Resources/Prefabs/Network/Client/ClientManager.prefab.meta
+Assets0/Resources/Prefabs/Network/Server/ServerManager.prefab
+Assets0/Resources/Prefabs/Network/Server/ServerManager.prefab.meta
+Assets0/Resources/Prefabs/SpaceObjects/GatePrefab.prefab
+Assets0/Resources/Prefabs/SpaceObjects/GatePrefab.prefab.meta
+Assets0/Resources/Prefabs/SpaceObjects/ShipPrefab.prefab
+Assets0/Resources/Prefabs/SpaceObjects/ShipPrefab.prefab.meta
+Assets0/Resources/Prefabs/SpaceObjects/SpaceObjectPrefab.prefab
+Assets0/Resources/Prefabs/SpaceObjects/SpaceObjectPrefab.prefab.meta
+Assets0/Resources/Prefabs/UI/IND_target.prefab
+Assets0/Resources/Prefabs/UI/IND_target.prefab.meta
+Assets0/Resources/Textures/Gate01.meta
+Assets0/Resources/Textures/select.png
+Assets0/Resources/Textures/select.png.meta
+Assets0/Resources/Textures/Ship01.meta
+Assets0/Resources/Textures/Space.meta
+Assets0/Resources/Textures/Space01.meta
+Assets0/Resources/Textures/station.png
+Assets0/Resources/Textures/station.png.meta
+Assets0/Resources/Textures/test.png
+Assets0/Resources/Textures/test.png.meta
+Assets0/Resources/Textures/UI.meta
+Assets0/Resources/Textures/Gate01/Main.png
+Assets0/Resources/Textures/Gate01/Main.png.meta
+Assets0/Resources/Textures/Ship01/Main.png
+Assets0/Resources/Textures/Ship01/Main.png.meta
+Assets0/Resources/Textures/Space/AsteroidFieldMap.png
+Assets0/Resources/Textures/Space/AsteroidFieldMap.png.meta
+Assets0/Resources/Textures/Space/mat.mat
+Assets0/Resources/Textures/Space/mat.mat.meta
+Assets0/Resources/Textures/Space/Nebula01.png
+Assets0/Resources/Textures/Space/Nebula01.png.meta
+Assets0/Resources/Textures/Space/Nebula02.png
+Assets0/Resources/Textures/Space/Nebula02.png.meta
+Assets0/Resources/Textures/Space/planet.png
+Assets0/Resources/Textures/Space/planet.png.meta
+Assets0/Resources/Textures/Space/star.png
+Assets0/Resources/Textures/Space/star.png.meta
+Assets0/Resources/Textures/Space01/Back_Tex.jpeg
+Assets0/Resources/Textures/Space01/Back_Tex.jpeg.meta
+Assets0/Resources/Textures/Space01/Down_Tex.jpeg
+Assets0/Resources/Textures/Space01/Down_Tex.jpeg.meta
+Assets0/Resources/Textures/Space01/Front_Tex.jpeg
+Assets0/Resources/Textures/Space01/Front_Tex.jpeg.meta
+Assets0/Resources/Textures/Space01/Left_Tex.jpeg
+Assets0/Resources/Textures/Space01/Left_Tex.jpeg.meta
+Assets0/Resources/Textures/Space01/Right_Tex.jpeg
+Assets0/Resources/Textures/Space01/Right_Tex.jpeg.meta
+Assets0/Resources/Textures/Space01/Up_Tex.jpeg
+Assets0/Resources/Textures/Space01/Up_Tex.jpeg.meta
+Assets0/Resources/Textures/UI/bottom-left.png
+Assets0/Resources/Textures/UI/bottom-left.png.meta
+Assets0/Resources/Textures/UI/bottom-right.png
+Assets0/Resources/Textures/UI/bottom-right.png.meta
+Assets0/Resources/Textures/UI/header_close.png
+Assets0/Resources/Textures/UI/header_close.png.meta
+Assets0/Resources/Textures/UI/top-left.png
+Assets0/Resources/Textures/UI/top-left.png.meta
+Assets0/Resources/Textures/UI/top-right.png
+Assets0/Resources/Textures/UI/top-right.png.meta
+Assets0/Scenes/Main.unity
+Assets0/Scenes/Main.unity.meta
+Assets0/Scripts/Camera.meta
+Assets0/Scripts/CanvasController.cs
+Assets0/Scripts/CanvasController.cs.meta
+Assets0/Scripts/Data.meta
+Assets0/Scripts/GameManager.cs
+Assets0/Scripts/GameManager.cs.meta
+Assets0/Scripts/GamePrefabsManager.cs
+Assets0/Scripts/GamePrefabsManager.cs.meta
+Assets0/Scripts/GameStartManager.cs
+Assets0/Scripts/GameStartManager.cs.meta
+Assets0/Scripts/Hardpoint.cs
+Assets0/Scripts/Hardpoint.cs.meta
+Assets0/Scripts/HardpointType.cs
+Assets0/Scripts/HardpointType.cs.meta
+Assets0/Scripts/LocalClient.cs
+Assets0/Scripts/LocalClient.cs.meta
+Assets0/Scripts/MainHud.cs
+Assets0/Scripts/MainHud.cs.meta
+Assets0/Scripts/MPSystemController.cs
+Assets0/Scripts/MPSystemController.cs.meta
+Assets0/Scripts/Network.meta
+Assets0/Scripts/PositionFixer.cs
+Assets0/Scripts/PositionFixer.cs.meta
+Assets0/Scripts/SOController.meta
+Assets0/Scripts/Space.meta
+Assets0/Scripts/SpaceManager.meta
+Assets0/Scripts/SpaceObject.meta
+Assets0/Scripts/SpaceObjectManager.cs
+Assets0/Scripts/SpaceObjectManager.cs.meta
+Assets0/Scripts/SpaceUiObj.cs
+Assets0/Scripts/SpaceUiObj.cs.meta
+Assets0/Scripts/Temlpate.meta
+Assets0/Scripts/Ui.meta
+Assets0/Scripts/Universe.cs
+Assets0/Scripts/Universe.cs.meta
+Assets0/Scripts/XMLF.cs
+Assets0/Scripts/XMLF.cs.meta
+Assets0/Scripts/Camera/CameraController.cs
+Assets0/Scripts/Camera/CameraController.cs.meta
+Assets0/Scripts/Camera/CameraManager.cs
+Assets0/Scripts/Camera/CameraManager.cs.meta
+Assets0/Scripts/Data/GameSaveData.cs
+Assets0/Scripts/Data/GameSaveData.cs.meta
+Assets0/Scripts/Data/GameStartData.cs
+Assets0/Scripts/Data/GameStartData.cs.meta
+Assets0/Scripts/Data/IData.cs
+Assets0/Scripts/Data/IData.cs.meta
+Assets0/Scripts/Data/ParamData.cs
+Assets0/Scripts/Data/ParamData.cs.meta
+Assets0/Scripts/Data/SpaceObjectData.cs
+Assets0/Scripts/Data/SpaceObjectData.cs.meta
+Assets0/Scripts/Network/Client.meta
+Assets0/Scripts/Network/Server.meta
+Assets0/Scripts/Network/Client/ClientManager.cs
+Assets0/Scripts/Network/Client/ClientManager.cs.meta
+Assets0/Scripts/Network/Server/ServerManager.cs
+Assets0/Scripts/Network/Server/ServerManager.cs.meta
+Assets0/Scripts/SOController/SOController.cs
+Assets0/Scripts/SOController/SOController.cs.meta
+Assets0/Scripts/SOController/SOShipController.cs
+Assets0/Scripts/SOController/SOShipController.cs.meta
+Assets0/Scripts/Space/Galaxy.cs
+Assets0/Scripts/Space/Galaxy.cs.meta
+Assets0/Scripts/Space/Space.cs
+Assets0/Scripts/Space/Space.cs.meta
+Assets0/Scripts/Space/SpaceSystem.cs
+Assets0/Scripts/Space/SpaceSystem.cs.meta
+Assets0/Scripts/SpaceManager/SpaceManager.cs
+Assets0/Scripts/SpaceManager/SpaceManager.cs.meta
+Assets0/Scripts/SpaceObject/Gate.cs
+Assets0/Scripts/SpaceObject/Gate.cs.meta
+Assets0/Scripts/SpaceObject/Pilot.cs
+Assets0/Scripts/SpaceObject/Pilot.cs.meta
+Assets0/Scripts/SpaceObject/Ship.cs
+Assets0/Scripts/SpaceObject/Ship.cs.meta
+Assets0/Scripts/SpaceObject/SpaceObject.cs
+Assets0/Scripts/SpaceObject/SpaceObject.cs.meta
+Assets0/Scripts/Temlpate/Template.cs
+Assets0/Scripts/Temlpate/Template.cs.meta
+Assets0/Scripts/Temlpate/TemplateItem.cs
+Assets0/Scripts/Temlpate/TemplateItem.cs.meta
+Assets0/Scripts/Temlpate/TemplateManager.cs
+Assets0/Scripts/Temlpate/TemplateManager.cs.meta
+Assets0/Scripts/Ui/IND_target.cs
+Assets0/Scripts/Ui/IND_target.cs.meta
+Assets0/Scripts/Ui/IND_targetManager.cs
+Assets0/Scripts/Ui/IND_targetManager.cs.meta
+Assets0/SpaceSkies Free/Demo.meta
+Assets0/SpaceSkies Free/Skybox_1.meta
+Assets0/SpaceSkies Free/Skybox_2.meta
+Assets0/SpaceSkies Free/Skybox_3.meta
+Assets0/SpaceSkies Free/Demo/DemoScene.unity
+Assets0/SpaceSkies Free/Demo/DemoScene.unity.meta
+Assets0/SpaceSkies Free/Demo/DemoSceneSettings.lighting
+Assets0/SpaceSkies Free/Demo/DemoSceneSettings.lighting.meta
+Assets0/SpaceSkies Free/Demo/Scripts.meta
+Assets0/SpaceSkies Free/Demo/Scripts/LookCamera.cs
+Assets0/SpaceSkies Free/Demo/Scripts/LookCamera.cs.meta
+Assets0/SpaceSkies Free/Demo/Scripts/SkyboxChanger.cs
+Assets0/SpaceSkies Free/Demo/Scripts/SkyboxChanger.cs.meta
+Assets0/SpaceSkies Free/Skybox_1/Pink_1K_Resolution.mat
+Assets0/SpaceSkies Free/Skybox_1/Pink_1K_Resolution.mat.meta
+Assets0/SpaceSkies Free/Skybox_1/Pink_4K_Resolution.mat
+Assets0/SpaceSkies Free/Skybox_1/Pink_4K_Resolution.mat.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/1K_Resolution.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/2K_Resolution.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/4K_Resolution.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/1K_Resolution/Back_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/1K_Resolution/Back_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/1K_Resolution/Down_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/1K_Resolution/Down_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/1K_Resolution/Front_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/1K_Resolution/Front_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/1K_Resolution/Left_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/1K_Resolution/Left_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/1K_Resolution/Right_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/1K_Resolution/Right_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/1K_Resolution/Up_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/1K_Resolution/Up_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/2K_Resolution/Back_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/2K_Resolution/Back_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/2K_Resolution/Down_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/2K_Resolution/Down_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/2K_Resolution/Front_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/2K_Resolution/Front_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/2K_Resolution/Left_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/2K_Resolution/Left_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/2K_Resolution/Right_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/2K_Resolution/Right_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/2K_Resolution/Up_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/2K_Resolution/Up_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/4K_Resolution/Back_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/4K_Resolution/Back_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/4K_Resolution/Down_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/4K_Resolution/Down_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/4K_Resolution/Front_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/4K_Resolution/Front_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/4K_Resolution/Left_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/4K_Resolution/Left_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/4K_Resolution/Right_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/4K_Resolution/Right_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_1/Textures/4K_Resolution/Up_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_1/Textures/4K_Resolution/Up_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Green_1K_Resolution.mat
+Assets0/SpaceSkies Free/Skybox_2/Green_1K_Resolution.mat.meta
+Assets0/SpaceSkies Free/Skybox_2/Green_4K_Resolution.mat
+Assets0/SpaceSkies Free/Skybox_2/Green_4K_Resolution.mat.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/1K_Resolution.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/2K_Resolution.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/4K_Resolution.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/1K_Resolution/Back_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/1K_Resolution/Back_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/1K_Resolution/Down_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/1K_Resolution/Down_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/1K_Resolution/Front_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/1K_Resolution/Front_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/1K_Resolution/Left_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/1K_Resolution/Left_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/1K_Resolution/Right_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/1K_Resolution/Right_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/1K_Resolution/Up_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/1K_Resolution/Up_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/2K_Resolution/Back_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/2K_Resolution/Back_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/2K_Resolution/Down_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/2K_Resolution/Down_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/2K_Resolution/Front_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/2K_Resolution/Front_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/2K_Resolution/Left_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/2K_Resolution/Left_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/2K_Resolution/Right_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/2K_Resolution/Right_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/2K_Resolution/Up_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/2K_Resolution/Up_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/4K_Resolution/Back_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/4K_Resolution/Back_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/4K_Resolution/Down_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/4K_Resolution/Down_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/4K_Resolution/Front_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/4K_Resolution/Front_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/4K_Resolution/Left_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/4K_Resolution/Left_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/4K_Resolution/Right_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/4K_Resolution/Right_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_2/Textures/4K_Resolution/Up_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_2/Textures/4K_Resolution/Up_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Purple_1K_Resolution.mat
+Assets0/SpaceSkies Free/Skybox_3/Purple_1K_Resolution.mat.meta
+Assets0/SpaceSkies Free/Skybox_3/Purple_4K_Resolution.mat
+Assets0/SpaceSkies Free/Skybox_3/Purple_4K_Resolution.mat.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/1K_Resolution.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/2K_Resolution.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/4K_Resolution.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/1K_Resolution/Back_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/1K_Resolution/Back_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/1K_Resolution/Down_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/1K_Resolution/Down_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/1K_Resolution/Front_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/1K_Resolution/Front_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/1K_Resolution/Left_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/1K_Resolution/Left_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/1K_Resolution/Right_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/1K_Resolution/Right_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/1K_Resolution/Up_1K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/1K_Resolution/Up_1K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/2K_Resolution/Back_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/2K_Resolution/Back_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/2K_Resolution/Down_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/2K_Resolution/Down_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/2K_Resolution/Front_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/2K_Resolution/Front_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/2K_Resolution/Left_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/2K_Resolution/Left_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/2K_Resolution/Right_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/2K_Resolution/Right_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/2K_Resolution/Up_2K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/2K_Resolution/Up_2K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/4K_Resolution/Back_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/4K_Resolution/Back_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/4K_Resolution/Down_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/4K_Resolution/Down_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/4K_Resolution/Front_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/4K_Resolution/Front_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/4K_Resolution/Left_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/4K_Resolution/Left_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/4K_Resolution/Right_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/4K_Resolution/Right_4K_TEX.png.meta
+Assets0/SpaceSkies Free/Skybox_3/Textures/4K_Resolution/Up_4K_TEX.png
+Assets0/SpaceSkies Free/Skybox_3/Textures/4K_Resolution/Up_4K_TEX.png.meta
+Assets0/TextMesh Pro/Documentation.meta
+Assets0/TextMesh Pro/Fonts.meta
+Assets0/TextMesh Pro/Resources.meta
+Assets0/TextMesh Pro/Shaders.meta
+Assets0/TextMesh Pro/Sprites.meta
+Assets0/TextMesh Pro/Documentation/TextMesh Pro User Guide 2016.pdf
+Assets0/TextMesh Pro/Documentation/TextMesh Pro User Guide 2016.pdf.meta
+Assets0/TextMesh Pro/Fonts/LiberationSans - OFL.txt
+Assets0/TextMesh Pro/Fonts/LiberationSans - OFL.txt.meta
+Assets0/TextMesh Pro/Fonts/LiberationSans.ttf
+Assets0/TextMesh Pro/Fonts/LiberationSans.ttf.meta
+Assets0/TextMesh Pro/Resources/Fonts & Materials.meta
+Assets0/TextMesh Pro/Resources/LineBreaking Following Characters.txt
+Assets0/TextMesh Pro/Resources/LineBreaking Following Characters.txt.meta
+Assets0/TextMesh Pro/Resources/LineBreaking Leading Characters.txt
+Assets0/TextMesh Pro/Resources/LineBreaking Leading Characters.txt.meta
+Assets0/TextMesh Pro/Resources/Sprite Assets.meta
+Assets0/TextMesh Pro/Resources/Style Sheets.meta
+Assets0/TextMesh Pro/Resources/TMP Settings.asset
+Assets0/TextMesh Pro/Resources/TMP Settings.asset.meta
+Assets0/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Drop Shadow.mat
+Assets0/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Drop Shadow.mat.meta
+Assets0/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
+Assets0/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset.meta
+Assets0/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Outline.mat
+Assets0/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Outline.mat.meta
+Assets0/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset
+Assets0/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset.meta
+Assets0/TextMesh Pro/Resources/Sprite Assets/EmojiOne.asset
+Assets0/TextMesh Pro/Resources/Sprite Assets/EmojiOne.asset.meta
+Assets0/TextMesh Pro/Resources/Style Sheets/Default Style Sheet.asset
+Assets0/TextMesh Pro/Resources/Style Sheets/Default Style Sheet.asset.meta
+Assets0/TextMesh Pro/Shaders/TMP_Bitmap-Custom-Atlas.shader
+Assets0/TextMesh Pro/Shaders/TMP_Bitmap-Custom-Atlas.shader.meta
+Assets0/TextMesh Pro/Shaders/TMP_Bitmap-Mobile.shader
+Assets0/TextMesh Pro/Shaders/TMP_Bitmap-Mobile.shader.meta
+Assets0/TextMesh Pro/Shaders/TMP_Bitmap.shader
+Assets0/TextMesh Pro/Shaders/TMP_Bitmap.shader.meta
+Assets0/TextMesh Pro/Shaders/TMP_SDF Overlay.shader
+Assets0/TextMesh Pro/Shaders/TMP_SDF Overlay.shader.meta
+Assets0/TextMesh Pro/Shaders/TMP_SDF SSD.shader
+Assets0/TextMesh Pro/Shaders/TMP_SDF SSD.shader.meta
+Assets0/TextMesh Pro/Shaders/TMP_SDF-Mobile Masking.shader
+Assets0/TextMesh Pro/Shaders/TMP_SDF-Mobile Masking.shader.meta
+Assets0/TextMesh Pro/Shaders/TMP_SDF-Mobile Overlay.shader
+Assets0/TextMesh Pro/Shaders/TMP_SDF-Mobile Overlay.shader.meta
+Assets0/TextMesh Pro/Shaders/TMP_SDF-Mobile SSD.shader
+Assets0/TextMesh Pro/Shaders/TMP_SDF-Mobile SSD.shader.meta
+Assets0/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
+Assets0/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader.meta
+Assets0/TextMesh Pro/Shaders/TMP_SDF-Surface-Mobile.shader
+Assets0/TextMesh Pro/Shaders/TMP_SDF-Surface-Mobile.shader.meta
+Assets0/TextMesh Pro/Shaders/TMP_SDF-Surface.shader
+Assets0/TextMesh Pro/Shaders/TMP_SDF-Surface.shader.meta
+Assets0/TextMesh Pro/Shaders/TMP_SDF.shader
+Assets0/TextMesh Pro/Shaders/TMP_SDF.shader.meta
+Assets0/TextMesh Pro/Shaders/TMP_Sprite.shader
+Assets0/TextMesh Pro/Shaders/TMP_Sprite.shader.meta
+Assets0/TextMesh Pro/Shaders/TMPro_Mobile.cginc
+Assets0/TextMesh Pro/Shaders/TMPro_Mobile.cginc.meta
+Assets0/TextMesh Pro/Shaders/TMPro_Properties.cginc
+Assets0/TextMesh Pro/Shaders/TMPro_Properties.cginc.meta
+Assets0/TextMesh Pro/Shaders/TMPro_Surface.cginc
+Assets0/TextMesh Pro/Shaders/TMPro_Surface.cginc.meta
+Assets0/TextMesh Pro/Shaders/TMPro.cginc
+Assets0/TextMesh Pro/Shaders/TMPro.cginc.meta
+Assets0/TextMesh Pro/Sprites/EmojiOne Attribution.txt
+Assets0/TextMesh Pro/Sprites/EmojiOne Attribution.txt.meta
+Assets0/TextMesh Pro/Sprites/EmojiOne.json
+Assets0/TextMesh Pro/Sprites/EmojiOne.json.meta
+Assets0/TextMesh Pro/Sprites/EmojiOne.png
+Assets0/TextMesh Pro/Sprites/EmojiOne.png.meta
+Assets0/UI Toolkit/PanelSettings.asset
+Assets0/UI Toolkit/PanelSettings.asset.meta
+Assets0/UI Toolkit/UnityThemes.meta
+Assets0/UI Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss
+Assets0/UI Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss.meta

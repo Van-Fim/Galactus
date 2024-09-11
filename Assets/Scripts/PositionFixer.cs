@@ -8,33 +8,48 @@ public class PositionFixer : MonoBehaviour
     public static PositionFixer singleton;
     public static Vector3 sectorIndexes = Vector3.zero;
     public static Vector3 zoneIndexes = Vector3.zero;
+    public static Vector3 currentSectorIndexes = Vector3.zero;
     public static Vector3 currentZoneIndexes = Vector3.zero;
     public static int stepSize = 50000;
+    public static int sectorStepSize = 500000;
     public static UnityAction OnFixZonePositionAction;
+    public static UnityAction OnFixSectorPositionAction;
     public static bool isStoppedAutoUpdate = false;
     public static void OnFixZonePosition()
     {
         zoneIndexes = currentZoneIndexes;
+        int st = sectorStepSize/stepSize;
+        currentSectorIndexes = new Vector3((int)(zoneIndexes.x / st), (int)(zoneIndexes.y / st), (int)(zoneIndexes.z / st));
         SpaceManager.spaceContainer.transform.localPosition = -(zoneIndexes * stepSize);
-        LocalClient.controlledObject.transform.localPosition = -(PositionFixer.RecalcPos(LocalClient.controlledObject.transform.localPosition, stepSize) - LocalClient.controlledObject.transform.localPosition);
+        LocalClient.ControlledObject.transform.localPosition = -(PositionFixer.RecalcPos(LocalClient.ControlledObject.transform.localPosition, stepSize) - LocalClient.ControlledObject.transform.localPosition);
+    }
+    public static void OnFixSectorPosition()
+    {
+        sectorIndexes = currentSectorIndexes;
+        Debug.Log($"{zoneIndexes} {sectorIndexes}");
     }
     public static void Init()
     {
         singleton = GameManager.singleton.gameObject.AddComponent<PositionFixer>();
         OnFixZonePositionAction += OnFixZonePosition;
+        OnFixSectorPositionAction += OnFixSectorPosition;
     }
     public void Update()
     {
-        if (LocalClient.controlledObject)
+        if (LocalClient.ControlledObject != null)
         {
+            currentZoneIndexes = PositionFixer.RecalcPos(LocalClient.ControlledObject.transform.localPosition + zoneIndexes * stepSize, stepSize);
             
-            currentZoneIndexes = PositionFixer.RecalcPos(LocalClient.controlledObject.transform.localPosition + zoneIndexes * stepSize, stepSize);
             if (!isStoppedAutoUpdate)
             {
                 currentZoneIndexes = new Vector3((int)(currentZoneIndexes.x / stepSize), (int)(currentZoneIndexes.y / stepSize), (int)(currentZoneIndexes.z / stepSize));
                 if (zoneIndexes != currentZoneIndexes)
                 {
                     OnFixZonePositionAction?.Invoke();
+                }
+                if (sectorIndexes != currentSectorIndexes)
+                {
+                    OnFixSectorPositionAction?.Invoke();
                 }
             }
             else

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Data;
+using Mirror;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
@@ -126,34 +128,45 @@ public class SpaceObject : MonoBehaviour
     {
         sectorIndexes = new int[] { (int)value.x, (int)value.y, (int)value.z };
     }
-    public static SpaceObject Create(SpaceObjectData spaceObjectData)
+    public static SpaceObject Create(SpaceObjectData spaceObjectData, GameObject gmobj = null)
     {
-        SpaceObject ret = spaceObjectData.CreateByType();
+        SpaceObject ret = null;
+        NetSpaceObject netRet = null;
+        if (gmobj == null)
+        {
+            ret = spaceObjectData.CreateByType();
+        }
+        else
+        {
+            ret = spaceObjectData.AddByType(gmobj);
+        }
+        netRet = ret.gameObject.GetComponent<NetSpaceObject>();
         ret.templateName = spaceObjectData.templateName;
         ret.galaxyId = spaceObjectData.galaxyId;
         ret.systemId = spaceObjectData.systemId;
+        ret.sectorId = spaceObjectData.sectorId;
         ret.isPlayerControll = spaceObjectData.isPlayerControll;
         ret.isInitialized = spaceObjectData.isInitialized;
-
-        Template template = TemplateManager.FindTemplate(ret.templateName, spaceObjectData.type);
-        if (template == null)
-        {
-            Debug.LogError($"Template {ret.templateName} does not exist.");
-            return null;
-        }
-        ret.hardpointsTemplateName = template.GetValue("hardpoints", "name");
-        ret.mass = int.Parse(template.GetValue("params", "mass"));
-        ret.drag = int.Parse(template.GetValue("params", "drag"));
-        ret.scaleFactor = XMLF.FloatVal(template.GetValue("params", "scale"));
+        ret.hardpointsTemplateName = spaceObjectData.hardpointsTemplateName;
+        ret.mass = spaceObjectData.mass;
+        ret.drag = spaceObjectData.drag;
+        ret.scaleFactor = spaceObjectData.scaleFactor;
         if (ret.scaleFactor == 0)
         {
             ret.scaleFactor = 1;
         }
-        ret.angulardrag = int.Parse(template.GetValue("params", "angulardrag"));
-        ret.modelPatch = template.GetValue("model", "patch");
-
+        ret.angulardrag = spaceObjectData.angulardrag;
+        ret.modelPatch = spaceObjectData.modelPatch;
         ret.transform.localPosition = SpaceManager.spaceContainer.transform.localPosition + spaceObjectData.GetPosition();
         ret.transform.localEulerAngles = spaceObjectData.GetRotation();
+        if (!ret.isPlayerControll && LocalClient.isServer)
+        {
+            if (netRet != null)
+            {
+                netRet.data = spaceObjectData;
+            }
+            NetworkServer.Spawn(ret.gameObject);
+        }
         SpaceObjectManager.spaceObjects.Add(ret);
         return ret;
     }
@@ -250,19 +263,20 @@ public class SpaceObject : MonoBehaviour
 
             return;
         }
-        if (!iND_Target && LocalClient.controlledObject != this)
+        if (!iND_Target && LocalClient.ControlledObject != this)
         {
             iND_Target = IND_targetManager.Create(this);
             iND_Target.Init();
         }
         if (iND_Target)
         {
-            float thing = Vector3.Dot((transform.position - LocalClient.controlledObject.transform.position).normalized, LocalClient.controlledObject.transform.forward);
-            float dist = Vector3.Distance(LocalClient.controlledObject.transform.position, transform.position);
+            float thing = Vector3.Dot((transform.position - LocalClient.ControlledObject.transform.position).normalized, LocalClient.ControlledObject.transform.forward);
+            float dist = Vector3.Distance(LocalClient.ControlledObject.transform.position, transform.position);
             bool b1 = thing <= 0, b2 = dist > 500000;
             if (IND_target.selectedTarget == iND_Target)
             {
                 iND_Target.SetColor(IND_target.selectedColor);
+                SOController.distanceToTarget = Math.Round(dist / 1000f, 2);
                 b2 = false;
             }
             else
@@ -302,7 +316,7 @@ public class SpaceObject : MonoBehaviour
             if (main != null)
             {
                 main.SetActive(false);
-                Destroy(rigidbodyMain);
+                //Destroy(rigidbodyMain);
             }
         }
         else
@@ -314,13 +328,20 @@ public class SpaceObject : MonoBehaviour
         }
         if (main != null && rigidbodyMain == null)
         {
-            rigidbodyMain = this.gameObject.AddComponent<Rigidbody>();
+            rigidbodyMain = this.gameObject.GetComponent<Rigidbody>();
             rigidbodyMain.mass = mass;
             rigidbodyMain.drag = drag;
             rigidbodyMain.angularDrag = angulardrag;
             rigidbodyMain.useGravity = false;
 
             hull = main.transform.Find("HULL").gameObject;
+            // if (!isPlayerControll)
+            // {
+            //     NetworkTransformUnreliable networkTransform = this.gameObject.GetComponent<NetworkTransformUnreliable>();
+            //     networkTransform.syncDirection = SyncDirection.ServerToClient;
+            //     NetworkRigidbodyUnreliable netRigidbodyMain = this.gameObject.GetComponent<NetworkRigidbodyUnreliable>();
+            //     //netRigidbodyMain.syncDirection = SyncDirection.ServerToClient;
+            // }
         }
     }
     public SpaceObject(int galaxyId, int systemId, int sectorId, string templateName)
@@ -330,7 +351,7 @@ public class SpaceObject : MonoBehaviour
         this.sectorId = sectorId;
         this.templateName = templateName;
     }
-    public uint GetId()
+    public static uint GetId()
     {
         uint id = 0;
         while (SpaceObjectManager.spaceObjects.Find(f => f.id == id) != null)
@@ -338,8 +359,7 @@ public class SpaceObject : MonoBehaviour
             id++;
         }
 
-        this.id = id;
-        return this.id;
+        return id;
     }
     public static void InvokeRender()
     {

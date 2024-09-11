@@ -617,7 +617,7 @@ public class MenuManager : MonoBehaviour
             SpaceSystem spaceSystem = (SpaceSystem)SpaceUiObj.selectedObj.space;
             LocalClient.galaxyId = spaceSystem.galaxyId;
             LocalClient.systemId = spaceSystem.id;
-            LocalClient.controlledObject.WarpSystem(spaceSystem, 1);
+            LocalClient.ControlledObject.WarpSystem(spaceSystem, 1);
             SpaceManager.LoadSystem(LocalClient.SpaceSystem);
             LocalClient.SetSectorIndexes(Vector3.zero);
             SpaceObject.InvokeRender();

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class SOController : MonoBehaviour
@@ -16,6 +17,7 @@ public class SOController : MonoBehaviour
 
     public static bool blocked = false;
     public static int currentSpeed = 0;
+    public static double distanceToTarget = 0;
     public static int currentMaxSpeed = 0;
     void Awake()
     {

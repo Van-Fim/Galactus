@@ -6,6 +6,7 @@ public class LocalClient : MonoBehaviour
 {
     public static string gamestartTemplateName;
     public static bool is_gamestart_started;
+    public static bool skipFuckingControlledObjAndDie;
     public static string universeTemplateName = "default";
     private static Galaxy galaxy;
     private static SpaceSystem spaceSystem;
@@ -14,8 +15,9 @@ public class LocalClient : MonoBehaviour
     public static int systemId;
     public static int sectorId;
     public static int[] sectorIndexes = { 0, 0, 0 };
-    public static SpaceObject controlledObject;
-
+    private static SpaceObject controlledObject;
+    public static NetSpaceObject netSpaceObject;
+    public static bool isServer;
     public static Galaxy Galaxy
     {
         get
@@ -37,6 +39,11 @@ public class LocalClient : MonoBehaviour
             return SpaceManager.sectors.Find(x => x.galaxyId == galaxyId && x.systemId == systemId && x.GetIndexes() == GetSectorIndexes());
         }
     }
+
+    public static SpaceObject ControlledObject { get => controlledObject; set{
+        controlledObject = value;
+    }}
+
     public static Vector3 GetSectorIndexes()
     {
         return new Vector3(sectorIndexes[0], sectorIndexes[1], sectorIndexes[2]);

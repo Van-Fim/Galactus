@@ -68,7 +68,8 @@
 					</panel>
 					<panel item="panel02"
 						height="100%" width="100%" margin="50 0 50 0">
-						<panel name="MainHudMenuPanel01" item="scroll01" hud_adv_type="save" height="100%" width="100%"
+						<panel name="MainHudMenuPanel01" item="scroll01" hud_adv_type="save"
+							height="100%" width="100%"
 							bg_color="0 0 0 0" />
 					</panel>
 					<panel item="panel02" height="50" width="100%"
@@ -90,7 +91,8 @@
 					</panel>
 					<panel item="panel02"
 						height="100%" width="100%" margin="50 0 50 0">
-						<panel name="MainHudMenuPanel01" item="scroll01" hud_adv_type="load" height="100%" width="100%"
+						<panel name="MainHudMenuPanel01" item="scroll01" hud_adv_type="load"
+							height="100%" width="100%"
 							bg_color="0 0 0 0" />
 					</panel>
 					<panel item="panel02" height="50" width="100%"
@@ -133,6 +135,14 @@
 				<label item="ui_label" height="25" width="100" name="Text02" fontsize="16"
 					aligment="right"
 					data-value="player.speed" position="50 -80 0" color="255 255 255 100"
+					align-self="middlecenter" />
+				<label item="ui_label" height="25" width="100" name="Text01" fontsize="16"
+					aligment="left"
+					data-value="player.target.distance.text" position="-50 -105 0" color="255 255 255 100"
+					align-self="middlecenter" />
+				<label item="ui_label" height="25" width="100" name="Text02" fontsize="16"
+					aligment="right"
+					data-value="player.target.distance" position="50 -105 0" color="255 255 255 100"
 					align-self="middlecenter" />
 			</panel>
 		</main>

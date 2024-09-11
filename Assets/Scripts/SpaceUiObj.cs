@@ -69,7 +69,7 @@ public class SpaceUiObj : MonoBehaviour, IPointerClickHandler
             }
             float dddst = hhd.magnitude;
             Vector3 hdir = hhd / dddst;
-            sppp = LocalClient.controlledObject.transform.position + hdir * 1000000000;
+            sppp = LocalClient.ControlledObject.transform.position + hdir * 1000000000;
         }
         Vector3 pp = curCam.curCamera.WorldToScreenPoint(sppp);
         if (space is SpaceSystem)

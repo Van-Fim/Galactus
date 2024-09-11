@@ -18,10 +18,18 @@ public class SpaceManager : MonoBehaviour
         singleton = GameManager.singleton.gameObject.AddComponent<SpaceManager>();
         spaceContainer = new GameObject();
         spaceContainer.name = "SpaceContainer";
+        GameObject.DontDestroyOnLoad(spaceContainer);
     }
     public void LateUpdate()
     {
         SpaceUiObj.InvokeRender();
+    }
+    public static void SetRandomSkybox()
+    {
+        string[] skyboxes = new string[] { "Skybox01", "Skybox02", "Skybox03", "Skybox04" };
+        int rnd = Random.Range(0, skyboxes.Length - 1);
+        Material mat = Resources.Load<Material>($"Materials/Skybox/{skyboxes[rnd]}");
+        RenderSettings.skybox = mat;
     }
     public static void LoadSystem(SpaceSystem spaceSystem)
     {
@@ -32,7 +40,7 @@ public class SpaceManager : MonoBehaviour
         color = new Color32((byte)(color.r / cdiv), (byte)(color.g / cdiv), (byte)(color.b / cdiv), color.a);
         RenderSettings.skybox.SetColor("_Tint", color);
     }
-    
+
     public static void BuildGalaxies()
     {
         System.Random rndm = new System.Random(GameManager.GetSeed());
@@ -161,7 +169,10 @@ public class SpaceManager : MonoBehaviour
                 system.size = size;
 
                 Sector sector = new Sector(system, "Sector00");
-                sector.SetPosition(new Vector3(0,0,0));
+                sector.SetPosition(new Vector3(0, 0, 0));
+
+                sector = new Sector(system, "Sector00");
+                sector.SetPosition(new Vector3(1000000, 0, 0));
 
                 system.Init();
             }
