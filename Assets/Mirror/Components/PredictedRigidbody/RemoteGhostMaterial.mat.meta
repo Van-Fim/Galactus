@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Mirror/Components/PredictedRigidbody/RemoteGhostMaterial.mat.meta
 guid: 04f0b2088c857414393bab3b80356776
-========
-guid: 20d755ab53045e545ab0b6e59c710ed9
->>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc:Assets/Mirror/Examples/AdditiveLevels/Materials/Ground.mat.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000

@@ -146,7 +146,6 @@ namespace Mirror
             // nothing was written
             return false;
         }
-<<<<<<< HEAD
 
         // return all batches to the pool for cleanup
         public void Clear()
@@ -164,7 +163,5 @@ namespace Mirror
 
             batches.Clear();
         }
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     }
 }

@@ -202,7 +202,6 @@ namespace Mirror
         // then later the transport events will do the clean up.
         public abstract void Disconnect();
 
-<<<<<<< HEAD
         // cleanup is called before the connection is removed.
         // return any batches' pooled writers before the connection disappears.
         // otherwise if a connection disappears before flushing, writers would
@@ -215,8 +214,6 @@ namespace Mirror
             }
         }
 
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         public override string ToString() => $"connection({connectionId})";
     }
 }

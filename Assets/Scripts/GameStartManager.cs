@@ -13,4 +13,8 @@ public class GameStartManager
         ret.templateName = gameStartName;
         return ret;
     }
+    public static void InitStart(string start)
+    {
+
+    }
 }

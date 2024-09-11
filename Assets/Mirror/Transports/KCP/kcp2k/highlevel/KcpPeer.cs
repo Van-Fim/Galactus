@@ -313,7 +313,6 @@ namespace kcp2k
                 return false;
             }
 
-<<<<<<< HEAD
             // safely extract header. attackers may send values out of enum range.
             byte headerByte = kcpMessageBuffer[0];
             if (!KcpHeader.ParseReliable(headerByte, out header))
@@ -324,10 +323,6 @@ namespace kcp2k
             }
 
             // extract content without header
-=======
-            // extract header & content without header
-            header = (KcpHeaderReliable)kcpMessageBuffer[0];
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             message = new ArraySegment<byte>(kcpMessageBuffer, 1, msgSize - 1);
             lastReceiveTime = (uint)watch.ElapsedMilliseconds;
             return true;
@@ -542,7 +537,6 @@ namespace kcp2k
             // need at least one byte for the KcpHeader enum
             if (message.Count < 1) return;
 
-<<<<<<< HEAD
             // safely extract header. attackers may send values out of enum range.
             byte headerByte = message.Array[message.Offset + 0];
             if (!KcpHeader.ParseUnreliable(headerByte, out KcpHeaderUnreliable header))
@@ -554,11 +548,6 @@ namespace kcp2k
 
             // subtract header from message content
             // (above we already ensure it's at least 1 byte long)
-=======
-            // parse header and subtract it from message content.
-            // (above we already ensure it's at least 1 byte long)
-            KcpHeaderUnreliable header = (KcpHeaderUnreliable)message.Array[message.Offset + 0];
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             message = new ArraySegment<byte>(message.Array, message.Offset + 1, message.Count - 1);
 
             switch (header)

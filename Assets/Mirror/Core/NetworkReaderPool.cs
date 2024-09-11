@@ -17,12 +17,9 @@ namespace Mirror
             1000
         );
 
-<<<<<<< HEAD
         // expose count for testing
         public static int Count => Pool.Count;
 
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         /// <summary>Get the next reader in the pool. If pool is empty, creates a new Reader</summary>
         public static NetworkReaderPooled Get(byte[] bytes)
         {

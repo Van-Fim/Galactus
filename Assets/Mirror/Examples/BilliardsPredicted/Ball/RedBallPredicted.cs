@@ -1,12 +1,8 @@
-<<<<<<< HEAD
 
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 using UnityEngine;
 
 namespace Mirror.Examples.BilliardsPredicted
 {
-<<<<<<< HEAD
     // keep the empty script so we can find out what type of ball we collided with.
     public class RedBallPredicted : NetworkBehaviour
     {
@@ -14,10 +10,6 @@ namespace Mirror.Examples.BilliardsPredicted
            because predicted object's rigidbodies are sometimes moved out of them.
            which means this script here wouldn't get the collision info while predicting.
            which means it's easier to check collisions from the table perspective.
-=======
-    public class RedBallPredicted : NetworkBehaviour
-    {
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         // destroy when entering a pocket.
         // there's only one trigger in the scene (the pocket).
         [ServerCallback]
@@ -25,9 +17,6 @@ namespace Mirror.Examples.BilliardsPredicted
         {
             NetworkServer.Destroy(gameObject);
         }
-<<<<<<< HEAD
         */
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     }
 }

@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Mirror/Examples/AdditiveLevels/Materials/Ground.mat.meta
 guid: 20d755ab53045e545ab0b6e59c710ed9
-========
-guid: 38950807c6bf6454dbef567827b770b6
->>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc:Assets/Mirror/Examples/AdditiveLevels/Materials/CubeSphere.mat.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000

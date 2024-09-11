@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
-using Mirror;
+using Unity.Netcode;
 using UnityEngine;
 
-public class ServerManager : NetworkBehaviour
+public class ServerManager : MonoBehaviour
 {
-    public static ServerManager singleton;
-    public override void OnStartServer()
+    private void Start()
     {
+        NetworkManager.Singleton.OnServerStarted += OnServerStartedHandler;
+    }
 
+    private void OnServerStartedHandler()
+    {
+        Debug.Log("Server has started and is now listening for connections.");
     }
 }

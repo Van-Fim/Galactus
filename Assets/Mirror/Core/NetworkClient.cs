@@ -91,10 +91,7 @@ namespace Mirror
         public static Action OnConnectedEvent;
         public static Action OnDisconnectedEvent;
         public static Action<TransportError, string> OnErrorEvent;
-<<<<<<< HEAD
         public static Action<Exception> OnTransportExceptionEvent;
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
         /// <summary>Registered spawnable prefabs by assetId.</summary>
         public static readonly Dictionary<uint, GameObject> prefabs =
@@ -154,10 +151,7 @@ namespace Mirror
             Transport.active.OnClientDataReceived += OnTransportData;
             Transport.active.OnClientDisconnected += OnTransportDisconnected;
             Transport.active.OnClientError += OnTransportError;
-<<<<<<< HEAD
             Transport.active.OnClientTransportException += OnTransportException;
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         }
 
         static void RemoveTransportHandlers()
@@ -167,10 +161,7 @@ namespace Mirror
             Transport.active.OnClientDataReceived -= OnTransportData;
             Transport.active.OnClientDisconnected -= OnTransportDisconnected;
             Transport.active.OnClientError -= OnTransportError;
-<<<<<<< HEAD
             Transport.active.OnClientTransportException -= OnTransportException;
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         }
 
         // connect /////////////////////////////////////////////////////////////
@@ -338,11 +329,7 @@ namespace Mirror
                     }
                     else
                         Debug.LogWarning($"NetworkClient: failed to add batch.");
-<<<<<<< HEAD
 
-=======
-                 
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                     return;
                 }
 
@@ -459,10 +446,7 @@ namespace Mirror
             // now that everything was handled, clear the connection.
             // previously this was done in Disconnect() already, but we still
             // need it for the above OnDisconnectedEvent.
-<<<<<<< HEAD
             connection?.Cleanup();
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             connection = null;
 
             // transport handlers are only added when connecting.
@@ -479,7 +463,6 @@ namespace Mirror
             OnErrorEvent?.Invoke(error, reason);
         }
 
-<<<<<<< HEAD
         static void OnTransportException(Exception exception)
         {
             // transport errors will happen. logging a warning is enough.
@@ -488,8 +471,6 @@ namespace Mirror
             OnTransportExceptionEvent?.Invoke(exception);
         }
 
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         // send ////////////////////////////////////////////////////////////////
         /// <summary>Send a NetworkMessage to the server over the given channel.</summary>
         public static void Send<T>(T message, int channelId = Channels.Reliable)
@@ -593,17 +574,10 @@ namespace Mirror
             // so let's wrap it to ignore the NetworkConnection parameter.
             // it's not needed on client. it's always NetworkClient.connection.
             ushort msgType = NetworkMessageId<T>.Id;
-<<<<<<< HEAD
 
             // register Id <> Type in lookup for debugging.
             NetworkMessages.Lookup[msgType] = typeof(T);
 
-=======
-            
-            // register Id <> Type in lookup for debugging.
-            NetworkMessages.Lookup[msgType] = typeof(T);
-            
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             void HandlerWrapped(NetworkConnection _, T value) => handler(_, value);
             handlers[msgType] = NetworkMessages.WrapHandler((Action<NetworkConnection, T>)HandlerWrapped, requireAuthentication, exceptionsDisconnect);
         }
@@ -618,17 +592,10 @@ namespace Mirror
             // so let's wrap it to ignore the NetworkConnection parameter.
             // it's not needed on client. it's always NetworkClient.connection.
             ushort msgType = NetworkMessageId<T>.Id;
-<<<<<<< HEAD
 
             // register Id <> Type in lookup for debugging.
             NetworkMessages.Lookup[msgType] = typeof(T);
 
-=======
-            
-            // register Id <> Type in lookup for debugging.
-            NetworkMessages.Lookup[msgType] = typeof(T);
-            
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             void HandlerWrapped(NetworkConnection _, T value) => handler(value);
             handlers[msgType] = NetworkMessages.WrapHandler((Action<NetworkConnection, T>)HandlerWrapped, requireAuthentication, exceptionsDisconnect);
         }
@@ -643,17 +610,10 @@ namespace Mirror
             // so let's wrap it to ignore the NetworkConnection parameter.
             // it's not needed on client. it's always NetworkClient.connection.
             ushort msgType = NetworkMessageId<T>.Id;
-<<<<<<< HEAD
 
             // register Id <> Type in lookup for debugging.
             NetworkMessages.Lookup[msgType] = typeof(T);
 
-=======
-            
-            // register Id <> Type in lookup for debugging.
-            NetworkMessages.Lookup[msgType] = typeof(T);
-            
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             void HandlerWrapped(NetworkConnection _, T value, int channelId) => handler(value, channelId);
             handlers[msgType] = NetworkMessages.WrapHandler((Action<NetworkConnection, T, int>)HandlerWrapped, requireAuthentication, exceptionsDisconnect);
         }
@@ -1859,10 +1819,7 @@ namespace Mirror
             OnConnectedEvent = null;
             OnDisconnectedEvent = null;
             OnErrorEvent = null;
-<<<<<<< HEAD
             OnTransportExceptionEvent = null;
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         }
 
         // GUI /////////////////////////////////////////////////////////////////

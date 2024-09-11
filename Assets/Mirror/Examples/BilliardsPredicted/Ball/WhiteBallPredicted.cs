@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 using System;
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 using UnityEngine;
 
 namespace Mirror.Examples.BilliardsPredicted
@@ -9,22 +6,15 @@ namespace Mirror.Examples.BilliardsPredicted
     public class WhiteBallPredicted : NetworkBehaviour
     {
         public LineRenderer dragIndicator;
-<<<<<<< HEAD
         public float dragTolerance = 1.0f;
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         public Rigidbody rigidBody;
         public float forceMultiplier = 2;
         public float maxForce = 40;
 
         // remember start position to reset to after entering a pocket
-<<<<<<< HEAD
         internal Vector3 startPosition;
 
         bool draggingStartedOverObject;
-=======
-        Vector3 startPosition;
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
         // cast mouse position on screen to world position
         bool MouseToWorld(out Vector3 position)
@@ -46,7 +36,6 @@ namespace Mirror.Examples.BilliardsPredicted
         }
 
         [ClientCallback]
-<<<<<<< HEAD
         void Update()
         {
             // mouse down on the white ball?
@@ -118,8 +107,6 @@ namespace Mirror.Examples.BilliardsPredicted
         // the white ball is nice.
         /*
         [ClientCallback]
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         void OnMouseDown()
         {
             // enable drag indicator
@@ -167,16 +154,12 @@ namespace Mirror.Examples.BilliardsPredicted
             // disable drag indicator
             dragIndicator.gameObject.SetActive(false);
         }
-<<<<<<< HEAD
         */
 
         /* ball<->pocket collisions are handled by Pockets.cs for now.
            because predicted object's rigidbodies are sometimes moved out of them.
            which means this script here wouldn't get the collision info while predicting.
            which means it's easier to check collisions from the table perspective.
-=======
-
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         // reset position when entering a pocket.
         // there's only one trigger in the scene (the pocket).
         [ServerCallback]
@@ -186,10 +169,7 @@ namespace Mirror.Examples.BilliardsPredicted
             rigidBody.Sleep(); // reset forces
             // GetComponent<NetworkRigidbodyUnreliable>().RpcTeleport(startPosition);
         }
-<<<<<<< HEAD
         */
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
         [ClientCallback]
         void OnGUI()

@@ -1,10 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-<<<<<<< HEAD
 using Unity.Mathematics;
-=======
-using Unity.VisualScripting;
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 using UnityEngine;
 
 public class SOController : MonoBehaviour
@@ -18,75 +14,17 @@ public class SOController : MonoBehaviour
     private int rotationSpeed = 150;
     private float velocity = 100;
     private bool isHyperMode = false;
-    private bool isInitialized = false;
 
     public static bool blocked = false;
     public static int currentSpeed = 0;
     public static double distanceToTarget = 0;
     public static int currentMaxSpeed = 0;
-
-    public void Init()
+    void Awake()
     {
-        MultiplayerPanel.singleton.gameObject.SetActive(false);
-        MenuManager.singleton.gameObject.SetActive(true);
-        PositionFixer.Init();
-        GameStartData gameStartData = GameStartManager.LoadGameStart("Start01");
-
-        SpaceManager.Init();
-        SpaceObjectManager.Init();
-        IND_targetManager.Init();
-        SpaceManager.BuildGalaxies();
-        SpaceManager.BuildSystems();
-        SpaceManager.BuildSystemsContent();
-
-        gameStartData.spaceObjectDatas = SpaceObjectManager.ReadSpaceContent("Start01", "start");
-        gameStartData.GetStartTypeFromData();
-        if (obj == null)
-        {
-            if (gameStartData.startType == "spaceobject")
-            {
-                obj = gameObject.AddComponent<SpaceObject>();
-            }
-            else if (gameStartData.startType == "ship")
-            {
-                obj = gameObject.AddComponent<Ship>();
-            }
-            else if (gameStartData.startType == "pilot")
-            {
-                obj = gameObject.AddComponent<Pilot>();
-            }
-            LocalClient.controlledObject = obj;
-        }
-        SpaceObjectManager.BuildObjectsByData(gameStartData.spaceObjectDatas);
-        SpaceManager.LoadSystem(LocalClient.SpaceSystem);
-        SpaceObject.InvokeRender();
-
-        LocalClient.controlledObject.WarpSystem(LocalClient.SpaceSystem, LocalClient.Sector.id);
-
-        if (LocalClient.controlledObject != null)
-        {
-            SpaceObject cobj = LocalClient.controlledObject;
-            LocalClient.controlledObject.isInitialized = true;
-            LocalClient.controlledObject.isPlayerControll = true;
-
-            Hardpoint camHP = cobj.GetHardpointByType("camera");
-            CameraManager.mainCamera.IsCamEnabled = false;
-            CameraManager.mainCamera.transform.SetParent(cobj.main.transform);
-            CameraManager.mainCamera.transform.localPosition = camHP.GetPosition();
-            CameraManager.mainCamera.transform.localEulerAngles = camHP.GetRotation();
-            transform.SetParent(null);
-        }
-
-        Space.InvokeMinimapRender();
-        MenuManager.singleton.BuildAll();
-        for (int i = 0; i < MenuManager.huds.Count; i++)
-        {
-            Hud h = MenuManager.huds[i];
-            h.Hide();
-        }
-        Hud hud = MenuManager.GetHud("MainHudMenu");
-        hud.ShowSingle();
-
+        obj = gameObject.GetComponent<SpaceObject>();
+    }
+    public void Start()
+    {
         Template template = TemplateManager.FindTemplate(obj.templateName, obj.GetObjectType());
         TemplateNode paramsNode = template.GetNode("params");
         if (paramsNode != null)
@@ -99,15 +37,9 @@ public class SOController : MonoBehaviour
             this.rotationSpeed = newRotationSpeed;
             this.velocity = newVelocity;
         }
-        isInitialized = true;
-        GameManager.singleton.spaceObjectDatas = gameStartData.spaceObjectDatas;
     }
     void FixedUpdate()
     {
-        if (!isInitialized)
-        {
-            return;
-        }
         if (obj.rigidbodyMain == null)
         {
             return;

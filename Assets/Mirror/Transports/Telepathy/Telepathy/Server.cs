@@ -86,15 +86,9 @@ namespace Telepathy
                 listener = TcpListener.Create(port);
                 listener.Server.NoDelay = NoDelay;
                 // IMPORTANT: do not set send/receive timeouts on listener.
-<<<<<<< HEAD
                 // On linux setting the recv timeout will cause the blocking
                 // Accept call to timeout with EACCEPT (which mono interprets
                 // as EWOULDBLOCK).
-=======
-                // On linux setting the recv timeout will cause the blocking 
-                // Accept call to timeout with EACCEPT (which mono interprets 
-                // as EWOULDBLOCK). 
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                 // https://stackoverflow.com/questions/1917814/eagain-error-for-accept-on-blocking-socket/1918118#1918118
                 // => fixes https://github.com/vis2k/Mirror/issues/2695
                 //
@@ -324,7 +318,6 @@ namespace Telepathy
         // client's ip is sometimes needed by the server, e.g. for bans
         public string GetClientAddress(int connectionId)
         {
-<<<<<<< HEAD
             try
             {
                 // find the connection
@@ -346,14 +339,6 @@ namespace Telepathy
                 // so let's at least catch it and recover
                 return "unknown";
             }
-=======
-            // find the connection
-            if (clients.TryGetValue(connectionId, out ConnectionState connection))
-            {
-                return ((IPEndPoint)connection.client.Client.RemoteEndPoint).Address.ToString();
-            }
-            return "";
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         }
 
         // disconnect (kick) a client

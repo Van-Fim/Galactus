@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Mirror/Editor/LagCompensatorInspector.cs.meta
 guid: 703e39b5385ae2e479987ff4ec0707a1
-========
-guid: f02853db46b6346e4866594a96c3b0e7
->>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc:Assets/Mirror/Editor/NetworkBehaviourInspector.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

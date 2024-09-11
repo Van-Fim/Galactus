@@ -1,8 +1,5 @@
 // finds all readers and writers and register them
-<<<<<<< HEAD
 using System.Collections.Generic;
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 using System.Linq;
 using Mono.CecilX;
 using Mono.CecilX.Cil;
@@ -21,7 +18,6 @@ namespace Mirror.Weaver
             //       otherwise Unity crashes when running tests
             ProcessMirrorAssemblyClasses(CurrentAssembly, resolver, Log, writers, readers, ref WeavingFailed);
 
-<<<<<<< HEAD
             // process dependencies first, this way weaver can process types of other assemblies properly.
             // fixes: https://github.com/MirrorNetworking/Mirror/issues/2503
             //
@@ -37,8 +33,6 @@ namespace Mirror.Weaver
                 }
             }
 
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             // find readers/writers in the assembly we are in right now.
             return ProcessAssemblyClasses(CurrentAssembly, CurrentAssembly, writers, readers, ref WeavingFailed);
         }

@@ -98,7 +98,6 @@ namespace Mirror.Weaver
                 // let's make it obvious why we returned null for easier debugging.
                 // NOTE: if this fails for "System.Private.CoreLib":
                 //       ILPostProcessorReflectionImporter fixes it!
-<<<<<<< HEAD
 
                 // the fix for #2503 started showing this warning for Bee.BeeDriver on mac,
                 // which is for compilation. we can ignore that one.
@@ -106,9 +105,6 @@ namespace Mirror.Weaver
                 {
                     Log.Warning($"ILPostProcessorAssemblyResolver.Resolve: Failed to find file for {name}");
                 }
-=======
-                Log.Warning($"ILPostProcessorAssemblyResolver.Resolve: Failed to find file for {name}");
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                 return null;
             }
 

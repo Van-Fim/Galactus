@@ -1,19 +1,11 @@
-<<<<<<< HEAD
 using System;
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 using UnityEngine;
 
 namespace Mirror.Experimental
 {
-<<<<<<< HEAD
     [AddComponentMenu("")]
     [HelpURL("https://mirror-networking.gitbook.io/docs/components/network-rigidbody")]
     [Obsolete("Use the new NetworkRigidbodyReliable/Unreliable 2D component with Snapshot Interpolation instead.")]
-=======
-    [AddComponentMenu("Network/ Experimental/Network Rigidbody 2D")]
-    [HelpURL("https://mirror-networking.gitbook.io/docs/components/network-rigidbody")]
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     public class NetworkRigidbody2D : NetworkBehaviour
     {
         [Header("Settings")]

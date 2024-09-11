@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 using System;
 
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 namespace kcp2k
 {
     // header for messages processed by kcp.
@@ -28,7 +25,6 @@ namespace kcp2k
         // disconnect always goes through rapid fire unreliable (glenn fielder)
         Disconnect = 5,
     }
-<<<<<<< HEAD
 
     // save convert the enums from/to byte.
     // attackers may attempt to send invalid values, so '255' may not convert.
@@ -58,6 +54,4 @@ namespace kcp2k
             return false;
         }
     }
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 }

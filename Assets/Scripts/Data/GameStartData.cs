@@ -41,15 +41,4 @@ public class GameStartData : IData
     {
         return new Vector3(this.rotation[0], this.rotation[1], this.rotation[2]);
     }
-    public void GetStartTypeFromData()
-    {
-        for (int i = 0; i < spaceObjectDatas.Count; i++)
-        {
-            SpaceObjectData data = spaceObjectDatas[i];
-            if (data.isPlayerControll)
-            {
-                startType = data.type;
-            }
-        }
-    }
 }

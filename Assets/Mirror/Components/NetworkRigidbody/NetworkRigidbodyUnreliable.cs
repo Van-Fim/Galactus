@@ -3,10 +3,7 @@ using UnityEngine;
 namespace Mirror
 {
     // [RequireComponent(typeof(Rigidbody))] <- OnValidate ensures this is on .target
-<<<<<<< HEAD
     [AddComponentMenu("Network/Network Rigidbody (Unreliable)")]
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     public class NetworkRigidbodyUnreliable : NetworkTransformUnreliable
     {
         bool clientAuthority => syncDirection == SyncDirection.ClientToServer;
@@ -96,7 +93,6 @@ namespace Mirror
                 Debug.LogWarning($"{name}'s NetworkRigidbody.target {target.name} is missing a Rigidbody", this);
             }
         }
-<<<<<<< HEAD
 
         protected override void OnTeleport(Vector3 destination)
         {
@@ -112,7 +108,5 @@ namespace Mirror
             rb.position = transform.position;
             rb.rotation = transform.rotation;
         }
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     }
 }

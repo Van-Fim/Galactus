@@ -2,10 +2,7 @@
 
 namespace Mirror.Examples.Common
 {
-<<<<<<< HEAD
     [AddComponentMenu("")]
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     public class PhysicsSimulator : MonoBehaviour
     {
         PhysicsScene physicsScene;

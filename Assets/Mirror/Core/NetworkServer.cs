@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace Mirror
 {
-<<<<<<< HEAD
     public enum RemovePlayerOptions
     {
         /// <summary>Player Object remains active on server and clients. Only ownership is removed</summary>
@@ -17,8 +16,6 @@ namespace Mirror
         Destroy
     }
 
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     /// <summary>NetworkServer handles remote connections and has a local connection for a local client.</summary>
     public static partial class NetworkServer
     {
@@ -102,10 +99,7 @@ namespace Mirror
         public static Action<NetworkConnectionToClient> OnConnectedEvent;
         public static Action<NetworkConnectionToClient> OnDisconnectedEvent;
         public static Action<NetworkConnectionToClient, TransportError, string> OnErrorEvent;
-<<<<<<< HEAD
         public static Action<NetworkConnectionToClient, Exception> OnTransportExceptionEvent;
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
         // keep track of actual achieved tick rate.
         // might become lower under heavy load.
@@ -201,10 +195,7 @@ namespace Mirror
             Transport.active.OnServerDataReceived += OnTransportData;
             Transport.active.OnServerDisconnected += OnTransportDisconnected;
             Transport.active.OnServerError += OnTransportError;
-<<<<<<< HEAD
             Transport.active.OnServerTransportException += OnTransportException;
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         }
 
         /// <summary>Shuts down the server and disconnects all clients</summary>
@@ -264,10 +255,7 @@ namespace Mirror
             OnConnectedEvent = null;
             OnDisconnectedEvent = null;
             OnErrorEvent = null;
-<<<<<<< HEAD
             OnTransportExceptionEvent = null;
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
             if (aoi != null) aoi.ResetState();
         }
@@ -349,11 +337,7 @@ namespace Mirror
                 // for example, NetworkTransform.
                 // let's not spam the console for unreliable out of order messages.
                 if (channelId == Channels.Reliable)
-<<<<<<< HEAD
                     Debug.LogWarning($"Spawned object not found when handling Command message netId={msg.netId}");
-=======
-                    Debug.LogWarning($"Spawned object not found when handling Command message {identity.name} netId={msg.netId}");
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                 return;
             }
 
@@ -850,10 +834,7 @@ namespace Mirror
             // Debug.Log($"Server disconnect client:{connectionId}");
             if (connections.TryGetValue(connectionId, out NetworkConnectionToClient conn))
             {
-<<<<<<< HEAD
                 conn.Cleanup();
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                 RemoveConnection(connectionId);
                 // Debug.Log($"Server lost client:{connectionId}");
 
@@ -883,7 +864,6 @@ namespace Mirror
             OnErrorEvent?.Invoke(conn, error, reason);
         }
 
-<<<<<<< HEAD
         // transport errors are forwarded to high level
         static void OnTransportException(int connectionId, Exception exception)
         {
@@ -895,8 +875,6 @@ namespace Mirror
             OnTransportExceptionEvent?.Invoke(conn, exception);
         }
 
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         /// <summary>Destroys all of the connection's owned objects on the server.</summary>
         // This is used when a client disconnects, to remove the players for
         // that client. This also destroys non-player objects that have client
@@ -1181,7 +1159,6 @@ namespace Mirror
 
         /// <summary>Removes the player object from the connection</summary>
         // destroyServerObject: Indicates whether the server object should be destroyed
-<<<<<<< HEAD
         // Deprecated 2024-06-06
         [Obsolete("Use RemovePlayerForConnection(NetworkConnectionToClient conn, RemovePlayerOptions removeOptions) instead")]
         public static void RemovePlayerForConnection(NetworkConnectionToClient conn, bool destroyServerObject)
@@ -1213,20 +1190,6 @@ namespace Mirror
             }
 
             conn.identity = null;
-=======
-        public static void RemovePlayerForConnection(NetworkConnectionToClient conn, bool destroyServerObject)
-        {
-            if (conn.identity != null)
-            {
-                if (destroyServerObject)
-                    Destroy(conn.identity.gameObject);
-                else
-                    UnSpawn(conn.identity.gameObject);
-
-                conn.identity = null;
-            }
-            //else Debug.Log($"Connection {conn} has no identity");
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         }
 
         // ready ///////////////////////////////////////////////////////////////
@@ -1423,11 +1386,7 @@ namespace Mirror
             {
                 netId = identity.netId,
                 isOwner = identity.connectionToClient == conn,
-<<<<<<< HEAD
                 isLocalPlayer = (conn.identity == identity && identity.connectionToClient == conn)
-=======
-                isLocalPlayer = conn.identity == identity
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             });
         }
 
@@ -1781,14 +1740,11 @@ namespace Mirror
                 {
                     AddAllReadyServerConnectionsToObservers(identity);
                 }
-<<<<<<< HEAD
                 else if (identity.connectionToClient != null)
                 {
                     // force hidden, but add owner connection
                     identity.AddObserver(identity.connectionToClient);
                 }
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             }
         }
 

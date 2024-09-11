@@ -28,10 +28,7 @@ namespace Mirror
     {
         // get the two states closest to a given timestamp.
         // those can be used to interpolate the exact state at that time.
-<<<<<<< HEAD
         // => RingBuffer: see prediction_ringbuffer_2 branch, but it's slower!
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         public static bool Sample<T>(
             SortedList<double, T> history,
             double timestamp, // current server time
@@ -63,7 +60,6 @@ namespace Mirror
             //      should be O(1) most of the time, unless sampling was off.
             int index = 0; // manually count when iterating. easier than for-int loop.
             KeyValuePair<double, T> prev = new KeyValuePair<double, T>();
-<<<<<<< HEAD
 
             // SortedList foreach iteration allocates a LOT. use for-int instead.
             // foreach (KeyValuePair<double, T> entry in history) {
@@ -79,44 +75,21 @@ namespace Mirror
                     after = value;
                     afterIndex = index;
                     t = Mathd.InverseLerp(key, key, timestamp);
-=======
-            foreach (KeyValuePair<double, T> entry in history) {
-                // exact match?
-                if (timestamp == entry.Key)
-                {
-                    before = entry.Value;
-                    after = entry.Value;
-                    afterIndex = index;
-                    t = Mathd.InverseLerp(entry.Key, entry.Key, timestamp);
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                     return true;
                 }
 
                 // did we check beyond timestamp? then return the previous two.
-<<<<<<< HEAD
                 if (key > timestamp)
                 {
                     before = prev.Value;
                     after = value;
                     afterIndex = index;
                     t = Mathd.InverseLerp(prev.Key, key, timestamp);
-=======
-                if (entry.Key > timestamp)
-                {
-                    before = prev.Value;
-                    after = entry.Value;
-                    afterIndex = index;
-                    t = Mathd.InverseLerp(prev.Key, entry.Key, timestamp);
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                     return true;
                 }
 
                 // remember the last
-<<<<<<< HEAD
                 prev = new KeyValuePair<double, T>(key, value);
-=======
-                prev = entry;
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                 index += 1;
             }
 
@@ -126,28 +99,18 @@ namespace Mirror
         // inserts a server state into the client's history.
         // readjust the deltas of the states after the inserted one.
         // returns the corrected final position.
-<<<<<<< HEAD
         // => RingBuffer: see prediction_ringbuffer_2 branch, but it's slower!
         public static T CorrectHistory<T>(
             SortedList<double, T> history,
-=======
-        public static T CorrectHistory<T>(
-            SortedList<double, T> stateHistory,
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             int stateHistoryLimit,
             T corrected,     // corrected state with timestamp
             T before,        // state in history before the correction
             T after,         // state in history after the correction
-<<<<<<< HEAD
             int afterIndex)  // index of the 'after' value so we don't need to find it again here
-=======
-            int afterIndex) // index of the 'after' value so we don't need to find it again here
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             where T: PredictedState
         {
             // respect the limit
             // TODO unit test to check if it respects max size
-<<<<<<< HEAD
             if (history.Count >= stateHistoryLimit)
             {
                 history.RemoveAt(0);
@@ -163,13 +126,6 @@ namespace Mirror
             //   SortedList insertions are O(N)!
             //     history[corrected.timestamp] = corrected;
             //     afterIndex += 1; // we inserted the corrected value before the previous index
-=======
-            if (stateHistory.Count >= stateHistoryLimit)
-                stateHistory.RemoveAt(0);
-
-            // insert the corrected state into the history, or overwrite if already exists
-            stateHistory[corrected.timestamp] = corrected;
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
             // the entry behind the inserted one still has the delta from (before, after).
             // we need to correct it to (corrected, after).
@@ -209,7 +165,6 @@ namespace Mirror
             after.rotationDelta        = Quaternion.Slerp(Quaternion.identity, after.rotationDelta, (float)multiplier).normalized;
 
             // changes aren't saved until we overwrite them in the history
-<<<<<<< HEAD
             history[after.timestamp] = after;
 
             // second step: readjust all absolute values by rewinding client's delta moves on top of it.
@@ -231,29 +186,6 @@ namespace Mirror
 
                 // save last
                 last = value;
-=======
-            stateHistory[after.timestamp] = after;
-
-            // second step: readjust all absolute values by rewinding client's delta moves on top of it.
-            T last = corrected;
-            for (int i = afterIndex; i < stateHistory.Count; ++i)
-            {
-                double key = stateHistory.Keys[i];
-                T entry = stateHistory.Values[i];
-
-                // correct absolute position based on last + delta.
-                entry.position        = last.position + entry.positionDelta;
-                entry.velocity        = last.velocity + entry.velocityDelta;
-                entry.angularVelocity = last.angularVelocity + entry.angularVelocityDelta;
-                // Quaternions always need to be normalized in order to be a valid rotation after operations
-                entry.rotation        = (entry.rotationDelta * last.rotation).normalized; // quaternions add delta by multiplying in this order
-
-                // save the corrected entry into history.
-                stateHistory[key] = entry;
-
-                // save last
-                last = entry;
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             }
 
             // third step: return the final recomputed state.

@@ -26,10 +26,7 @@ namespace Mirror
             inner.OnClientDataReceived = OnClientDataReceived;
             inner.OnClientDisconnected = OnClientDisconnected;
             inner.OnClientError = OnClientError;
-<<<<<<< HEAD
             inner.OnClientTransportException = OnClientTransportException;
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             inner.ClientConnect(address);
         }
 
@@ -49,10 +46,7 @@ namespace Mirror
             inner.OnServerDataReceived = OnServerDataReceived;
             inner.OnServerDisconnected = OnServerDisconnected;
             inner.OnServerError = OnServerError;
-<<<<<<< HEAD
             inner.OnServerTransportException = OnServerTransportException;
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             inner.ServerStart();
         }
 

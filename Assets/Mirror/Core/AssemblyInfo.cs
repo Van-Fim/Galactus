@@ -10,7 +10,4 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Mirror.Tests.Performance.Editor")]
 [assembly: InternalsVisibleTo("Mirror.Tests.Performance.Runtime")]
 [assembly: InternalsVisibleTo("Mirror.Editor")]
-<<<<<<< HEAD
 [assembly: InternalsVisibleTo("Mirror.Components")]
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc

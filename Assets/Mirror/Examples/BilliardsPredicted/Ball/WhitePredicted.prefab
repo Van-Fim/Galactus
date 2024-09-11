@@ -232,18 +232,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
   sceneId: 0
   _assetId: 2140274599
   serverOnly: 0
   visibility: 0
-=======
-  clientStarted: 0
-  sceneId: 0
-  _assetId: 2140274599
-  serverOnly: 0
-  visible: 0
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
   hasSpawned: 0
 --- !u!135 &3429911415116987811
 SphereCollider:
@@ -290,10 +282,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   dragIndicator: {fileID: 982362982}
-<<<<<<< HEAD
   dragTolerance: 1
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
   rigidBody: {fileID: 1848203816128897140}
   forceMultiplier: 2
   maxForce: 40
@@ -311,7 +300,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncDirection: 0
   syncMode: 0
-<<<<<<< HEAD
   syncInterval: 0
   predictedRigidbody: {fileID: 1848203816128897140}
   mode: 1
@@ -335,12 +323,3 @@ MonoBehaviour:
   rotationInterpolationSpeed: 10
   teleportDistanceMultiplier: 10
   reduceSendsWhileIdle: 1
-=======
-  syncInterval: 0.1
-  stateHistoryLimit: 32
-  correctionThreshold: 0.1
-  oneFrameAhead: 1
-  correctionMode: 1
-  ghostMaterial: {fileID: 2100000, guid: 411a48b4a197d4924bec3e3809bc9320, type: 2}
-  lineTime: 10
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc

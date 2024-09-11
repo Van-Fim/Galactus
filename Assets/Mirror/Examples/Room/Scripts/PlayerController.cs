@@ -2,10 +2,7 @@ using UnityEngine;
 
 namespace Mirror.Examples.NetworkRoom
 {
-<<<<<<< HEAD
     [AddComponentMenu("")]
-=======
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     [RequireComponent(typeof(CapsuleCollider))]
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(NetworkTransformReliable))]

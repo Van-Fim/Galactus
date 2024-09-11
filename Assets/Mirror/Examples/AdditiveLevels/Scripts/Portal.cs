@@ -69,11 +69,7 @@ namespace Mirror.Examples.AdditiveLevels
                 yield return new WaitForSeconds(AdditiveLevelsNetworkManager.singleton.fadeInOut.GetDuration());
 
                 // Remove player after fader has completed
-<<<<<<< HEAD
                 NetworkServer.RemovePlayerForConnection(conn, RemovePlayerOptions.Unspawn);
-=======
-                NetworkServer.RemovePlayerForConnection(conn, false);
->>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
                 // reposition player on server and client
                 player.transform.position = startPosition;
