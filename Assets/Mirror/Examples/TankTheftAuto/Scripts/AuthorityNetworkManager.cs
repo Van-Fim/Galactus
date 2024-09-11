@@ -1,9 +1,15 @@
 using System.Linq;
+<<<<<<< HEAD
 using UnityEngine;
 
 namespace Mirror.Examples.TankTheftAuto
 {
     [AddComponentMenu("")]
+=======
+
+namespace Mirror.Examples.TankTheftAuto
+{
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     public class AuthorityNetworkManager : NetworkManager
     {
         /// <summary>

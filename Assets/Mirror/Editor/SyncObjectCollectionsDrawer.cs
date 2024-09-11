@@ -4,7 +4,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+<<<<<<< HEAD
 using System.Text.RegularExpressions;
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 using UnityEditor;
 
 namespace Mirror
@@ -19,12 +22,16 @@ namespace Mirror
         {
             this.field = field;
             visible = false;
+<<<<<<< HEAD
 
             // field.FieldType.Name has a backtick and number at the end, e.g. SyncList`1
             // so we split it and only take the first part so it looks nicer.
             // e.g. SyncList`1 -> SyncList
             // Better to do it one time here than in hot path in OnInspectorGUI
             label = $"{field.Name} [{Regex.Replace(field.FieldType.Name, @"`\d+", "")}]";
+=======
+            label = $"{field.Name}  [{field.FieldType.Name}]";
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         }
     }
 

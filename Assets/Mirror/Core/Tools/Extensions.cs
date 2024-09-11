@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+<<<<<<< HEAD
 using System.Net;
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -101,14 +104,20 @@ namespace Mirror
         }
 #endif
 
+<<<<<<< HEAD
 #if !UNITY_2022_0_OR_NEWER
         // Some patch versions of Unity 2021.3 and earlier don't have transform.GetPositionAndRotation which we use for performance in some places
+=======
+#if !UNITY_2021_3_OR_NEWER
+        // Unity 2021.2 and earlier don't have transform.GetPositionAndRotation which we use for performance in some places
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         public static void GetPositionAndRotation(this Transform transform, out Vector3 position, out Quaternion rotation)
         {
             position = transform.position;
             rotation = transform.rotation;
         }
 #endif
+<<<<<<< HEAD
 
         // IPEndPoint address only to pretty string.
         // useful for to get a connection's address for IP bans etc.
@@ -123,5 +132,7 @@ namespace Mirror
                 ? endPoint.Address.MapToIPv4().ToString()
                 : endPoint.Address.ToString();
         }
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     }
 }

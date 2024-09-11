@@ -9,8 +9,11 @@ namespace Mirror.Transports.Encryption
     [HelpURL("https://mirror-networking.gitbook.io/docs/manual/transports/encryption-transport")]
     public class EncryptionTransport : Transport
     {
+<<<<<<< HEAD
         public override bool IsEncrypted => true;
         public override string EncryptionCipher => "AES256-GCM";
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         public Transport inner;
 
         public enum ValidationMode

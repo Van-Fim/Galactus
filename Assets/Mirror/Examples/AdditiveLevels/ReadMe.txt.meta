@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Mirror/Examples/AdditiveLevels/ReadMe.txt.meta
 guid: e0b006e68a5390c42a2ac1413c98e72f
+========
+guid: 67177defd4d334a549e535f10506cc66
+>>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc:Assets/Mirror/Examples/Basic/README.md.meta
 TextScriptImporter:
   externalObjects: {}
   userData: 

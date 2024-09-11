@@ -10,8 +10,12 @@ public class PositionFixer : MonoBehaviour
     public static Vector3 zoneIndexes = Vector3.zero;
     public static Vector3 currentSectorIndexes = Vector3.zero;
     public static Vector3 currentZoneIndexes = Vector3.zero;
+<<<<<<< HEAD
     public static int stepSize = 50000;
     public static int sectorStepSize = 500000;
+=======
+    public static int stepSize = 5000;
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     public static UnityAction OnFixZonePositionAction;
     public static UnityAction OnFixSectorPositionAction;
     public static bool isStoppedAutoUpdate = false;
@@ -21,12 +25,17 @@ public class PositionFixer : MonoBehaviour
         int st = sectorStepSize/stepSize;
         currentSectorIndexes = new Vector3((int)(zoneIndexes.x / st), (int)(zoneIndexes.y / st), (int)(zoneIndexes.z / st));
         SpaceManager.spaceContainer.transform.localPosition = -(zoneIndexes * stepSize);
+<<<<<<< HEAD
         LocalClient.ControlledObject.transform.localPosition = -(PositionFixer.RecalcPos(LocalClient.ControlledObject.transform.localPosition, stepSize) - LocalClient.ControlledObject.transform.localPosition);
     }
     public static void OnFixSectorPosition()
     {
         sectorIndexes = currentSectorIndexes;
         Debug.Log($"{zoneIndexes} {sectorIndexes}");
+=======
+        LocalClient.controlledObject.transform.localPosition = -(PositionFixer.RecalcPos(LocalClient.controlledObject.transform.localPosition, stepSize) - LocalClient.controlledObject.transform.localPosition);
+        SpaceObject.InvokeFixZonePosition();
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     }
     public static void Init()
     {

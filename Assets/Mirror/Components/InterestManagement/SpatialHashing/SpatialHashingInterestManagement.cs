@@ -1,8 +1,11 @@
 // extremely fast spatial hashing interest management based on uMMORPG GridChecker.
 // => 30x faster in initial tests
 // => scales way higher
+<<<<<<< HEAD
 // checks on two dimensions only(!), for example: XZ for 3D games or XY for 2D games.
 // this is faster than XYZ checking but doesn't check vertical distance.
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,7 +41,11 @@ namespace Mirror
         [Tooltip("Spatial Hashing supports 3D (XZ) and 2D (XY) games.")]
         public CheckMethod checkMethod = CheckMethod.XZ_FOR_3D;
 
+<<<<<<< HEAD
         [Header("Debug Settings")]
+=======
+        // debugging
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         public bool showSlider;
 
         // the grid

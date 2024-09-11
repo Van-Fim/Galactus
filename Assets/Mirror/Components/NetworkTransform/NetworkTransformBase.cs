@@ -99,9 +99,19 @@ namespace Mirror
         public Color overlayColor = new Color(0, 0, 0, 0.5f);
 
         // initialization //////////////////////////////////////////////////////
+<<<<<<< HEAD
         // forcec configuration of some settings
         protected virtual void Configure()
         {
+=======
+        // make sure to call this when inheriting too!
+        protected virtual void Awake() { }
+
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             // set target to self if none yet
             if (target == null) target = transform;
 
@@ -117,6 +127,7 @@ namespace Mirror
             if (coordinateSpace == CoordinateSpace.World) syncScale = false;
         }
 
+<<<<<<< HEAD
         // make sure to call this when inheriting too!
         protected virtual void Awake()
         {
@@ -133,6 +144,8 @@ namespace Mirror
             Configure();
         }
 
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         // snapshot functions //////////////////////////////////////////////////
         // get local/world position
         protected virtual Vector3 GetPosition() =>
@@ -344,7 +357,12 @@ namespace Mirror
             // but server's last delta will have been reset, causing offsets.
             //
             // instead, simply clear snapshots.
+<<<<<<< HEAD
             ResetState();
+=======
+            serverSnapshots.Clear();
+            clientSnapshots.Clear();
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
             // TODO
             // what if we still receive a snapshot from before the interpolation?
@@ -369,7 +387,12 @@ namespace Mirror
             // but server's last delta will have been reset, causing offsets.
             //
             // instead, simply clear snapshots.
+<<<<<<< HEAD
             ResetState();
+=======
+            serverSnapshots.Clear();
+            clientSnapshots.Clear();
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
             // TODO
             // what if we still receive a snapshot from before the interpolation?

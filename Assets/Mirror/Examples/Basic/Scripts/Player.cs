@@ -3,7 +3,10 @@ using UnityEngine;
 
 namespace Mirror.Examples.Basic
 {
+<<<<<<< HEAD
     [AddComponentMenu("")]
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     public class Player : NetworkBehaviour
     {
         // Events that the PlayerUI will subscribe to

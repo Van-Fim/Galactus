@@ -1,31 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 [System.Serializable]
 public class SpaceObjectData : IData
 {
     public uint id;
-    public uint spaceObjectId;
     public uint netId;
-    public string templateName;
-    public string characterLogin;
     public bool isPlayerControll;
     public bool isInitialized;
-    public string loadoutsTemplateName;
-    public string hardpointsTemplateName;
     public bool isStartObject;
     public int galaxyId;
     public int systemId;
     public int sectorId;
     public int targetGalaxyId;
     public int targetSystemId;
+    public int targetSectorId;
     public int targetGateId;
-    public string type;
     public int mass;
     public float drag;
     public float angulardrag;
-    public string modelPatch;
+    public string templateName = "";
+    public string loadoutsTemplateName = "";
+    public string hardpointsTemplateName = "";
+    public string type = "";
+    public string modelPatch = "";
 
     public float scaleFactor = 1f;
     public float[] position = { 0, 0, 0 };

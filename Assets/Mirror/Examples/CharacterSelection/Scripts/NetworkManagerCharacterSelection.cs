@@ -2,7 +2,10 @@ using UnityEngine;
 
 namespace Mirror.Examples.CharacterSelection
 {
+<<<<<<< HEAD
     [AddComponentMenu("")]
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     public class NetworkManagerCharacterSelection : NetworkManager
     {
         // See the scene 'SceneMapSpawnWithNoCharacter', to spawn as empty player.

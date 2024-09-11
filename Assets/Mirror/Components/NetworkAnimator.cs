@@ -31,12 +31,20 @@ namespace Mirror
         public Animator animator;
 
         /// <summary>
+<<<<<<< HEAD
         /// Syncs animator.speed.
         /// Default to 1 because Animator.speed defaults to 1.
         /// </summary>
         [SyncVar(hook = nameof(OnAnimatorSpeedChanged))]
         float animatorSpeed = 1f;
         float previousSpeed = 1f;
+=======
+        /// Syncs animator.speed
+        /// </summary>
+        [SyncVar(hook = nameof(OnAnimatorSpeedChanged))]
+        float animatorSpeed;
+        float previousSpeed;
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
         // Note: not an object[] array because otherwise initialization is real annoying
         int[] lastIntParameters;

@@ -38,7 +38,11 @@ namespace Mirror
         public bool editorAutoStart;
 
         /// <summary>Server Update frequency, per second. Use around 60Hz for fast paced games like Counter-Strike to minimize latency. Use around 30Hz for games like WoW to minimize computations. Use around 1-10Hz for slow paced games like EVE.</summary>
+<<<<<<< HEAD
         [Tooltip("Server / Client send rate per second.\nUse 60-100Hz for fast paced games like Counter-Strike to minimize latency.\nUse around 30Hz for games like WoW to minimize computations.\nUse around 1-10Hz for slow paced games like EVE.")]
+=======
+        [Tooltip("Server & Client send rate per second. Use 60-100Hz for fast paced games like Counter-Strike to minimize latency. Use around 30Hz for games like WoW to minimize computations. Use around 1-10Hz for slow paced games like EVE.")]
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         [FormerlySerializedAs("serverTickRate")]
         public int sendRate = 60;
 
@@ -146,7 +150,11 @@ namespace Mirror
         [FormerlySerializedAs("connectionQualityInterval")]
         public float evaluationInterval = 3;
 
+<<<<<<< HEAD
         [Header("Interpolation UI - Requires Editor / Dev Build")]
+=======
+        [Header("Debug")]
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         public bool timeInterpolationGui = false;
 
         /// <summary>The one and only NetworkManager</summary>
@@ -773,7 +781,10 @@ namespace Mirror
             NetworkServer.OnConnectedEvent = OnServerConnectInternal;
             NetworkServer.OnDisconnectedEvent = OnServerDisconnect;
             NetworkServer.OnErrorEvent = OnServerError;
+<<<<<<< HEAD
             NetworkServer.OnTransportExceptionEvent = OnServerTransportException;
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             NetworkServer.RegisterHandler<AddPlayerMessage>(OnServerAddPlayerInternal);
 
             // Network Server initially registers its own handler for this, so we replace it here.
@@ -785,8 +796,11 @@ namespace Mirror
             NetworkClient.OnConnectedEvent = OnClientConnectInternal;
             NetworkClient.OnDisconnectedEvent = OnClientDisconnectInternal;
             NetworkClient.OnErrorEvent = OnClientError;
+<<<<<<< HEAD
             NetworkClient.OnTransportExceptionEvent = OnClientTransportException;
 
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             // Don't require authentication because server may send NotReadyMessage from ServerChangeScene
             NetworkClient.RegisterHandler<NotReadyMessage>(OnClientNotReadyMessageInternal, false);
             NetworkClient.RegisterHandler<SceneMessage>(OnClientSceneInternal, false);
@@ -1402,9 +1416,12 @@ namespace Mirror
         /// <summary>Called on server when transport raises an exception. NetworkConnection may be null.</summary>
         public virtual void OnServerError(NetworkConnectionToClient conn, TransportError error, string reason) { }
 
+<<<<<<< HEAD
         /// <summary>Called on server when transport raises an exception. NetworkConnection may be null.</summary>
         public virtual void OnServerTransportException(NetworkConnectionToClient conn, Exception exception) { }
 
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         /// <summary>Called from ServerChangeScene immediately before SceneManager.LoadSceneAsync is executed</summary>
         public virtual void OnServerChangeScene(string newSceneName) { }
 
@@ -1453,9 +1470,12 @@ namespace Mirror
         /// <summary>Called on client when transport raises an exception.</summary>
         public virtual void OnClientError(TransportError error, string reason) { }
 
+<<<<<<< HEAD
         /// <summary>Called on client when transport raises an exception.</summary>
         public virtual void OnClientTransportException(Exception exception) { }
 
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         /// <summary>Called on clients when a servers tells the client it is no longer ready, e.g. when switching scenes.</summary>
         public virtual void OnClientNotReady() { }
 
@@ -1503,13 +1523,19 @@ namespace Mirror
         /// <summary>This is called when a host is stopped.</summary>
         public virtual void OnStopHost() { }
 
+<<<<<<< HEAD
 #if DEBUG
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         // keep OnGUI even in builds. useful to debug snap interp.
         void OnGUI()
         {
             if (!timeInterpolationGui) return;
             NetworkClient.OnGUI();
         }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     }
 }

@@ -3,7 +3,11 @@ using UnityEngine;
 
 namespace Mirror.Experimental
 {
+<<<<<<< HEAD
     [AddComponentMenu("")]
+=======
+    [AddComponentMenu("Network/ Experimental/Network Lerp Rigidbody")]
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     [HelpURL("https://mirror-networking.gitbook.io/docs/components/network-lerp-rigidbody")]
     [Obsolete("Use the new NetworkRigidbodyReliable/Unreliable component with Snapshot Interpolation instead.")]
     public class NetworkLerpRigidbody : NetworkBehaviour

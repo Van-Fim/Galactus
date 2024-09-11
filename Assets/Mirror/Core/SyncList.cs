@@ -6,6 +6,7 @@ namespace Mirror
 {
     public class SyncList<T> : SyncObject, IList<T>, IReadOnlyList<T>
     {
+<<<<<<< HEAD
         public enum Operation : byte
         {
             OP_ADD,
@@ -41,12 +42,28 @@ namespace Mirror
         // Deprecated 2024-03-23
         [Obsolete("Use individual Actions, which pass OLD values where appropriate, instead.")]
         public Action<Operation, int, T, T> Callback;
+=======
+        public delegate void SyncListChanged(Operation op, int itemIndex, T oldItem, T newItem);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
         readonly IList<T> objects;
         readonly IEqualityComparer<T> comparer;
 
         public int Count => objects.Count;
         public bool IsReadOnly => !IsWritable();
+<<<<<<< HEAD
+=======
+        public event SyncListChanged Callback;
+
+        public enum Operation : byte
+        {
+            OP_ADD,
+            OP_CLEAR,
+            OP_INSERT,
+            OP_REMOVEAT,
+            OP_SET
+        }
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
         struct Change
         {
@@ -67,7 +84,11 @@ namespace Mirror
         // so we need to skip them
         int changesAhead;
 
+<<<<<<< HEAD
         public SyncList() : this(EqualityComparer<T>.Default) { }
+=======
+        public SyncList() : this(EqualityComparer<T>.Default) {}
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
         public SyncList(IEqualityComparer<T> comparer)
         {
@@ -95,7 +116,13 @@ namespace Mirror
         void AddOperation(Operation op, int itemIndex, T oldItem, T newItem, bool checkAccess)
         {
             if (checkAccess && IsReadOnly)
+<<<<<<< HEAD
                 throw new InvalidOperationException("Synclists can only be modified by the owner.");
+=======
+            {
+                throw new InvalidOperationException("Synclists can only be modified by the owner.");
+            }
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
             Change change = new Change
             {
@@ -110,6 +137,7 @@ namespace Mirror
                 OnDirty?.Invoke();
             }
 
+<<<<<<< HEAD
             switch (op)
             {
                 case Operation.OP_ADD:
@@ -137,6 +165,9 @@ namespace Mirror
 #pragma warning disable CS0618 // Type or member is obsolete
             Callback?.Invoke(op, itemIndex, oldItem, newItem);
 #pragma warning restore CS0618 // Type or member is obsolete
+=======
+            Callback?.Invoke(op, itemIndex, oldItem, newItem);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         }
 
         public override void OnSerializeAll(NetworkWriter writer)
@@ -243,14 +274,21 @@ namespace Mirror
                     case Operation.OP_CLEAR:
                         if (apply)
                         {
+<<<<<<< HEAD
+=======
+                            objects.Clear();
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                             // add dirty + changes.
                             // ClientToServer needs to set dirty in server OnDeserialize.
                             // no access check: server OnDeserialize can always
                             // write, even for ClientToServer (for broadcasting).
                             AddOperation(Operation.OP_CLEAR, 0, default, default, false);
+<<<<<<< HEAD
                             // clear after invoking the callback so users can iterate the list
                             // and take appropriate action on the items before they are wiped.
                             objects.Clear();
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                         }
                         break;
 
@@ -315,15 +353,26 @@ namespace Mirror
         public void AddRange(IEnumerable<T> range)
         {
             foreach (T entry in range)
+<<<<<<< HEAD
                 Add(entry);
+=======
+            {
+                Add(entry);
+            }
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         }
 
         public void Clear()
         {
+<<<<<<< HEAD
             AddOperation(Operation.OP_CLEAR, 0, default, default, true);
             // clear after invoking the callback so users can iterate the list
             // and take appropriate action on the items before they are wiped.
             objects.Clear();
+=======
+            objects.Clear();
+            AddOperation(Operation.OP_CLEAR, 0, default, default, true);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         }
 
         public bool Contains(T item) => IndexOf(item) >= 0;
@@ -381,8 +430,14 @@ namespace Mirror
             int index = IndexOf(item);
             bool result = index >= 0;
             if (result)
+<<<<<<< HEAD
                 RemoveAt(index);
 
+=======
+            {
+                RemoveAt(index);
+            }
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             return result;
         }
 
@@ -401,7 +456,13 @@ namespace Mirror
                     toRemove.Add(objects[i]);
 
             foreach (T entry in toRemove)
+<<<<<<< HEAD
                 Remove(entry);
+=======
+            {
+                Remove(entry);
+            }
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
             return toRemove.Count;
         }
@@ -440,7 +501,10 @@ namespace Mirror
         {
             readonly SyncList<T> list;
             int index;
+<<<<<<< HEAD
 
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             public T Current { get; private set; }
 
             public Enumerator(SyncList<T> list)
@@ -453,15 +517,25 @@ namespace Mirror
             public bool MoveNext()
             {
                 if (++index >= list.Count)
+<<<<<<< HEAD
                     return false;
 
+=======
+                {
+                    return false;
+                }
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                 Current = list[index];
                 return true;
             }
 
             public void Reset() => index = -1;
             object IEnumerator.Current => Current;
+<<<<<<< HEAD
             public void Dispose() { }
+=======
+            public void Dispose() {}
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         }
     }
 }

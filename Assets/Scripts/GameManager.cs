@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Netcode;
 using System;
 using Unity.VisualScripting;
 public class GameManager : MonoBehaviour
 {
     public static GameManager singleton;
     public static string seed = "myseed";
+    public List<SpaceObjectData> spaceObjectDatas = new List<SpaceObjectData>();
 
     public static int GetSeed(int galaxyId = -1, int systemId = -1, int sectorId = -1)
     {
@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
         canvasController = Instantiate(canvasController);
         CameraManager.Init();
         CameraManager.SwitchCamera(CameraManager.mainCamera);
+<<<<<<< HEAD
         SpaceManager.Init();
         SpaceManager.SetRandomSkybox();
 
@@ -97,5 +98,11 @@ public class GameManager : MonoBehaviour
         Space.InvokeMinimapRender();
         Hud hud = MenuManager.GetHud("MainHudMenu");
         hud.ShowSingle();
+=======
+        MenuManager.singleton.gameObject.SetActive(false);
+        Material mat = Resources.Load<Material>($"Materials/Skybox/Skybox01");
+        RenderSettings.skybox = mat;
+        return;
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     }
 }

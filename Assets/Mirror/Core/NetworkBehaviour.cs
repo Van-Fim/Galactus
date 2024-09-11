@@ -1052,7 +1052,11 @@ namespace Mirror
             // Debug.Log($"SetSyncVarNetworkBehaviour NetworkIdentity {GetType().Name} bit [{dirtyBit}] netIdField:{oldField}->{syncField}");
         }
 
+<<<<<<< HEAD
         // helper function for [SyncVar] NetworkBehaviours.
+=======
+        // helper function for [SyncVar] NetworkIdentities.
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         // -> ref GameObject as second argument makes OnDeserialize processing easier
         protected T GetSyncVarNetworkBehaviour<T>(NetworkBehaviourSyncVar syncNetBehaviour, ref T behaviourField) where T : NetworkBehaviour
         {
@@ -1070,6 +1074,7 @@ namespace Mirror
             {
                 return null;
             }
+<<<<<<< HEAD
             
             // ensure componentIndex is in range.
             // show explicit errors if something went wrong, instead of IndexOutOfRangeException.
@@ -1079,6 +1084,8 @@ namespace Mirror
                 Debug.LogError($"[SyncVar] {typeof(T)} on {name}'s {GetType()}: can't access {identity.name} NetworkBehaviour[{syncNetBehaviour.componentIndex}] because it only has {identity.NetworkBehaviours.Length} components.\nWas a NetworkBeahviour accidentally destroyed at runtime?");
                 return null;
             }
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
             behaviourField = identity.NetworkBehaviours[syncNetBehaviour.componentIndex] as T;
             return behaviourField;

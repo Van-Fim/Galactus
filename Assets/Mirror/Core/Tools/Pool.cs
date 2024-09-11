@@ -32,6 +32,7 @@ namespace Mirror
 
         // return an element to the pool
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+<<<<<<< HEAD
         public void Return(T item)
         {
             // make sure we can't accidentally insert null values into the pool.
@@ -41,6 +42,9 @@ namespace Mirror
 
             objects.Push(item);
         }
+=======
+        public void Return(T item) => objects.Push(item);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
         // count to see how many objects are in the pool. useful for tests.
         public int Count => objects.Count;

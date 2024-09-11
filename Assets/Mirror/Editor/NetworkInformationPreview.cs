@@ -126,9 +126,13 @@ namespace Mirror
             Vector2 maxValueLabelSize = GetMaxNameLabelSize(infos);
 
             Rect labelRect = new Rect(initialX, Y, maxNameLabelSize.x, maxNameLabelSize.y);
+<<<<<<< HEAD
 
             // height needs a +1 to line up nicely
             Rect idLabelRect = new Rect(maxNameLabelSize.x, Y, maxValueLabelSize.x, maxValueLabelSize.y + 1);
+=======
+            Rect idLabelRect = new Rect(maxNameLabelSize.x, Y, maxValueLabelSize.x, maxValueLabelSize.y);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
             foreach (NetworkIdentityInfo info in infos)
             {

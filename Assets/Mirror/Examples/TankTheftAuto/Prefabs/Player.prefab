@@ -222,7 +222,11 @@ MonoBehaviour:
   sceneId: 0
   _assetId: 487566212
   serverOnly: 0
+<<<<<<< HEAD
   visibility: 0
+=======
+  visible: 0
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
   hasSpawned: 0
 --- !u!114 &887491563423388292
 MonoBehaviour:
@@ -243,8 +247,11 @@ MonoBehaviour:
   syncPosition: 1
   syncRotation: 1
   syncScale: 0
+<<<<<<< HEAD
   onlySyncOnChange: 1
   compressRotation: 1
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
   interpolatePosition: 1
   interpolateRotation: 1
   interpolateScale: 0
@@ -254,8 +261,13 @@ MonoBehaviour:
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+<<<<<<< HEAD
   bufferResetMultiplier: 5
   changedDetection: 1
+=======
+  onlySyncOnChange: 1
+  bufferResetMultiplier: 5
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
   scaleSensitivity: 0.01
@@ -344,7 +356,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8872462076811691049}
   m_Enabled: 1
   m_EditorHideFlags: 0
+<<<<<<< HEAD
   m_Script: {fileID: 11500000, guid: 71ac1e35462ffad469e77d1c2fe6c9f3, type: 3}
+=======
+  m_Script: {fileID: 11500000, guid: 63e14aef4c7ed463f9d4f8ef03d98cf9, type: 3}
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 0

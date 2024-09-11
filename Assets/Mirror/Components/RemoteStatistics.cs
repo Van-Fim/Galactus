@@ -91,7 +91,11 @@ namespace Mirror
 
         [Header("GUI")]
         public bool showGui;
+<<<<<<< HEAD
         public KeyCode hotKey     = KeyCode.BackQuote;
+=======
+        public KeyCode hotKey     = KeyCode.F11;
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         Rect           windowRect = new Rect(0, 0, 400, 400);
 
         // password can't be stored in code or in Unity project.

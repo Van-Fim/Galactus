@@ -58,9 +58,13 @@ namespace Mirror.Examples.MultipleMatch
 
         public override void OnStartClient()
         {
+<<<<<<< HEAD
 #pragma warning disable CS0618 // Type or member is obsolete
             matchPlayerData.Callback = UpdateWins;
 #pragma warning restore CS0618 // Type or member is obsolete
+=======
+            matchPlayerData.Callback += UpdateWins;
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 
             canvasGroup.alpha = 1f;
             canvasGroup.interactable = true;
@@ -279,22 +283,37 @@ namespace Mirror.Examples.MultipleMatch
 
             if (!disconnected)
             {
+<<<<<<< HEAD
                 NetworkServer.RemovePlayerForConnection(player1.connectionToClient, RemovePlayerOptions.Destroy);
                 CanvasController.waitingConnections.Add(player1.connectionToClient);
 
                 NetworkServer.RemovePlayerForConnection(player2.connectionToClient, RemovePlayerOptions.Destroy);
+=======
+                NetworkServer.RemovePlayerForConnection(player1.connectionToClient, true);
+                CanvasController.waitingConnections.Add(player1.connectionToClient);
+
+                NetworkServer.RemovePlayerForConnection(player2.connectionToClient, true);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                 CanvasController.waitingConnections.Add(player2.connectionToClient);
             }
             else if (conn == player1.connectionToClient)
             {
                 // player1 has disconnected - send player2 back to Lobby
+<<<<<<< HEAD
                 NetworkServer.RemovePlayerForConnection(player2.connectionToClient, RemovePlayerOptions.Destroy);
+=======
+                NetworkServer.RemovePlayerForConnection(player2.connectionToClient, true);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                 CanvasController.waitingConnections.Add(player2.connectionToClient);
             }
             else if (conn == player2.connectionToClient)
             {
                 // player2 has disconnected - send player1 back to Lobby
+<<<<<<< HEAD
                 NetworkServer.RemovePlayerForConnection(player1.connectionToClient, RemovePlayerOptions.Destroy);
+=======
+                NetworkServer.RemovePlayerForConnection(player1.connectionToClient, true);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                 CanvasController.waitingConnections.Add(player1.connectionToClient);
             }
 

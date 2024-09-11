@@ -9,10 +9,14 @@ public class SpaceObjectManager : MonoBehaviour
 
     public void LateUpdate()
     {
+<<<<<<< HEAD
         if (LocalClient.ControlledObject != null)
         {
             SpaceObject.InvokeIndRender();
         }
+=======
+        //SpaceObject.InvokeIndRender();
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
     }
     public static void Init()
     {
@@ -226,6 +230,7 @@ public class SpaceObjectManager : MonoBehaviour
         for (int i = 0; i < dataList.Count; i++)
         {
             SpaceObjectData data = dataList[i];
+<<<<<<< HEAD
             SpaceObject obj = SpaceObject.Create(data, gmobj);
             obj.Init();
             obj.LoadHardpoints();
@@ -242,7 +247,20 @@ public class SpaceObjectManager : MonoBehaviour
                     NetSpaceObject net = gmobj.GetComponent<NetSpaceObject>();
                     net.data = data;
                 }
+=======
+            SpaceObject obj = null;
+            if (data.isPlayerControll)
+            {
+                obj = LocalClient.controlledObject;
+                obj = SpaceObject.Create(data, obj);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             }
+            else
+            {
+                obj = SpaceObject.Create(data);
+            }
+            obj.Init();
+            obj.LoadHardpoints();
         }
     }
     public static void BuildTemplateData(Space space, string templateType)

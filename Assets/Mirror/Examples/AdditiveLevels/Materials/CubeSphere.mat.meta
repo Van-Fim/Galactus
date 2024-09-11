@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Mirror/Examples/AdditiveLevels/Materials/CubeSphere.mat.meta
 guid: 38950807c6bf6454dbef567827b770b6
+========
+guid: 04f0b2088c857414393bab3b80356776
+>>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc:Assets/Mirror/Components/PredictedRigidbody/RemoteGhostMaterial.mat.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000

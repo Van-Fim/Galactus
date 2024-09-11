@@ -197,7 +197,10 @@ namespace Mirror
                     transport.OnClientConnected = OnClientConnected;
                     transport.OnClientDataReceived = OnClientDataReceived;
                     transport.OnClientError = OnClientError;
+<<<<<<< HEAD
                     transport.OnClientTransportException = OnClientTransportException;
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                     transport.OnClientDisconnected = OnClientDisconnected;
                     transport.ClientConnect(address);
                     return;
@@ -218,7 +221,10 @@ namespace Mirror
                         transport.OnClientConnected = OnClientConnected;
                         transport.OnClientDataReceived = OnClientDataReceived;
                         transport.OnClientError = OnClientError;
+<<<<<<< HEAD
                         transport.OnClientTransportException = OnClientTransportException;
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                         transport.OnClientDisconnected = OnClientDisconnected;
                         transport.ClientConnect(uri);
                         return;
@@ -308,6 +314,7 @@ namespace Mirror
                     OnServerError.Invoke(multiplexedId, error, reason);
                 };
 
+<<<<<<< HEAD
                 transport.OnServerTransportException = (originalConnectionId, exception) =>
                 {
                     // invoke Multiplex event with multiplexed connectionId
@@ -315,6 +322,8 @@ namespace Mirror
                     OnServerTransportException.Invoke(multiplexedId, exception);
                 };
 
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
                 transport.OnServerDisconnected = originalConnectionId =>
                 {
                     // invoke Multiplex event with multiplexed connectionId

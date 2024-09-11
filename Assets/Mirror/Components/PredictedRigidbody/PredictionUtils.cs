@@ -8,7 +8,11 @@ namespace Mirror
     {
         // rigidbody ///////////////////////////////////////////////////////////
         // move a Rigidbody + settings from one GameObject to another.
+<<<<<<< HEAD
         public static void MoveRigidbody(GameObject source, GameObject destination, bool destroySource = true)
+=======
+        public static void MoveRigidbody(GameObject source, GameObject destination)
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         {
             // create a new Rigidbody component on destination.
             // note that adding a Joint automatically adds a Rigidbody.
@@ -45,7 +49,11 @@ namespace Mirror
             }
 
             // destroy original
+<<<<<<< HEAD
             if (destroySource) GameObject.Destroy(original);
+=======
+            GameObject.Destroy(original);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         }
 
         // helper function: if a collider is on a child, copy that child first.
@@ -73,7 +81,11 @@ namespace Mirror
 
         // colliders ///////////////////////////////////////////////////////////
         // move all BoxColliders + settings from one GameObject to another.
+<<<<<<< HEAD
         public static void MoveBoxColliders(GameObject source, GameObject destination, bool destroySource = true)
+=======
+        public static void MoveBoxColliders(GameObject source, GameObject destination)
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         {
             // colliders may be on children
             BoxCollider[] sourceColliders = source.GetComponentsInChildren<BoxCollider>();
@@ -88,12 +100,20 @@ namespace Mirror
                 colliderCopy.size = sourceCollider.size;
                 colliderCopy.isTrigger = sourceCollider.isTrigger;
                 colliderCopy.material = sourceCollider.material;
+<<<<<<< HEAD
                 if (destroySource) GameObject.Destroy(sourceCollider);
+=======
+                GameObject.Destroy(sourceCollider);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             }
         }
 
         // move all SphereColliders + settings from one GameObject to another.
+<<<<<<< HEAD
         public static void MoveSphereColliders(GameObject source, GameObject destination, bool destroySource = true)
+=======
+        public static void MoveSphereColliders(GameObject source, GameObject destination)
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         {
             // colliders may be on children
             SphereCollider[] sourceColliders = source.GetComponentsInChildren<SphereCollider>();
@@ -108,12 +128,20 @@ namespace Mirror
                 colliderCopy.radius = sourceCollider.radius;
                 colliderCopy.isTrigger = sourceCollider.isTrigger;
                 colliderCopy.material = sourceCollider.material;
+<<<<<<< HEAD
                 if (destroySource) GameObject.Destroy(sourceCollider);
+=======
+                GameObject.Destroy(sourceCollider);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             }
         }
 
         // move all CapsuleColliders + settings from one GameObject to another.
+<<<<<<< HEAD
         public static void MoveCapsuleColliders(GameObject source, GameObject destination, bool destroySource = true)
+=======
+        public static void MoveCapsuleColliders(GameObject source, GameObject destination)
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         {
             // colliders may be on children
             CapsuleCollider[] sourceColliders = source.GetComponentsInChildren<CapsuleCollider>();
@@ -130,12 +158,20 @@ namespace Mirror
                 colliderCopy.direction = sourceCollider.direction;
                 colliderCopy.isTrigger = sourceCollider.isTrigger;
                 colliderCopy.material = sourceCollider.material;
+<<<<<<< HEAD
                 if (destroySource) GameObject.Destroy(sourceCollider);
+=======
+                GameObject.Destroy(sourceCollider);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             }
         }
 
         // move all MeshColliders + settings from one GameObject to another.
+<<<<<<< HEAD
         public static void MoveMeshColliders(GameObject source, GameObject destination, bool destroySource = true)
+=======
+        public static void MoveMeshColliders(GameObject source, GameObject destination)
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         {
             // colliders may be on children
             MeshCollider[] sourceColliders = source.GetComponentsInChildren<MeshCollider>();
@@ -165,22 +201,39 @@ namespace Mirror
                 colliderCopy.convex = sourceCollider.convex;
                 colliderCopy.isTrigger = sourceCollider.isTrigger;
                 colliderCopy.material = sourceCollider.material;
+<<<<<<< HEAD
                 if (destroySource) GameObject.Destroy(sourceCollider);
+=======
+                GameObject.Destroy(sourceCollider);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             }
         }
 
         // move all Colliders + settings from one GameObject to another.
+<<<<<<< HEAD
         public static void MoveAllColliders(GameObject source, GameObject destination, bool destroySource = true)
         {
             MoveBoxColliders(source, destination, destroySource);
             MoveSphereColliders(source, destination, destroySource);
             MoveCapsuleColliders(source, destination, destroySource);
             MoveMeshColliders(source, destination, destroySource);
+=======
+        public static void MoveAllColliders(GameObject source, GameObject destination)
+        {
+            MoveBoxColliders(source, destination);
+            MoveSphereColliders(source, destination);
+            MoveCapsuleColliders(source, destination);
+            MoveMeshColliders(source, destination);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         }
 
         // joints //////////////////////////////////////////////////////////////
         // move all CharacterJoints + settings from one GameObject to another.
+<<<<<<< HEAD
         public static void MoveCharacterJoints(GameObject source, GameObject destination, bool destroySource = true)
+=======
+        public static void MoveCharacterJoints(GameObject source, GameObject destination)
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         {
             // colliders may be on children
             CharacterJoint[] sourceJoints = source.GetComponentsInChildren<CharacterJoint>();
@@ -217,12 +270,20 @@ namespace Mirror
                 jointCopy.connectedArticulationBody = sourceJoint.connectedArticulationBody;
 #endif
 
+<<<<<<< HEAD
                 if (destroySource) GameObject.Destroy(sourceJoint);
+=======
+                GameObject.Destroy(sourceJoint);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             }
         }
 
         // move all ConfigurableJoints + settings from one GameObject to another.
+<<<<<<< HEAD
         public static void MoveConfigurableJoints(GameObject source, GameObject destination, bool destroySource = true)
+=======
+        public static void MoveConfigurableJoints(GameObject source, GameObject destination)
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         {
             // colliders may be on children
             ConfigurableJoint[] sourceJoints = source.GetComponentsInChildren<ConfigurableJoint>();
@@ -280,12 +341,20 @@ namespace Mirror
                 jointCopy.connectedArticulationBody = sourceJoint.connectedArticulationBody;
 #endif
 
+<<<<<<< HEAD
                 if (destroySource) GameObject.Destroy(sourceJoint);
+=======
+                GameObject.Destroy(sourceJoint);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             }
         }
 
         // move all FixedJoints + settings from one GameObject to another.
+<<<<<<< HEAD
         public static void MoveFixedJoints(GameObject source, GameObject destination, bool destroySource = true)
+=======
+        public static void MoveFixedJoints(GameObject source, GameObject destination)
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         {
             // colliders may be on children
             FixedJoint[] sourceJoints = source.GetComponentsInChildren<FixedJoint>();
@@ -312,12 +381,20 @@ namespace Mirror
                 jointCopy.connectedArticulationBody = sourceJoint.connectedArticulationBody;
 #endif
 
+<<<<<<< HEAD
                 if (destroySource) GameObject.Destroy(sourceJoint);
+=======
+                GameObject.Destroy(sourceJoint);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             }
         }
 
         // move all HingeJoints + settings from one GameObject to another.
+<<<<<<< HEAD
         public static void MoveHingeJoints(GameObject source, GameObject destination, bool destroySource = true)
+=======
+        public static void MoveHingeJoints(GameObject source, GameObject destination)
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         {
             // colliders may be on children
             HingeJoint[] sourceJoints = source.GetComponentsInChildren<HingeJoint>();
@@ -354,12 +431,20 @@ namespace Mirror
                 jointCopy.useAcceleration = sourceJoint.useAcceleration;
 #endif
 
+<<<<<<< HEAD
                 if (destroySource) GameObject.Destroy(sourceJoint);
+=======
+                GameObject.Destroy(sourceJoint);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             }
         }
 
         // move all SpringJoints + settings from one GameObject to another.
+<<<<<<< HEAD
         public static void MoveSpringJoints(GameObject source, GameObject destination, bool destroySource = true)
+=======
+        public static void MoveSpringJoints(GameObject source, GameObject destination)
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         {
             // colliders may be on children
             SpringJoint[] sourceJoints = source.GetComponentsInChildren<SpringJoint>();
@@ -391,11 +476,16 @@ namespace Mirror
                 jointCopy.connectedArticulationBody = sourceJoint.connectedArticulationBody;
 #endif
 
+<<<<<<< HEAD
                 if (destroySource) GameObject.Destroy(sourceJoint);
+=======
+                GameObject.Destroy(sourceJoint);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
             }
         }
 
         // move all Joints + settings from one GameObject to another.
+<<<<<<< HEAD
         public static void MoveAllJoints(GameObject source, GameObject destination, bool destroySource = true)
         {
             MoveCharacterJoints(source, destination, destroySource);
@@ -403,10 +493,20 @@ namespace Mirror
             MoveFixedJoints(source, destination, destroySource);
             MoveHingeJoints(source, destination, destroySource);
             MoveSpringJoints(source, destination, destroySource);
+=======
+        public static void MoveAllJoints(GameObject source, GameObject destination)
+        {
+            MoveCharacterJoints(source, destination);
+            MoveConfigurableJoints(source, destination);
+            MoveFixedJoints(source, destination);
+            MoveHingeJoints(source, destination);
+            MoveSpringJoints(source, destination);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         }
 
         // all /////////////////////////////////////////////////////////////////
         // move all physics components from one GameObject to another.
+<<<<<<< HEAD
         public static void MovePhysicsComponents(GameObject source, GameObject destination, bool destroySource = true)
         {
             // need to move joints first, otherwise we might see:
@@ -414,6 +514,15 @@ namespace Mirror
             MoveAllJoints(source, destination, destroySource);
             MoveAllColliders(source, destination, destroySource);
             MoveRigidbody(source, destination, destroySource);
+=======
+        public static void MovePhysicsComponents(GameObject source, GameObject destination)
+        {
+            // need to move joints first, otherwise we might see:
+            // 'can't move Rigidbody because a Joint depends on it'
+            MoveAllJoints(source, destination);
+            MoveAllColliders(source, destination);
+            MoveRigidbody(source, destination);
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
         }
     }
 }

@@ -9,11 +9,17 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4521837221242408723}
+<<<<<<< HEAD
   - component: {fileID: 5684885037297491835}
   - component: {fileID: -2824863522568647789}
   - component: {fileID: 6090821299613485561}
   - component: {fileID: -7679778446994983716}
   - component: {fileID: -2679345896416112175}
+=======
+  - component: {fileID: 4887053756523077440}
+  - component: {fileID: 5151444529694860247}
+  - component: {fileID: 8325830137993125453}
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
   m_Layer: 0
   m_Name: SpaceObjectPrefab
   m_TagString: Untagged
@@ -48,6 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38a28992352bf0d4c970aae26f29004b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
@@ -87,6 +94,48 @@ MonoBehaviour:
   isPlayer: 0
   isGameStartDataReceived: 0
 --- !u!114 &-2824863522568647789
+=======
+  id: 0
+  objectName: 
+  main: {fileID: 0}
+  hull: {fileID: 0}
+  spaceManager: {fileID: 0}
+  templateName: 
+  galaxyId: 0
+  systemId: 0
+  sectorId: 0
+  hardpointsTemplateName: 
+  modelPatch: 
+  controller: {fileID: 0}
+  iND_Target: {fileID: 0}
+  sectorIndexes: 000000000000000000000000
+  zoneIndexes: 000000000000000000000000
+  hardpoints: []
+  rigidbodyMain: {fileID: 0}
+  mass: 0
+  drag: 0
+  angulardrag: 0
+  scaleFactor: 1
+  isPlayerControll: 0
+  isInitialized: 0
+--- !u!114 &5151444529694860247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4521837221242408724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b0964861ebb93146a953d28c5513d4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  spaceObject: {fileID: 4887053756523077440}
+--- !u!114 &8325830137993125453
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,6 +152,7 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
+<<<<<<< HEAD
 --- !u!54 &6090821299613485561
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -200,3 +250,5 @@ MonoBehaviour:
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
   scaleSensitivity: 0.01
+=======
+>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Mirror/Authenticators.meta
 guid: 1b2f9d254154cd942ba40b06b869b8f3
+========
+guid: 5cf8eb36be0834b3da408c694a41cb88
+>>>>>>>> d743f7baf8e1636f6e77565a0767ec6a5c5e24fc:Assets/Mirror.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
