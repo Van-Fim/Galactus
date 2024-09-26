@@ -161,11 +161,11 @@ public class SpaceObject : MonoBehaviour
         ret.transform.localEulerAngles = spaceObjectData.GetRotation();
         if (!ret.isPlayerControll && LocalClient.isServer)
         {
-            if (netRet != null)
-            {
-                netRet.data = spaceObjectData;
-            }
-            NetworkServer.Spawn(ret.gameObject);
+            // if (netRet != null)
+            // {
+            //     netRet.data = spaceObjectData;
+            // }
+            // NetworkServer.Spawn(ret.gameObject);
         }
         SpaceObjectManager.spaceObjects.Add(ret);
         return ret;

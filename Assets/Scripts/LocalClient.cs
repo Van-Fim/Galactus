@@ -16,7 +16,6 @@ public class LocalClient : MonoBehaviour
     public static int sectorId;
     public static int[] sectorIndexes = { 0, 0, 0 };
     private static SpaceObject controlledObject;
-    public static NetSpaceObject netSpaceObject;
     public static bool isServer;
     public static Galaxy Galaxy
     {

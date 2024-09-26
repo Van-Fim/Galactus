@@ -11,7 +11,7 @@ public class SpaceManager : MonoBehaviour
     public static List<Sector> sectors = new List<Sector>();
     public static List<Gate> gates = new List<Gate>();
     public static GameObject spaceContainer;
-
+    public static Material mat;
     public static int currentMapGalaxyId;
     public static void Init()
     {
@@ -28,7 +28,7 @@ public class SpaceManager : MonoBehaviour
     {
         string[] skyboxes = new string[] { "Skybox01", "Skybox02", "Skybox03", "Skybox04" };
         int rnd = Random.Range(0, skyboxes.Length - 1);
-        Material mat = Resources.Load<Material>($"Materials/Skybox/{skyboxes[rnd]}");
+        mat = Resources.Load<Material>($"Materials/Skybox/{skyboxes[rnd]}");
         RenderSettings.skybox = mat;
     }
     public static void LoadSystem(SpaceSystem spaceSystem)

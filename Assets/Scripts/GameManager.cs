@@ -62,22 +62,19 @@ public class GameManager : MonoBehaviour
     }
     public void LoadContent()
     {
-        LocalClient.isServer = true;
         SpaceObjectManager.Init();
         IND_targetManager.Init();
         SpaceManager.BuildGalaxies();
         SpaceManager.BuildSystems();
         SpaceManager.BuildSystemsContent();
     }
-    public void StartGame(GameStartData gameStartData)
+    public void StartGame()
     {
         CameraManager.SwitchCamera(CameraManager.mainCamera);
-        gameStartData.spaceObjectDatas = SpaceObjectManager.ReadSpaceContent(gameStartData.templateName, "start");
-        SpaceObjectManager.BuildObjectsByData(gameStartData.spaceObjectDatas, LocalClient.netSpaceObject.gameObject);
         SpaceManager.LoadSystem(LocalClient.SpaceSystem);
-        SpaceObject.InvokeRender();
 
         LocalClient.ControlledObject.WarpSystem(LocalClient.SpaceSystem, LocalClient.Sector.id);
+        SpaceObject.InvokeRender();
         if (LocalClient.ControlledObject != null)
         {
             SpaceObject cobj = LocalClient.ControlledObject;
@@ -95,6 +92,7 @@ public class GameManager : MonoBehaviour
             cobj.transform.SetParent(null);
         }
         Space.InvokeMinimapRender();
+        PositionFixer.Init();
         Hud hud = MenuManager.GetHud("MainHudMenu");
         hud.ShowSingle();
     }

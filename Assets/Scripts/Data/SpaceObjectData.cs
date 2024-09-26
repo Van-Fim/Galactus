@@ -15,6 +15,7 @@ public class SpaceObjectData : IData
     public string loadoutsTemplateName;
     public string hardpointsTemplateName;
     public bool isStartObject;
+    public bool sendSuccessfull;
     public int galaxyId;
     public int systemId;
     public int sectorId;

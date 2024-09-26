@@ -209,12 +209,7 @@ public class SpaceObjectManager : MonoBehaviour
                 spaceObjectData.angulardrag = int.Parse(fTemplate.GetValue("params", "angulardrag"));
                 spaceObjectData.modelPatch = fTemplate.GetValue("model", "patch");
 
-                uint id = 0;
-                while ((ret.Find(f => f.id == id) != null) || (SpaceObjectManager.spaceObjects.Find(f => f.id == id) != null))
-                {
-                    id++;
-                }
-                spaceObjectData.id = id;
+                spaceObjectData.id = SpaceObject.GetId();
 
                 ret.Add(spaceObjectData);
             }
@@ -226,22 +221,25 @@ public class SpaceObjectManager : MonoBehaviour
         for (int i = 0; i < dataList.Count; i++)
         {
             SpaceObjectData data = dataList[i];
-            SpaceObject obj = SpaceObject.Create(data, gmobj);
-            obj.Init();
-            obj.LoadHardpoints();
-            obj.gameObject.name = $"{obj.templateName}_{obj.id}";
-            if (data.isPlayerControll)
+            BuildSpaceObject(data, gmobj);
+        }
+    }
+    public static void BuildSpaceObject(SpaceObjectData data, GameObject gmobj = null)
+    {
+        SpaceObject obj = SpaceObject.Create(data, gmobj);
+        obj.Init();
+        obj.LoadHardpoints();
+        obj.gameObject.name = $"{obj.templateName}_{obj.id}";
+        if (data.isPlayerControll)
+        {
+            if (!LocalClient.skipFuckingControlledObjAndDie)
             {
-                if (!LocalClient.skipFuckingControlledObjAndDie)
-                {
-                    LocalClient.ControlledObject = obj;
-                    LocalClient.skipFuckingControlledObjAndDie = true;
-                }
-                if (gmobj != null)
-                {
-                    NetSpaceObject net = gmobj.GetComponent<NetSpaceObject>();
-                    net.data = data;
-                }
+                LocalClient.ControlledObject = obj;
+                LocalClient.skipFuckingControlledObjAndDie = true;
+            }
+            if (gmobj != null)
+            {
+                NetSpaceObject net = gmobj.GetComponent<NetSpaceObject>();
             }
         }
     }

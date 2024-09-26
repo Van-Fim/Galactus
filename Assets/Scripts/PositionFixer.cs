@@ -21,18 +21,23 @@ public class PositionFixer : MonoBehaviour
         int st = sectorStepSize/stepSize;
         currentSectorIndexes = new Vector3((int)(zoneIndexes.x / st), (int)(zoneIndexes.y / st), (int)(zoneIndexes.z / st));
         SpaceManager.spaceContainer.transform.localPosition = -(zoneIndexes * stepSize);
+        LocalClient.ControlledObject.SetZoneIndexes(zoneIndexes);
         LocalClient.ControlledObject.transform.localPosition = -(PositionFixer.RecalcPos(LocalClient.ControlledObject.transform.localPosition, stepSize) - LocalClient.ControlledObject.transform.localPosition);
+        NetClientManager.singleton.SendFixedIndexes(LocalClient.ControlledObject.GetComponent<NetSpaceObject>().netId, zoneIndexes);
     }
     public static void OnFixSectorPosition()
     {
         sectorIndexes = currentSectorIndexes;
-        Debug.Log($"{zoneIndexes} {sectorIndexes}");
+        LocalClient.ControlledObject.SetZoneIndexes(sectorIndexes);
     }
     public static void Init()
     {
         singleton = GameManager.singleton.gameObject.AddComponent<PositionFixer>();
         OnFixZonePositionAction += OnFixZonePosition;
         OnFixSectorPositionAction += OnFixSectorPosition;
+
+        OnFixZonePositionAction?.Invoke();
+        OnFixSectorPositionAction?.Invoke();
     }
     public void Update()
     {
