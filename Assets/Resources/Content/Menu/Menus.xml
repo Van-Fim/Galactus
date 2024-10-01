@@ -3,7 +3,7 @@
 		<main name="MainMenu" flags="100 200" item="panel01" height="100%" width="100%"
 			bg_color="0 0 0 255">
 			<panel name="Menu" item="panel02" height="100%" width="50" align-self="left"
-				align-items="vertical" bg_color="0 130 0 100">
+				align-items="vertical" bg_color="{theme.default}">
 				<button group="grp01" height="50" width="50" name="Resume"
 					action="swich_item MainMenu msw01 SwitchMenu01"
 					item="icon_button01" bg_color="0 0 0 0" selected_bg_color="0 0 0 255"
@@ -26,7 +26,7 @@
 				<panel active="true" name="SwitchMenu01" swich-group="msw01" item="panel02"
 					height="100%" width="100%" bg_color="0 0 0 0">
 					<panel item="panel02" height="50"
-						width="100%" bg_color="100 0 0 100" align-self="top">
+						width="100%" bg_color="{theme.bg01}" align-self="top">
 						<label item="ui_label" height="50" width="100%" name="Text01"
 							aligment="middlecenter"
 							data-value="Pause" />
@@ -61,7 +61,7 @@
 				<panel name="SwitchMenu02" swich-group="msw01" item="panel02" height="100%"
 					width="100%">
 					<panel item="panel02" height="50"
-						width="100%" bg_color="100 0 0 100" align-self="top">
+						width="100%" bg_color="{theme.bg01}" align-self="top">
 						<label item="ui_label" height="50" width="100%" name="Text01"
 							aligment="middlecenter"
 							data-value="Save game" />
@@ -84,7 +84,7 @@
 				<panel name="SwitchMenu03" swich-group="msw01" item="panel02" height="100%"
 					width="100%">
 					<panel item="panel02" height="50"
-						width="100%" bg_color="100 0 0 100" align-self="top">
+						width="100%" bg_color="{theme.bg01}" align-self="top">
 						<label item="ui_label" height="50" width="100%" name="Text01"
 							aligment="middlecenter"
 							data-value="Load game" />
@@ -111,9 +111,9 @@
 		<main name="MainHudMenu" item="panel00" height="100%" width="100%">
 			<panel name="MainHudMenuPanel01" item="panel02" height="50" width="100%"
 				align-self="top"
-				align-items="horizontal" bg_color="0 130 0 100">
+				align-items="horizontal" bg_color="{theme.default}">
 				<button height="50" width="50" name="Map"
-					action="swich_camera MapCamera;show_menu MapHudMenu"
+					action="swich_camera MapCamera;reset_map_camera;show_menu MapHudMenu"
 					item="icon_button01" bg_color="0 0 0 0" btn_icon="galaxy">
 				</button>
 				<button height="50" width="50" name="Warp" action="warp_player" item="icon_button01"
@@ -149,7 +149,7 @@
 	</menu>
 	<menu name="MapHudMenu">
 		<main name="MapHudMenu" flags="100" item="panel02" height="50" width="100%" align-self="top"
-			align-items="horizontal" bg_color="0 130 0 100">
+			align-items="horizontal" bg_color="{theme.default}">
 			<button height="50" width="50" name="Map"
 				action="swich_camera MainCamera;show_menu MainHudMenu"
 				item="icon_button01" bg_color="0 0 0 0" btn_icon="galaxy">

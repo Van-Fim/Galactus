@@ -6,6 +6,7 @@ using System;
 using Unity.VisualScripting;
 public class GameManager : MonoBehaviour
 {
+    public GameObject testCube;
     public static GameManager singleton;
     public static string seed = "myseed";
 
@@ -34,12 +35,12 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         singleton = this;
+        SpaceManager.Init();
         GamePrefabsManager.Init();
         CanvasController canvasController = GamePrefabsManager.LoadPrefab<CanvasController>("Canvas");
         canvasController = Instantiate(canvasController);
         CameraManager.Init();
         CameraManager.SwitchCamera(CameraManager.mainCamera);
-        SpaceManager.Init();
         SpaceManager.SetRandomSkybox();
 
         DontDestroyOnLoad(gameObject);
@@ -73,11 +74,14 @@ public class GameManager : MonoBehaviour
         CameraManager.SwitchCamera(CameraManager.mainCamera);
         SpaceManager.LoadSystem(LocalClient.SpaceSystem);
 
-        LocalClient.ControlledObject.WarpSystem(LocalClient.SpaceSystem, LocalClient.Sector.id);
-        SpaceObject.InvokeRender();
         if (LocalClient.ControlledObject != null)
         {
             SpaceObject cobj = LocalClient.ControlledObject;
+            LocalClient.galaxyId = cobj.galaxyId;
+            LocalClient.systemId = cobj.systemId;
+            LocalClient.sectorId = cobj.sectorId;
+            LocalClient.ControlledObject.WarpSystem(LocalClient.SpaceSystem, LocalClient.sectorId);
+            SpaceObject.InvokeRender();
             LocalClient.ControlledObject.isInitialized = true;
             LocalClient.ControlledObject.isPlayerControll = true;
 

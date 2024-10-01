@@ -64,6 +64,7 @@ public class NetSpaceObject : NetworkBehaviour
             }
         }
         SpaceObject.InvokeRender();
+        SolarObject.InvokeRender();
         Space.InvokeMinimapRender();
         yield return new WaitForEndOfFrame();
     }

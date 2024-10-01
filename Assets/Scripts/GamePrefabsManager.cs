@@ -25,6 +25,8 @@ public class GamePrefabsManager : MonoBehaviour
             TemplateManager.LoadTemplates("system", list[i] + "/Systems");
             TemplateManager.LoadTemplates("galaxy", list[i] + "/Galaxies");
             TemplateManager.LoadTemplates("universe", list[i] + "/Universe");
+            TemplateManager.LoadTemplates("sun", list[i] + "/Suns");
+            TemplateManager.LoadTemplates("planet", list[i] + "/Planets");
             TemplateManager.LoadTemplates("start", list[i] + "/GameStarts");
             TemplateManager.LoadTemplates("ship", list[i] + "/Ships");
             TemplateManager.LoadTemplates("pilot", list[i] + "/Pilots");

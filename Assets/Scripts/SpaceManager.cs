@@ -10,7 +10,11 @@ public class SpaceManager : MonoBehaviour
     public static List<SpaceSystem> spaceSystems = new List<SpaceSystem>();
     public static List<Sector> sectors = new List<Sector>();
     public static List<Gate> gates = new List<Gate>();
+    public static List<Planet> planets = new List<Planet>();
+    public static List<Sun> suns = new List<Sun>();
     public static GameObject spaceContainer;
+    public static GameObject solarContainer;
+    public static GameObject galaxyContainer;
     public static Material mat;
     public static int currentMapGalaxyId;
     public static void Init()
@@ -18,7 +22,17 @@ public class SpaceManager : MonoBehaviour
         singleton = GameManager.singleton.gameObject.AddComponent<SpaceManager>();
         spaceContainer = new GameObject();
         spaceContainer.name = "SpaceContainer";
+        solarContainer = new GameObject();
+        solarContainer.name = "SolarContainer";
+        galaxyContainer = new GameObject();
+        galaxyContainer.name = "GalaxyContainer";
         GameObject.DontDestroyOnLoad(spaceContainer);
+        GameObject.DontDestroyOnLoad(solarContainer);
+        GameObject.DontDestroyOnLoad(galaxyContainer);
+        solarContainer.transform.rotation = Quaternion.identity;
+        spaceContainer.transform.rotation = Quaternion.identity;
+        solarContainer.transform.position = Vector3.zero;
+        spaceContainer.transform.position = Vector3.zero;
     }
     public void LateUpdate()
     {
@@ -169,11 +183,12 @@ public class SpaceManager : MonoBehaviour
                 system.size = size;
 
                 Sector sector = new Sector(system, "Sector00");
-                sector.SetPosition(new Vector3(0, 0, 0));
+                sector.SetPosition(new Vector3(200000000, 0, 0));
 
                 sector = new Sector(system, "Sector00");
-                sector.SetPosition(new Vector3(1000000, 0, 0));
+                sector.SetPosition(new Vector3(800000000, 0, 0));
 
+                PlanetsBuilder.Build(system);
                 system.Init();
             }
             galaxy.spaceSystems = SpaceManager.spaceSystems.FindAll(x => x.galaxyId == galaxy.id);

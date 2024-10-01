@@ -17,7 +17,7 @@ public class Sector : Space
     }
     public int GetId()
     {
-        int id = 1;
+        int id = 0;
         while (SpaceManager.sectors.Find(f => f.id == id && f.galaxyId == galaxyId && f.systemId == systemId) != null)
         {
             id++;

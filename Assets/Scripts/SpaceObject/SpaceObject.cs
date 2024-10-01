@@ -47,6 +47,7 @@ public class SpaceObject : MonoBehaviour
     public static UnityAction OnRenderAction;
     public static UnityAction OnRenderINDAction;
     public SpaceObject() { }
+    public static long IND_render_distance = 50000000000;
 
     public virtual void Init()
     {
@@ -190,7 +191,11 @@ public class SpaceObject : MonoBehaviour
         Sector sector = SpaceManager.sectors.Find(x => x.id == sectorId && x.galaxyId == galaxyId && x.systemId == systemId);
         Vector3 sPos = sector.GetPosition() + transform.localPosition;
         Vector3 sectorIndexes = new Vector3((int)(sPos.x / (PositionFixer.stepSize * 2)), (int)(sPos.y / (PositionFixer.stepSize * 2)), (int)(sPos.z / (PositionFixer.stepSize * 2)));
+        
         SetSectorIndexes(sectorIndexes);
+        SpaceObject.InvokeRender();
+        SolarObject.InvokeRender();
+        PlanetsBuilder.Build(spaceSystem);
     }
 
     public virtual void LoadHardpoints()
@@ -272,7 +277,7 @@ public class SpaceObject : MonoBehaviour
         {
             float thing = Vector3.Dot((transform.position - LocalClient.ControlledObject.transform.position).normalized, LocalClient.ControlledObject.transform.forward);
             float dist = Vector3.Distance(LocalClient.ControlledObject.transform.position, transform.position);
-            bool b1 = thing <= 0, b2 = dist > 500000;
+            bool b1 = thing <= 0, b2 = dist > IND_render_distance;
             if (IND_target.selectedTarget == iND_Target)
             {
                 iND_Target.SetColor(IND_target.selectedColor);

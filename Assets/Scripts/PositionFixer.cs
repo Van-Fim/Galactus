@@ -14,11 +14,13 @@ public class PositionFixer : MonoBehaviour
     public static int sectorStepSize = 500000;
     public static UnityAction OnFixZonePositionAction;
     public static UnityAction OnFixSectorPositionAction;
+    public static bool isInitialized = false;
     public static bool isStoppedAutoUpdate = false;
     public static void OnFixZonePosition()
     {
         zoneIndexes = currentZoneIndexes;
-        int st = sectorStepSize/stepSize;
+
+        int st = sectorStepSize / stepSize;
         currentSectorIndexes = new Vector3((int)(zoneIndexes.x / st), (int)(zoneIndexes.y / st), (int)(zoneIndexes.z / st));
         SpaceManager.spaceContainer.transform.localPosition = -(zoneIndexes * stepSize);
         LocalClient.ControlledObject.SetZoneIndexes(zoneIndexes);
@@ -28,23 +30,28 @@ public class PositionFixer : MonoBehaviour
     public static void OnFixSectorPosition()
     {
         sectorIndexes = currentSectorIndexes;
-        LocalClient.ControlledObject.SetZoneIndexes(sectorIndexes);
+        LocalClient.ControlledObject.SetSectorIndexes(sectorIndexes);
     }
     public static void Init()
     {
         singleton = GameManager.singleton.gameObject.AddComponent<PositionFixer>();
+        currentSectorIndexes = LocalClient.ControlledObject.GetSectorIndexes();
+        currentZoneIndexes = PositionFixer.RecalcPos(currentSectorIndexes * sectorStepSize + LocalClient.ControlledObject.transform.localPosition + zoneIndexes * stepSize, stepSize);
+        zoneIndexes = currentZoneIndexes = new Vector3((int)(currentZoneIndexes.x / stepSize), (int)(currentZoneIndexes.y / stepSize), (int)(currentZoneIndexes.z / stepSize));
+        //LocalClient.ControlledObject.transform.localPosition = currentSectorIndexes * sectorStepSize + LocalClient.ControlledObject.transform.localPosition + zoneIndexes * stepSize;
         OnFixZonePositionAction += OnFixZonePosition;
         OnFixSectorPositionAction += OnFixSectorPosition;
-
+        CameraManager.planetCamera.transform.SetParent(SpaceManager.solarContainer.transform);
         OnFixZonePositionAction?.Invoke();
         OnFixSectorPositionAction?.Invoke();
+        GameManager.singleton.testCube.transform.SetParent(SpaceManager.spaceContainer.transform);
+        isInitialized = true;
     }
     public void Update()
     {
-        if (LocalClient.ControlledObject != null)
+        if (LocalClient.ControlledObject != null && isInitialized)
         {
             currentZoneIndexes = PositionFixer.RecalcPos(LocalClient.ControlledObject.transform.localPosition + zoneIndexes * stepSize, stepSize);
-            
             if (!isStoppedAutoUpdate)
             {
                 currentZoneIndexes = new Vector3((int)(currentZoneIndexes.x / stepSize), (int)(currentZoneIndexes.y / stepSize), (int)(currentZoneIndexes.z / stepSize));

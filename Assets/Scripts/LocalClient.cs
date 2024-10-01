@@ -35,7 +35,7 @@ public class LocalClient : MonoBehaviour
     {
         get
         {
-            return SpaceManager.sectors.Find(x => x.galaxyId == galaxyId && x.systemId == systemId && x.GetIndexes() == GetSectorIndexes());
+            return SpaceManager.sectors.Find(x => x.galaxyId == galaxyId && x.systemId == systemId && x.id == sectorId);
         }
     }
 

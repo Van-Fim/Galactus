@@ -44,6 +44,11 @@ public class MenuManager : MonoBehaviour
             {
                 SOController.blocked = bool.Parse(args[i][0]);
             }
+            else if (actions[i] == "reset_map_camera")
+            {
+                CameraManager.mapCamera.transform.localPosition = LocalClient.SpaceSystem.GetPosition() + new Vector3(0,50,0);
+                CameraManager.mapCamera.transform.localEulerAngles = new Vector3(90,0,0);
+            }
             else if (actions[i] == "warp_player")
             {
                 Warp();
@@ -184,7 +189,21 @@ public class MenuManager : MonoBehaviour
                         if (templateItem.ValueName == "bg_color" && templateItem.Value != null)
                         {
                             string[] exp1 = templateItem.Value.Split(' ');
-                            hudData.bgColor1 = new Color32(byte.Parse(exp1[0]), byte.Parse(exp1[1]), byte.Parse(exp1[2]), byte.Parse(exp1[3]));
+                            if (exp1.Length > 3)
+                            {
+                                hudData.bgColor1 = new Color32(byte.Parse(exp1[0]), byte.Parse(exp1[1]), byte.Parse(exp1[2]), byte.Parse(exp1[3]));
+                            }
+                            else
+                            {
+                                if (templateItem.Value == "{theme.default}")
+                                {
+                                    hudData.bgColor1 = new Color32(0,0,0,100);
+                                }
+                                else if (templateItem.Value == "{theme.bg01}")
+                                {
+                                    hudData.bgColor1 = new Color32(120,120,120,100);
+                                }
+                            }
                         }
                         if (templateItem.ValueName == "selected_bg_color" && templateItem.Value != null)
                         {

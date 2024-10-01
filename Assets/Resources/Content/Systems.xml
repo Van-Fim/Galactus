@@ -5,6 +5,16 @@
 				amax="255" />
 			<color r="255" g="255" b="255" a="255" />
 		</colors>
+		<planets min="8" max="8">
+			<planet weight="50" template="Planet01" minRange="0" maxRange="300000" />
+			<planet weight="50" template="Planet02" minRange="0" maxRange="300000" />
+		</planets>
+		<sectors maxSectorRangeMin="300000" maxSectorRangeMax="300000">
+			<sector min="5" max="8" template="Sector01" Ymin="0" Ymax="0" />
+		</sectors>
+		<suns min="1" max="1">
+			<sun template="Sun01" minRange="0" maxRange="0" />
+		</suns>
 		<skyboxes>
 			<skybox name="Skybox01" />
 		</skyboxes>
@@ -22,6 +32,16 @@
 				amax="255" />
 			<color r="255" g="255" b="255" a="255" />
 		</colors>
+		<planets min="18" max="18">
+			<planet weight="50" template="Planet01" minRange="0" maxRange="600000" />
+			<planet weight="50" template="Planet02" minRange="0" maxRange="600000" />
+		</planets>
+		<sectors maxSectorRangeMin="300000" maxSectorRangeMax="300000">
+			<sector min="5" max="8" template="Sector01" Ymin="0" Ymax="0" />
+		</sectors>
+		<suns min="1" max="1">
+			<sun template="Sun01" minRange="0" maxRange="0" />
+		</suns>
 		<skyboxes>
 			<skybox name="Skybox02" />
 			<skybox name="Skybox03" />
