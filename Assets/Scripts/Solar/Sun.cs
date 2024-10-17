@@ -14,10 +14,10 @@ public class Sun : SolarObject
         this.SetColor(color);
         this.galaxyId = system.galaxyId;
         this.systemId = system.id;
-        Template sunTemplate = TemplateManager.FindTemplate(templateName, "sun");
-        model = sunTemplate.GetValue("model", "patch");
-        int scaleMin = int.Parse(sunTemplate.GetValue("scale", "min"));
-        int scaleMax = int.Parse(sunTemplate.GetValue("scale", "max"));
+        template = TemplateManager.FindTemplate(templateName, "sun");
+        model = template.GetValue("model", "patch");
+        int scaleMin = int.Parse(template.GetValue("scale", "min"));
+        int scaleMax = int.Parse(template.GetValue("scale", "max"));
         this.scale = Random.Range(scaleMin, scaleMax);
 
         int range = maxRange - minRange;
@@ -51,7 +51,7 @@ public class Sun : SolarObject
                 float dist1 = Vector2.Distance(sn.GetPosition(), centerPosition);
                 dist2 = Vector2.Distance(sunPosition, centerPosition);
                 curDistance = Mathf.Abs(dist1 - dist2);
-                sumDistance = (sn.scale + this.scale) * 3;
+                sumDistance = (sn.scale + this.scale) * 6;
                 found = false;
 
                 if (curDistance < sumDistance)
@@ -80,6 +80,7 @@ public class Sun : SolarObject
         }
         this.id = findId;
         SpaceManager.suns.Add(this);
+        AddSectors();
     }
     public override void Init()
     {
@@ -135,7 +136,34 @@ public class Sun : SolarObject
             Destroy();
         }
     }
-
+    public void AddSectors()
+    {
+        if (this.deptch > 2)
+        {
+            return;
+        }
+        int sectorCountMin = int.Parse(template.GetValue("sectors", "min"));
+        int sectorCountMax = int.Parse(template.GetValue("sectors", "max"));
+        int sectorCount = Random.Range(sectorCountMin, sectorCountMax + 1);
+        List<TemplateNode> sectorsNodes = template.GetNodeList("sector");
+        if (sectorsNodes.Count > 0)
+        {
+            for (int i = 0; i < sectorCount; i++)
+            {
+                TemplateNode sectorNode = TemplateNode.GetByWeightsList(sectorsNodes);
+                string sectorTemplateName = sectorNode.GetValue("template");
+                int sectorMinRange = int.Parse(sectorNode.GetValue("minRange"));
+                int sectorMaxRange = int.Parse(sectorNode.GetValue("maxRange"));
+                Sector sector = new Sector(this, sectorTemplateName, sectorMinRange, sectorMaxRange);
+                
+                if (sector.id >= 0)
+                {
+                    Debug.Log($"{sector.galaxyId} {sector.systemId} {sector.id}");
+                    sector.Init();
+                }
+            }
+        }
+    }
     public int GenerateId()
     {
         int curId = 0;

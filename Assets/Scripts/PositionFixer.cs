@@ -19,9 +19,6 @@ public class PositionFixer : MonoBehaviour
     public static void OnFixZonePosition()
     {
         zoneIndexes = currentZoneIndexes;
-
-        int st = sectorStepSize / stepSize;
-        currentSectorIndexes = new Vector3((int)(zoneIndexes.x / st), (int)(zoneIndexes.y / st), (int)(zoneIndexes.z / st));
         SpaceManager.spaceContainer.transform.localPosition = -(zoneIndexes * stepSize);
         LocalClient.ControlledObject.SetZoneIndexes(zoneIndexes);
         LocalClient.ControlledObject.transform.localPosition = -(PositionFixer.RecalcPos(LocalClient.ControlledObject.transform.localPosition, stepSize) - LocalClient.ControlledObject.transform.localPosition);
@@ -35,13 +32,13 @@ public class PositionFixer : MonoBehaviour
     public static void Init()
     {
         singleton = GameManager.singleton.gameObject.AddComponent<PositionFixer>();
-        currentSectorIndexes = LocalClient.ControlledObject.GetSectorIndexes();
-        currentZoneIndexes = PositionFixer.RecalcPos(currentSectorIndexes * sectorStepSize + LocalClient.ControlledObject.transform.localPosition + zoneIndexes * stepSize, stepSize);
-        zoneIndexes = currentZoneIndexes = new Vector3((int)(currentZoneIndexes.x / stepSize), (int)(currentZoneIndexes.y / stepSize), (int)(currentZoneIndexes.z / stepSize));
-        //LocalClient.ControlledObject.transform.localPosition = currentSectorIndexes * sectorStepSize + LocalClient.ControlledObject.transform.localPosition + zoneIndexes * stepSize;
+        sectorIndexes = currentSectorIndexes = LocalClient.ControlledObject.GetSectorIndexes();
+        Vector3 plyPos = (sectorIndexes * PositionFixer.sectorStepSize + LocalClient.ControlledObject.transform.localPosition);
+        currentZoneIndexes = PositionFixer.RecalcPos(plyPos, stepSize);
+        currentZoneIndexes = new Vector3((int)(currentZoneIndexes.x / stepSize), (int)(currentZoneIndexes.y / stepSize), (int)(currentZoneIndexes.z / stepSize));
         OnFixZonePositionAction += OnFixZonePosition;
         OnFixSectorPositionAction += OnFixSectorPosition;
-        CameraManager.planetCamera.transform.SetParent(SpaceManager.solarContainer.transform);
+        CameraManager.planetCamera.transform.SetParent(null);
         OnFixZonePositionAction?.Invoke();
         OnFixSectorPositionAction?.Invoke();
         GameManager.singleton.testCube.transform.SetParent(SpaceManager.spaceContainer.transform);

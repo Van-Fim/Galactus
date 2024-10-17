@@ -2,7 +2,7 @@
 	<start name="Start01" universe="default">
 		<space galaxy="0" system="2" sector="0">
 			<ship playerShip="1" template="Ship01" pilotTemplate="Pilot01">
-				<position x="0" y="0" z="0" />
+				<position x="0" y="30000" z="0" />
 				<rotation x="0" y="0" z="0" />
 			</ship>
 		</space>

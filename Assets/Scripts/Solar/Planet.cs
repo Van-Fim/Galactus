@@ -111,7 +111,7 @@ public class Planet : SolarObject
                 float dist1 = Vector3.Distance(pl.GetPosition(), sun.GetPosition());
                 dist2 = Vector3.Distance(planetPosition, sun.GetPosition());
                 curDistance = Mathf.Abs(dist1 - dist2);
-                sumDistance = (pl.scale + this.scale) * 6 + (pl.sateliteMaxDist + this.sateliteMaxDist);
+                sumDistance = (pl.scale + this.scale) * 8 + (pl.sateliteMaxDist + this.sateliteMaxDist);
                 float sunDistance = (this.scale + (sun.scale) * 2) * 3 + (pl.sateliteMaxDist + this.sateliteMaxDist);
                 found = false;
                 if (curDistance < sumDistance || dist2 < sunDistance)
@@ -159,6 +159,7 @@ public class Planet : SolarObject
 
         SpaceManager.planets.Add(this);
         this.AddSattelites();
+        this.AddSectors();
     }
 
     public Planet(Planet planet, string templateName, int minRange = 0, int maxRange = 0)
@@ -299,6 +300,7 @@ public class Planet : SolarObject
         this.orbitProgressAdd = Random.Range(0f, 1f);
         SpaceManager.planets.Add(this);
         this.AddSattelites();
+        this.AddSectors();
     }
     public override void Init()
     {
@@ -328,7 +330,33 @@ public class Planet : SolarObject
             }
         }
     }
+    public void AddSectors()
+    {
+        if (this.deptch > 2)
+        {
+            return;
+        }
+        int sectorCountMin = int.Parse(template.GetValue("sectors", "min"));
+        int sectorCountMax = int.Parse(template.GetValue("sectors", "max"));
+        int sectorCount = Random.Range(sectorCountMin, sectorCountMax + 1);
+        List<TemplateNode> sectorsNodes = template.GetNodeList("sector");
 
+        if (sectorsNodes.Count > 0)
+        {
+            for (int i = 0; i < sectorCount; i++)
+            {
+                TemplateNode sectorNode = TemplateNode.GetByWeightsList(sectorsNodes);
+                string sectorTemplateName = sectorNode.GetValue("template");
+                int sectorMinRange = int.Parse(sectorNode.GetValue("minRange"));
+                int sectorMaxRange = int.Parse(sectorNode.GetValue("maxRange"));
+                Sector sector = new Sector(this, sectorTemplateName, sectorMinRange, sectorMaxRange);
+                if (sector.id >=0)
+                {
+                    sector.Init();
+                }
+            }
+        }
+    }
     public override void RenderAct()
     {
         if ((LocalClient.galaxyId == galaxyId && LocalClient.systemId == systemId))

@@ -182,12 +182,6 @@ public class SpaceManager : MonoBehaviour
                 }
                 system.size = size;
 
-                Sector sector = new Sector(system, "Sector00");
-                sector.SetPosition(new Vector3(200000000, 0, 0));
-
-                sector = new Sector(system, "Sector00");
-                sector.SetPosition(new Vector3(800000000, 0, 0));
-
                 PlanetsBuilder.Build(system);
                 system.Init();
             }

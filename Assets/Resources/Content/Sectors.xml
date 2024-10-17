@@ -1,12 +1,18 @@
 <templates>
 	<sector name="Sector00">
-		<zones maxZoneRangeMin="10" maxZoneRangeMax="10">
-			<zone min="5" max="5" template="Zone01" Ymin="0" Ymax="0"  />
-		</zones>
+		<model patch="Models/Sectors/Sector01" />
+		<colors>
+			<color r="255" g="0" b="0" a="255" />
+			<color r="0" g="255" b="0" a="255" />
+			<color r="100" g="100" b="255" a="255" />
+		</colors>
 	</sector>
 	<sector name="Sector01">
-		<zones maxZoneRangeMin="10" maxZoneRangeMax="10">
-			<zone min="5" max="5" template="Zone01" Ymin="0" Ymax="0"  />
-		</zones>
+		<model patch="Models/Sectors/Sector01" />
+		<colors>
+			<color r="255" g="0" b="0" a="255" />
+			<color r="0" g="255" b="0" a="255" />
+			<color r="100" g="100" b="255" a="255" />
+		</colors>
 	</sector>
 </templates>

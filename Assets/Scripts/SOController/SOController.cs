@@ -6,19 +6,19 @@ using UnityEngine;
 public class SOController : MonoBehaviour
 {
     public SpaceObject obj;
-
+    public int mulVal = 10000000;
     private float val = 0;
     private float val2 = 0;
 
-    private int maxSpeed = 300;
+    private long maxSpeed = 300;
     private int rotationSpeed = 150;
-    private float velocity = 100;
+    private long velocity = 100;
     private bool isHyperMode = false;
 
     public static bool blocked = false;
-    public static int currentSpeed = 0;
+    public static long currentSpeed = 0;
     public static double distanceToTarget = 0;
-    public static int currentMaxSpeed = 0;
+    public static long currentMaxSpeed = 0;
     void Awake()
     {
         obj = gameObject.GetComponent<SpaceObject>();
@@ -29,13 +29,9 @@ public class SOController : MonoBehaviour
         TemplateNode paramsNode = template.GetNode("params");
         if (paramsNode != null)
         {
-            int newMaxSpeed = int.Parse(paramsNode.GetValue("maxspeed"));
-            int newRotationSpeed = int.Parse(paramsNode.GetValue("rotationspeed"));
-            int newVelocity = int.Parse(paramsNode.GetValue("velocity"));
-
-            this.maxSpeed = newMaxSpeed;
-            this.rotationSpeed = newRotationSpeed;
-            this.velocity = newVelocity;
+            this.maxSpeed = long.Parse(paramsNode.GetValue("maxspeed")) * mulVal;
+            this.rotationSpeed = int.Parse(paramsNode.GetValue("rotationspeed"));
+            this.velocity = long.Parse(paramsNode.GetValue("velocity")) * mulVal;
         }
     }
     void FixedUpdate()
@@ -53,7 +49,14 @@ public class SOController : MonoBehaviour
 
     void Update()
     {
-
+        Template template = TemplateManager.FindTemplate(obj.templateName, obj.GetObjectType());
+        TemplateNode paramsNode = template.GetNode("params");
+        if (paramsNode != null)
+        {
+            this.maxSpeed = long.Parse(paramsNode.GetValue("maxspeed")) * mulVal;
+            this.rotationSpeed = int.Parse(paramsNode.GetValue("rotationspeed"));
+            this.velocity = long.Parse(paramsNode.GetValue("velocity")) * mulVal;
+        }
     }
 
     public virtual void Turn()

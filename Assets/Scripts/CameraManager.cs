@@ -66,8 +66,21 @@ public class CameraManager : MonoBehaviour
             skyBoxCamera.transform.rotation = mainCamera.transform.rotation;
             Vector3 sPos = (LocalClient.ControlledObject.GetSectorIndexes() * PositionFixer.sectorStepSize);
             Vector3 cPos = mainCamera.transform.position / SolarObject.scaleFactor;
-            Vector3 zPos = (LocalClient.ControlledObject.GetZoneIndexes() * PositionFixer.stepSize)/ SolarObject.scaleFactor;
+            Vector3 zPos = (LocalClient.ControlledObject.GetZoneIndexes() * PositionFixer.stepSize) / SolarObject.scaleFactor;
             CameraManager.planetCamera.transform.localPosition = zPos + cPos;
+            CameraManager.planetCamera.transform.localPosition = -(PositionFixer.RecalcPos(CameraManager.planetCamera.transform.localPosition, SolarController.stepSize) - CameraManager.planetCamera.transform.localPosition);
+            SolarController.currentZoneIndexes = PositionFixer.RecalcPos((zPos + cPos), SolarController.stepSize);
+            SolarController.currentZoneIndexes = new Vector3((int)(SolarController.currentZoneIndexes.x / SolarController.stepSize), (int)(SolarController.currentZoneIndexes.y / SolarController.stepSize), (int)(SolarController.currentZoneIndexes.z / SolarController.stepSize));
+
+            // SolarController.currentZoneIndexes = new Vector3((int)(SolarController.currentZoneIndexes.x / SolarController.stepSize), (int)(SolarController.currentZoneIndexes.y / SolarController.stepSize), (int)(SolarController.currentZoneIndexes.z / SolarController.stepSize));
+            if (SolarController.zoneIndexes != SolarController.currentZoneIndexes)
+            {
+                SolarController.zoneIndexes = SolarController.currentZoneIndexes;
+                SpaceManager.solarContainer.transform.localPosition = -(SolarController.zoneIndexes * SolarController.stepSize);
+                CameraManager.planetCamera.transform.localPosition = -(PositionFixer.RecalcPos(CameraManager.planetCamera.transform.localPosition, SolarController.stepSize) - CameraManager.planetCamera.transform.localPosition);
+                SolarController.cameraPos = CameraManager.planetCamera.transform.localPosition;
+            }
+
             CameraManager.skyBoxCamera.transform.SetParent(SpaceManager.galaxyContainer.transform);
             CameraManager.skyBoxCamera.transform.localPosition = LocalClient.SpaceSystem.GetPosition();
         }

@@ -189,8 +189,9 @@ public class SpaceObject : MonoBehaviour
         galaxyId = spaceSystem.galaxyId;
         systemId = spaceSystem.id;
         Sector sector = SpaceManager.sectors.Find(x => x.id == sectorId && x.galaxyId == galaxyId && x.systemId == systemId);
-        Vector3 sPos = sector.GetPosition() + transform.localPosition;
-        Vector3 sectorIndexes = new Vector3((int)(sPos.x / (PositionFixer.stepSize * 2)), (int)(sPos.y / (PositionFixer.stepSize * 2)), (int)(sPos.z / (PositionFixer.stepSize * 2)));
+        Vector3 sPos = (sector.GetPosition()*SolarObject.scaleFactor) + transform.localPosition;
+        sPos = PositionFixer.RecalcPos(sPos, PositionFixer.sectorStepSize);
+        Vector3 sectorIndexes = new Vector3((int)(sPos.x / (PositionFixer.sectorStepSize)), (int)(sPos.y / (PositionFixer.sectorStepSize)), (int)(sPos.z / (PositionFixer.sectorStepSize)));
         
         SetSectorIndexes(sectorIndexes);
         SpaceObject.InvokeRender();

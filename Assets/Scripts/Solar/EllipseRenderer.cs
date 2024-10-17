@@ -23,10 +23,10 @@ public class EllipseRenderer : MonoBehaviour
         {
             return;
         }
-        float minlineWidth = 20f;
+        float minlineWidth = 200f;
         if (parentObject.GetType() == typeof(SolarObject))
         {
-            minlineWidth = 10f;
+            minlineWidth = 100f;
         }
         float lineWidth = minlineWidth;
         //lineWidth = CameraManager.planetCamera.curCamera.orthographicSize / 500;
@@ -48,6 +48,7 @@ public class EllipseRenderer : MonoBehaviour
         lr.positionCount = segments + 1;
         lr.material.SetColor("_Color", solarObject.GetOrbitColor());
         lr.SetPositions(points);
+        lr.useWorldSpace = false;
     }
 
     void OnValidate()

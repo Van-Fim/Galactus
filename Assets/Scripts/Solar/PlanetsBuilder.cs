@@ -34,6 +34,11 @@ public class PlanetsBuilder : ISpaceBuilder
                 sun.galaxyId = starSystem.galaxyId;
                 sun.systemId = starSystem.id;
                 sun.Init();
+                Sector sector = new Sector(sun, "Sector00", 0, 0, true);
+                if (sector.id >=0)
+                {
+                    sector.Init();
+                }
             }
         }
     }
