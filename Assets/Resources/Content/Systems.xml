@@ -12,40 +12,22 @@
 		<suns min="1" max="1">
 			<sun template="Sun01" minRange="0" maxRange="0" />
 		</suns>
-		<skyboxes>
-			<skybox name="Skybox01" />
-		</skyboxes>
 		<music musicList="musicList01" />
-		<space>
-			<spaceobject template="Station01">
-				<position x="0" y="1300" z="0" />
-				<rotation x="0" y="0" z="0" />
-			</spaceobject>
-		</space>
 	</system>
 	<system name="System02" sizeMin="100000" sizeMax="100000">
 		<colors>
 			<bg_color rmin="50" gmin="50" bmin="50" amin="255" rmax="90" gmax="90" bmax="90"
 				amax="255" />
-			<color r="255" g="255" b="255" a="255" />
+			<color r="255" g="100" b="100" a="255" />
+			<color r="170" g="190" b="255" a="255" />
+			<color r="80" g="255" b="255" a="255" />
 		</colors>
-		<planets min="1" max="1">
+		<planets min="10" max="10">
 			<planet weight="50" template="Planet01" minRange="0" maxRange="3500000" />
 		</planets>
 		<suns min="1" max="1">
 			<sun template="Sun01" minRange="0" maxRange="0" />
 		</suns>
-		<skyboxes>
-			<skybox name="Skybox02" />
-			<skybox name="Skybox03" />
-			<skybox name="Skybox04" />
-		</skyboxes>
 		<music musicList="musicList01" />
-		<space>
-			<spaceobject template="Station01">
-				<position x="0" y="1300" z="0" />
-				<rotation x="0" y="0" z="0" />
-			</spaceobject>
-		</space>
 	</system>
 </templates>

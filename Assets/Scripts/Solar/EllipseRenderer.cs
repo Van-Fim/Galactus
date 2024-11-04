@@ -17,16 +17,23 @@ public class EllipseRenderer : MonoBehaviour
     {
 
     }
+    void LateUpdate()
+    {
+        if (CameraManager.planetCamera != null && lr != null)
+        {
+
+        }
+    }
     public void CalculateEllipse()
     {
         if (parentObject == null || parentObject.solarController == null)
         {
             return;
         }
-        float minlineWidth = 200f;
+        float minlineWidth = 2000f;
         if (parentObject.GetType() == typeof(SolarObject))
         {
-            minlineWidth = 100f;
+            minlineWidth = 2500f;
         }
         float lineWidth = minlineWidth;
         //lineWidth = CameraManager.planetCamera.curCamera.orthographicSize / 500;
@@ -35,12 +42,13 @@ public class EllipseRenderer : MonoBehaviour
             lineWidth = minlineWidth;
         }
         Vector3[] points = new Vector3[segments + 1];
-        Vector3 position = parentObject.GetPosition();
-        Vector3 curPosition = solarObject.GetPosition();
+        Vector3 fuckingPos = SolarController.containerStartPos - SolarController.containerEndPos;
+        Vector3 position = parentObject.solarController.transform.localPosition;
+        Vector3 curPosition = (parentObject.solarController.transform.localPosition - solarObject.solarController.transform.localPosition);
         for (int i = 0; i < segments; i++)
         {
             Vector2 position2D = ellipse.Evaluate((float)i / (float)segments);
-            points[i] = new Vector3(position.x + position2D.x, 0f, position.z + position2D.y);
+            points[i] = fuckingPos + new Vector3(curPosition.x + position2D.x, 0, curPosition.z + position2D.y);
         }
         points[segments] = points[0];
         lr.startWidth = lineWidth;
@@ -49,6 +57,7 @@ public class EllipseRenderer : MonoBehaviour
         lr.material.SetColor("_Color", solarObject.GetOrbitColor());
         lr.SetPositions(points);
         lr.useWorldSpace = false;
+        //lr.enabled = false;
     }
 
     void OnValidate()

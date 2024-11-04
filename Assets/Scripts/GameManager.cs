@@ -80,6 +80,8 @@ public class GameManager : MonoBehaviour
             LocalClient.galaxyId = cobj.galaxyId;
             LocalClient.systemId = cobj.systemId;
             LocalClient.sectorId = cobj.sectorId;
+            cobj.galaxyId = -1;
+            cobj.systemId = -1;
             LocalClient.ControlledObject.WarpSystem(LocalClient.SpaceSystem, LocalClient.sectorId);
             SpaceObject.InvokeRender();
             LocalClient.ControlledObject.isInitialized = true;

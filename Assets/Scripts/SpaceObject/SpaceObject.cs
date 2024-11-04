@@ -186,17 +186,45 @@ public class SpaceObject : MonoBehaviour
     }
     public virtual void WarpSystem(SpaceSystem spaceSystem, int sectorId)
     {
+        bool newSystem = galaxyId != spaceSystem.galaxyId || systemId != spaceSystem.id;
         galaxyId = spaceSystem.galaxyId;
         systemId = spaceSystem.id;
+
+        SolarObject.InvokeRender();
+        if (newSystem)
+        {
+            SpaceManager.solarContainer.transform.localPosition = Vector3.zero;
+            SolarController.containerStartPos = Vector3.zero;
+            SolarController.containerEndPos = Vector3.zero;
+            PlanetsBuilder.Build(spaceSystem);
+        }
+        SolarObject.InvokeRender();
         Sector sector = SpaceManager.sectors.Find(x => x.id == sectorId && x.galaxyId == galaxyId && x.systemId == systemId);
-        Vector3 sPos = (sector.GetPosition()*SolarObject.scaleFactor) + transform.localPosition;
+        Vector3 sPos = (sector.GetPosition() * SolarObject.scaleFactor) + transform.localPosition;
         sPos = PositionFixer.RecalcPos(sPos, PositionFixer.sectorStepSize);
         Vector3 sectorIndexes = new Vector3((int)(sPos.x / (PositionFixer.sectorStepSize)), (int)(sPos.y / (PositionFixer.sectorStepSize)), (int)(sPos.z / (PositionFixer.sectorStepSize)));
-        
+
         SetSectorIndexes(sectorIndexes);
+        Vector3 plyPos = sectorIndexes * PositionFixer.sectorStepSize + LocalClient.ControlledObject.transform.localPosition;
+        Vector3 currentZoneIndexes = PositionFixer.RecalcPos(plyPos, PositionFixer.stepSize);
+        currentZoneIndexes = new Vector3((int)(currentZoneIndexes.x / PositionFixer.stepSize), (int)(currentZoneIndexes.y / PositionFixer.stepSize), (int)(currentZoneIndexes.z / PositionFixer.stepSize));
+        Vector3 cPos = CameraManager.mainCamera.transform.position / SolarObject.scaleFactor;
+
         SpaceObject.InvokeRender();
+
+        SpaceManager.solarContainer.transform.localPosition = -(currentZoneIndexes + cPos);
+        if (newSystem)
+        {
+            SolarController.containerStartPos = SpaceManager.solarContainer.transform.localPosition;
+        }
+        CameraManager.planetCamera.transform.localPosition = Vector3.zero;
+        if (!newSystem)
+        {
+            SolarObject.InvokeStartFix();
+            SpaceManager.solarContainer.transform.position = Vector3.zero;
+            SolarObject.InvokeEndFix();
+        }
         SolarObject.InvokeRender();
-        PlanetsBuilder.Build(spaceSystem);
     }
 
     public virtual void LoadHardpoints()

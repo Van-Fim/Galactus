@@ -34,6 +34,7 @@ public class MenuManager : MonoBehaviour
             if (actions[i] == "swich_camera" && args[i].Count > 0)
             {
                 CameraManager.SwitchCamera(args[i][0]);
+                SolarObject.InvokeRender();
             }
             else if (actions[i] == "show_menu" && args[i].Count > 0)
             {
@@ -636,7 +637,7 @@ public class MenuManager : MonoBehaviour
             SpaceSystem spaceSystem = (SpaceSystem)SpaceUiObj.selectedObj.space;
             LocalClient.galaxyId = spaceSystem.galaxyId;
             LocalClient.systemId = spaceSystem.id;
-            LocalClient.ControlledObject.WarpSystem(spaceSystem, 1);
+            LocalClient.ControlledObject.WarpSystem(spaceSystem, 0);
             SpaceManager.LoadSystem(LocalClient.SpaceSystem);
             LocalClient.SetSectorIndexes(Vector3.zero);
             SpaceObject.InvokeRender();

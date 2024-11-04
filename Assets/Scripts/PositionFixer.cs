@@ -19,6 +19,7 @@ public class PositionFixer : MonoBehaviour
     public static void OnFixZonePosition()
     {
         zoneIndexes = currentZoneIndexes;
+        SolarController.zoneIndexes = SolarController.currentZoneIndexes;
         SpaceManager.spaceContainer.transform.localPosition = -(zoneIndexes * stepSize);
         LocalClient.ControlledObject.SetZoneIndexes(zoneIndexes);
         LocalClient.ControlledObject.transform.localPosition = -(PositionFixer.RecalcPos(LocalClient.ControlledObject.transform.localPosition, stepSize) - LocalClient.ControlledObject.transform.localPosition);
@@ -36,6 +37,7 @@ public class PositionFixer : MonoBehaviour
         Vector3 plyPos = (sectorIndexes * PositionFixer.sectorStepSize + LocalClient.ControlledObject.transform.localPosition);
         currentZoneIndexes = PositionFixer.RecalcPos(plyPos, stepSize);
         currentZoneIndexes = new Vector3((int)(currentZoneIndexes.x / stepSize), (int)(currentZoneIndexes.y / stepSize), (int)(currentZoneIndexes.z / stepSize));
+        SolarController.currentZoneIndexes = Vector3.zero;
         OnFixZonePositionAction += OnFixZonePosition;
         OnFixSectorPositionAction += OnFixSectorPosition;
         CameraManager.planetCamera.transform.SetParent(null);
@@ -49,9 +51,11 @@ public class PositionFixer : MonoBehaviour
         if (LocalClient.ControlledObject != null && isInitialized)
         {
             currentZoneIndexes = PositionFixer.RecalcPos(LocalClient.ControlledObject.transform.localPosition + zoneIndexes * stepSize, stepSize);
+            SolarController.currentZoneIndexes = PositionFixer.RecalcPos(LocalClient.ControlledObject.transform.localPosition + SolarController.zoneIndexes * SolarController.stepSize, SolarController.stepSize);
             if (!isStoppedAutoUpdate)
             {
                 currentZoneIndexes = new Vector3((int)(currentZoneIndexes.x / stepSize), (int)(currentZoneIndexes.y / stepSize), (int)(currentZoneIndexes.z / stepSize));
+                SolarController.currentZoneIndexes = new Vector3((int)(SolarController.currentZoneIndexes.x / SolarController.stepSize), (int)(SolarController.currentZoneIndexes.y / SolarController.stepSize), (int)(SolarController.currentZoneIndexes.z / SolarController.stepSize));
                 if (zoneIndexes != currentZoneIndexes)
                 {
                     OnFixZonePositionAction?.Invoke();

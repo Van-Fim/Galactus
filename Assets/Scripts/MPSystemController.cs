@@ -15,6 +15,6 @@ public class MPSystemController : MonoBehaviour
         spaceUiObj.space = space;
         spaceUiObj.Init();
 
-        obj.GetComponent<MeshRenderer>().material.SetColor("_Color", space.GetBgColor());
+        obj.GetComponent<MeshRenderer>().material.SetColor("_Color", space.GetColor());
     }
 }

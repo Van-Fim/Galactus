@@ -11,6 +11,11 @@ public class PlanetsBuilder : ISpaceBuilder
     }
     public static void LoadSuns(SpaceSystem starSystem)
     {
+        int seed = GameManager.GetSeed(starSystem.galaxyId, starSystem.id);
+        System.Random rndm = new System.Random(seed);
+        UnityEngine.Random.InitState(seed);
+        SpaceManager.suns = new List<Sun>();
+        SpaceManager.planets = new List<Planet>();
         Template template = TemplateManager.FindTemplate(starSystem.templateName, "system");
         if (template == null)
         {
@@ -34,16 +39,14 @@ public class PlanetsBuilder : ISpaceBuilder
                 sun.galaxyId = starSystem.galaxyId;
                 sun.systemId = starSystem.id;
                 sun.Init();
-                Sector sector = new Sector(sun, "Sector00", 0, 0, true);
-                if (sector.id >=0)
-                {
-                    sector.Init();
-                }
             }
         }
     }
     public static void LoadPlanets(SpaceSystem starSystem)
     {
+        int seed = GameManager.GetSeed(starSystem.galaxyId, starSystem.id);
+        System.Random rndm = new System.Random(seed);
+        UnityEngine.Random.InitState(seed);
         Template template = TemplateManager.FindTemplate(starSystem.templateName, "system");
         if (template == null)
         {

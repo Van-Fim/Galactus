@@ -84,7 +84,6 @@ public class Sun : SolarObject
     }
     public override void Init()
     {
-        OnFixLightDirAction += OnFixLightDir;
         base.Init();
     }
     public void OnFixLightDir()
@@ -130,6 +129,17 @@ public class Sun : SolarObject
                 solarController.gameObject.name = "Sun_" + id.ToString();
 
             }
+            else
+            {
+                if (!CameraManager.mainCamera.gameObject.activeSelf && CameraManager.mapCamera.gameObject.activeSelf)
+                {
+                    main.gameObject.SetActive(false);
+                }
+                else
+                {
+                    main.gameObject.SetActive(true);
+                }
+            }
         }
         else
         {
@@ -146,6 +156,7 @@ public class Sun : SolarObject
         int sectorCountMax = int.Parse(template.GetValue("sectors", "max"));
         int sectorCount = Random.Range(sectorCountMin, sectorCountMax + 1);
         List<TemplateNode> sectorsNodes = template.GetNodeList("sector");
+
         if (sectorsNodes.Count > 0)
         {
             for (int i = 0; i < sectorCount; i++)
@@ -155,12 +166,7 @@ public class Sun : SolarObject
                 int sectorMinRange = int.Parse(sectorNode.GetValue("minRange"));
                 int sectorMaxRange = int.Parse(sectorNode.GetValue("maxRange"));
                 Sector sector = new Sector(this, sectorTemplateName, sectorMinRange, sectorMaxRange);
-                
-                if (sector.id >= 0)
-                {
-                    Debug.Log($"{sector.galaxyId} {sector.systemId} {sector.id}");
-                    sector.Init();
-                }
+                sector.Init();
             }
         }
     }
@@ -187,8 +193,6 @@ public class Sun : SolarObject
         galaxyId = -1;
         systemId = -1;
         id = -1;
-        OnRenderAction -= OnRender;
-        OnFixLightDirAction -= OnFixLightDir;
 
         base.Destroy();
     }

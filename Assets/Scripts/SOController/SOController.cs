@@ -6,9 +6,12 @@ using UnityEngine;
 public class SOController : MonoBehaviour
 {
     public SpaceObject obj;
-    public int mulVal = 10000000;
+    public int mulVal = 1;
     private float val = 0;
     private float val2 = 0;
+
+    private int testSectorId = 0;
+    private bool testWarping = false;
 
     private long maxSpeed = 300;
     private int rotationSpeed = 150;
@@ -16,9 +19,9 @@ public class SOController : MonoBehaviour
     private bool isHyperMode = false;
 
     public static bool blocked = false;
-    public static long currentSpeed = 0;
+    public static int currentSpeed = 0;
     public static double distanceToTarget = 0;
-    public static long currentMaxSpeed = 0;
+    public static int currentMaxSpeed = 0;
     void Awake()
     {
         obj = gameObject.GetComponent<SpaceObject>();
@@ -104,7 +107,11 @@ public class SOController : MonoBehaviour
             obj.rigidbodyMain.transform.Rotate(ang);
         }
     }
-
+    IEnumerator ButtonDelayed()
+    {
+        yield return new WaitForSeconds(0.25f);
+        testWarping = false;
+    }
     public virtual void Move()
     {
         if (Input.GetKey("space") && obj.rigidbodyMain != null)
@@ -112,6 +119,31 @@ public class SOController : MonoBehaviour
             obj.rigidbodyMain.velocity = Vector3.zero;
             val2 = val = 0;
             return;
+        }
+        if (Input.GetKey("r") && obj.rigidbodyMain != null)
+        {
+            if (!testWarping)
+            {
+                Sector ffSector = null;
+                if (testSectorId <= 10)
+                {
+                    ffSector = SpaceManager.sectors.Find(x => x.galaxyId == LocalClient.galaxyId && x.systemId == LocalClient.systemId && x.id == testSectorId);
+                }
+                else
+                {
+                    testSectorId = 0;
+                }
+                if (ffSector == null)
+                {
+                    testSectorId = 0;
+                }
+
+                Debug.Log($"Warping to sector ({LocalClient.galaxyId} {LocalClient.systemId} {testSectorId})");
+                LocalClient.ControlledObject.WarpSystem(LocalClient.SpaceSystem, testSectorId);
+                testSectorId++;
+                testWarping = true;
+                StartCoroutine("ButtonDelayed");
+            }
         }
         float changeFactor = Input.GetAxis("ChangeSpeed");
 

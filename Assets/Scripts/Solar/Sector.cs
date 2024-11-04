@@ -6,7 +6,7 @@ public class Sector : SolarObject
 {
     public override void Init()
     {
-        OnRenderAction += OnRender;
+        base.Init();
     }
     public Sector(SolarObject sObj, string templateName, int minRange = 0, int maxRange = 0, bool firstSector = false)
     {
@@ -83,6 +83,10 @@ public class Sector : SolarObject
         allObjects.AddRange(planets);
         allObjects.AddRange(sectors);
         //allObjects.AddRange(system.asteroidFields);
+        if (sectors.Count == 0)
+        {
+            firstSector = true;
+        }
         if (!firstSector)
         {
             while (repeatCount > 0 && found)
@@ -138,7 +142,7 @@ public class Sector : SolarObject
         }
         else
         {
-            plpos = new Vector3(0, 0, 0);
+            plpos = new Vector3(0, 0, -suns[0].scale);
             plpos = PositionFixer.RecalcPos(plpos * SolarObject.scaleFactor, PositionFixer.sectorStepSize) / SolarObject.scaleFactor;
         }
 
@@ -177,7 +181,7 @@ public class Sector : SolarObject
                 solarController.solarObject = this;
                 GameObject sunGameobject = Resources.Load<GameObject>($"{model}/MAIN");
                 main = GameObject.Instantiate(sunGameobject, solarController.transform);
-                float fscale = 1000000/PositionFixer.sectorStepSize;
+                float fscale = 100000000/PositionFixer.sectorStepSize;
                 solarController.gameObject.layer = 7;
                 GameObject hull = main.transform.Find("HULL").gameObject;
 
@@ -196,6 +200,20 @@ public class Sector : SolarObject
                 */
                 solarController.gameObject.name = "Sector" + id.ToString();
             }
+            else
+            {
+                DrawCircle();
+                if (!CameraManager.mainCamera.gameObject.activeSelf && CameraManager.mapCamera.gameObject.activeSelf)
+                {
+                    main.gameObject.SetActive(false);
+                    ellipseRenderer.lr.enabled = false;
+                }
+                else
+                {
+                    main.gameObject.SetActive(true);
+                    ellipseRenderer.lr.enabled = true;
+                }
+            }
         }
         else
         {
@@ -211,7 +229,7 @@ public class Sector : SolarObject
         galaxyId = -1;
         systemId = -1;
         id = -1;
-        OnRenderAction -= OnRender;
+
         base.Destroy();
     }
 }

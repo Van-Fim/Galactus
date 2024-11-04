@@ -304,7 +304,7 @@ public class Planet : SolarObject
     }
     public override void Init()
     {
-        OnRenderAction += OnRender;
+        base.Init();
     }
     public override void AddSattelites()
     {
@@ -397,6 +397,20 @@ public class Planet : SolarObject
                 */
                 solarController.gameObject.name = "Planet_" + id.ToString();
             }
+            else
+            {
+                DrawCircle();
+                if (!CameraManager.mainCamera.gameObject.activeSelf && CameraManager.mapCamera.gameObject.activeSelf)
+                {
+                    main.gameObject.SetActive(false);
+                    ellipseRenderer.lr.enabled = false;
+                }
+                else
+                {
+                    main.gameObject.SetActive(true);
+                    ellipseRenderer.lr.enabled = true;
+                }
+            }
         }
         else
         {
@@ -412,7 +426,7 @@ public class Planet : SolarObject
         galaxyId = -1;
         systemId = -1;
         id = -1;
-        OnRenderAction -= OnRender;
+
         base.Destroy();
     }
 }

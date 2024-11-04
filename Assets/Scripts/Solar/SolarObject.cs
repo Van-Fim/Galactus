@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SolarObject
 {
-    public static int scaleFactor = 70000;
+    public static int scaleFactor = 50000;
     public static int hyperScaleFactor = 1;
     public SolarController solarController;
     public int parentSolarObjectId;
@@ -39,16 +39,20 @@ public class SolarObject
     [System.NonSerialized]
     public Template template;
 
-    EllipseRenderer ellipseRenderer;
+    public EllipseRenderer ellipseRenderer;
 
     public Space space;
 
     public static UnityAction OnRenderAction;
     public static UnityAction OnRenderMinimapAction;
+    public static UnityAction OnStartFixAction;
+    public static UnityAction OnEndFixAction;
 
     public virtual void Init()
     {
         OnRenderAction += OnRender;
+        OnStartFixAction += OnStartFix;
+        OnEndFixAction += OnEndFix;
     }
     public void InitMinimap()
     {
@@ -57,6 +61,25 @@ public class SolarObject
     public virtual void OnRender()
     {
         RenderAct();
+    }
+    public virtual void OnStartFix()
+    {
+        if (solarController != null)
+        {
+            solarController.transform.localPosition = SpaceManager.solarContainer.transform.localPosition - (SolarController.containerStartPos + GetPosition());
+            SolarController.containerStartPos = Vector3.zero;
+            SolarController.containerEndPos = Vector3.zero;
+            SolarController.containerStartPos = SpaceManager.solarContainer.transform.localPosition;
+            solarController.transform.SetParent(null);
+        }
+    }
+    public virtual void OnEndFix()
+    {
+        if (solarController != null)
+        {
+            SolarController.containerEndPos = SpaceManager.solarContainer.transform.localPosition;
+            solarController.transform.SetParent(SpaceManager.solarContainer.transform);
+        }
     }
     public virtual void OnRenderMinimap()
     {
@@ -84,11 +107,15 @@ public class SolarObject
 
     public virtual void DrawCircle()
     {
-        ellipseRenderer = solarController.gameObject.AddComponent<EllipseRenderer>();
+        if (ellipseRenderer == null)
+        {
+            ellipseRenderer = solarController.gameObject.AddComponent<EllipseRenderer>();
+        }
         ellipseRenderer.solarObject = this;
         ellipseRenderer.parentObject = parentSolarObject;
-        Vector3 position = parentSolarObject.GetPosition();
-        Vector3 pos = position + this.GetPosition();
+
+        Vector3 position = parentSolarObject.solarController.transform.localPosition;
+        Vector3 pos = position + this.solarController.transform.localPosition;
         float radius = Vector3.Distance(position, pos);
         ellipseRenderer.lr = solarController.gameObject.GetComponent<LineRenderer>();
         //ellipseRenderer.lr.useWorldSpace = false;
@@ -139,7 +166,14 @@ public class SolarObject
     {
         return new Vector3(this.rotation[0], this.rotation[1], this.rotation[2]);
     }
-
+    public static void InvokeStartFix()
+    {
+        OnStartFixAction?.Invoke();
+    }
+    public static void InvokeEndFix()
+    {
+        OnEndFixAction?.Invoke();
+    }
     public static void InvokeRender()
     {
         OnRenderAction?.Invoke();
@@ -152,7 +186,9 @@ public class SolarObject
         {
             return;
         }
-
+        OnRenderAction -= OnRender;
+        OnStartFixAction -= OnStartFix;
+        OnEndFixAction -= OnEndFix;
         GameObject.DestroyImmediate(this.solarController.gameObject);
     }
 }

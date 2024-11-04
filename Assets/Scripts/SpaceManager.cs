@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,12 +42,16 @@ public class SpaceManager : MonoBehaviour
     public static void SetRandomSkybox()
     {
         string[] skyboxes = new string[] { "Skybox01", "Skybox02", "Skybox03", "Skybox04" };
-        int rnd = Random.Range(0, skyboxes.Length - 1);
+        int rnd = UnityEngine.Random.Range(0, skyboxes.Length - 1);
         mat = Resources.Load<Material>($"Materials/Skybox/{skyboxes[rnd]}");
         RenderSettings.skybox = mat;
     }
     public static void LoadSystem(SpaceSystem spaceSystem)
     {
+        if (spaceSystem.skyboxName == null)
+        {
+            return;
+        }
         Material mat = Resources.Load<Material>($"Materials/Skybox/{spaceSystem.skyboxName}");
         RenderSettings.skybox = mat;
         Color32 color = spaceSystem.GetBgColor();
@@ -57,8 +62,9 @@ public class SpaceManager : MonoBehaviour
 
     public static void BuildGalaxies()
     {
-        System.Random rndm = new System.Random(GameManager.GetSeed());
-        UnityEngine.Random.InitState(GameManager.GetSeed());
+        int seed = GameManager.GetSeed();
+        System.Random rndm = new System.Random(seed);
+        UnityEngine.Random.InitState(seed);
         Template template = TemplateManager.FindTemplate(LocalClient.universeTemplateName, "universe");
 
         List<TemplateNode> nodes = template.GetNodeList("galaxy");
@@ -90,12 +96,12 @@ public class SpaceManager : MonoBehaviour
             for (int i = 0; i < count; i++)
             {
                 int height = Ymax - Ymin;
-                Vector3 position = new Vector3(Random.Range(-range, range + 1), Random.Range(-height, height + 1), Random.Range(-range, range + 1));
+                Vector3 position = new Vector3(UnityEngine.Random.Range(-range, range + 1), UnityEngine.Random.Range(-height, height + 1), UnityEngine.Random.Range(-range, range + 1));
                 Galaxy fgal = galaxies.Find(x => x.GetPosition() == position);
                 int tryCount = 10;
                 while (fgal != null && tryCount > 0)
                 {
-                    position = new Vector3(Random.Range(-range, range + 1), Random.Range(-height, height + 1), Random.Range(-range, range + 1));
+                    position = new Vector3(UnityEngine.Random.Range(-range, range + 1), UnityEngine.Random.Range(-height, height + 1), UnityEngine.Random.Range(-range, range + 1));
                     fgal = galaxies.Find(x => x.GetPosition() == position);
                     tryCount--;
                     if (tryCount == 0)
@@ -119,71 +125,36 @@ public class SpaceManager : MonoBehaviour
         for (int i = 0; i < galaxies.Count; i++)
         {
             Galaxy galaxy = galaxies[i];
-            System.Random rndm = new System.Random(GameManager.GetSeed(galaxy.id));
-            UnityEngine.Random.InitState(GameManager.GetSeed(galaxy.id));
+            int seed = GameManager.GetSeed(galaxy.id);
+            System.Random rndm = new System.Random(seed);
+            UnityEngine.Random.InitState(seed);
             Template galaxyTemplate = TemplateManager.FindTemplate(galaxy.templateName, "galaxy");
             if (galaxyTemplate == null)
             {
                 Debug.LogError("Galaxy template " + galaxy.templateName + " is not found");
                 return;
             }
+            int numOfArms = int.Parse(galaxyTemplate.GetValue("galaxy", "numOfArms"));
+            float spin = XMLF.FloatVal(galaxyTemplate.GetValue("galaxy", "spin"));
+            float armSpread = XMLF.FloatVal(galaxyTemplate.GetValue("galaxy", "armSpread"));
+            float starsAtCenterRatio = XMLF.FloatVal(galaxyTemplate.GetValue("galaxy", "starsAtCenterRatio"));
             int minCount = int.Parse(galaxyTemplate.GetValue("galaxy", "systems_min"));
             int maxCount = int.Parse(galaxyTemplate.GetValue("galaxy", "systems_max"));
+
             List<TemplateNode> nodes = galaxyTemplate.GetNodeList("system");
             int count = UnityEngine.Random.Range(minCount, maxCount + 1);
-            for (int cn = 0; cn < count; cn++)
+            float galMaxRange = 0;
+            for (int g = 0; g < nodes.Count; g++)
             {
-                TemplateNode node = TemplateNode.GetByWeightsList(nodes);
-                string systemTemplateName = node.GetValue("template");
-                Template systemTemplate = TemplateManager.FindTemplate(systemTemplateName, "system");
-                List<TemplateNode> colorNodes = systemTemplate.GetNodeList("color");
-                List<TemplateNode> colorBgNodes = systemTemplate.GetNodeList("bg_color");
-                List<TemplateNode> skyboxes = systemTemplate.GetNodeList("skybox");
-                int Ymin = int.Parse(node.GetValue("Ymin"));
-                int Ymax = int.Parse(node.GetValue("Ymax"));
-                int minRange = int.Parse(node.GetValue("minRange"));
-                int maxRange = int.Parse(node.GetValue("maxRange"));
-                int height = Ymax - Ymin;
-                int range = UnityEngine.Random.Range(minRange, maxRange);
-                int sizeMin = int.Parse(systemTemplate.GetValue("system", "sizeMin"));
-                int sizeMax = int.Parse(systemTemplate.GetValue("system", "sizeMax"));
-                int size = UnityEngine.Random.Range(sizeMin, sizeMax + 1);
-                Vector3 position = new Vector3(Random.Range(-range, range + 1), Random.Range(-height, height + 1), Random.Range(-range, range + 1));
-                SpaceSystem fsys = SpaceManager.spaceSystems.Find(x => x.GetPosition() == position && x.galaxyId == galaxy.id);
-                int tryCount = 10;
-                while (fsys != null && tryCount > 0)
+                float vmx = XMLF.FloatVal(nodes[g].GetValue("maxRange"));
+                if (vmx > galMaxRange)
                 {
-                    position = new Vector3(Random.Range(-range, range + 1), Random.Range(-height, height + 1), Random.Range(-range, range + 1));
-                    fsys = SpaceManager.spaceSystems.Find(x => x.GetPosition() == position && x.galaxyId == galaxy.id);
-                    tryCount--;
-                    if (tryCount == 0)
-                    {
-                        return;
-                    }
+                    galMaxRange = vmx;
                 }
-                SpaceSystem system = new SpaceSystem(galaxy, systemTemplateName);
-                system.SetPosition(position);
-                if (colorNodes.Count > 0)
-                {
-                    TemplateNode colorNode = TemplateNode.GetByWeightsList(colorNodes);
-                    Color32 col = colorNode.GetColor();
-                    system.SetColor(col);
-                }
-                if (colorBgNodes.Count > 0)
-                {
-                    TemplateNode colorBgNode = TemplateNode.GetByWeightsList(colorBgNodes);
-                    Color32 col = colorBgNode.GetColor();
-                    system.SetBgColor(col);
-                }
-                if (skyboxes.Count > 0)
-                {
-                    TemplateNode skyboxNode = TemplateNode.GetByWeightsList(skyboxes);
-                    system.skyboxName = skyboxNode.GetValue("name");
-                }
-                system.size = size;
-
-                PlanetsBuilder.Build(system);
-                system.Init();
+            }
+            for (int k = 0; k < numOfArms; k++)
+            {
+                GenerateArm(seed, galaxy, nodes, count / numOfArms, (float)k / (float)numOfArms, spin, armSpread, starsAtCenterRatio, galMaxRange);
             }
             galaxy.spaceSystems = SpaceManager.spaceSystems.FindAll(x => x.galaxyId == galaxy.id);
         }
@@ -203,6 +174,84 @@ public class SpaceManager : MonoBehaviour
                 List<SpaceObjectData> dataList = SpaceObjectManager.ReadSpaceContent(spaceSystem);
                 SpaceObjectManager.BuildObjectsByData(dataList);
             }
+        }
+    }
+
+    //--------------------------------------------
+    public static double Pow3Constrained(double x)
+    {
+        double value = Math.Pow(x - 0.5, 3) * 4 + 0.5d;
+        return Math.Max(Math.Min(1, value), 0);
+    }
+    //--------------------------------------------
+    public static void GenerateArm(int galaxySeed, Galaxy galaxy, List<TemplateNode> nodes, int numOfStars, float rotation, float spin, double armSpread, double starsAtCenterRatio, float galMaxRange)
+    {
+        System.Random r = new System.Random(galaxySeed);
+        for (int i = 0; i < numOfStars; i++)
+        {
+            double part = (double)i / (double)numOfStars;
+            part = Math.Pow(part, starsAtCenterRatio);
+
+            float distanceFromCenter = (float)part;
+            double position = (part * spin + rotation) * Math.PI * 2;
+
+            double xFluctuation = (Pow3Constrained(r.NextDouble()) - Pow3Constrained(r.NextDouble())) * armSpread;
+            double yFluctuation = (Pow3Constrained(r.NextDouble()) - Pow3Constrained(r.NextDouble())) * armSpread;
+
+            float resultX = (float)Math.Cos(position) * distanceFromCenter / 2 + 0.5f + (float)xFluctuation;
+            float resultY = (float)Math.Sin(position) * distanceFromCenter / 2 + 0.5f + (float)yFluctuation;
+            List<TemplateNode> starList = new List<TemplateNode>(nodes);
+            TemplateNode node = TemplateNode.GetByWeightsList(starList);
+            //TemplateNode node = nodes[0];
+
+            int Ymin = int.Parse(node.GetValue("Ymin"));
+            int Ymax = int.Parse(node.GetValue("Ymax"));
+            int yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
+            Vector3 galaxyStarPosition = new Vector3(resultX, 0, resultY) * galMaxRange;
+
+            float minRange = XMLF.FloatVal(node.GetValue("minRange"));
+            float maxRange = XMLF.FloatVal(node.GetValue("maxRange"));
+
+            Vector3 mpos = new Vector3((galMaxRange / 2), 0, (galMaxRange / 2));
+            float dst = Vector3.Distance(mpos, galaxyStarPosition);
+            while ((dst < minRange || dst > maxRange) && starList.Count > 1)
+            {
+                starList.Remove(node);
+
+                node = TemplateNode.GetByWeightsList(starList);
+                minRange = XMLF.FloatVal(node.GetValue("minRange"));
+                maxRange = XMLF.FloatVal(node.GetValue("maxRange"));
+                Ymin = int.Parse(node.GetValue("Ymin"));
+                Ymax = int.Parse(node.GetValue("Ymax"));
+                yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
+            }
+            string systemTemplateName = node.GetValue("template");
+            galaxyStarPosition = new Vector3(galaxyStarPosition.x, yPos, galaxyStarPosition.z) - mpos;
+            Template systemTemplate = TemplateManager.FindTemplate(systemTemplateName, "system");
+            List<TemplateNode> colorNodes = systemTemplate.GetNodeList("color");
+            List<TemplateNode> colorBgNodes = systemTemplate.GetNodeList("bg_color");
+            List<TemplateNode> skyboxes = systemTemplate.GetNodeList("skybox");
+            SpaceSystem system = new SpaceSystem(galaxy, systemTemplateName);
+            system.SetPosition(galaxyStarPosition);
+            if (colorNodes.Count > 0)
+            {
+                TemplateNode colorNode = TemplateNode.GetByWeightsList(colorNodes);
+                Color32 col = colorNode.GetColor();
+                system.SetColor(col);
+            }
+            if (colorBgNodes.Count > 0)
+            {
+                TemplateNode colorBgNode = TemplateNode.GetByWeightsList(colorBgNodes);
+                Color32 col = colorBgNode.GetColor();
+                system.SetBgColor(col);
+            }
+            if (skyboxes.Count > 0)
+            {
+                TemplateNode skyboxNode = TemplateNode.GetByWeightsList(skyboxes);
+                system.skyboxName = skyboxNode.GetValue("name");
+            }
+
+            system.Init();
         }
     }
 }
