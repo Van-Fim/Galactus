@@ -11,6 +11,7 @@ using Random = UnityEngine.Random;
 public class Planet : SolarObject
 {
     public static UnityAction OnTick;
+
     [Range(0f, 1f)]
     float orbitProgress = 0f;
     float orbitProgressAdd = 0f;
@@ -19,7 +20,14 @@ public class Planet : SolarObject
     bool orbitActive = true;
 
     public Planet() { }
-    public Planet(SpaceSystem system, Sun sun, string templateName, int minRange = 0, int maxRange = 0)
+
+    public Planet(
+        SpaceSystem system,
+        Sun sun,
+        string templateName,
+        int minRange = 0,
+        int maxRange = 0
+    )
     {
         this.parentSolarObject = sun;
         galaxyId = system.galaxyId;
@@ -89,8 +97,12 @@ public class Planet : SolarObject
             }
         }
         List<SolarObject> allObjects = new List<SolarObject>();
-        List<Sun> suns = SpaceManager.suns.FindAll(f => f.galaxyId == system.galaxyId && f.systemId == systemId);
-        List<Planet> planets = SpaceManager.planets.FindAll(f => f.galaxyId == system.galaxyId && f.systemId == systemId);
+        List<Sun> suns = SpaceManager.suns.FindAll(f =>
+            f.galaxyId == system.galaxyId && f.systemId == systemId
+        );
+        List<Planet> planets = SpaceManager.planets.FindAll(f =>
+            f.galaxyId == system.galaxyId && f.systemId == systemId
+        );
         allObjects.AddRange(suns);
         allObjects.AddRange(planets);
         //allObjects.AddRange(system.asteroidFields);
@@ -111,8 +123,11 @@ public class Planet : SolarObject
                 float dist1 = Vector3.Distance(pl.GetPosition(), sun.GetPosition());
                 dist2 = Vector3.Distance(planetPosition, sun.GetPosition());
                 curDistance = Mathf.Abs(dist1 - dist2);
-                sumDistance = (pl.scale + this.scale) * 8 + (pl.sateliteMaxDist + this.sateliteMaxDist);
-                float sunDistance = (this.scale + (sun.scale) * 2) * 3 + (pl.sateliteMaxDist + this.sateliteMaxDist);
+                sumDistance =
+                    (pl.scale + this.scale) * 8 + (pl.sateliteMaxDist + this.sateliteMaxDist);
+                float sunDistance =
+                    (this.scale + (sun.scale) * 2) * 3
+                    + (pl.sateliteMaxDist + this.sateliteMaxDist);
                 found = false;
                 if (curDistance < sumDistance || dist2 < sunDistance)
                 {
@@ -133,10 +148,10 @@ public class Planet : SolarObject
             systemId = -1;
             return;
         }
-        if (planets.Count == 0)
-        {
-            //planetPosition = new Vector2(0, 0, -701000000);
-        }
+        // if (planets.Count == 0)
+        // {
+        //     planetPosition = new Vector3(0, 0, -500000);
+        // }
 
         SetPosition(planetPosition);
         int findId = 0;
@@ -167,7 +182,9 @@ public class Planet : SolarObject
         this.parentSolarObject = planet;
         galaxyId = planet.galaxyId;
         systemId = planet.systemId;
-        SpaceSystem system = SpaceManager.spaceSystems.Find(x => x.galaxyId == galaxyId && x.id == systemId);
+        SpaceSystem system = SpaceManager.spaceSystems.Find(x =>
+            x.galaxyId == galaxyId && x.id == systemId
+        );
         int planetIndex = SpaceManager.planets.IndexOf(planet);
         this.parentSolarObject = SpaceManager.planets[planetIndex];
         this.deptch = (byte)(parentSolarObject.deptch + 1);
@@ -223,11 +240,14 @@ public class Planet : SolarObject
             {
                 this.SetOrbitColor(new Color32(r, g, b, a));
             }
-
         }
         List<SolarObject> allObjects = new List<SolarObject>();
-        List<Sun> suns = SpaceManager.suns.FindAll(f => f.galaxyId == system.galaxyId && f.systemId == systemId);
-        List<Planet> planets = SpaceManager.planets.FindAll(f => f.galaxyId == system.galaxyId && f.systemId == systemId);
+        List<Sun> suns = SpaceManager.suns.FindAll(f =>
+            f.galaxyId == system.galaxyId && f.systemId == systemId
+        );
+        List<Planet> planets = SpaceManager.planets.FindAll(f =>
+            f.galaxyId == system.galaxyId && f.systemId == systemId
+        );
         allObjects.AddRange(planets);
         //allObjects.AddRange(system.asteroidFields);
         while (repeatCount > 0 && found)
@@ -302,10 +322,12 @@ public class Planet : SolarObject
         this.AddSattelites();
         this.AddSectors();
     }
+
     public override void Init()
     {
         base.Init();
     }
+
     public override void AddSattelites()
     {
         if (this.deptch > 2)
@@ -325,11 +347,17 @@ public class Planet : SolarObject
                 string satelliteTemplateName = satelliteNode.GetValue("template");
                 int satelliteMinRange = int.Parse(satelliteNode.GetValue("minRange"));
                 int satelliteMaxRange = int.Parse(satelliteNode.GetValue("maxRange"));
-                Planet satellitePlanet = new Planet(this, satelliteTemplateName, satelliteMinRange, satelliteMaxRange);
+                Planet satellitePlanet = new Planet(
+                    this,
+                    satelliteTemplateName,
+                    satelliteMinRange,
+                    satelliteMaxRange
+                );
                 satellitePlanet.Init();
             }
         }
     }
+
     public void AddSectors()
     {
         if (this.deptch > 2)
@@ -340,30 +368,46 @@ public class Planet : SolarObject
         int sectorCountMax = int.Parse(template.GetValue("sectors", "max"));
         int sectorCount = Random.Range(sectorCountMin, sectorCountMax + 1);
         List<TemplateNode> sectorsNodes = template.GetNodeList("sector");
-
-        if (sectorsNodes.Count > 0)
+        if (sectorCount == 0)
         {
-            for (int i = 0; i < sectorCount; i++)
+            sectorCount = 1;
+        }
+
+        for (int i = 0; i < sectorCount; i++)
+        {
+            string sectorTemplateName = "Sector00";
+            int sectorMinRange = 0;
+            int sectorMaxRange = 0;
+            if (i > 0 && sectorsNodes.Count > 0)
             {
                 TemplateNode sectorNode = TemplateNode.GetByWeightsList(sectorsNodes);
-                string sectorTemplateName = sectorNode.GetValue("template");
-                int sectorMinRange = int.Parse(sectorNode.GetValue("minRange"));
-                int sectorMaxRange = int.Parse(sectorNode.GetValue("maxRange"));
-                Sector sector = new Sector(this, sectorTemplateName, sectorMinRange, sectorMaxRange);
-                if (sector.id >=0)
-                {
-                    sector.Init();
-                }
+                sectorTemplateName = sectorNode.GetValue("template");
+                sectorMinRange = int.Parse(sectorNode.GetValue("minRange"));
+                sectorMaxRange = int.Parse(sectorNode.GetValue("maxRange"));
+            }
+
+            Sector sector = new Sector(
+                this,
+                sectorTemplateName,
+                sectorMinRange,
+                sectorMaxRange
+            );
+            if (sector.id >= 0)
+            {
+                sector.Init();
             }
         }
     }
+
     public override void RenderAct()
     {
         if ((LocalClient.galaxyId == galaxyId && LocalClient.systemId == systemId))
         {
             if (main == null)
             {
-                SpaceSystem sys = SpaceManager.spaceSystems.Find(x => x.galaxyId == galaxyId && x.id == systemId);
+                SpaceSystem sys = SpaceManager.spaceSystems.Find(x =>
+                    x.galaxyId == galaxyId && x.id == systemId
+                );
                 solarController = new GameObject().AddComponent<SolarController>();
                 if (parentSolarObject.main == null)
                 {
@@ -372,7 +416,9 @@ public class Planet : SolarObject
                 if (parentSolarObject.GetType() == typeof(Sun))
                     solarController.transform.SetParent(SpaceManager.solarContainer.transform);
                 else
-                    solarController.transform.SetParent(parentSolarObject.solarController.transform);
+                    solarController.transform.SetParent(
+                        parentSolarObject.solarController.transform
+                    );
                 solarController.transform.localPosition = GetPosition();
                 solarController.transform.eulerAngles = GetRotation();
                 solarController.solarObject = this;
@@ -400,15 +446,24 @@ public class Planet : SolarObject
             else
             {
                 DrawCircle();
-                if (!CameraManager.mainCamera.gameObject.activeSelf && CameraManager.mapCamera.gameObject.activeSelf)
+                if (
+                    !CameraManager.mainCamera.gameObject.activeSelf
+                    && CameraManager.mapCamera.gameObject.activeSelf
+                )
                 {
                     main.gameObject.SetActive(false);
-                    ellipseRenderer.lr.enabled = false;
+                    if (ellipseRenderer != null)
+                    {
+                        ellipseRenderer.lr.enabled = false;
+                    }
                 }
                 else
                 {
                     main.gameObject.SetActive(true);
-                    ellipseRenderer.lr.enabled = true;
+                    if (ellipseRenderer != null)
+                    {
+                        ellipseRenderer.lr.enabled = false;
+                    }
                 }
             }
         }
@@ -417,10 +472,12 @@ public class Planet : SolarObject
             Destroy();
         }
     }
+
     public void MinimapDestroy()
     {
         base.Destroy();
     }
+
     public override void Destroy()
     {
         galaxyId = -1;

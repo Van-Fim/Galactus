@@ -9,6 +9,7 @@ public class PlanetsBuilder : ISpaceBuilder
         LoadSuns(starSystem);
         LoadPlanets(starSystem);
     }
+
     public static void LoadSuns(SpaceSystem starSystem)
     {
         int seed = GameManager.GetSeed(starSystem.galaxyId, starSystem.id);
@@ -42,6 +43,7 @@ public class PlanetsBuilder : ISpaceBuilder
             }
         }
     }
+
     public static void LoadPlanets(SpaceSystem starSystem)
     {
         int seed = GameManager.GetSeed(starSystem.galaxyId, starSystem.id);
@@ -53,14 +55,16 @@ public class PlanetsBuilder : ISpaceBuilder
             Debug.LogError("System template " + starSystem.templateName + " not found");
             return;
         }
-        List<Sun> suns = SpaceManager.suns.FindAll(f => f.galaxyId == starSystem.galaxyId && f.systemId == starSystem.id);
+        List<Sun> suns = SpaceManager.suns.FindAll(f =>
+            f.galaxyId == starSystem.galaxyId && f.systemId == starSystem.id
+        );
         Sun sun = suns[Random.Range(0, suns.Count)];
         List<TemplateNode> planetNodes = template.GetNodeList("planet");
+        int minCount = int.Parse(template.GetValue("planets", "min"));
+        int maxCount = int.Parse(template.GetValue("planets", "max"));
+        int count = UnityEngine.Random.Range(minCount, maxCount + 1);
         if (planetNodes.Count > 0)
         {
-            int minCount = int.Parse(template.GetValue("planets", "min"));
-            int maxCount = int.Parse(template.GetValue("planets", "max"));
-            int count = UnityEngine.Random.Range(minCount, maxCount + 1);
             for (int i = 0; i < count; i++)
             {
                 TemplateNode planetNode = TemplateNode.GetByWeightsList(planetNodes);

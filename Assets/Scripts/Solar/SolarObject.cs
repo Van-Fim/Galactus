@@ -66,19 +66,22 @@ public class SolarObject
     {
         if (solarController != null)
         {
-            solarController.transform.localPosition = SpaceManager.solarContainer.transform.localPosition - (SolarController.containerStartPos + GetPosition());
-            SolarController.containerStartPos = Vector3.zero;
-            SolarController.containerEndPos = Vector3.zero;
-            SolarController.containerStartPos = SpaceManager.solarContainer.transform.localPosition;
-            solarController.transform.SetParent(null);
+            solarController.transform.SetParent(SpaceManager.solarContainer.transform);
+            if (this is Sector)
+            {
+                solarController.transform.localPosition = parentSolarObject.GetPosition() + GetPosition();
+            }
+            else
+            {
+                solarController.transform.localPosition = GetPosition();
+            }
         }
     }
     public virtual void OnEndFix()
     {
         if (solarController != null)
         {
-            SolarController.containerEndPos = SpaceManager.solarContainer.transform.localPosition;
-            solarController.transform.SetParent(SpaceManager.solarContainer.transform);
+            solarController.transform.SetParent(null);
         }
     }
     public virtual void OnRenderMinimap()
@@ -114,8 +117,8 @@ public class SolarObject
         ellipseRenderer.solarObject = this;
         ellipseRenderer.parentObject = parentSolarObject;
 
-        Vector3 position = parentSolarObject.solarController.transform.localPosition;
-        Vector3 pos = position + this.solarController.transform.localPosition;
+        Vector3 position = parentSolarObject.GetPosition();
+        Vector3 pos = position + this.GetPosition();
         float radius = Vector3.Distance(position, pos);
         ellipseRenderer.lr = solarController.gameObject.GetComponent<LineRenderer>();
         //ellipseRenderer.lr.useWorldSpace = false;

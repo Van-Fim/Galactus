@@ -48,6 +48,10 @@ public class PositionFixer : MonoBehaviour
     }
     public void Update()
     {
+        UpdateFixedPos();
+    }
+    public void UpdateFixedPos()
+    {
         if (LocalClient.ControlledObject != null && isInitialized)
         {
             currentZoneIndexes = PositionFixer.RecalcPos(LocalClient.ControlledObject.transform.localPosition + zoneIndexes * stepSize, stepSize);

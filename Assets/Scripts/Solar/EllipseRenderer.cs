@@ -42,13 +42,12 @@ public class EllipseRenderer : MonoBehaviour
             lineWidth = minlineWidth;
         }
         Vector3[] points = new Vector3[segments + 1];
-        Vector3 fuckingPos = SolarController.containerStartPos - SolarController.containerEndPos;
         Vector3 position = parentObject.solarController.transform.localPosition;
         Vector3 curPosition = (parentObject.solarController.transform.localPosition - solarObject.solarController.transform.localPosition);
         for (int i = 0; i < segments; i++)
         {
             Vector2 position2D = ellipse.Evaluate((float)i / (float)segments);
-            points[i] = fuckingPos + new Vector3(curPosition.x + position2D.x, 0, curPosition.z + position2D.y);
+            points[i] = new Vector3(curPosition.x + position2D.x, 0, curPosition.z + position2D.y);
         }
         points[segments] = points[0];
         lr.startWidth = lineWidth;

@@ -82,16 +82,16 @@ public class GameManager : MonoBehaviour
             LocalClient.sectorId = cobj.sectorId;
             cobj.galaxyId = -1;
             cobj.systemId = -1;
-            LocalClient.ControlledObject.WarpSystem(LocalClient.SpaceSystem, LocalClient.sectorId);
             SpaceObject.InvokeRender();
-            LocalClient.ControlledObject.isInitialized = true;
-            LocalClient.ControlledObject.isPlayerControll = true;
-
             Hardpoint camHP = cobj.GetHardpointByType("camera");
             CameraManager.mainCamera.IsCamEnabled = false;
             CameraManager.mainCamera.transform.SetParent(cobj.main.transform);
             CameraManager.mainCamera.transform.localPosition = camHP.GetPosition();
             CameraManager.mainCamera.transform.localEulerAngles = camHP.GetRotation();
+
+            LocalClient.ControlledObject.WarpSystem(LocalClient.SpaceSystem, LocalClient.sectorId);
+            LocalClient.ControlledObject.isInitialized = true;
+            LocalClient.ControlledObject.isPlayerControll = true;
 
             SOShipController controller = cobj.AddComponent<SOShipController>();
             controller.obj = cobj;

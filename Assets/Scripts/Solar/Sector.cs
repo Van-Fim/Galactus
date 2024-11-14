@@ -109,15 +109,16 @@ public class Sector : SolarObject
                     }
 
                     float dist1 = Vector3.Distance(sObj.GetPosition(), sectorPosition);
+                    float dist3 = Vector3.Distance(sObj.GetPosition() + sectorPosition, plPos);
                     dist2 = 0;
                     if (pl1 != sObj)
                     {
                         dist2 = Vector2.Distance(sObj.GetPosition(), plPos);
                     }
 
-                    curDistance = Mathf.Abs(dist1 - dist2);
-                    float planetDistance = (pl1.scale + 10);
-                    sumDistance = (planetDistance) * 1.5f;
+                    curDistance = Mathf.Abs(dist3 - dist2);
+                    float planetDistance = (sObj.scale * 1.5f);
+                    sumDistance = (pl1.scale) * 1.5f;
                     found = false;
 
                     if (curDistance < sumDistance || dist1 < planetDistance)
@@ -144,8 +145,10 @@ public class Sector : SolarObject
         {
             plpos = new Vector3(0, 0, -suns[0].scale);
             plpos = PositionFixer.RecalcPos(plpos * SolarObject.scaleFactor, PositionFixer.sectorStepSize) / SolarObject.scaleFactor;
+            sectorPosition = plpos;
+            parentSolarObject = suns[0];
         }
-
+        plpos = PositionFixer.RecalcPos(plpos * SolarObject.scaleFactor, PositionFixer.sectorStepSize) / SolarObject.scaleFactor;
         SetPosition(plpos);
         galaxyId = system.galaxyId;
         systemId = system.id;
@@ -176,12 +179,12 @@ public class Sector : SolarObject
                     parentSolarObject.OnRender();
                 }
                 solarController.transform.SetParent(SpaceManager.solarContainer.transform);
-                solarController.transform.localPosition = GetPosition();
+                solarController.transform.localPosition = parentSolarObject.GetPosition() + GetPosition();
                 solarController.transform.eulerAngles = GetRotation();
                 solarController.solarObject = this;
                 GameObject sunGameobject = Resources.Load<GameObject>($"{model}/MAIN");
                 main = GameObject.Instantiate(sunGameobject, solarController.transform);
-                float fscale = 100000000/PositionFixer.sectorStepSize;
+                float fscale = 1000000 / PositionFixer.sectorStepSize;
                 solarController.gameObject.layer = 7;
                 GameObject hull = main.transform.Find("HULL").gameObject;
 
@@ -206,12 +209,18 @@ public class Sector : SolarObject
                 if (!CameraManager.mainCamera.gameObject.activeSelf && CameraManager.mapCamera.gameObject.activeSelf)
                 {
                     main.gameObject.SetActive(false);
-                    ellipseRenderer.lr.enabled = false;
+                    if (ellipseRenderer != null)
+                    {
+                        ellipseRenderer.lr.enabled = false;
+                    }
                 }
                 else
                 {
                     main.gameObject.SetActive(true);
-                    ellipseRenderer.lr.enabled = true;
+                    if (ellipseRenderer != null)
+                    {
+                        ellipseRenderer.lr.enabled = false;
+                    }
                 }
             }
         }
