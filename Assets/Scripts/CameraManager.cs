@@ -59,16 +59,13 @@ public class CameraManager : MonoBehaviour
     {
         if (mainCamera != null && planetCamera != null && SpaceManager.singleton != null && LocalClient.ControlledObject != null)
         {
-            Sector sec = LocalClient.Sector;
             planetCamera.transform.rotation = mainCamera.transform.rotation;
             skyBoxCamera.transform.rotation = mainCamera.transform.rotation;
-            Vector3 sPos = (LocalClient.ControlledObject.GetSectorIndexes() * PositionFixer.sectorStepSize);
-            Vector3 cPos = mainCamera.transform.position / SolarObject.scaleFactor;
-            Vector3 zPos = SolarController.zoneIndexes;
-            CameraManager.planetCamera.transform.localPosition = zPos + cPos;
-            CameraManager.planetCamera.transform.localPosition = -(PositionFixer.RecalcPos(CameraManager.planetCamera.transform.localPosition, SolarController.stepSize) - CameraManager.planetCamera.transform.localPosition);
             CameraManager.skyBoxCamera.transform.SetParent(SpaceManager.galaxyContainer.transform);
             CameraManager.skyBoxCamera.transform.localPosition = LocalClient.SpaceSystem.GetPosition();
+            Vector3 cPos = mainCamera.transform.position / SolarObject.scaleFactor;
+            Vector3 zPos = PositionFixer.zoneIndexes * PositionFixer.stepSize;
+            CameraManager.planetCamera.transform.localPosition = zPos/SolarObject.scaleFactor + cPos;
         }
     }
 }

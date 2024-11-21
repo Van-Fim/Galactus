@@ -148,6 +148,11 @@ public class Sector : SolarObject
             sectorPosition = plpos;
             parentSolarObject = suns[0];
         }
+        if (parentSolarObject is Planet)
+        {
+            plpos = suns[0].GetPosition() + parentSolarObject.GetPosition() + plpos;
+            parentSolarObject = suns[0];
+        }
         plpos = PositionFixer.RecalcPos(plpos * SolarObject.scaleFactor, PositionFixer.sectorStepSize) / SolarObject.scaleFactor;
         SetPosition(plpos);
         galaxyId = system.galaxyId;
@@ -168,6 +173,7 @@ public class Sector : SolarObject
     }
     public override void RenderAct()
     {
+        return;
         if ((LocalClient.galaxyId == galaxyId && LocalClient.systemId == systemId))
         {
             if (main == null)

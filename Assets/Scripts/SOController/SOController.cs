@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using IngameDebugConsole;
 
 public class SOController : MonoBehaviour
 {
     public SpaceObject obj;
-    public int mulVal = 1;
+    public static int mulVal = 1;
     private float val = 0;
     private float val2 = 0;
 
@@ -22,6 +23,11 @@ public class SOController : MonoBehaviour
     public static int currentSpeed = 0;
     public static double distanceToTarget = 0;
     public static int currentMaxSpeed = 0;
+    [ConsoleMethod("set_mulval", "---")]
+    public static void SetMulVal(int val)
+    {
+        SOController.mulVal = val;
+    }
     void Awake()
     {
         obj = gameObject.GetComponent<SpaceObject>();
@@ -116,7 +122,7 @@ public class SOController : MonoBehaviour
     {
         if (Input.GetKey("space") && obj.rigidbodyMain != null)
         {
-            obj.rigidbodyMain.velocity = Vector3.zero;
+            obj.rigidbodyMain.linearVelocity = Vector3.zero;
             val2 = val = 0;
             return;
         }
@@ -184,6 +190,6 @@ public class SOController : MonoBehaviour
             zn = "-";
         }
         // MainHud mainHud = GameManager.canvasController.mainHud;
-        currentSpeed = (int)(obj.rigidbodyMain.velocity.magnitude);
+        currentSpeed = (int)(obj.rigidbodyMain.linearVelocity.magnitude);
     }
 }

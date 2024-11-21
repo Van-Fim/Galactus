@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SolarObject
 {
-    public static int scaleFactor = 50000;
+    public static int scaleFactor = 10000;
     public static int hyperScaleFactor = 1;
     public SolarController solarController;
     public int parentSolarObjectId;

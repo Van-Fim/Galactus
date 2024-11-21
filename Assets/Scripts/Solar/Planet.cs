@@ -429,7 +429,6 @@ public class Planet : SolarObject
                 GameObject hull = main.transform.Find("HULL").gameObject;
 
                 main.transform.localScale = new Vector3(fscale, fscale, fscale);
-
                 Color32 col = sys.GetColor();
                 DrawCircle();
                 //hull.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", col);
@@ -462,7 +461,7 @@ public class Planet : SolarObject
                     main.gameObject.SetActive(true);
                     if (ellipseRenderer != null)
                     {
-                        ellipseRenderer.lr.enabled = false;
+                        ellipseRenderer.lr.enabled = true;
                     }
                 }
             }

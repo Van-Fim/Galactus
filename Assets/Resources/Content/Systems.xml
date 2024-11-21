@@ -1,13 +1,12 @@
 <templates>
 	<system name="System01" sizeMin="100000" sizeMax="100000">
 		<colors>
-			<bg_color rmin="50" gmin="50" bmin="50" amin="255" rmax="130" gmax="130" bmax="130"
+			<bg_color rmin="50" gmin="50" bmin="50" amin="255" rmax="90" gmax="90" bmax="90"
 				amax="255" />
-			<color r="255" g="255" b="255" a="255" />
+			<color r="50" gmin="150" gmax="180" bmin="200" bmax="255" a="255" />
 		</colors>
-		<planets min="8" max="8">
-			<planet weight="50" template="Planet01" minRange="0" maxRange="300000" />
-			<planet weight="50" template="Planet02" minRange="0" maxRange="300000" />
+		<planets min="30" max="30">
+			<planet weight="50" template="Planet01" minRange="0" maxRange="8000000" />
 		</planets>
 		<suns min="1" max="1">
 			<sun template="Sun01" minRange="0" maxRange="0" />
@@ -18,12 +17,12 @@
 		<colors>
 			<bg_color rmin="50" gmin="50" bmin="50" amin="255" rmax="90" gmax="90" bmax="90"
 				amax="255" />
-			<color r="255" g="100" b="100" a="255" />
-			<color r="170" g="190" b="255" a="255" />
-			<color r="80" g="255" b="255" a="255" />
+			<color rmin="200" gmin="200" bmin="0" amin="255" rmax="255" gmax="200" bmax="255"
+				amax="255" />
+			<color r="255" g="255" b="255" a="255" />
 		</colors>
-		<planets min="10" max="10">
-			<planet weight="50" template="Planet01" minRange="0" maxRange="3500000" />
+		<planets min="30" max="30">
+			<planet weight="50" template="Planet01" minRange="0" maxRange="8000000" />
 		</planets>
 		<suns min="1" max="1">
 			<sun template="Sun01" minRange="0" maxRange="0" />

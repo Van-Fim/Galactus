@@ -34,9 +34,7 @@ public class PositionFixer : MonoBehaviour
     {
         singleton = GameManager.singleton.gameObject.AddComponent<PositionFixer>();
         sectorIndexes = currentSectorIndexes = LocalClient.ControlledObject.GetSectorIndexes();
-        Vector3 plyPos = (sectorIndexes * PositionFixer.sectorStepSize + LocalClient.ControlledObject.transform.localPosition);
-        currentZoneIndexes = PositionFixer.RecalcPos(plyPos, stepSize);
-        currentZoneIndexes = new Vector3((int)(currentZoneIndexes.x / stepSize), (int)(currentZoneIndexes.y / stepSize), (int)(currentZoneIndexes.z / stepSize));
+        currentZoneIndexes = Vector3.zero;
         SolarController.currentZoneIndexes = Vector3.zero;
         OnFixZonePositionAction += OnFixZonePosition;
         OnFixSectorPositionAction += OnFixSectorPosition;
@@ -55,10 +53,13 @@ public class PositionFixer : MonoBehaviour
         if (LocalClient.ControlledObject != null && isInitialized)
         {
             currentZoneIndexes = PositionFixer.RecalcPos(LocalClient.ControlledObject.transform.localPosition + zoneIndexes * stepSize, stepSize);
-            SolarController.currentZoneIndexes = PositionFixer.RecalcPos(LocalClient.ControlledObject.transform.localPosition + SolarController.zoneIndexes * SolarController.stepSize, SolarController.stepSize);
+
             if (!isStoppedAutoUpdate)
             {
                 currentZoneIndexes = new Vector3((int)(currentZoneIndexes.x / stepSize), (int)(currentZoneIndexes.y / stepSize), (int)(currentZoneIndexes.z / stepSize));
+                
+                currentSectorIndexes = sectorIndexes + currentZoneIndexes / (PositionFixer.sectorStepSize / SolarObject.scaleFactor);
+                currentSectorIndexes = new Vector3((int)currentSectorIndexes.x, (int)currentSectorIndexes.y, (int)currentSectorIndexes.z);
                 SolarController.currentZoneIndexes = new Vector3((int)(SolarController.currentZoneIndexes.x / SolarController.stepSize), (int)(SolarController.currentZoneIndexes.y / SolarController.stepSize), (int)(SolarController.currentZoneIndexes.z / SolarController.stepSize));
                 if (zoneIndexes != currentZoneIndexes)
                 {

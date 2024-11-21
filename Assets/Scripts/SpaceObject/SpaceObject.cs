@@ -179,7 +179,7 @@ public class SpaceObject : MonoBehaviour
         if (rigidbodyMain != null)
         {
             rigidbodyMain.angularVelocity = Vector3.zero;
-            rigidbodyMain.velocity = Vector3.zero;
+            rigidbodyMain.linearVelocity = Vector3.zero;
         }
         transform.localPosition = position;
         transform.localEulerAngles = rotation;
@@ -197,30 +197,33 @@ public class SpaceObject : MonoBehaviour
             PlanetsBuilder.Build(spaceSystem);
         }
         Sector sector = SpaceManager.sectors.Find(x => x.id == sectorId && x.galaxyId == galaxyId && x.systemId == systemId);
-        Vector3 sPos = (sector.parentSolarObject.GetPosition() * SolarObject.scaleFactor) + (sector.GetPosition() * SolarObject.scaleFactor);
-        Vector3 sPos2 = PositionFixer.RecalcPos(sPos, PositionFixer.sectorStepSize);
-        Vector3 sectorIndexes = new Vector3((int)(sPos2.x / (PositionFixer.sectorStepSize)), (int)(sPos2.y / (PositionFixer.sectorStepSize)), (int)(sPos2.z / (PositionFixer.sectorStepSize)));
-
+        Vector3 sPos = sector.GetPosition() * SolarObject.scaleFactor;
+        Vector3 sectorIndexes = sector.GetPosition() / (PositionFixer.sectorStepSize/SolarObject.scaleFactor);
         SetSectorIndexes(sectorIndexes);
         LocalClient.galaxyId = sector.galaxyId;
         LocalClient.systemId = sector.systemId;
         LocalClient.sectorId = sector.id;
         LocalClient.ControlledObject.transform.localPosition = Vector3.zero;
-        Vector3 plyPos = sPos;
-        Vector3 currentZoneIndexes = PositionFixer.RecalcPos(plyPos, PositionFixer.stepSize);
-        currentZoneIndexes = new Vector3((int)(currentZoneIndexes.x / PositionFixer.stepSize), (int)(currentZoneIndexes.y / PositionFixer.stepSize), (int)(currentZoneIndexes.z / PositionFixer.stepSize));
+        Vector3 plyPos = sectorIndexes * PositionFixer.sectorStepSize/SolarObject.scaleFactor;
+        Vector3 currentZoneIndexes = Vector3.zero;
+        PositionFixer.zoneIndexes = Vector3.zero;
+        PositionFixer.currentZoneIndexes = Vector3.zero;
+        PositionFixer.sectorIndexes = sectorIndexes;
+        PositionFixer.currentSectorIndexes = sectorIndexes;
         SpaceObject.InvokeRender();
         Vector3 cPos = CameraManager.mainCamera.transform.position / SolarObject.scaleFactor;
         SolarObject.InvokeRender();
+        SetZoneIndexes(currentZoneIndexes);
+
         if (!newSystem)
         {
-            SolarObject.InvokeStartFix();
+            //SolarObject.InvokeStartFix();
         }
         SpaceManager.solarContainer.transform.localPosition = -((sPos/SolarObject.scaleFactor) + cPos);
         CameraManager.planetCamera.transform.localPosition = Vector3.zero;
         if (!newSystem)
         {
-            SolarObject.InvokeEndFix();
+            //SolarObject.InvokeEndFix();
         }
     }
 
@@ -361,8 +364,8 @@ public class SpaceObject : MonoBehaviour
         {
             rigidbodyMain = this.gameObject.GetComponent<Rigidbody>();
             rigidbodyMain.mass = mass;
-            rigidbodyMain.drag = drag;
-            rigidbodyMain.angularDrag = angulardrag;
+            rigidbodyMain.linearDamping = drag;
+            rigidbodyMain.angularDamping = angulardrag;
             rigidbodyMain.useGravity = false;
 
             hull = main.transform.Find("HULL").gameObject;

@@ -30,10 +30,10 @@ public class EllipseRenderer : MonoBehaviour
         {
             return;
         }
-        float minlineWidth = 2000f;
+        float minlineWidth = 500f;
         if (parentObject.GetType() == typeof(SolarObject))
         {
-            minlineWidth = 2500f;
+            minlineWidth = 800f;
         }
         float lineWidth = minlineWidth;
         //lineWidth = CameraManager.planetCamera.curCamera.orthographicSize / 500;
