@@ -21,7 +21,7 @@ public class LocalClient : MonoBehaviour
     {
         get
         {
-            return SpaceManager.galaxies.Find(x => x.galaxyId == galaxyId);
+            return SpaceManager.galaxies.Find(x => x.id == galaxyId);
         }
     }
     public static SpaceSystem SpaceSystem

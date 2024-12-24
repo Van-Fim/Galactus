@@ -1,47 +1,67 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+public class Star
+{
+    public int scale = 10;
+    public Vector3 position = Vector3.zero;
+    public Transform obj;
+}
 public class Chunk
 {
     public Vector3 indexes = Vector3.zero;
-    public Transform obj;
     public bool creatingStars;
     public bool starsCreated;
     public bool destroyed;
+    public List<Star> stars = new List<Star>();
 }
 public class ChunkManager : MonoBehaviour
 {
-    public int chunkSize = 150;
+    public int chunkSize = 50;
     public int distance = 1;
     public int steps = 100;
     List<Chunk> chunks = new List<Chunk>();
     IEnumerator CreateStars(Chunk chunk)
     {
-        if (chunk.destroyed)
+        if (chunk.destroyed || chunk.creatingStars)
         {
             yield break;
         }
-        int count = 20;
-        float st = (255 / 20);
+        int count = 1;
         chunk.creatingStars = true;
-        MeshRenderer mr = chunk.obj.gameObject.GetComponent<MeshRenderer>();
-        mr.materials[0].SetColor("_TintColor", new Color32(255, 0, 0, 255));
         while (count > 0)
         {
             --count;
-            if (mr == null || mr.materials[0] == null)
-            {
-                yield break;
-            }
-            byte bt = (byte)(count * st);
-            mr.materials[0].SetColor("_TintColor", new Color32(255, (byte)(255 - bt), 0, 255));
             yield return new WaitForSeconds(0.1f);
+            // Создаем звезду в чанке
+            Star st = CreateNewStar(chunk);
+            if (st != null)
+            {
+                chunk.stars.Add(st);
+            }
         }
         if (!chunk.destroyed)
         {
-            mr.materials[0].SetColor("_TintColor", new Color32(0, 255, 0, 255));
             chunk.starsCreated = true;
         }
+    }
+    public Star CreateNewStar(Chunk chunk)
+    {
+        Vector3 chunkPosition = chunk.indexes;
+        Star star = null;
+        if (!chunk.destroyed)
+        {
+            star = new Star();
+            star.obj = GameObject.Instantiate(GamePrefabsManager.LoadPrefab<Transform>("TestCube"));
+            star.obj.gameObject.name = "TestCube";
+            star.obj.gameObject.layer = 6;
+            star.obj.gameObject.SetActive(true);
+            star.obj.localScale = new Vector3(chunkSize, chunkSize, chunkSize);
+            star.obj.transform.SetParent(SpaceManager.galaxyContainer.transform);
+            star.obj.transform.localPosition = chunkPosition;
+            chunk.stars.Add(star);
+        }
+        return star;
     }
     public void UpdateChunks(Vector3 pos)
     {
@@ -61,19 +81,12 @@ public class ChunkManager : MonoBehaviour
                     {
                         chunk = new Chunk();
                         chunk.indexes = indx;
-                        chunk.obj = GameObject.Instantiate(GamePrefabsManager.LoadPrefab<Transform>("TestCube"));
-                        chunk.obj.gameObject.layer = 6;
-                        chunk.obj.gameObject.SetActive(true);
-                        chunk.obj.localScale = new Vector3(chunkSize, chunkSize, chunkSize);
-                        chunk.obj.transform.SetParent(SpaceManager.galaxyContainer.transform);
-                        chunk.obj.transform.localPosition = indx;
                         StartCoroutine(CreateStars(chunk));
                         chunks.Add(chunk);
                     }
                     else
                     {
                         chunk.destroyed = false;
-                        chunk.obj.transform.localPosition = indx;
                     }
                 }
             }
@@ -82,15 +95,14 @@ public class ChunkManager : MonoBehaviour
         {
             if (chunks[i].destroyed)
             {
-                MeshRenderer mr = chunks[i].obj.gameObject.GetComponent<MeshRenderer>();
-                mr.materials[0].SetColor("_TintColor", new Color32(0, 0, 0, 255));
-                GameObject.Destroy(chunks[i].obj.gameObject);
+                // Удаляем созданные звезды
+                for (int j = chunks[i].stars.Count - 1; j >= 0; j--)
+                {
+                    GameObject.Destroy(chunks[i].stars[j].obj.gameObject);
+                }
+                chunks[i].stars = null;
                 chunks.RemoveAt(i);
             }
-        }
-        for (int i = 0; i < chunks.Count; i++)
-        {
-            //Debug.Log($"{chunks[i].indexes}");
         }
     }
 }

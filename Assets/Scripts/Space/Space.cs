@@ -33,6 +33,15 @@ public abstract class Space
     {
         OnMinimapRenderAction += OnMinimapRender;
     }
+    public virtual void Destroy()
+    {
+        id = -1;
+        OnMinimapRenderAction -= OnMinimapRender;
+        if (mp != null)
+        {
+            GameObject.Destroy(mp.gameObject);
+        }
+    }
     public virtual void OnMinimapRender()
     {
 

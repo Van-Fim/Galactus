@@ -87,4 +87,12 @@ public class SpaceSystem : Space
         this.id = id;
         return this.id;
     }
+    public override void Destroy()
+    {
+        OnRegionCheckAction -= OnRegionCheck;
+        regions = null;
+        int ind = SpaceManager.spaceSystems.IndexOf(this);
+        SpaceManager.spaceSystems.RemoveAt(ind);
+        base.Destroy();
+    }
 }
