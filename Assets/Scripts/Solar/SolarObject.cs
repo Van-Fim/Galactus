@@ -185,13 +185,13 @@ public class SolarObject
 
     public virtual void Destroy()
     {
+        OnRenderAction -= OnRender;
+        OnStartFixAction -= OnStartFix;
+        OnEndFixAction -= OnEndFix;
         if (this.solarController == null)
         {
             return;
         }
-        OnRenderAction -= OnRender;
-        OnStartFixAction -= OnStartFix;
-        OnEndFixAction -= OnEndFix;
         GameObject.DestroyImmediate(this.solarController.gameObject);
     }
 }

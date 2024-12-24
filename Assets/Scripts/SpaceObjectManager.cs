@@ -147,9 +147,20 @@ public class SpaceObjectManager : MonoBehaviour
                 {
                     continue;
                 }
-                int galaxyId = int.Parse(spaceNode.GetValue("galaxy"));
+                string region = spaceNode.GetValue("region");
                 int systemId = int.Parse(spaceNode.GetValue("system"));
+                int galaxyId = int.Parse(spaceNode.GetValue("galaxy"));
                 int sectorId = int.Parse(spaceNode.GetValue("sector"));
+                if (region.Length > 0)
+                {
+                    Region reg = SpaceManager.regions.Find(x=>x.templateName == region);
+                    if (reg != null && reg.spaceSystems.Count > 0)
+                    {
+                        int rd = Random.Range(0, reg.spaceSystems.Count+1);
+                        systemId = reg.spaceSystems[rd].id;
+                        sectorId = 0;
+                    }
+                }
                 plyShipExist = System.Convert.ToBoolean(byte.Parse(objectNode.GetValue("playerShip")));
                 if (plyShipExist)
                 {

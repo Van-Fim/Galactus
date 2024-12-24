@@ -62,8 +62,8 @@ Material:
     - _Cutoff: 0.5
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _FadeDistance: 5000
-    - _FadeRangeFactor: 50000
+    - _FadeDistance: 2000
+    - _FadeRangeFactor: 30000
     - _FallSpeed: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -72,8 +72,8 @@ Material:
     - _OcclusionStrength: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Scaling: 0.17
-    - _ScalingRange: 50
+    - _Scaling: 0.1
+    - _ScalingRange: 30
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1

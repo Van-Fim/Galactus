@@ -10,10 +10,10 @@ public class MPSystemController : MonoBehaviour
     public GameObject obj;
 
     public void Init(){
-        spaceUiObj = GamePrefabsManager.LoadPrefab<SpaceUiObj>("SpaceUiObj");
-        spaceUiObj = GameObject.Instantiate(spaceUiObj, CanvasController.singleton.transform);
-        spaceUiObj.space = space;
-        spaceUiObj.Init();
+        // spaceUiObj = GamePrefabsManager.LoadPrefab<SpaceUiObj>("SpaceUiObj");
+        // spaceUiObj = GameObject.Instantiate(spaceUiObj, CanvasController.singleton.transform);
+        // spaceUiObj.space = space;
+        // spaceUiObj.Init();
 
         obj.GetComponent<MeshRenderer>().material.SetColor("_Color", space.GetColor());
     }

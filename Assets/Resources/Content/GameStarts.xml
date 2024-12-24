@@ -1,6 +1,6 @@
 <templates>
 	<start name="Start01" universe="default">
-		<space galaxy="0" system="2" sector="0">
+		<space galaxy="0" region="Region01" sector="0">
 			<ship playerShip="1" template="Ship01" pilotTemplate="Pilot01">
 				<position x="0" y="0" z="0" />
 				<rotation x="0" y="0" z="0" />

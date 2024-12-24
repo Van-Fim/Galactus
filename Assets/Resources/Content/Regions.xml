@@ -1,0 +1,9 @@
+<templates>
+	<region name="Region01" sizeMin="100000" sizeMax="100000">
+		<colors>
+			<bg_color rmin="50" gmin="50" bmin="50" amin="255" rmax="90" gmax="90" bmax="90"
+				amax="255" />
+			<color r="50" gmin="150" gmax="180" bmin="180" bmax="200" a="255" />
+		</colors>
+	</region>
+</templates>

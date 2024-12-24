@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class SpaceManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class SpaceManager : MonoBehaviour
 
     public static List<Galaxy> galaxies = new List<Galaxy>();
     public static List<SpaceSystem> spaceSystems = new List<SpaceSystem>();
+    public static List<Region> regions = new List<Region>();
     public static List<Sector> sectors = new List<Sector>();
     public static List<Gate> gates = new List<Gate>();
     public static List<Planet> planets = new List<Planet>();
@@ -143,20 +145,78 @@ public class SpaceManager : MonoBehaviour
 
             List<TemplateNode> nodes = galaxyTemplate.GetNodeList("system");
             int count = UnityEngine.Random.Range(minCount, maxCount + 1);
-            float galMaxRange = 0;
-            for (int g = 0; g < nodes.Count; g++)
-            {
-                float vmx = XMLF.FloatVal(nodes[g].GetValue("maxRange"));
-                if (vmx > galMaxRange)
-                {
-                    galMaxRange = vmx;
-                }
-            }
+            float galMaxRange = XMLF.FloatVal(galaxyTemplate.GetValue("galaxy", "maxRange"));
+            // for (int g = 0; g < nodes.Count; g++)
+            // {
+            //     float vmx = XMLF.FloatVal(nodes[g].GetValue("maxRange"));
+            //     if (vmx > galMaxRange)
+            //     {
+            //         galMaxRange = vmx;
+            //     }
+            // }
             for (int k = 0; k < numOfArms; k++)
             {
                 GenerateArm(seed, galaxy, nodes, count / numOfArms, (float)k / (float)numOfArms, spin, armSpread, starsAtCenterRatio, galMaxRange);
             }
             galaxy.spaceSystems = SpaceManager.spaceSystems.FindAll(x => x.galaxyId == galaxy.id);
+        }
+    }
+    public static void BuildRegions()
+    {
+        for (int i = 0; i < galaxies.Count; i++)
+        {
+            Galaxy galaxy = galaxies[i];
+            int seed = GameManager.GetSeed(galaxy.id);
+            System.Random rndm = new System.Random(seed);
+            UnityEngine.Random.InitState(seed);
+            Template galaxyTemplate = TemplateManager.FindTemplate(galaxy.templateName, "galaxy");
+            if (galaxyTemplate == null)
+            {
+                Debug.LogError("Galaxy template " + galaxy.templateName + " is not found");
+                return;
+            }
+            List<TemplateNode> nodes = galaxyTemplate.GetNodeList("region");
+            for (int k = 0; k < nodes.Count; k++)
+            {
+                TemplateNode nd = nodes[k];
+                float galMaxRange = XMLF.FloatVal(galaxyTemplate.GetValue("galaxy", "maxRange"));
+                int countMin = int.Parse(nd.GetValue("count_min"));
+                int countMax = int.Parse(nd.GetValue("count_max"));
+                int scaleMin = int.Parse(nd.GetValue("scale_min"));
+                int scaleMax = int.Parse(nd.GetValue("scale_max"));
+                int count = UnityEngine.Random.Range(countMin, countMax + 1);
+                string RegionTemplateName = nd.GetValue("template");
+                for (int j = 0; j < count; j++)
+                {
+                    int Ymin = int.Parse(nd.GetValue("Ymin"));
+                    int Ymax = int.Parse(nd.GetValue("Ymax"));
+                    int yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
+                    int scale = UnityEngine.Random.Range(scaleMin, scaleMax + 1);
+                    float minRange = XMLF.FloatVal(nd.GetValue("minRange"));
+                    float maxRange = XMLF.FloatVal(nd.GetValue("maxRange"));
+                    float range = UnityEngine.Random.Range(minRange, maxRange + 1);
+                    Vector2 position2D = UnityEngine.Random.insideUnitCircle * (maxRange);
+                    Vector3 pos = new Vector3(position2D.x, yPos, position2D.y);
+                    float dst = Vector3.Distance(Vector3.zero, pos);
+                    int trys = 25;
+                    while ((dst < minRange || dst > maxRange) && trys > 0)
+                    {
+                        trys--;
+                        yPos = UnityEngine.Random.Range(Ymin, Ymax + 1);
+                        position2D = UnityEngine.Random.insideUnitCircle * (maxRange);
+                        pos = new Vector3(position2D.x, yPos, position2D.y);
+                        dst = Vector3.Distance(Vector3.zero, pos);
+                    }
+                    if (trys <= 0)
+                    {
+                        continue;
+                    }
+                    Region region = new Region(galaxy, RegionTemplateName);
+                    region.scale = scale;
+                    region.SetPosition(pos);
+                    region.Init();
+                }
+            }
         }
     }
     public static void BuildSystemsContent()

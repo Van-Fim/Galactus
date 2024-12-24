@@ -430,7 +430,7 @@ public class Planet : SolarObject
 
                 main.transform.localScale = new Vector3(fscale, fscale, fscale);
                 Color32 col = sys.GetColor();
-                DrawCircle();
+                //DrawCircle();
                 //hull.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", col);
                 //hull.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", col);
                 /*
@@ -444,7 +444,7 @@ public class Planet : SolarObject
             }
             else
             {
-                DrawCircle();
+                //DrawCircle();
                 if (
                     !CameraManager.mainCamera.gameObject.activeSelf
                     && CameraManager.mapCamera.gameObject.activeSelf

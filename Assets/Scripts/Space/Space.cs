@@ -11,7 +11,7 @@ public abstract class Space
     public int galaxyId = -1;
     public int systemId = -1;
     public int sectorId = -1;
-    public int size = 10;
+    public int scale = 10;
     public string templateName;
     public string name;
     public int[] indexes = { 0, 0, 0 };
@@ -21,7 +21,6 @@ public abstract class Space
     public byte[] bgcolor = new byte[] { 255, 255, 255, 255 };
     public MPSystemController mp;
     public static UnityAction OnMinimapRenderAction;
-
     public List<Gate> gates = new List<Gate>();
 
     public Space() { }

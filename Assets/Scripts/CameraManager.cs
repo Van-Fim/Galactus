@@ -9,6 +9,7 @@ public class CameraManager : MonoBehaviour
     public static Camera planetCamera;
     public static CameraController skyBoxCamera;
     public static CameraController mapCamera;
+
     public static CameraManager singleton;
     public static void Init()
     {
@@ -16,12 +17,12 @@ public class CameraManager : MonoBehaviour
         mainCamera = Instantiate(mainCamera);
         mainCamera.gameObject.name = "MainCamera";
         DontDestroyOnLoad(mainCamera);
-        planetCamera = GamePrefabsManager.LoadPrefab<Camera>("PlanetCamera");
-        planetCamera = Instantiate(planetCamera);
+        planetCamera = mainCamera.transform.Find("PlanetCamera").gameObject.GetComponent<Camera>();
+        planetCamera.transform.SetParent(null);
         planetCamera.gameObject.name = "PlanetCamera";
         DontDestroyOnLoad(planetCamera);
-        skyBoxCamera = GamePrefabsManager.LoadPrefab<CameraController>("SkyboxCamera");
-        skyBoxCamera = Instantiate(skyBoxCamera);
+        skyBoxCamera = mainCamera.transform.Find("SkyboxCamera").gameObject.GetComponent<CameraController>();
+        skyBoxCamera.transform.SetParent(null);
         skyBoxCamera.enabled = false;
         skyBoxCamera.transform.SetParent(mainCamera.transform);
         skyBoxCamera.transform.localPosition = Vector3.zero;
@@ -32,6 +33,7 @@ public class CameraManager : MonoBehaviour
         mapCamera = Instantiate(mapCamera);
         mapCamera.gameObject.name = "MapCamera";
         DontDestroyOnLoad(mapCamera);
+        
         singleton = GameManager.singleton.AddComponent<CameraManager>();
     }
     public static void SwitchCamera(string cameraName)
@@ -43,6 +45,13 @@ public class CameraManager : MonoBehaviour
         else if (cameraName == "MapCamera")
         {
             SwitchCamera(mapCamera);
+            MPSystemController mp = LocalClient.SpaceSystem.mp;
+            if (mp == null || mp.spaceUiObj == null)
+            {
+                return;
+            }
+            mp.spaceUiObj.selected = true;
+            SpaceUiObj.selectedObj = mp.spaceUiObj;
         }
         else if (cameraName == "SkyboxCamera")
         {
@@ -65,7 +74,18 @@ public class CameraManager : MonoBehaviour
             CameraManager.skyBoxCamera.transform.localPosition = LocalClient.SpaceSystem.GetPosition();
             Vector3 cPos = mainCamera.transform.position / SolarObject.scaleFactor;
             Vector3 zPos = PositionFixer.zoneIndexes * PositionFixer.stepSize;
-            CameraManager.planetCamera.transform.localPosition = zPos/SolarObject.scaleFactor + cPos;
+            CameraManager.planetCamera.transform.localPosition = zPos / SolarObject.scaleFactor + cPos;
+            
+            GalaxyChunkController.in_process = false;
+            GalaxyChunkController.mapCameraCurrentIndexes = PositionFixer.RecalcPos(mapCamera.transform.localPosition, GalaxyChunkController.chunkSize);
+            if ((CameraManager.mapCamera.direction.magnitude > 0 && CameraManager.mapCamera.boost <= 3.5f) || CameraManager.mapCamera.direction.magnitude == 0)
+            {
+                GalaxyChunkController.in_process = true;
+            }
+            if (GalaxyChunkController.in_process && GalaxyChunkController.mapCameraCurrentIndexes != GalaxyChunkController.mapCameraIndexes)
+            {
+                GalaxyChunkController.OnFixAction?.Invoke();
+            }
         }
     }
 }

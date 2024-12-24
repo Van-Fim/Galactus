@@ -20,6 +20,10 @@ public class SaveSlotManager : MonoBehaviour
     }
     public void ReloadSaves(bool lastSavedOnly = false)
     {
+        if (slotPrefab == null)
+        {
+            slotPrefab = GamePrefabsManager.LoadPrefab<SaveSlotController>("save_slot");
+        }
         for (int i = 0; i < SaveManager.saveSlots.Count; i++)
         {
             GameSaveData gsd = SaveManager.saveSlots[i];

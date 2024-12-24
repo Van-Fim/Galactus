@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-using IngameDebugConsole;
 
 public class SOController : MonoBehaviour
 {
@@ -23,11 +22,7 @@ public class SOController : MonoBehaviour
     public static int currentSpeed = 0;
     public static double distanceToTarget = 0;
     public static int currentMaxSpeed = 0;
-    [ConsoleMethod("set_mulval", "---")]
-    public static void SetMulVal(int val)
-    {
-        SOController.mulVal = val;
-    }
+
     void Awake()
     {
         obj = gameObject.GetComponent<SpaceObject>();
@@ -131,7 +126,7 @@ public class SOController : MonoBehaviour
             if (!testWarping)
             {
                 Sector ffSector = null;
-                if (testSectorId <= 10)
+                if (testSectorId <= 100)
                 {
                     ffSector = SpaceManager.sectors.Find(x => x.galaxyId == LocalClient.galaxyId && x.systemId == LocalClient.systemId && x.id == testSectorId);
                 }

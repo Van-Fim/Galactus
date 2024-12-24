@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
         CameraManager.Init();
         CameraManager.SwitchCamera(CameraManager.mainCamera);
         SpaceManager.SetRandomSkybox();
-
+        GalaxyChunkController.Init();
         DontDestroyOnLoad(gameObject);
         DontDestroyOnLoad(canvasController.gameObject);
         DontDestroyOnLoad(GamePrefabsManager.singleton.gameObject);
@@ -64,9 +64,13 @@ public class GameManager : MonoBehaviour
     {
         SpaceObjectManager.Init();
         IND_targetManager.Init();
+
         SpaceManager.BuildGalaxies();
+        SpaceManager.BuildRegions();
         SpaceManager.BuildSystems();
         SpaceManager.BuildSystemsContent();
+
+        SpaceSystem.InvokeRegionCheck();
     }
     public void StartGame()
     {

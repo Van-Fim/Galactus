@@ -23,6 +23,7 @@ public class GamePrefabsManager : MonoBehaviour
         for (int i = 0; i < list.Count; i++)
         {
             TemplateManager.LoadTemplates("system", list[i] + "/Systems");
+            TemplateManager.LoadTemplates("region", list[i] + "/Regions");
             TemplateManager.LoadTemplates("sector", list[i] + "/Sectors");
             TemplateManager.LoadTemplates("galaxy", list[i] + "/Galaxies");
             TemplateManager.LoadTemplates("universe", list[i] + "/Universe");
