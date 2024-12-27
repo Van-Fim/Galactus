@@ -6,6 +6,15 @@ public class Star
     public int scale = 10;
     public Vector3 position = Vector3.zero;
     public Transform obj;
+    public bool hidden = false;
+    public void SetHiddenState(bool state)
+    {
+        hidden = state;
+        if (obj != null)
+        {
+            obj.gameObject.SetActive(!state);
+        }
+    }
 }
 public class Chunk
 {
@@ -51,14 +60,7 @@ public class ChunkManager : MonoBehaviour
         Star star = null;
         if (!chunk.destroyed)
         {
-            star = new Star();
-            star.obj = GameObject.Instantiate(GamePrefabsManager.LoadPrefab<Transform>("TestCube"));
-            star.obj.gameObject.name = "TestCube";
-            star.obj.gameObject.layer = 6;
-            star.obj.gameObject.SetActive(true);
-            star.obj.localScale = new Vector3(chunkSize, chunkSize, chunkSize);
-            star.obj.transform.SetParent(SpaceManager.galaxyContainer.transform);
-            star.obj.transform.localPosition = chunkPosition;
+            star = GalaxyChunkController.CreateStar(chunkPosition);
             chunk.stars.Add(star);
         }
         return star;
@@ -98,7 +100,7 @@ public class ChunkManager : MonoBehaviour
                 // Удаляем созданные звезды
                 for (int j = chunks[i].stars.Count - 1; j >= 0; j--)
                 {
-                    GameObject.Destroy(chunks[i].stars[j].obj.gameObject);
+                    chunks[i].stars[j].SetHiddenState(true);
                 }
                 chunks[i].stars = null;
                 chunks.RemoveAt(i);
