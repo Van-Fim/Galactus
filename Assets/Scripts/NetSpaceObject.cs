@@ -49,6 +49,7 @@ public class NetSpaceObject : NetworkBehaviour
             LocalClient.galaxyId = obj.galaxyId;
             LocalClient.systemId = obj.systemId;
             LocalClient.sectorId = obj.sectorId;
+    
             LocalClient.ControlledObject = obj;
             GameManager.singleton.StartGame();
         }

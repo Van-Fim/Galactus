@@ -151,12 +151,13 @@ public class SpaceObjectManager : MonoBehaviour
                 int systemId = int.Parse(spaceNode.GetValue("system"));
                 int galaxyId = int.Parse(spaceNode.GetValue("galaxy"));
                 int sectorId = int.Parse(spaceNode.GetValue("sector"));
+                Region reg = null;
                 if (region.Length > 0)
                 {
-                    Region reg = SpaceManager.regions.Find(x=>x.templateName == region);
+                    reg = SpaceManager.regions.Find(x => x.templateName == region);
                     if (reg != null && reg.spaceSystems.Count > 0)
                     {
-                        int rd = Random.Range(0, reg.spaceSystems.Count+1);
+                        int rd = Random.Range(0, reg.spaceSystems.Count + 1);
                         systemId = reg.spaceSystems[rd].id;
                         sectorId = 0;
                     }
@@ -167,6 +168,44 @@ public class SpaceObjectManager : MonoBehaviour
                     LocalClient.galaxyId = galaxyId;
                     LocalClient.systemId = systemId;
                     LocalClient.sectorId = sectorId;
+
+                    if (reg != null)
+                    {
+                        GalaxyChunkController.galaxyTemplate = TemplateManager.FindTemplate(LocalClient.Galaxy.templateName, "galaxy");
+                        GalaxyChunkController.systemNodes = GalaxyChunkController.galaxyTemplate.GetNodeList("system");
+                        int Ymax = int.Parse(GalaxyChunkController.galaxyTemplate.GetValue("galaxy", "Ymax"));
+                        int Ymin = int.Parse(GalaxyChunkController.galaxyTemplate.GetValue("galaxy", "Ymin"));
+                        int maxRange = int.Parse(GalaxyChunkController.galaxyTemplate.GetValue("galaxy", "maxRange"));
+                        Bounds b = reg.bounds;
+                        Vector3 target = new Vector3(UnityEngine.Random.Range(b.min.x, b.max.x), UnityEngine.Random.Range(b.min.y, b.max.y), UnityEngine.Random.Range(b.min.z, b.max.z));
+                        Vector3 p = reg.bounds.ClosestPoint(target);
+                        int tryCount = 10;
+                        while (tryCount > 0)
+                        {
+                            tryCount--;
+                            bool cnt = false;
+                            if (p.y > Ymax || p.y < Ymin)
+                            {
+                                cnt = true;
+                            }
+                            if (Vector3.Distance(Vector3.zero, p) > maxRange)
+                            {
+                                cnt = true;
+                            }
+                            if (cnt)
+                            {
+                                target = new Vector3(UnityEngine.Random.Range(b.min.x, b.max.x), UnityEngine.Random.Range(b.min.y, b.max.y), UnityEngine.Random.Range(b.min.z, b.max.z));
+                                p = reg.bounds.ClosestPoint(target);
+                                continue;
+                            }
+                            break;
+                        }
+                        GalaxyChunkController.in_process = true;
+                        GalaxyChunkController.mapCameraCurrentIndexes = PositionFixer.RecalcPos(p, GalaxyChunkController.chunkSize);
+                        GalaxyChunkController.mapCameraIndexes = GalaxyChunkController.mapCameraCurrentIndexes;
+                        ChunkManager chunkManager = ChunkManager.Create(GalaxyChunkController.chunkSize);
+                        chunkManager.UpdateChunks(GalaxyChunkController.mapCameraIndexes, true);
+                    }
                 }
                 string templateStringName = objectNode.GetValue("template");
                 TemplateNode positionNode = objectNode.GetChildNode("position");
@@ -221,7 +260,6 @@ public class SpaceObjectManager : MonoBehaviour
                 spaceObjectData.modelPatch = fTemplate.GetValue("model", "patch");
 
                 spaceObjectData.id = SpaceObject.GetId();
-
                 ret.Add(spaceObjectData);
             }
         }

@@ -7,7 +7,7 @@ Shader "BitshiftProgrammer/Billboard"
       _FadeDistance("Fade Distance", Float) = 500
       _FadeRangeFactor("Fade Range Factor", Float) = 2000
 		_Scaling("Scaling", Float) = 1
-    _ScalingRange("Scaling range", Float) = 250
+      _ScalingRange("Scaling range", Float) = 250
 		[Enum(RenderOnTop, 0,RenderWithTest, 4)] _ZTest("Render on top", Int) = 1
 	}
 	SubShader

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 public class Star
 {
     public int scale = 10;
@@ -22,31 +23,57 @@ public class Chunk
     public bool creatingStars;
     public bool starsCreated;
     public bool destroyed;
-    public List<Star> stars = new List<Star>();
+    public List<SpaceSystem> stars = new List<SpaceSystem>();
 }
 public class ChunkManager : MonoBehaviour
 {
-    public int chunkSize = 50;
-    public int distance = 1;
-    public int steps = 100;
+    public int chunkSize = 20;
+    public int distance = 2;
+    public int steps = 5;
     List<Chunk> chunks = new List<Chunk>();
+    public static ChunkManager Create(int size = 50)
+    {
+        ChunkManager chunkManager = new GameObject().AddComponent<ChunkManager>();
+        chunkManager.chunkSize = size;
+        return chunkManager;
+    }
     IEnumerator CreateStars(Chunk chunk)
     {
         if (chunk.destroyed || chunk.creatingStars)
         {
             yield break;
         }
-        int count = 1;
+        int seed = $"{LocalClient.galaxyId}{chunk.indexes}".GetHashCode();
+        Random.InitState(seed);
+        int chance = 1;
         chunk.creatingStars = true;
-        while (count > 0)
+        float s = chunkSize / steps;
+        int sts = steps - 1;
+        int number = 0;
+        for (int x = -sts; x <= sts; x++)
         {
-            --count;
-            yield return new WaitForSeconds(0.1f);
-            // Создаем звезду в чанке
-            Star st = CreateNewStar(chunk);
-            if (st != null)
+            for (int y = -sts; y <= sts; y++)
             {
-                chunk.stars.Add(st);
+                for (int z = -sts; z <= sts; z++)
+                {
+                    seed = $"{LocalClient.galaxyId}{chunk.indexes}{new Vector3(x, y, z)}".GetHashCode();
+                    Random.InitState(seed);
+                    int r = Random.Range(0, 101);
+                    if (r <= chance)
+                    {
+                        yield return new WaitForSeconds(0.1f);
+                        Random.InitState(seed);
+                        // Создаем звезду в чанке
+                        SpaceSystem st = CreateNewStar(chunk, number);
+                        if (st != null)
+                        {
+                            Vector3 pos = new Vector3(x * s, y * s, z * s);
+                            Vector3 fpos = Random.insideUnitCircle * (s - (s / 10));
+                            st.SetPosition(pos + fpos + chunk.indexes);
+                        }
+                        number++;
+                    }
+                }
             }
         }
         if (!chunk.destroyed)
@@ -54,18 +81,62 @@ public class ChunkManager : MonoBehaviour
             chunk.starsCreated = true;
         }
     }
-    public Star CreateNewStar(Chunk chunk)
+    public void CreateStarsFunc(Chunk chunk)
+    {
+        if (chunk.destroyed || chunk.creatingStars)
+        {
+            return;
+        }
+        int seed = $"{LocalClient.galaxyId}{chunk.indexes}".GetHashCode();
+        Random.InitState(seed);
+        int chance = 1;
+        chunk.creatingStars = true;
+        float s = chunkSize / steps;
+        int sts = steps - 1;
+        int number = 0;
+        for (int x = -sts; x <= sts; x++)
+        {
+            for (int y = -sts; y <= sts; y++)
+            {
+                for (int z = -sts; z <= sts; z++)
+                {
+                    seed = $"{LocalClient.galaxyId}{chunk.indexes}{new Vector3(x, y, z)}".GetHashCode();
+                    Random.InitState(seed);
+                    int r = Random.Range(0, 101);
+                    if (r <= chance)
+                    {
+                        Random.InitState(seed);
+                        // Создаем звезду в чанке
+                        SpaceSystem st = CreateNewStar(chunk, number);
+                        if (st != null)
+                        {
+                            Vector3 pos = new Vector3(x * s, y * s, z * s);
+                            Vector3 fpos = Random.insideUnitCircle * (s - (s / 10));
+                            st.SetPosition(pos + fpos + chunk.indexes);
+                        }
+                        number++;
+                    }
+                }
+            }
+        }
+        if (!chunk.destroyed)
+        {
+            chunk.starsCreated = true;
+        }
+    }
+    public SpaceSystem CreateNewStar(Chunk chunk, int num)
     {
         Vector3 chunkPosition = chunk.indexes;
-        Star star = null;
+        SpaceSystem star = null;
         if (!chunk.destroyed)
         {
             star = GalaxyChunkController.CreateStar(chunkPosition);
+            star.id = $"{star.galaxyId}{star.GetPosition()}".GetHashCode();
             chunk.stars.Add(star);
         }
         return star;
     }
-    public void UpdateChunks(Vector3 pos)
+    public void UpdateChunks(Vector3 pos, bool forceUpdate = false)
     {
         for (int i = 0; i < chunks.Count; i++)
         {
@@ -83,7 +154,14 @@ public class ChunkManager : MonoBehaviour
                     {
                         chunk = new Chunk();
                         chunk.indexes = indx;
-                        StartCoroutine(CreateStars(chunk));
+                        if (forceUpdate)
+                        {
+                            CreateStarsFunc(chunk);
+                        }
+                        else
+                        {
+                            StartCoroutine(CreateStars(chunk));
+                        }
                         chunks.Add(chunk);
                     }
                     else
@@ -100,7 +178,7 @@ public class ChunkManager : MonoBehaviour
                 // Удаляем созданные звезды
                 for (int j = chunks[i].stars.Count - 1; j >= 0; j--)
                 {
-                    chunks[i].stars[j].SetHiddenState(true);
+                    chunks[i].stars[j].Hide();
                 }
                 chunks[i].stars = null;
                 chunks.RemoveAt(i);

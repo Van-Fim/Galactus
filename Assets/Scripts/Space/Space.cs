@@ -27,7 +27,6 @@ public abstract class Space
     public Space(string templateName)
     {
         this.templateName = templateName;
-        TemplateManager.FindTemplate(templateName, GetType().ToString());
     }
     public virtual void Init()
     {
@@ -74,6 +73,10 @@ public abstract class Space
     public virtual void SetPosition(Vector3 position)
     {
         this.position = new float[] { position.x, position.y, position.z };
+        if (mp != null)
+        {
+            mp.transform.localPosition = position;
+        }
     }
     public virtual Vector3 GetPosition()
     {
@@ -82,6 +85,10 @@ public abstract class Space
     public virtual void SetRotation(Vector3 rotation)
     {
         this.rotation = new float[] { rotation.x, rotation.y, rotation.z };
+        if (mp != null)
+        {
+            mp.transform.localEulerAngles = rotation;
+        }
     }
     public virtual Vector3 GetRotation()
     {

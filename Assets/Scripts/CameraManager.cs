@@ -41,11 +41,15 @@ public class CameraManager : MonoBehaviour
         if (cameraName == "MainCamera")
         {
             SwitchCamera(mainCamera);
+            Space.InvokeMinimapRender();
         }
         else if (cameraName == "MapCamera")
         {
             SwitchCamera(mapCamera);
             MPSystemController mp = LocalClient.SpaceSystem.mp;
+            Space.InvokeMinimapRender();
+            GalaxyChunkController.galaxyTemplate = TemplateManager.FindTemplate(LocalClient.Galaxy.templateName, "galaxy");
+            GalaxyChunkController.systemNodes = GalaxyChunkController.galaxyTemplate.GetNodeList("system");
             if (mp == null || mp.spaceUiObj == null)
             {
                 return;

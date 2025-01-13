@@ -7,6 +7,7 @@ using UnityEngine;
 public class Region : Space
 {
     public GameObject gameObject;
+    public Bounds bounds;
     public List<SpaceSystem> spaceSystems = new List<SpaceSystem>();
     public override void OnMinimapRender()
     {

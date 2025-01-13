@@ -118,7 +118,7 @@ public class MenuManager : MonoBehaviour
                 img0.color = hudData.bgColor2;
             }
         }
-
+        
         OnSendActionAction.Invoke(commands, allargs);
     }
     public void BuildAll()

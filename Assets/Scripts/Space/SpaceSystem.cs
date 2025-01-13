@@ -10,6 +10,8 @@ public class SpaceSystem : Space
     public string skyboxName;
     public static UnityAction OnRegionCheckAction;
     public List<Region> regions = new List<Region>();
+    public bool hidden;
+    public bool temp;
     public override void Init()
     {
         base.Init();
@@ -22,8 +24,8 @@ public class SpaceSystem : Space
             for (int i = 0; i < SpaceManager.regions.Count; i++)
             {
                 float scl = SpaceManager.regions[i].scale;
-                Bounds bounds = new Bounds(SpaceManager.regions[i].GetPosition(), new Vector3(scl, scl, scl));
-                if (bounds.Contains(GetPosition()))
+                SpaceManager.regions[i].bounds = new Bounds(SpaceManager.regions[i].GetPosition(), new Vector3(scl, scl, scl));
+                if (SpaceManager.regions[i].bounds.Contains(GetPosition()))
                 {
                     regions.Add(SpaceManager.regions[i]);
                     SpaceManager.regions[i].spaceSystems.Add(this);
@@ -37,6 +39,10 @@ public class SpaceSystem : Space
     }
     public override void OnMinimapRender()
     {
+        if (hidden)
+        {
+            return;
+        }
         if (mp == null)
         {
             MPSystemController prefab = GamePrefabsManager.LoadPrefab<MPSystemController>("Mp_System");
@@ -55,20 +61,40 @@ public class SpaceSystem : Space
         }
         else
         {
-            if (mp != null)
+            Show();
+        }
+    }
+    public void Show()
+    {
+        if (mp != null)
+        {
+            mp.gameObject.SetActive(true);
+            Material mat = mp.obj.GetComponent<MeshRenderer>().material;
+            if (CameraManager.mapCamera.gameObject.activeSelf)
             {
-                mp.gameObject.SetActive(true);
+                mat.SetFloat("_FadeRangeFactor", 30000f);
                 if (regions.Find(x => x.templateName == "Region01") != null)
                 {
-                    mp.obj.GetComponent<MeshRenderer>().material.SetColor("_Color", new Color32(255, 255, 255, 255));
-                    mp.obj.GetComponent<MeshRenderer>().material.SetFloat("_Scaling", 0.5f);
-                }
-                else
-                {
-                    mp.obj.GetComponent<MeshRenderer>().material.SetColor("_Color", mp.space.GetColor());
+                    mat.SetColor("_Color", new Color32(255, 255, 255, 255));
+                    mat.SetFloat("_Scaling", 0.5f);
                 }
             }
+            else
+            {
+                mat.SetFloat("_FadeRangeFactor", 5000f);
+                mat.SetColor("_Color", GetColor());
+                mat.SetFloat("_Scaling", 0.1f);
+            }
+            if (temp)
+            {
+                // mat.SetFloat("_FadeRangeFactor", 30000f);
+                // mat.SetColor("_Color", GetColor());
+                // mat.SetFloat("_Scaling", 0.5f);
+            }
         }
+    }
+    public SpaceSystem() : base()
+    {
     }
     public SpaceSystem(Galaxy galaxy, string templateName) : base(templateName)
     {
@@ -94,5 +120,13 @@ public class SpaceSystem : Space
         int ind = SpaceManager.spaceSystems.IndexOf(this);
         SpaceManager.spaceSystems.RemoveAt(ind);
         base.Destroy();
+    }
+    public void Hide()
+    {
+        if (mp != null)
+        {
+            mp.gameObject.SetActive(false);
+        }
+        hidden = true;
     }
 }

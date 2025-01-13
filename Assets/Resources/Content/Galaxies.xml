@@ -1,15 +1,15 @@
 <templates>
-	<galaxy name="Gal1" type="default" numOfArms="2" spin="1.6" armSpread="0.2"
-		starsAtCenterRatio="1.0" systems_min="2000" systems_max="2000" maxRange="30000">
+	<galaxy name="Gal1" Ymin="-600" Ymax="600" type="default" numOfArms="2" spin="1.6" armSpread="0.2"
+		starsAtCenterRatio="1.0" systems_min="2000" systems_max="2000" maxRange="150000">
 		<systems>
-			<system template="System01" weight="20" minRange="0" maxRange="30000" size="10"
-				Ymin="-400" Ymax="400"></system>
-			<system template="System02" weight="80" minRange="0" maxRange="30000" size="10"
-				Ymin="-400" Ymax="400"></system>
+			<system template="System01" weight="20" minRange="0" maxRange="150000" size="10"
+				Ymin="-1800" Ymax="1800"></system>
+			<system template="System02" weight="80" minRange="0" maxRange="150000" size="10"
+				Ymin="-1800" Ymax="1800"></system>
 		</systems>
 		<regions>
-			<region template="Region01" minRange="5000" maxRange="7000" scale_min="3000" scale_max="5000"
-				Ymin="-300" Ymax="300" count_min="1" count_max="1"></region>
+			<region template="Region01" minRange="50000" maxRange="70000" scale_min="30000" scale_max="50000"
+				Ymin="-1800" Ymax="1800" count_min="1" count_max="1"></region>
 		</regions>
 		<colors>
 			<color r="255" g="100" b="100" a="255" />

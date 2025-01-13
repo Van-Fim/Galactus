@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
     {
         CameraManager.SwitchCamera(CameraManager.mainCamera);
         SpaceManager.LoadSystem(LocalClient.SpaceSystem);
-
+        
         if (LocalClient.ControlledObject != null)
         {
             SpaceObject cobj = LocalClient.ControlledObject;
@@ -100,6 +100,7 @@ public class GameManager : MonoBehaviour
             controller.obj = cobj;
             cobj.transform.SetParent(null);
         }
+        GalaxyChunkController.OnFixAction?.Invoke();
         Space.InvokeMinimapRender();
         PositionFixer.Init();
         Hud hud = MenuManager.GetHud("MainHudMenu");
